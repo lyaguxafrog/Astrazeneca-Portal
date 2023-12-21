@@ -15,7 +15,7 @@ class Story(models.Model):
     link_to_page = models.URLField()
     specialties = models.ManyToManyField('pages.Specialty')
     is_active = models.BooleanField(default=True)
-    saved_data = models.ManyToManyField('pages.SavedByUser', null=True)
+    # saved_data = models.ManyToManyField('pages.SavedByUser', null=True)
 
     def __str__(self):
         return self.title

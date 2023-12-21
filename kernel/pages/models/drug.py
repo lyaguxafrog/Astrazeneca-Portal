@@ -14,11 +14,11 @@ class Drug(models.Model):
     instruction_text = models.TextField(verbose_name="Текст пункта инструкции")
     application_practice = models.TextField(verbose_name="Практика применения")
     approvals_and_decodings = models.TextField(verbose_name="Расшифровки и номера одобрения")
-    saved_data = models.ManyToManyField('pages.SavedByUser', null=True)
+    # saved_data = models.ManyToManyField('pages.SavedByUser', null=True)
 
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = 'Препараты'
