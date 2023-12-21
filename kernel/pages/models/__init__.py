@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from pages.models.speciality import Specialty
-from pages.models.stories import Story
+from .articles import Articles
+from .drug import Drug
+from .events import Events
+from .savedbyuser import SavedByUser
+from .speciality import Specialty
+from .stories import Story
+from .video_lectures import VideoLectures

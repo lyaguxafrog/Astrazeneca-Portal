@@ -10,3 +10,7 @@ class Specialty(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Специальность'
+        verbose_name_plural = 'Специальности'

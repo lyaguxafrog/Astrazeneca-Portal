@@ -2,3 +2,4 @@ django == 4.2.8
 psycopg2 == 2.9.9
 python-decouple == 3.8
 djangorestframework == 3.14.0
+pillow == 10.1.0
