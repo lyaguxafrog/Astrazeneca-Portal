@@ -17,7 +17,7 @@ class Articles(models.Model):
     access_number = models.CharField(max_length=255, verbose_name="Поле для добавления расшифровок и номеров одобрения")
     speciality = models.ManyToManyField('pages.Specialty', related_name='articles')
     article_type = models.CharField(max_length=255)
-    saved_data = models.ForeignKey("pages.SavedByUser", on_delete=models.CASCADE)
+    saved_data = models.ForeignKey("pages.SavedByUser", on_delete=models.CASCADE, null=True)
 
 
     class Meta:

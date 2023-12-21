@@ -15,7 +15,7 @@ class VideoLectures(models.Model):
     access_number = models.CharField(max_length=255, verbose_name="Поле для добавления расшифровок и номеров одобрения")
     speciality = models.ForeignKey("pages.Specialty", on_delete=models.CASCADE)
     content_type = models.CharField(max_length=255, verbose_name="поле для выбора типа контента - видеолекции или видео кейс")
-    saved_data = models.ForeignKey('pages.SavedByUser', on_delete=models.CASCADE)
+    saved_data = models.ForeignKey('pages.SavedByUser', on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'Видео'
