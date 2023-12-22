@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./manage.sh migrate && ./manage.sh run
+./manage.sh def-admin && ./manage.sh migrate && ./manage.sh run
