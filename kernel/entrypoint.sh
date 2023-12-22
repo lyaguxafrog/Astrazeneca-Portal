@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./manage.sh run
+./manage.sh migrate && ./manage.sh run
