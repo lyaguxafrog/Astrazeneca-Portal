@@ -30,4 +30,9 @@ if [[ $1 = 'su' ]]; then
     exit 0
 fi
 
+if [[ $1 = 'def-admin' ]]; then
+    ./dmanage.py create_user
+    exit 0
+fi
+
 ./dmanage.py $@
