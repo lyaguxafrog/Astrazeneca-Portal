@@ -63,7 +63,7 @@ ROOT_URLCONF = "config.urls"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",  # Пример: адрес вашего фронтенда
-    "https://astraportal.dev-demo.online",
+    "http://astraportal.dev-demo.online",
     # ...
 ]
 
