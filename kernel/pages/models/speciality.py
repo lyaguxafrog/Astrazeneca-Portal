@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Specialty(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True, verbose_name='Название специальности')
     image = models.ImageField(upload_to='specialty_images/')  # Тип данных: изображение
 
     def __str__(self):
