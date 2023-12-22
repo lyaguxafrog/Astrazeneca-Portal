@@ -56,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
+    # 'config.middleware.CustomHeadersMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -148,3 +149,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# if DEBUG:
+#     INSTALLED_APPS += ['corsheaders']
+#     MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware']
+
+#     CORS_ALLOWED_ORIGINS = [
+#         "http://localhost:3001",  # или ваш фронтенд-оригин
+#         # Добавьте больше оригинов по мере необходимости
+#     ]
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
