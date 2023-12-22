@@ -3,9 +3,6 @@
 
 if [[ $1 = 'config' ]]; then
 
-    rm -rf kernel/.devcontainer
-    rm -rf kernel/.vscode
-    rm -rf README.md
     cat .env.example >> kernel/.env
     echo ".env создан"
     echo "Обязательно смените SECRET_KEY"
