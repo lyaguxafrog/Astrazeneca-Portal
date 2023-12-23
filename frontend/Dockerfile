@@ -1,13 +1,17 @@
 
-FROM node:18.16.0
+FROM node:16.17.0
 
-ENV APP_ROOT /
+ENV APP_ROOT /web
 
 WORKDIR ${APP_ROOT}
 ADD . ${APP_ROOT}
 
 RUN npm install
 
-RUN npm run build
+COPY . .
 
-CMD node .output/server/index.mjs
+RUN npm run build:test
+
+COPY . .
+
+CMD npm run start
