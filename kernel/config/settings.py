@@ -27,7 +27,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG") == 'True'
 
-ALLOWED_HOSTS = ['localhost', 'astraportal.dev-demo.online']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,14 +50,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
-    # 'config.middleware.CustomHeadersMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -65,7 +63,7 @@ ROOT_URLCONF = "config.urls"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",
-    "http://localhost:3030",
+    "http://localhost",
     "http://localhost:8080",
     "http://localhost:8000",
     "http://astraportal.dev-demo.online",
@@ -173,15 +171,3 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# if DEBUG:
-#     INSTALLED_APPS += ['corsheaders']
-#     MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware']
-
-#     CORS_ALLOWED_ORIGINS = [
-#         "http://localhost:3001",  # или ваш фронтенд-оригин
-#         # Добавьте больше оригинов по мере необходимости
-#     ]
-
-# if DEBUG:
