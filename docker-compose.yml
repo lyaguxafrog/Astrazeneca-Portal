@@ -24,21 +24,19 @@ services:
     depends_on:
       - db
 
-  nginx:
-    depends_on:
-      - nuxt
-    image: nginx:latest
-    ports:
-      - '80:80'
-    volumes:
-      # Используем свой nginx конфиг, он заменит дефолтный в контейнере
-      - ./nginx:/etc/nginx/conf.d
-      # Монтируем папку с логами на хост машину для более удобного доступа
-      - ./logs:/var/log/nginx/
-    restart: always
-
   nuxt:
     build: ./frontend
     expose:
-      - '8080:8080'
+      - '3000:3000'
+    restart: always
+
+  nginx:
+    build: ./nginx
+    depends_on:
+      - nuxt
+    volumes:
+      - ./kernel/static:/static
+      - ./kernel/media:/media
+    ports:
+      - '80:80'
     restart: always
