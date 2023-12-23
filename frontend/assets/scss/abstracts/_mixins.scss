@@ -1,0 +1,201 @@
+// very small smartphones
+$screen-extra-xs-max: 359px;
+
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 560px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+// Large tablets and desktops
+$screen-xxl-min: 1440px;
+
+@mixin extra-xs {
+    @media (max-width: #{$screen-extra-xs-max}) {
+        @content;
+    }
+}
+
+@mixin xs {
+    @media (max-width: #{$screen-sm-min - 1px}) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) and (max-width: #{$screen-md-min - 1px}) {
+        @content;
+    }
+}
+
+@mixin sm-and-down {
+  @media (max-width: #{$screen-md-min}) {
+    @content;
+  }
+}
+
+@mixin md {
+    @media (min-width: #{$screen-md-min}) and (max-width: #{$screen-lg-min - 1px}) {
+        @content;
+    }
+}
+
+@mixin md-and-down {
+    @media (max-width: #{$screen-lg-min - 1px}) {
+        @content;
+    }
+}
+
+@mixin md-and-up {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) and (max-width: #{$screen-xl-min - 1px}) {
+        @content;
+    }
+}
+
+@mixin lg-and-down {
+    @media (max-width: #{$screen-xl-min - 1px}) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+@mixin xl-and-down {
+    @media (max-width: #{$screen-xxl-min}) {
+        @content;
+    }
+}
+
+// Custom devices
+@mixin rwd-up($screen) {
+    @media (min-width: $screen) {
+        @content;
+    }
+}
+@mixin rwd($screen) {
+    @media (max-width: $screen) {
+        @content;
+    }
+}
+
+@mixin landscape {
+    @media screen and (orientation: landscape) {
+        @content;
+    }
+}
+@mixin portrait {
+    @media screen and (orientation: portrait) {
+        @content;
+    }
+}
+
+@mixin IE {
+    @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+        @content;
+    }
+}
+
+@mixin only-safari {
+    @media not all and (min-resolution:.001dpcm) {
+        @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+            @content;
+        }
+    }
+}
+
+@mixin only-desktop-safari {
+    @media screen and (min-width: 1280px) {
+        @media not all and (min-resolution:.001dpcm) {
+            @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+                @content;
+            }
+        }
+    }
+}
+
+@mixin hover {
+    @media (hover: hover), screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+        &:hover {
+            @content;
+        }
+    }
+}
+
+@mixin scrollbar($size: 4px, $thumb-radius: 4px, $background: transparent, $color: #000) {
+  overflow: auto;
+  overflow: overlay;
+
+  @include rwd-up($screen-xl-min) {
+    &::-webkit-scrollbar {
+      width: $size;
+      height: $size;
+
+      background: $background;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $color;
+      background-clip: padding-box;
+      border-radius: $thumb-radius;
+    }
+  }
+}
+
+@mixin blur-bg {
+    background: rgba(#fff, 0.925);
+
+    backdrop-filter: blur(8px);
+}
+
+@mixin aspect($width: 16, $height: 9) {
+  aspect-ratio: $width / $height;
+
+  @supports not (aspect-ratio: $width / $height) {
+    &::before {
+      content: '';
+      float: left;
+      padding-top: calc((#{$height} / #{$width}) * 100%);
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+}
+
+@mixin ellipsis($count: 1) {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $count;
+
+  @if $count == 1 {
+    display: block;
+
+    white-space: nowrap;
+  }
+
+  @else {
+    display: -webkit-box;
+  }
+}

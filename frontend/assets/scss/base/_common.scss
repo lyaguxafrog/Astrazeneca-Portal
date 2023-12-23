@@ -1,0 +1,53 @@
+body {
+  font-family: $main-font-family;
+  color: $main-text-color;
+
+  background-color: $main-bg-color;
+
+  @include scrollbar($body-scrollbar-width);
+
+  ::selection {
+
+  }
+  ::-moz-selection {
+
+  }
+}
+
+a {
+  transition: color $tr-dur;
+  @include hover {
+    color: $white-color;
+  }
+}
+
+.link {
+  color: $primary-color;
+}
+
+.swiper-button {
+  color: $primary-color;
+
+  transition: color $tr-dur;
+  cursor: pointer;
+  &.swiper-button-disabled {
+    color: $dimmed-color;
+    pointer-events: none;
+  }
+
+  @include hover {
+    color: $white-color;
+  }
+}
+
+.for-desktop {
+  @include md-and-down {
+    display: none !important;
+  }
+}
+
+.for-mobile-or-tablet {
+  @include md-and-up {
+    display: none !important;
+  }
+}

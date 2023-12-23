@@ -1,0 +1,67 @@
+// Fonts
+$main-font-family: Montserrat, sans-serif;
+$secondary-font-family: 'CA Slalom Extended', sans-serif;
+$text-font-family: Unbounded, sans-serif;
+
+// colors
+$white-color: #ffffff;
+$black-color: #ffffff;
+
+$main-text-color: #fff;
+$secondary-text-color: #132548;
+$main-bg-color: #132548;
+$primary-color: #00D1FF;
+$border-radius: #5F9AC6;
+$accent-color: #E130FF;
+$dimmed-color: #657188;
+$gray-color: #707C95;
+
+// grid
+$body-scrollbar-width: 6px;
+
+
+// background
+
+// features
+
+// transitions
+$tr-dur: 0.2s;
+$tr-dur-l: 0.4s;
+
+// z-index
+$z-index: (
+        0: 0,
+        1: 1,
+        2: 10,
+        3: 100,
+        4: 1000,
+        5: 10000,
+        6: 100000,
+        7: 1000000,
+        10: 10000000000,
+);
+// Sizes
+$class-sizes: (
+        0: 0,
+        2: 2px,
+        4: 4px,
+        8: 8px,
+        10: 10px,
+        12: 12px,
+        14: 14px,
+        16: 16px,
+        18: 18px,
+        20: 20px,
+        22: 22px,
+        24: 24px,
+        28: 28px,
+        32: 32px,
+        36: 36px,
+        38: 38px,
+        40: 40px,
+        42: 42px,
+        48: 48px,
+        56: 56px,
+        60: 60px,
+        auto: auto,
+);

@@ -1,0 +1,144 @@
+html,
+body,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre,
+a,
+img,
+small,
+strike,
+strong,
+sub,
+sup,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+time,
+audio,
+input,
+button,
+video {
+    margin: 0;
+    padding: 0;
+
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+
+    border: 0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+* {
+    box-sizing: border-box;
+
+    -webkit-backface-visibility: hidden;
+
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+
+    &::before,
+    &::after {
+        box-sizing: border-box;
+    }
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: currentColor;
+
+    background: none;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: $main-text-color;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  transition: background-color 99999s ease-in-out 0s !important;
+
+  &.white {
+    -webkit-text-fill-color: $white-color;
+  }
+}
