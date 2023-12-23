@@ -1,33 +1,11 @@
-# syntax = docker/dockerfile:1
+FROM node:18.16.0
 
-ARG NODE_VERSION=18.14.2
+ENV APP_ROOT /
 
-FROM node:${NODE_VERSION}-slim as base
+WORKDIR ${APP_ROOT}
+ADD . ${APP_ROOT}
 
-ARG PORT=3000
-
-ENV NODE_ENV=production
-
-WORKDIR .
-
-# Build
-FROM base as build
-
-COPY package.json ./
-RUN npm install --production=false
-
-COPY . .
+RUN npm install
 
 RUN npm run build
-RUN npm prune
-
-# Run
-FROM base
-
-ENV PORT=$PORT
-
-COPY --from=build /.output /.output
-# Optional, only needed if you rely on unbundled dependencies
-# COPY --from=build /src/node_modules /src/node_modules
-
-CMD [ "node", ".output/server/index.mjs" ]
+CMD node .output/server/index.mjs
