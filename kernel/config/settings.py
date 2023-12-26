@@ -67,29 +67,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8000",
     "http://astraportal.dev-demo.online",
-    # ... другие разрешенные источники
 ]
 
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',  # Добавьте этот заголовок
-    'dnt',
-    'origin',  # Добавьте этот заголовок
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
 
 TEMPLATES = [
     {
@@ -171,3 +150,5 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CORS_URLS_REGEX = r'^/swagger(?P<url>.*)$'
