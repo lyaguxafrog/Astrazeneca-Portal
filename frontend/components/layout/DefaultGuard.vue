@@ -6,7 +6,7 @@
         инновационный<br />
         портал для специалистов здравоохранения
       </div>
-      <AppButton primary class="default-guard__button" @click="isShowGuard = false">
+      <AppButton primary class="default-guard__button" @click="toLogin">
         Войти
       </AppButton>
     </div>
@@ -17,10 +17,13 @@
 import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
+import { useAuth } from '~/utils/composables/useAuth';
 
 const { $screen } = useScreen();
 
-const isShowGuard = ref(false);
+const { toLogin } = useAuth();
+
+const isShowGuard = ref(true);
 const scrollEl = ref();
 
 watch(

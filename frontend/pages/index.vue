@@ -57,8 +57,6 @@
       <HomeVideosSlider />
     </div>
 
-    <HomePracticum />
-
     <HomeEvents />
 
     <HomeDrugs />
@@ -72,6 +70,7 @@ import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { useVideosStore } from '~/utils/composables/store/videos';
+import { useDrugsStore } from '~/utils/composables/store/drugs';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import DefaultHistoriesSlider from '~/components/layout/DefaultHistoriesSlider.vue';
 import HomeVideosSlider from '~/components/pages/home/HomeVideosSlider.vue';
@@ -84,8 +83,10 @@ import { awaitExpression } from '@babel/types';
 const { $screen } = useScreen();
 const { speciality } = useSpecialityStore();
 const { getVideos } = useVideosStore();
+const { getDrugs } = useDrugsStore();
 
 const videos = await getVideos();
+const drugs = await getDrugs();
 
 const showSpecialitySlider = toRef(() => $screen.value.mdAndDown && !speciality.value);
 
