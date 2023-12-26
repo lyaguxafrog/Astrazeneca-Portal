@@ -8,7 +8,8 @@ from django.urls import path, re_path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from .views import SsoRegistrationLink, SsoLoginLink, SsoCallbackView, SaveContentView
+from .views import (SsoRegistrationLink, SsoLoginLink,
+                    SsoCallbackView, SaveContentView, GetSavedContentView)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -28,5 +29,7 @@ urlpatterns = [
     path('sso/login-link/', SsoLoginLink.as_view(), name='sso-login-link'),
     path('sso/callback/', SsoCallbackView.as_view(), name='sso-callback'),
     path('save-content/', SaveContentView.as_view(), name='save-content-create'),
+    path('save-content/get/<int:user_id>', GetSavedContentView.as_view(),
+         name='get-saved-content')
 
 ]
