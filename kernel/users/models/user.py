@@ -4,7 +4,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+                                null=True, blank=True)
+
+    # Поля для интеграции с SSO
+    sso_user_id = models.CharField(max_length=255, blank=True, null=True, unique=True)
+    access_token = models.CharField(max_length=255, blank=True, null=True)
+    refresh_token = models.CharField(max_length=255, blank=True, null=True)
+    token_expiry = models.DateTimeField(blank=True, null=True)
+
     saved_content = models.JSONField(default=dict)
 
     def save_content(self, content_type, content_id):
