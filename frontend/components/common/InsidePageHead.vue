@@ -5,6 +5,8 @@
       v-if="!hideFavouritesButton"
       class="inside-page-head__fav"
       big
+      content-type="video"
+      :content-id="1"
       :active="false"
     />
   </div>
