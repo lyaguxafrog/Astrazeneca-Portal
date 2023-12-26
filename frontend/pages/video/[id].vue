@@ -1,30 +1,19 @@
 <template>
   <InsidePageHead />
-  <div class="video-page">
+  <div v-if="content" class="video-page">
     <BgEllipse size="1138" color="#4DDFFF" pale class="video-page__first-ellipse" />
     <BgEllipse size="984" color="#B32FC9" pale class="video-page__second-ellipse" />
 
-    <div class="video-page__title">Заголовок видео может быть очень длинным</div>
+    <div class="video-page__title">{{ content.video_article }}</div>
     <div class="video-page__video">
-      <video
-        src="/videos/A_large_rock_waterfall.mp4"
-        :style="{ backgroundImage: `url(${'/img/photo_2023-12-11_19-13-51.jpg'})` }"
-      />
+      <video :src="content.video" :style="{ backgroundImage: `url(${content.video_cover})` }" />
       <PlayVideoButton class="video-page__video-play" />
     </div>
 
     <div class="video-page__subtitle">Конспект видео:</div>
 
     <div class="video-page__text">
-      Расшифровка видео в текстовом виде, скроллится вниз, расшифровка видео в текстовом виде,
-      скроллится вниз, расшифровка видео в текстовом виде, скроллится вниз, расшифровка видео в
-      текстовом виде, скроллится вниз, расшифровка видео в текстовом виде, скроллится вниз,
-      расшифровка видео в текстовом виде, скроллится вниз, расшифровка видео в текстовом виде,
-      скроллится вниз, расшифровка видео в текстовом виде, скроллится вниз, расшифровка видео в
-      текстовом виде, скроллится вниз, расшифровка видео в текстовом виде, скроллится
-      вниз, расшифровка видео в текстовом виде, скроллится вниз, расшифровка видео в текстовом виде,
-      скроллится вниз, расшифровка видео в текстовом виде, скроллится вниз, расшифровка видео в
-      текстовом виде, скроллится вниз
+      {{ content.conspect }}
     </div>
 
     <div class="video-page__recommended">
@@ -42,16 +31,29 @@
       </ItemsSlider>
     </div>
   </div>
+
+  <Teleport to="#footerAccessInfo">
+    {{ content?.access_number }}
+  </Teleport>
 </template>
 
 <script setup lang="ts">
+import { useRoute } from '#app';
+import { useVideosStore } from '~/utils/composables/store/videos';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
-import { Video } from '~/utils/types/videos';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import { definePageMeta } from '#imports';
 
-const videos = ref<Video[]>([
+const $route = useRoute();
+const { getVideo } = useVideosStore();
+
+const videoId = toRef(() => $route.params.id);
+
+const content = await getVideo(+videoId.value);
+
+const videos = ref([
   {
     id: '1',
     previewUrl: '/img/video.png',
@@ -92,7 +94,7 @@ const videos = ref<Video[]>([
   padding: 0 92px;
 
   &__first-ellipse {
-    top: -440px;
+    top: -90px;
     left: -840px;
   }
 

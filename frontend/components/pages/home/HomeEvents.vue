@@ -1,36 +1,21 @@
 <template>
-  <div class="home-events">
+  <div v-if="events.data?.length" class="home-events">
     <div class="home-events__title">Мероприятия</div>
 
-    <ItemsSlider :items="events" :desktop-slides-per-view="2.75" #default="{ item }">
-      <a href="" target="_blank">
-        <img :src="item.img" alt="" />
+    <ItemsSlider :items="events.data" :desktop-slides-per-view="2.75" #default="{ item }">
+      <a :href="item.url" target="_blank">
+        <img :src="item.cover" alt="" />
       </a>
     </ItemsSlider>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useEventsStore } from '~/utils/composables/store/events';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 
-const events = [
-  {
-    id: '1',
-    img: '/img/e1.png',
-  },
-  {
-    id: '2',
-    img: '/img/e2.png',
-  },
-  {
-    id: '3',
-    img: '/img/e1.png',
-  },
-  {
-    id: '4',
-    img: '/img/e2.png',
-  },
-];
+const { getEvents } = useEventsStore();
+const events = await getEvents();
 </script>
 
 <style scoped lang="scss">

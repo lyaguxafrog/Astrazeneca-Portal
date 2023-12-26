@@ -7,6 +7,7 @@
 
     <div class="speciality-slider__wrapper">
       <Swiper
+        v-if="specialities"
         class="speciality-slider__swiper"
         centered-slides
         :space-between="30"
@@ -18,7 +19,7 @@
       >
         <SwiperSlide v-for="slide in specialities" :key="slide.id" class="speciality-slider__slide">
           <div class="speciality-slider__slide-content" @click="setSpeciality(slide.id)">
-            <img :src="slide.img" alt="" />
+            <img :src="slide.image" alt="" />
             <p>
               {{ slide.name }}
             </p>
@@ -46,7 +47,9 @@ import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
 
-const { specialities, setSpeciality } = useSpecialityStore();
+const { getSpecialities, setSpeciality } = useSpecialityStore();
+
+const specialities = await getSpecialities();
 
 const nextRef = ref(null);
 const prevRef = ref(null);

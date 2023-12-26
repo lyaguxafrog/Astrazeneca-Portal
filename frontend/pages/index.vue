@@ -74,11 +74,9 @@ import { useDrugsStore } from '~/utils/composables/store/drugs';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import DefaultHistoriesSlider from '~/components/layout/DefaultHistoriesSlider.vue';
 import HomeVideosSlider from '~/components/pages/home/HomeVideosSlider.vue';
-import HomePracticum from '~/components/pages/home/HomePracticum.vue';
 import HomeDrugs from '~/components/pages/home/HomeDrugs.vue';
 import HomeEvents from '~/components/pages/home/HomeEvents.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
-import { awaitExpression } from '@babel/types';
 
 const { $screen } = useScreen();
 const { speciality } = useSpecialityStore();
