@@ -40,3 +40,10 @@ services:
     ports:
       - '80:80'
     restart: always
+
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
