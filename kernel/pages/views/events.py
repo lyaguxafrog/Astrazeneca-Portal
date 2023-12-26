@@ -2,12 +2,8 @@
 
 from rest_framework import generics
 from pages.models import Events
-from pages.serializers import EventsSerializer, EventsListSerializer
+from pages.serializers import EventsSerializer
 
-class EventsListAPIView(generics.ListAPIView):
-    queryset = Events.objects.all()
-    serializer_class = EventsListSerializer
-
-class EventsDetailAPIView(generics.RetrieveAPIView):
+class EventsAPIView(generics.ListAPIView):
     queryset = Events.objects.all()
     serializer_class = EventsSerializer

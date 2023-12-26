@@ -10,11 +10,11 @@ from drf_yasg.utils import swagger_auto_schema
 
 
 class SaveContentView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 
     @swagger_auto_schema(
-    request_body=ContentSaveSerializer,  # Добавьте эту строку
+    request_body=ContentSaveSerializer,
     responses={201: 'Content saved successfully'},
 )
 

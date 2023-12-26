@@ -4,10 +4,14 @@
 from django.urls import path
 from .views import (StoryListAPIView, StoryDetailAPIView, ArticlesDetailAPIView,
                     ArticlesListAPIView, DrugListAPIView,
-                    DrugDetailAPIView, EventsListAPIView, EventsDetailAPIView,
-                    VideoLecturesList, VideoLecturesDetail)
+                    DrugDetailAPIView, EventsAPIView,
+                    VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView)
 
 urlpatterns = [
+
+    path('specialty', SpecialtyListAPIView.as_view(),
+         name='specialty'),
+
     path('stories/<str:name>', StoryListAPIView.as_view(),
          name='story-list'),
 
@@ -24,10 +28,7 @@ urlpatterns = [
 
     path('drugs/<int:pk>/', DrugDetailAPIView.as_view(), name='drugs-detail'),
 
-    path('events/', EventsListAPIView.as_view(), name='events-list'),
-
-    path('events/<int:pk>/', EventsDetailAPIView.as_view(),
-         name='events-detail'),
+    path('events/', EventsAPIView.as_view(), name='events-list'),
 
     path('video-lectures/<str:name>', VideoLecturesList.as_view(),
          name='video-lectures-list'),
