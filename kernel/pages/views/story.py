@@ -1,21 +1,37 @@
 # -*- coding: utf-8 -*-
 
-from rest_framework import generics, status
-from rest_framework.response import Response
-from django.http import Http404
-
-
+from rest_framework import generics
 from pages.models import Story
 from pages.serializers import StorySerializer, StoryListSerializer
 
-class StoryDetailAPIView(generics.RetrieveAPIView):
-    queryset = Story.objects.all()
-    serializer_class = StorySerializer
-    lookup_field = 'id'
 
 class StoryListAPIView(generics.ListAPIView):
     serializer_class = StoryListSerializer
 
     def get_queryset(self):
-        name = self.kwargs['name']
-        return Story.objects.filter(specialties__name=name)
+        specialty_id = self.kwargs.get('id')  # Извлекаем id специальности из URL-параметров
+
+        if specialty_id:
+            # Если передан id специальности, фильтруем истории по специальности
+            return Story.objects.filter(specialties__id=specialty_id, is_active=True)
+        else:
+            # Если id специальности не передан, возвращаем все истории
+            return Story.objects.filter(is_active=True)
+
+class SpecialityStoryListAPIView(generics.ListAPIView):
+    serializer_class = StoryListSerializer
+
+    def get_queryset(self):
+        specialty_id = self.kwargs.get('id')  # Извлекаем id специальности из URL-параметров
+
+        if specialty_id:
+            # Если передан id специальности, фильтруем истории по специальности
+            return Story.objects.filter(specialties__id=specialty_id, is_active=True)
+        else:
+            # Если id специальности не передан, возвращаем все истории
+            return Story.objects.filter(is_active=True)
+
+class StoryDetailAPIView(generics.RetrieveAPIView):
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
+    lookup_field = 'id'
