@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .articles import Articles
+from .articles import Articles, ContentBlock
 from .drug import Drug
 from .events import Events
 from .savedbyuser import SavedByUser
