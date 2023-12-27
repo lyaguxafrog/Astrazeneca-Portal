@@ -1,30 +1,32 @@
 <template>
   <div class="histories-slider" :class="{ min }">
-    <Swiper
-      slides-per-view="4"
-      :modules="[Navigation]"
-      :navigation="{
-        nextEl: nextRef,
-        prevEl: prevRef,
-      }"
-    >
-      <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
-        <nuxt-link to="/histories">
-          <div class="histories-slider__item-content">
-            <img :src="history.avatar" alt="" :style="{ borderColor: history.color }" />
-            <p>
-              {{ history.name }}
-            </p>
-          </div>
-        </nuxt-link>
-      </SwiperSlide>
-    </Swiper>
-    <div ref="nextRef" class="swiper-button next">
-      <AppIcon name="NextSliderBtn" :size="$screen.mdAndDown ? 20 : 34" />
-    </div>
-    <div ref="prevRef" class="swiper-button prev">
-      <AppIcon name="PrevSliderBtn" :size="$screen.mdAndDown ? 20 : 34" />
-    </div>
+    <temlate v-if="histories?.length">
+      <Swiper
+        :slides-per-view="4"
+        :modules="[Navigation]"
+        :navigation="{
+          nextEl: nextRef,
+          prevEl: prevRef,
+        }"
+      >
+        <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
+          <nuxt-link to="/histories">
+            <div class="histories-slider__item-content">
+              <img :src="history.avatar" alt="" :style="{ borderColor: history.color }" />
+              <p>
+                {{ history.name }}
+              </p>
+            </div>
+          </nuxt-link>
+        </SwiperSlide>
+      </Swiper>
+      <div ref="nextRef" class="swiper-button next">
+        <AppIcon :name="IconName.NextSliderBtn" :size="$screen.mdAndDown ? 20 : 34" />
+      </div>
+      <div ref="prevRef" class="swiper-button prev">
+        <AppIcon :name="IconName.PrevSliderBtn" :size="$screen.mdAndDown ? 20 : 34" />
+      </div>
+    </temlate>
   </div>
 </template>
 
@@ -34,13 +36,16 @@ import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
 import { useScreen } from '~/utils/composables/useScreen';
+import { IconName } from '~/components/app/AppIcon.utils';
 
 defineProps<{
   min?: boolean;
 }>();
 
 const { $screen } = useScreen();
-const { histories } = useHistoriesStore();
+const { getHistories } = useHistoriesStore();
+
+const histories = await getHistories();
 
 const nextRef = ref(null);
 const prevRef = ref(null);

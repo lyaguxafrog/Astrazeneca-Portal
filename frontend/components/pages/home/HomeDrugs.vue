@@ -1,5 +1,5 @@
 <template>
-  <div class="home-drugs">
+  <div v-if="drugs.data?.length" class="home-drugs">
     <BgEllipse
       class="home-drugs__first-ellipse"
       color="#00C2FF"
@@ -16,7 +16,7 @@
 
     <ItemsSlider
       :withNavigation="!$screen.mdAndDown"
-      :items="drugs"
+      :items="drugs.data"
       :desktop-slides-per-view="1"
       :mobile-slides-per-view="1"
       :initial-slide="0"
@@ -33,23 +33,14 @@
 
 <script setup lang="ts">
 import { useScreen } from '~/utils/composables/useScreen';
+import { useDrugsStore } from '~/utils/composables/store/drugs';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
+const { getDrugs } = useDrugsStore();
 
-const drugs = [
-  {
-    id: '1',
-    img: '/img/d1.png',
-    link: '/drug/1',
-  },
-  {
-    id: '2',
-    img: '/img/d2.png',
-    link: '/drug/2',
-  },
-];
+const drugs = await getDrugs();
 </script>
 
 <style scoped lang="scss">

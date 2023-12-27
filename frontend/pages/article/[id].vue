@@ -1,6 +1,7 @@
 <template>
   <InsidePageHead />
-  <div class="article-page">
+  <div v-if="content" class="article-page">
+    {{ content }}
     <BgEllipse size="1138" color="#4DDFFF" pale class="article-page__first-ellipse" />
     <BgEllipse
       :size="!$screen.mdAndDown ? 984 : 306"
@@ -14,7 +15,7 @@
       <small>рака легкого</small>
     </div>
 
-    <div class="article-page__intro">Заголовок статьи может быть очень и очень длинным</div>
+    <div class="article-page__intro">{{ content.article_name }}</div>
 
     <div class="article-page__bold">
       Первый абзац текста, краткое содержание и ключевая идея текста в одно-два предложения. Первый
@@ -52,11 +53,19 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from '#app';
+import { useArticlesStore } from '~/utils/composables/store/articles';
+import { useScreen } from '~/utils/composables/useScreen';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
-import { useScreen } from '~/utils/composables/useScreen';
 
+const $route = useRoute();
 const { $screen } = useScreen();
+const { getArticle } = useArticlesStore();
+
+const articleId = toRef(() => +$route.params.id);
+
+const content = await getArticle(articleId.value);
 </script>
 
 <style scoped lang="scss">

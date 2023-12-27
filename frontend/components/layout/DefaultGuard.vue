@@ -6,9 +6,7 @@
         инновационный<br />
         портал для специалистов здравоохранения
       </div>
-      <AppButton primary class="default-guard__button" @click="toLogin">
-        Войти
-      </AppButton>
+      <AppButton primary class="default-guard__button" @click="toLogin"> Войти </AppButton>
     </div>
   </div>
 </template>
@@ -23,7 +21,7 @@ const { $screen } = useScreen();
 
 const { toLogin } = useAuth();
 
-const isShowGuard = ref(true);
+const isShowGuard = ref(false);
 const scrollEl = ref();
 
 watch(
