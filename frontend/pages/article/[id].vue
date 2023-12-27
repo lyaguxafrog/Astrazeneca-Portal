@@ -1,7 +1,6 @@
 <template>
   <InsidePageHead />
   <div v-if="content" class="article-page">
-    {{ content }}
     <BgEllipse size="1138" color="#4DDFFF" pale class="article-page__first-ellipse" />
     <BgEllipse
       :size="!$screen.mdAndDown ? 984 : 306"
@@ -21,34 +20,34 @@
       Первый абзац текста, краткое содержание и ключевая идея текста в одно-два предложения. Первый
       абзац текста, краткое содержание и ключевая идея текста в одно-два предложения.
     </div>
-    <div class="article-page__text">
-      Рак легкого (РЛ) попрежнему ведущая причина смерти от злокачественных новообразований во всем
-      мире, а результаты его лечения остаются неудовлетворительными, прежде всего из-за поздней
-      диагностики. Ежегодно в мире опухоли легкого диагностируются примерно у
-      <a href="##">1,2 млн</a>. человек, а более 1 млн. больных умирает от РЛ.
-    </div>
-    <div class="article-page__quote">
-      <div class="article-page__quote-text">
-        Новая комбинация иммунотерапии и химиотерапии представляет собой потенциально передовой
-        вариант лечения и демонстрирует устойчивый долгосрочный эффект
+
+    <template v-for="block in content.content_blocks">
+      <div
+        v-if="block.content_type === 'text'"
+        :key="block.id"
+        class="article-page__text"
+        v-html="block.text"
+      />
+
+      <div v-if="block.content_type === 'quote'" :key="block.id" class="article-page__quote">
+        <div class="article-page__quote-text" v-html="block.text" />
+        <img :src="`${baseUrl}${block.image}`" alt="" />
       </div>
-      <img src="/img/a1.png" alt="" />
-    </div>
-    <div class="article-page__image-and-text">
-      <img src="/img/a2.png" alt="" vspace="5" hspace="5" align="right" />
-      Медиана выживаемости при применении стандартной химиотерапии на основе препаратов платины, как
-      правило, не превышает одного года. В настоящее время подходы к терапии распространенного РЛ
-      начинают меняться, и в клиническую практику входят иммуноонкологические препараты – ингибиторы
-      контрольных точек иммунного ответа.
-      <br /><br />
-      При этом более значимый эффект может быть получен при применении комбинированного лечения:
-      иммунотерапии в комбинации с химиотерапией в 1-й линии. Ряд исследований показал значительные
-      успехи в таком подходе.
-    </div>
-    <div class="article-page__description">
-      Финальные тезисы, ключевые моменты, источники информации, финальные тезисы, ключевые моменты,
-      источники информации, финальные тезисы, ключевые моменты, источники информации
-    </div>
+
+      <div v-if="block.content_type === 'text_with_image'" class="article-page__image-and-text">
+        <img :src="`${baseUrl}${block.image}`" />
+        <span v-html="block.text" />
+      </div>
+    </template>
+    <div
+      v-if="content.final_content"
+      class="article-page__description"
+      v-html="content.final_content"
+    />
+
+    <Teleport to="#footerAccessInfo">
+      <div v-html="content.access_number" />
+    </Teleport>
   </div>
 </template>
 
@@ -62,6 +61,7 @@ import BgEllipse from '~/components/common/BgEllipse.vue';
 const $route = useRoute();
 const { $screen } = useScreen();
 const { getArticle } = useArticlesStore();
+const { baseUrl } = useRuntimeConfig().public;
 
 const articleId = toRef(() => +$route.params.id);
 
@@ -75,7 +75,7 @@ const content = await getArticle(articleId.value);
   padding: 9px 92px 100px;
 
   &__first-ellipse {
-    top: -440px;
+    top: -150px;
     left: -840px;
   }
 
@@ -134,6 +134,13 @@ const content = await getArticle(articleId.value);
     font-size: 24px;
     line-height: 32px;
     letter-spacing: -0.24px;
+
+    &::v-deep {
+      b,
+      strong {
+        font-weight: 700;
+      }
+    }
   }
 
   a {

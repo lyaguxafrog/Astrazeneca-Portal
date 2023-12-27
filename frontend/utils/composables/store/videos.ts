@@ -1,6 +1,9 @@
 import { useState } from '#app';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
+import { loadableEmpty } from '~/utils/functions/loadable';
+
+export type VideoContentType = 'видеолекция' | 'кейс';
 
 export type Video = {
   id: number;
@@ -9,26 +12,29 @@ export type Video = {
   video_cover: string;
   conspect: string;
   access_number: string;
+  content_type: 'видеолекция';
 };
 
 export const useVideosStore = () => {
   const state = useState('videos-state', () => ({
-    videos: [] as Video[],
-    videosLoaded: false,
+    videos: loadableEmpty<Video[]>([]),
   }));
 
   const { speciality } = useSpecialityStore();
 
   const getVideos = async () => {
-    if (!state.value.videosLoaded && speciality.value?.id) {
-      const res = await useRequest(`/video-lectures/${speciality.value.name}`, {
+    if (!state.value.videos.loaded && speciality.value?.id) {
+      const res = await useRequest<Video[]>(`/video-lectures/${speciality.value.name}`, {
         method: 'GET',
       });
 
-      console.log(res);
+      if (res.data) {
+        state.value.videos.data = res.data;
+        state.value.videos.loaded = true;
+      }
     }
 
-    return state.value.videos;
+    return state.value.videos.data;
   };
 
   const getVideo = async (id: number) => {

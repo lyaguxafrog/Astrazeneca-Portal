@@ -19,9 +19,9 @@ import { useAuth } from '~/utils/composables/useAuth';
 
 const { $screen } = useScreen();
 
-const { toLogin } = useAuth();
+const { toLogin, isAuth } = useAuth();
 
-const isShowGuard = ref(false);
+const isShowGuard = ref(!isAuth);
 const scrollEl = ref();
 
 watch(

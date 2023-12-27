@@ -1,5 +1,5 @@
 <template>
-  <div v-if="drugs.data?.length" class="home-drugs">
+  <div v-if="drugs?.length" class="home-drugs">
     <BgEllipse
       class="home-drugs__first-ellipse"
       color="#00C2FF"
@@ -16,15 +16,15 @@
 
     <ItemsSlider
       :withNavigation="!$screen.mdAndDown"
-      :items="drugs.data"
+      :items="drugs"
       :desktop-slides-per-view="1"
       :mobile-slides-per-view="1"
       :initial-slide="0"
       :hide-pagination="!$screen.mdAndDown"
       #default="{ item }"
     >
-      <nuxt-link class="home-drugs__item link" :to="item.link">
-        <img :src="item.img" alt="" />
+      <nuxt-link class="home-drugs__item link" :to="`/drug/${item.id}`">
+        <img :src="`${baseUrl}${item.image}`" alt="" />
         <div class="home-drugs__item-link">Узнать подробнее</div>
       </nuxt-link>
     </ItemsSlider>
@@ -39,6 +39,7 @@ import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
 const { getDrugs } = useDrugsStore();
+const { baseUrl } = useRuntimeConfig().public;
 
 const drugs = await getDrugs();
 </script>

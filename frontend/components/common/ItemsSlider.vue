@@ -38,7 +38,7 @@ import { ref } from 'vue';
 import { Swiper as SwiperType } from 'swiper/types';
 
 export type SliderProps = {
-  id: string;
+  id: number;
 };
 
 withDefaults(
