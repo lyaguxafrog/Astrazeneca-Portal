@@ -2,27 +2,31 @@
 
 
 from django.urls import path
-from .views import (StoryListAPIView, StoryDetailAPIView, ArticlesDetailAPIView,
-                    ArticlesListAPIView, DrugListAPIView,
-                    DrugDetailAPIView, EventsAPIView,
-                    VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView)
+from .views import (StoryListAPIView, StoryDetailAPIView,
+                    ArticleDetailAPIView, DrugListAPIView,
+                    SpecialityStoryListAPIView,
+                    DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
+                    VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView,
+                    SearchAPIView)
 
 urlpatterns = [
 
     path('specialty', SpecialtyListAPIView.as_view(),
          name='specialty'),
 
-    path('stories/<str:name>', StoryListAPIView.as_view(),
-         name='story-list'),
+     path('articles/specialty/<int:specialty_id>/',
+          ArticlesBySpecialtyAPIView.as_view(), name='articles_by_specialty'),
 
-    path('story/<int:id>', StoryDetailAPIView.as_view(),
-         name='stories'),
+     path('stories/', StoryListAPIView.as_view(), name='story-list'),
+     path('stories/<int:id>/', StoryDetailAPIView.as_view(), name='story-detail'),
+     # path('stories/speciality/<int:id>/',
+     #      SpecialityStoryListAPIView.as_view(), name='story-list-by-speciality'),
 
-    path('article/<str:name>', ArticlesListAPIView.as_view(),
-         name='articles-list'),
 
-    path('article/<int:pk>/', ArticlesDetailAPIView.as_view(),
-         name='articles-detail'),
+
+    path('articles/<int:id>', ArticleDetailAPIView.as_view(),
+         name='article'),
+
 
     path('drugs/', DrugListAPIView.as_view(), name='drugs-list'),
 
@@ -30,9 +34,11 @@ urlpatterns = [
 
     path('events/', EventsAPIView.as_view(), name='events-list'),
 
-    path('video-lectures/<str:name>', VideoLecturesList.as_view(),
+    path('video-lectures/speciality/<int:id>', VideoLecturesList.as_view(),
          name='video-lectures-list'),
 
     path('video-lectures/<int:pk>/', VideoLecturesDetail.as_view(),
          name='video-lectures-detail'),
+
+     path('search/<str:query>/', SearchAPIView.as_view(), name='search')
 ]

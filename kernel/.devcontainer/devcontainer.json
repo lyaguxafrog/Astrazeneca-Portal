@@ -16,7 +16,12 @@
 		"visualstudioexptteam.vscodeintellicode",
 		"donjayamanne.githistory",
 		"docx-mt5.docx",
-		"ShahilKumar.docxreader"
+		"ShahilKumar.docxreader",
+		"figma.figma-vscode-extension",
+		"cweijan.vscode-mysql-client2",
+		"Postman.postman-for-vscode",
+		"SphericalKat.vsc-telegram",
+		"Lorenzo-Lupetti.break-time"
 	],
 
 	"forwardPorts": [5000],

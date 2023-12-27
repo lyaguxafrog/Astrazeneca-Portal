@@ -1,0 +1,37 @@
+{% extends "admin/edit_inline/tabular.html" %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    /* Add any additional styles if needed */
+  </style>
+{% endblock %}
+
+{% block contents %}
+  <div class="inline-related{% if forloop.last %} last-related{% endif %}">
+    {{ inline_admin_formset.formset.management_form }}
+    {% for form in inline_admin_formset.forms %}
+      {% include "admin/includes/fieldset.html" %}
+      <div class="form-row{% if forloop.last %} add-row{% endif %}{% if inline_admin_formset.can_delete %}{% if form.original or form.show_url %} stacked{% else %} tabular{% endif %}{% endif %}">
+        {% for fieldset in inline_admin_formset %}
+          {% for line in fieldset %}
+            {% for field in line %}
+              {% if field.name %}
+                <td class="field-{{ field.name }}{% if field.widget.attrs.class == 'ckeditor' %} ckeditor{% endif %}{% if field.errors %} errors{% endif %}">
+              {% else %}
+                <td{% if field.errors %} class="errors"{% endif %}>
+              {% endif %}
+              {% if field.is_readonly %}
+                <p{% if field.widget.input_type == 'hidden' %} style="display:none;"{% endif %}>{{ field.contents }}</p>
+              {% else %}
+                {{ field.errors.as_ul }}
+                {{ field }}
+              {% endif %}
+              </td>
+            {% endfor %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

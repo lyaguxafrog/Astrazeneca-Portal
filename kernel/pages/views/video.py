@@ -9,8 +9,10 @@ class VideoLecturesList(generics.ListAPIView):
     serializer_class = VideoLecturesListSerializer
 
     def get_queryset(self):
-        name = self.kwargs['name']
-        return VideoLectures.objects.filter(speciality__name=name)
+        speciality_id = self.kwargs['id']
+        video_lectures = VideoLectures.objects.filter(speciality__id=speciality_id)
+
+        return video_lectures
 
 class VideoLecturesDetail(generics.RetrieveAPIView):
     queryset = VideoLectures.objects.all()

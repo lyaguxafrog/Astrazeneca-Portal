@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
+    'ckeditor',
+    'multiupload',
 
     'pages',
     'users',
@@ -68,7 +70,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://astraportal.dev-demo.online",
 ]
-
 
 TEMPLATES = [
     {

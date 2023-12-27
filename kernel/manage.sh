@@ -22,6 +22,8 @@ fi
 if [[ $1 = 'pip' ]]; then
     pip install -r requirements.txt
     cat requirements.txt > .devcontainer/requirements.txt
+    clear
+    echo "Add to Devcontainer"
     exit 0
 fi
 

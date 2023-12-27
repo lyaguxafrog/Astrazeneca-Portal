@@ -8,3 +8,6 @@ django-cors-headers == 4.3.1
 python-jose == 3.3.0
 django-jsonfield-backport == 1.0.5
 jsonfield == 3.1.0
+django-ckeditor == 6.7.0
+django-multiupload == 0.6.1
+django-multiselectfield == 0.1.12

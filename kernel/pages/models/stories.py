@@ -13,9 +13,9 @@ class Story(models.Model):
     cover_image = models.ImageField(upload_to='story_covers/',
                                     null=True, blank=True)
     link_to_page = models.URLField()
-    specialties = models.ManyToManyField('pages.Specialty')
+    specialties = models.ManyToManyField('pages.Specialty',
+                                         blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    # saved_data = models.ManyToManyField('pages.SavedByUser', null=True)
 
     def __str__(self):
         return self.title
