@@ -2,9 +2,9 @@
 
 
 from django.urls import path
-from .views import (StoryListAPIView, StoryDetailAPIView, ArticlesDetailAPIView,
-                    ArticlesListAPIView, DrugListAPIView,
-                    DrugDetailAPIView, EventsAPIView,
+from .views import (StoryListAPIView, StoryDetailAPIView,
+                    ArticleDetailAPIView, DrugListAPIView,
+                    DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
                     VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView)
 
 urlpatterns = [
@@ -12,17 +12,18 @@ urlpatterns = [
     path('specialty', SpecialtyListAPIView.as_view(),
          name='specialty'),
 
+     path('articles/specialty/<int:specialty_id>/',
+          ArticlesBySpecialtyAPIView.as_view(), name='articles_by_specialty'),
+
     path('stories/<str:name>', StoryListAPIView.as_view(),
          name='story-list'),
 
     path('story/<int:id>', StoryDetailAPIView.as_view(),
          name='stories'),
 
-    path('article/<str:name>', ArticlesListAPIView.as_view(),
-         name='articles-list'),
+    path('articles/<int:id>', ArticleDetailAPIView.as_view(),
+         name='article'),
 
-    path('article/<int:pk>/', ArticlesDetailAPIView.as_view(),
-         name='articles-detail'),
 
     path('drugs/', DrugListAPIView.as_view(), name='drugs-list'),
 
