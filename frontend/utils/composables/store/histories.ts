@@ -17,10 +17,8 @@ export const useHistoriesStore = () => {
   }));
 
   const getHistories = async () => {
-    return [];
-
     if (!state.value.histories.loaded) {
-      const res = await useRequest<History[]>('/stories', {
+      const res = await useRequest<History[]>('/stories/Хирург', {
         method: 'GET',
       });
 
