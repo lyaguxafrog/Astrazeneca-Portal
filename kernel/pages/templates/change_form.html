@@ -1,0 +1,20 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        .multiupload {
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    {% if multiupload_form %}
+        <div class="multiupload">
+            {{ multiupload_form.media }}
+            {{ multiupload_form }}
+        </div>
+    {% endif %}
+{% endblock %}

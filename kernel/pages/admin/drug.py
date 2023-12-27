@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
+
 from django.contrib import admin
-from pages.models import Drug
+from pages.models import Drug, Icon
+from pages.services.forms import DrugForm, IconForm
 
 
-@admin.register(Drug)
+class IconInline(admin.TabularInline):
+    model = Icon
+    extra = 1
+
 class DrugAdmin(admin.ModelAdmin):
-    list_display = (
-        'name',
-        'brief_info'
-    )
+    inlines = [IconInline]
+
+admin.site.register(Drug, DrugAdmin)

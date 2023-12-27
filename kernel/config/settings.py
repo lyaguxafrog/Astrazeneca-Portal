@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'ckeditor',
+    'multiupload',
 
     'pages',
     'users',
