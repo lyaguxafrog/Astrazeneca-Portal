@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+
+
 from django.db import models
 from django.core.exceptions import ValidationError
 from ckeditor.fields import RichTextField
@@ -22,7 +26,6 @@ class Drug(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название препарата")
     brief_info = models.TextField(verbose_name="Краткое описание препарата")
     image = models.ImageField(upload_to='drug_images/', verbose_name="Изображение препарата")
-    instruction_text = RichTextField(verbose_name="Текст инструкции")
     application_practice_articles = models.ManyToManyField('pages.Articles', blank=True, related_name='application_practice_articles', verbose_name="Статьи в практике применения")
     application_practice_videos = models.ManyToManyField('pages.VideoLectures', blank=True, related_name='application_practice_videos', verbose_name="Видео в практике применения")
     approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения")
@@ -36,3 +39,12 @@ class Drug(models.Model):
     class Meta:
         verbose_name = 'Препарат'
         verbose_name_plural = 'Препараты'
+
+
+class Drug_FAQ(models.Model):
+
+    drug = models.ForeignKey('Drug', on_delete=models.CASCADE,
+                             related_name="FAQ")
+    title = models.CharField(verbose_name="Заголовок")
+    text = RichTextField(verbose_name="Текст")
+    order = models.PositiveBigIntegerField(verbose_name='Порядковый номер')

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .articles import Articles, ContentBlock
-from .drug import Drug, Icon
+from .drug import Drug, Icon, Drug_FAQ
 from .events import Events
 from .savedbyuser import SavedByUser
 from .speciality import Specialty
