@@ -34,6 +34,7 @@ class Articles(models.Model):
                             choices=ARTICLE_TYPE_CHOICES,
                             blank=True,
                             verbose_name='Тип статьи')
+    information = RichTextField(verbose_name='текстовый блок для ввода инфы о статьи на разводящей станице статей')
 
 
     class Meta:

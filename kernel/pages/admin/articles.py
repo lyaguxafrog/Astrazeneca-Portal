@@ -30,7 +30,12 @@ class ArticlesAdmin(admin.ModelAdmin):
 
     fieldsets = [
         ('Основная информация', {'fields': ['article_name', 'cover']}),
-        ('Дополнительная информация', {'fields': ['short_description','final_content', 'access_number', 'speciality', 'drug', 'article_type']}),
+        ('Дополнительная информация', {'fields': ['short_description',
+                                                  'information',
+                                                  'final_content',
+                                                  'access_number',
+                                                  'speciality',
+                                                  'drug', 'article_type']}),
     ]
 
 admin.site.register(Articles, ArticlesAdmin)

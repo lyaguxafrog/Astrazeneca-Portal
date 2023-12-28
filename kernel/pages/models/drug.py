@@ -27,6 +27,8 @@ class Drug(models.Model):
     application_practice_videos = models.ManyToManyField('pages.VideoLectures', blank=True, related_name='application_practice_videos', verbose_name="Видео в практике применения")
     approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения")
     icons = models.ManyToManyField(Icon, blank=True, related_name='drugs', verbose_name="Иконки")
+    speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность')
+    url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True)
 
     def __str__(self):
         return self.name

@@ -13,4 +13,4 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
 class VideoLecturesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoLectures
-        fields = ['id', 'video_article', 'content_type', 'speciality']
+        fields = ['id', 'video_cover', 'video_article', 'content_type', 'speciality']

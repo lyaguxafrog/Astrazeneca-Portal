@@ -18,9 +18,9 @@ class VideoLectures(models.Model):
     video = models.FileField(upload_to='video_lectures/', verbose_name='Видео')
     video_cover = models.ImageField(upload_to='video_covers/', verbose_name="Обложка видео")
     drug = models.OneToOneField("pages.Drug", on_delete=models.CASCADE, blank=True, null=True, verbose_name='Препарат')
-    video_recomendations = models.ForeignKey('VideoLectures', on_delete=models.CASCADE, null=True, blank=True)
+    video_recomendations = models.ManyToManyField('VideoLectures', null=True, blank=True)
     access_number = RichTextField(verbose_name="Поле для добавления расшифровок и номеров одобрения")
-    speciality = models.ForeignKey("pages.Specialty", on_delete=models.CASCADE, verbose_name='Специальность')
+    speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность')
     content_type = models.CharField(max_length=255, choices=VIDEO_TYPE_CHOICES, verbose_name="Поле для выбора типа контента")
 
     class Meta:
