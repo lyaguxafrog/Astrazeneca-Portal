@@ -2,3 +2,4 @@
 
 from .sso_callback import SsoCallbackSerializer, UserProfileSerializer
 from .save_content import ContentSaveSerializer
+from .user import UserProfileSerializer
