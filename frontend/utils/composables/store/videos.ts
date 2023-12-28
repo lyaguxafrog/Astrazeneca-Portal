@@ -12,7 +12,7 @@ export type Video = {
   video_cover: string;
   conspect: string;
   access_number: string;
-  content_type: 'видеолекция';
+  content_type: VideoContentType;
 };
 
 export const useVideosStore = () => {
@@ -24,7 +24,7 @@ export const useVideosStore = () => {
 
   const getVideos = async () => {
     if (!state.value.videos.loaded && speciality.value?.id) {
-      const res = await useRequest<Video[]>(`/video-lectures/${speciality.value.name}`, {
+      const res = await useRequest<Video[]>(`/video-lectures/specialty/${speciality.value.id}`, {
         method: 'GET',
       });
 

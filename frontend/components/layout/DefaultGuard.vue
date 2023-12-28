@@ -12,16 +12,18 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from '#app';
 import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useAuth } from '~/utils/composables/useAuth';
 
 const { $screen } = useScreen();
+const $route = useRoute();
 
 const { toLogin, isAuth } = useAuth();
 
-const isShowGuard = ref(!isAuth);
+const isShowGuard = ref(!isAuth && !$route.query.access_token);
 const scrollEl = ref();
 
 watch(

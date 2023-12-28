@@ -4,7 +4,7 @@
       centered-slides
       :space-between="$screen.mdAndDown ? 40 : 100"
       :slides-per-view="$screen.mdAndDown ? mobileSlidesPerView : desktopSlidesPerView"
-      :initial-slide="initialSlide"
+      :initial-slide="items.length < 3 ? 0 : initialSlide"
       :modules="[Pagination, Navigation]"
       :pagination="{ clickable: true }"
       :navigation="{
@@ -71,7 +71,7 @@ const prevRef = ref(null);
 
 const swiper = ref<SwiperType>();
 
-const onSwiper = (s) => {
+const onSwiper = (s: SwiperType) => {
   swiper.value = s;
 };
 
@@ -101,6 +101,7 @@ const onSlideChange = () => {
   &__slide {
     position: relative;
 
+    height: auto;
     overflow: hidden;
   }
 

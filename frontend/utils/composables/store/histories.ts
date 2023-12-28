@@ -1,24 +1,29 @@
 import { loadableEmpty } from '~/utils/functions/loadable';
 import { useRequest } from '~/utils/composables/useRequest';
+import { useSpecialityStore } from '~/utils/composables/store/speciality';
 
 export type History = {
   id: string;
-  url: string;
-  preview: string;
-  name: string;
+  title: string;
   avatar: string;
-  color: string;
-  link: string;
 };
 
 export const useHistoriesStore = () => {
+  const { speciality } = useSpecialityStore();
+
   const state = useState('histories-state', () => ({
     histories: loadableEmpty<History[]>(),
   }));
 
-  const getHistories = async () => {
+  const getHistories = async (specialityId?: number) => {
+    let url = '/stories';
+
+    if (specialityId) {
+      url += `/speciality/${specialityId}`;
+    }
+
     if (!state.value.histories.loaded) {
-      const res = await useRequest<History[]>('/stories/Хирург', {
+      const res = await useRequest<History[]>(url, {
         method: 'GET',
       });
 
@@ -30,6 +35,19 @@ export const useHistoriesStore = () => {
 
     return state.value.histories.data;
   };
+
+  watch(
+    speciality,
+    () => {
+      if (speciality.value) {
+        state.value.histories.loaded = false;
+        getHistories(speciality.value.id);
+      }
+    },
+    {
+      deep: true,
+    }
+  );
 
   return {
     histories: toRef(() => state.value.histories),

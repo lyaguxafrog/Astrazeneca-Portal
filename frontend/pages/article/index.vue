@@ -114,6 +114,10 @@ const onSlideChange = (index: number | undefined) => {
   }
 
   &__slide {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
     &-title {
       margin-bottom: 28px;
 
@@ -124,6 +128,7 @@ const onSlideChange = (index: number | undefined) => {
     &-image {
       width: 100%;
       height: 530px;
+      margin-top: auto;
       object-fit: cover;
 
       border-radius: 40px;

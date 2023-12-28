@@ -1,5 +1,6 @@
 <template>
-  <div v-if="videos?.length" class="videos-slider">
+  {{ videos }}
+  <div class="videos-slider">
     <div class="videos-slider__materials">
       <div class="videos-slider__materials-head">
         <BgEllipse
@@ -8,11 +9,11 @@
           color="#00C2FF"
         />
         <div class="videos-slider__materials-title">
-          <span>PRO</span>терапию
+          <span>PRO</span>{{ speciality.pro }}
           <small>рака легкого</small>
         </div>
 
-        <div class="videos-slider__materials-buttons">
+        <div v-if="videos?.length" class="videos-slider__materials-buttons">
           <div v-if="!$screen.mdAndDown" class="videos-slider__materials-selected">
             <template v-if="selectedType === 'видеолекция'"> Видеоматериалы </template>
             <template v-else> Клинические случаи </template>
@@ -62,9 +63,11 @@ import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { useVideosStore, VideoContentType } from '~/utils/composables/store/videos';
+import { useSpecialityStore } from '~/utils/composables/store/speciality';
 
 const { $screen } = useScreen();
 const { getVideos } = useVideosStore();
+const { speciality } = useSpecialityStore();
 
 const videos = await getVideos();
 

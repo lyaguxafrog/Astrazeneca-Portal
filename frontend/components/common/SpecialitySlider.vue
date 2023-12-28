@@ -19,7 +19,7 @@
         }"
       >
         <SwiperSlide v-for="slide in specialities" :key="slide.id" class="speciality-slider__slide">
-          <div class="speciality-slider__slide-content" @click="setSpeciality(slide.id)">
+          <div class="speciality-slider__slide-content" @click="saveSpeciality(slide.id)">
             <img :src="slide.image" alt="" />
             <p>
               {{ slide.name }}
@@ -44,11 +44,18 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
+import { useAuth } from '~/utils/composables/useAuth';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
+const { sendAuthToken } = useAuth();
 
 const { getSpecialities, setSpeciality } = useSpecialityStore();
+
+const saveSpeciality = (id: number) => {
+  setSpeciality(id);
+  sendAuthToken();
+};
 
 const specialities = await getSpecialities();
 

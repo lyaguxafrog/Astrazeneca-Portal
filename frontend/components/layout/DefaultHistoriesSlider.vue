@@ -1,7 +1,6 @@
 <template>
   <div class="histories-slider" :class="{ min }">
-    {{ histories }}
-    <temlate v-if="histories?.length">
+    <template v-if="histories?.length">
       <Swiper
         :slides-per-view="4"
         :modules="[Navigation]"
@@ -10,12 +9,16 @@
           prevEl: prevRef,
         }"
       >
-        <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
-          <nuxt-link to="/histories">
+        <SwiperSlide
+          v-for="(history, index) in histories"
+          :key="history.id"
+          class="histories-slider__item"
+        >
+          <nuxt-link :to="`/histories?index=${index}`">
             <div class="histories-slider__item-content">
-              <img :src="history.avatar" alt="" :style="{ borderColor: history.color }" />
+              <img :src="`${baseUrl}/${history.avatar}`" alt="" :style="{ borderColor: '#fff' }" />
               <p>
-                {{ history.name }}
+                {{ history.title }}
               </p>
             </div>
           </nuxt-link>
@@ -27,7 +30,7 @@
       <div ref="prevRef" class="swiper-button prev">
         <AppIcon :name="IconName.PrevSliderBtn" :size="$screen.mdAndDown ? 20 : 34" />
       </div>
-    </temlate>
+    </template>
   </div>
 </template>
 
@@ -43,6 +46,7 @@ defineProps<{
   min?: boolean;
 }>();
 
+const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
 const { getHistories } = useHistoriesStore();
 
@@ -61,6 +65,7 @@ $root: histories-slider;
   max-width: 606px;
 
   &.min {
+    width: 100%;
     max-width: 440px;
 
     transition: max-width $tr-dur;
@@ -82,7 +87,7 @@ $root: histories-slider;
 
           font-size: 17px;
 
-          transition: font-size $tr-dur;
+          transition: font-size $tr-dur, color $tr-dur;
         }
       }
     }
@@ -100,6 +105,12 @@ $root: histories-slider;
       align-items: flex-start;
 
       width: 120px;
+
+      @include hover {
+        p {
+          color: $accent-color;
+        }
+      }
     }
 
     img {

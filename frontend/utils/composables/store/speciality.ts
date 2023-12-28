@@ -9,6 +9,7 @@ type Speciality = {
   id: number;
   name: string;
   image: string;
+  pro: string;
 };
 
 export function useSpecialityStore() {

@@ -1,9 +1,12 @@
 import { useRoute, useRouter, useState } from '#app';
 import { useRequest } from '~/utils/composables/useRequest';
+import { useSpecialityStore } from '~/utils/composables/store/speciality';
 
 export const useAuth = () => {
   const $router = useRouter();
   const $route = useRoute();
+
+  const { speciality } = useSpecialityStore();
 
   const accessToken = useCookie('access-token');
 
@@ -23,23 +26,25 @@ export const useAuth = () => {
     }
   };
 
-  const checkUrlToken = async () => {
+  const sendAuthToken = async () => {
     const token = $route.query.access_token;
     const refresh = $route.query.refresh;
 
-    if (token) {
+    if (token && speciality.value) {
       accessToken.value = `${token}`;
       state.value.isAuth = true;
 
-      const res = await useRequest('/sso/save-tokens/', {
+      const res = await useRequest('/create_user', {
         method: 'POST',
         body: {
-          sso_user_id: '1',
-          access_token: token,
-          refresh_token: refresh,
-          token_expiry: '',
+          temporary_token: token,
+          specialty: {
+            id: speciality.value.id,
+          },
         },
       });
+
+      console.log(res);
 
       $router.replace({
         query: {
@@ -53,7 +58,7 @@ export const useAuth = () => {
 
   return {
     toLogin,
-    checkUrlToken,
+    sendAuthToken,
 
     isAuth: state.value.isAuth,
     token: '123',
