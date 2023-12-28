@@ -1,45 +1,36 @@
 # -*- coding: utf-8 0*0
 
-
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from pages.models import Specialty
 from users.models import UserProfile
 from users.serializers import UserProfileSerializer
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 
 
 
 class CreateUserAPIView(APIView):
-    @swagger_auto_schema(
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'temporary_token': openapi.Schema(type=openapi.TYPE_STRING),
-                'specialty': openapi.Schema(type=openapi.TYPE_OBJECT, properties={'id': openapi.Schema(type=openapi.TYPE_INTEGER)})
-            },
-            required=['temporary_token', 'specialty']
-        ),
-        responses={200: 'Success'}
-    )
-    def post(self, request, *args, **kwargs):
-        temporary_token = request.data.get('temporary_token')
-        specialty_id = request.data.get('specialty', {}).get('id')
+    @swagger_auto_schema(request_body=UserProfileSerializer)
+    def post(self, request, format=None):
+        serializer = UserProfileSerializer(data=request.data)
 
-        if not specialty_id:
-            return Response({'error': 'Specialty ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            # Assuming 'temporary_token' and 'specialty' are provided in the request data
+            temporary_token = serializer.validated_data['temporary_token']
+            specialty = serializer.validated_data['specialty']
 
-        try:
-            specialty = Specialty.objects.get(id=specialty_id)
-        except Specialty.DoesNotExist:
-            return Response({'error': 'Specialty not found'}, status=status.HTTP_400_BAD_REQUEST)
+            # Assuming you have a function to generate a User and UserProfile
+            user_profile = create_user_with_profile(temporary_token, specialty)
 
-        serializer = UserProfileSerializer(data={'temporary_token': temporary_token, 'specialty': {'id': specialty_id}})
+            return Response(UserProfileSerializer(user_profile).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        if serializer.is_valid():  
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def create_user_with_profile(temporary_token, specialty):
+    # Assuming you have a function to create a User and UserProfile
+    user = User.objects.create(username=f'user_{temporary_token}')
+    user.set_unusable_password()
+    user.save()
+
+    user_profile = UserProfile.objects.create(user=user, temporary_token=temporary_token, specialty=specialty)
+    return user_profile
