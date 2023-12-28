@@ -1,13 +1,17 @@
-django == 4.2.8
-psycopg2 == 2.9.9
-python-decouple == 3.8
-djangorestframework == 3.14.0
-pillow == 10.1.0
-drf-yasg == 1.21.7
-django-cors-headers == 4.3.1
-python-jose == 3.3.0
-django-jsonfield-backport == 1.0.5
-jsonfield == 3.1.0
-django-ckeditor == 6.7.0
-django-multiupload == 0.6.1
-django-multiselectfield == 0.1.12
+django==4.2.8
+psycopg2==2.9.9
+python-decouple==3.8
+djangorestframework==3.14.0
+pillow==10.1.0
+drf-yasg==1.21.7
+django-cors-headers==4.3.1
+python-jose==3.3.0
+django-jsonfield-backport==1.0.5
+jsonfield==3.1.0
+django-ckeditor==6.7.0
+django-multiupload==0.6.1
+django-multiselectfield==0.1.12
+django-filter==23.5
+django-haystack>=3.0.0
+elasticsearch == 2.4.1
+drf-haystack == 1.8.13

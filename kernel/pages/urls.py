@@ -2,12 +2,13 @@
 
 
 from django.urls import path
+from rest_framework import views
 from .views import (StoryListAPIView, StoryDetailAPIView,
                     ArticleDetailAPIView, DrugListAPIView,
                     SpecialityStoryListAPIView,
                     DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
                     VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView,
-                    SearchAPIView)
+                    SearchResultsView)
 
 urlpatterns = [
 
@@ -19,14 +20,15 @@ urlpatterns = [
 
      path('stories/', StoryListAPIView.as_view(), name='story-list'),
      path('stories/<int:id>/', StoryDetailAPIView.as_view(), name='story-detail'),
-     # path('stories/speciality/<int:id>/',
-     #      SpecialityStoryListAPIView.as_view(), name='story-list-by-speciality'),
+     path('stories/speciality/<int:id>/',
+          SpecialityStoryListAPIView.as_view(), name='story-list-by-speciality'),
 
 
 
     path('articles/<int:id>', ArticleDetailAPIView.as_view(),
          name='article'),
 
+     path('search/', SearchResultsView.as_view({'get': 'list'}), name='search-results'),
 
     path('drugs/', DrugListAPIView.as_view(), name='drugs-list'),
 
@@ -40,5 +42,5 @@ urlpatterns = [
     path('video-lectures/<int:pk>/', VideoLecturesDetail.as_view(),
          name='video-lectures-detail'),
 
-     path('search/<str:query>/', SearchAPIView.as_view(), name='search')
+
 ]

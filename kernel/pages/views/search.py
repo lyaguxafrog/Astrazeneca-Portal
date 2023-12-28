@@ -1,51 +1,25 @@
-from rest_framework import generics
-from django.db.models import Q
-from pages.models import (Articles, ContentBlock, Drug, Icon, Events, VideoLectures)
-from pages.serializers import (SearchArticleSerializer, SearchContentBlockSerializer, SearchDrugSerializer, SearchEventsSerializer, SearchVideoLecturesSerializer)
-from django.db.models import CharField
+# -*- coding: utf-8 -*-
+
+from rest_framework.generics import ListAPIView
+from drf_haystack.viewsets import HaystackViewSet
+from pages.models import Articles, Drug, VideoLectures
+from pages.serializers import SearchResultsSerializer
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import action
+from drf_yasg import openapi
 
 
-class SearchAPIView(generics.ListAPIView):
-    # Replace the following line with your default queryset
-    queryset = Drug.objects.none()
-    serializer_class_dict = {
-        Articles: SearchArticleSerializer,
-        ContentBlock: SearchContentBlockSerializer,
-        Drug: SearchDrugSerializer,
-        Events: SearchEventsSerializer,
-        VideoLectures: SearchVideoLecturesSerializer
-    }
 
-    def get_queryset(self):
-        query = self.kwargs['query']
+class SearchResultsView(ListAPIView, HaystackViewSet):
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('query', openapi.IN_QUERY, description="Search query", type=openapi.TYPE_STRING)
+        ]
+    )
 
-        # Define a common set of fields for all models
-        common_fields = ['text', 'description']  # Add more fields as needed
+    @action(detail=False, methods=['get'])
+    def list(self, request, *args, **kwargs):
+        index_models = [Articles, Drug, VideoLectures]
+        serializer_class = SearchResultsSerializer
 
-        # Define the fields you want to search across for each model
-        search_fields_dict = {
-            Articles: common_fields + ['article_name'],
-            ContentBlock: common_fields + ['article', 'text'],
-            Drug: common_fields + ['name', 'brief_info', 'instruction_text'],
-            Events: common_fields + ['name', 'date', 'text'],
-            VideoLectures: common_fields + ['video_article', 'short_description', 'conspect']
-        }
-
-        # Initialize an empty queryset
-        combined_queryset = Drug.objects.none()
-
-        # Iterate through each model and perform a separate query
-        for model, search_fields in search_fields_dict.items():
-            model_query = Q()
-            for field in search_fields:
-                lookup = f'{field}__icontains' if isinstance(model._meta.get_field(field), CharField) else field
-                model_query |= Q(**{lookup: query})
-            queryset = model.objects.filter(model_query)
-            combined_queryset = combined_queryset.union(queryset)
-
-        return combined_queryset
-
-    def get_serializer_class(self):
-        # Determine the appropriate serializer based on the model in the queryset
-        model = self.queryset.model
-        return self.serializer_class_dict.get(model)
+        return super().list(request, *args, **kwargs)

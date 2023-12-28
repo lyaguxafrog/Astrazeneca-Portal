@@ -44,10 +44,26 @@ INSTALLED_APPS = [
     'corsheaders',
     'ckeditor',
     'multiupload',
+    'haystack',
+    'drf_haystack',
+
 
     'pages',
     'users',
 ]
+
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'URL': 'http://localhost:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -61,6 +77,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
