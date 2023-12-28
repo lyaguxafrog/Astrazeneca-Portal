@@ -1,6 +1,6 @@
 <template>
   <InsidePageHead hide-favourites-button />
-  <div class="articles-page">
+  <div v-if="articles.data?.length" class="articles-page">
     <BgEllipse size="1138" color="#4DDFFF" pale class="articles-page__first-ellipse" />
     <BgEllipse
       :size="!$screen.mdAndDown ? 984 : 306"
@@ -15,76 +15,47 @@
     </div>
 
     <div v-if="activeSlideContent" class="articles-page__slide-title for-mobile-or-tablet">
-      {{ activeSlideContent.title }}
+      {{ activeSlideContent.article_name }}
     </div>
 
-    <ItemsSlider :items="articles" :desktop-slides-per-view="1.7" @onSlideChange="onSlideChange">
+    <ItemsSlider
+      :items="articles.data"
+      :desktop-slides-per-view="1.7"
+      @onSlideChange="onSlideChange"
+    >
       <template #default="{ item }">
-        <nuxt-link class="articles-page__slide" :to="item.link">
+        <nuxt-link class="articles-page__slide" :to="`/article/${item.id}`">
           <div
             class="articles-page__slide-title for-desktop items-slier__visible-on-active"
-            v-html="item.title"
+            v-html="item.article_name"
           />
-          <img class="articles-page__slide-image" :src="item.previewUrl" alt="" />
-          <p v-html="item.text" class="for-desktop" />
+          <img class="articles-page__slide-image" :src="`${baseUrl}${item.cover}`" alt="" />
+          <p v-html="'item.text'" class="for-desktop" />
         </nuxt-link>
       </template>
     </ItemsSlider>
 
     <p v-if="activeSlideContent" class="for-mobile-or-tablet">
-      {{ activeSlideContent.text }}
+      {{ 'activeSlideContent.text' }}
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useScreen } from '~/utils/composables/useScreen';
+import { useArticlesStore } from '~/utils/composables/store/articles';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
+const { getArticles } = useArticlesStore();
+const { baseUrl } = useRuntimeConfig().public;
 
-const articles = ref([
-  {
-    id: '1',
-    previewUrl: '/img/video.png',
-    link: '/article/1',
-    title: 'Заголовок статьи',
-    text: 'Первый абзац статьи, анонс содержания всей статьи, первый абзац статьи, анонс содержания всей статьи, тут первый абзац статьи, анонс содержания всей статьи, здесь первый абзац статьи, анонс содержания всей статьи, далее первый абзац статьи.',
-  },
-  {
-    id: '2',
-    previewUrl: '/img/video.png',
-    link: '/article/1',
-    title: 'Заголовок статьи2',
-    text: 'Первый абзац статьи41515, анонс содержания всей статьи, первый абзац статьи, анонс содержания всей статьи, тут первый абзац статьи, анонс содержания всей статьи, здесь первый абзац статьи, анонс содержания всей статьи, далее первый абзац статьи.',
-  },
-  {
-    id: '3',
-    previewUrl: '/img/video.png',
-    link: '/article/1',
-    title: 'Заголовок статьи3',
-    text: 'Первый абзац статьи, анонс содержания всей статьи, первый абзац статьи, анонс содержания всей статьи, тут первый абзац статьи, анонс содержания всей статьи, здесь первый абзац статьи, анонс содержания всей статьи, далее первый абзац статьи.',
-  },
-  {
-    id: '4',
-    previewUrl: '/img/video.png',
-    link: '/article/1',
-    title: 'Заголовок статьи',
-    text: 'Первый абзац статьи123, анонс содержания всей статьи, первый абзац статьи, анонс содержания всей статьи, тут первый абзац статьи, анонс содержания всей статьи, здесь первый абзац статьи, анонс содержания всей статьи, далее первый абзац статьи.',
-  },
-  {
-    id: '5',
-    previewUrl: '/img/video.png',
-    link: '/article/1',
-    title: 'Заголовок статьи',
-    text: 'Первый абзац статьи123, анонс содержания всей статьи, первый абзац статьи, анонс содержания всей статьи, тут первый абзац статьи, анонс содержания всей статьи, здесь первый абзац статьи, анонс содержания всей статьи, далее первый абзац статьи.',
-  },
-]);
+const articles = await getArticles();
 
 const activeSlide = ref(1);
-const activeSlideContent = toRef(() => articles.value[activeSlide.value]);
+const activeSlideContent = toRef(() => articles.data?.[activeSlide.value]);
 const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
     activeSlide.value = index;
@@ -99,7 +70,7 @@ const onSlideChange = (index: number | undefined) => {
   padding-bottom: 40px;
 
   &__first-ellipse {
-    top: -440px;
+    top: -100px;
     left: -840px;
   }
 

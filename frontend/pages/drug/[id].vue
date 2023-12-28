@@ -1,5 +1,5 @@
 <template>
-  <div class="drug-page">
+  <div v-if="content" class="drug-page">
     <BgEllipse
       :size="$screen.mdAndDown ? 290 : 1138"
       color="#4DDFFF"
@@ -8,17 +8,19 @@
     />
     <BgEllipse size="984" color="#B32FC9" pale class="drug-page__second-ellipse for-desktop" />
     <div class="drug-page__title">
-      <b>имфинзи</b> <small>Саблайн с информацией о препарате</small>
+      <b>{{ content.name }}</b> <small>{{ content.brief_info }}</small>
     </div>
     <div class="drug-page__content">
       <div class="drug-page__left">
-        <img src="/img/d2.png" alt="" />
+        <img :src="`${baseUrl}${content.image}`" alt="" />
 
         <div class="drug-page__left-icons">
-          <img src="~/assets/img/drug/i1.svg" alt="" />
-          <img src="~/assets/img/drug/i2.svg" alt="" />
-          <img src="~/assets/img/drug/i3.svg" alt="" />
-          <img src="~/assets/img/drug/i4.svg" alt="" />
+          <img
+            v-for="icon in content.icons"
+            :key="icon.id"
+            :src="`${baseUrl}${icon.image_file}`"
+            alt=""
+          />
         </div>
       </div>
 
@@ -100,8 +102,10 @@
 
 <script setup lang="ts">
 import { Navigation } from 'swiper/modules';
+import { useRoute } from '#app';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { IconName } from '~/components/app/AppIcon.utils';
+import { useDrugsStore } from '~/utils/composables/store/drugs';
 import { ModalsName, useModal } from '~/utils/composables/useModal';
 import { useScreen } from '~/utils/composables/useScreen';
 import BgEllipse from '~/components/common/BgEllipse.vue';
@@ -110,23 +114,16 @@ import ItemsSlider from '~/components/common/ItemsSlider.vue';
 const nextRef = ref(null);
 const prevRef = ref(null);
 
+const $route = useRoute();
+const { baseUrl } = useRuntimeConfig().public;
+const drugId = toRef(() => +$route.params.id);
+
 const { openModal } = useModal();
 const { $screen } = useScreen();
 
-const slides = [
-  {
-    name: 'Название и обложка',
-    img: '/',
-  },
-  {
-    name: 'Название и обложка',
-    img: '/',
-  },
-  {
-    name: 'Название и обложка',
-    img: '/',
-  },
-];
+const { getDrug } = useDrugsStore();
+
+const content = await getDrug(drugId.value);
 
 const list = [
   {

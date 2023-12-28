@@ -6,6 +6,7 @@
     <div class="speciality-slider__title">УКАЖИТЕ ВАШУ СПЕЦИАЛЬНОСТЬ:</div>
 
     <div class="speciality-slider__wrapper">
+      {{ specialities }}
       <Swiper
         v-if="specialities"
         class="speciality-slider__swiper"

@@ -175,7 +175,7 @@ watch(
     justify-content: space-between;
     align-items: center;
 
-    min-height: 120px;
+    min-height: 135px;
   }
 
   &__text {

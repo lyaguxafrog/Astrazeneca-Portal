@@ -12,9 +12,7 @@
 
     <div class="video-page__subtitle">Конспект видео:</div>
 
-    <div class="video-page__text">
-      {{ content.conspect }}
-    </div>
+    <div class="video-page__text" v-html="content.conspect" />
 
     <div class="video-page__recommended">
       <div class="video-page__recommended-title">
@@ -140,6 +138,12 @@ const videos = ref([
 
     font-size: 24px;
     line-height: 28px;
+
+    &::v-deep {
+      strong {
+        font-weight: 700;
+      }
+    }
   }
 
   &__recommended {

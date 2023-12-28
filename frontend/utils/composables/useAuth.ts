@@ -1,8 +1,15 @@
-import { useRoute } from '#app';
+import { useRoute, useRouter, useState } from '#app';
 import { useRequest } from '~/utils/composables/useRequest';
 
 export const useAuth = () => {
+  const $router = useRouter();
   const $route = useRoute();
+
+  const accessToken = useCookie('access-token');
+
+  const state = useState('auth-state', () => ({
+    isAuth: !!accessToken.value,
+  }));
 
   const toLogin = async () => {
     const res = await useRequest<{
@@ -16,18 +23,29 @@ export const useAuth = () => {
     }
   };
 
-  const checkUrlToken = () => {
+  const checkUrlToken = async () => {
     const token = $route.query.access_token;
     const refresh = $route.query.refresh;
 
     if (token) {
-      const res = useRequest('/sso/save-tokens/', {
+      accessToken.value = `${token}`;
+      state.value.isAuth = true;
+
+      const res = await useRequest('/sso/save-tokens/', {
         method: 'POST',
         body: {
           sso_user_id: '1',
           access_token: token,
           refresh_token: refresh,
           token_expiry: '',
+        },
+      });
+
+      $router.replace({
+        query: {
+          ...$route.query,
+          access_token: undefined,
+          refresh: undefined,
         },
       });
     }
@@ -37,6 +55,7 @@ export const useAuth = () => {
     toLogin,
     checkUrlToken,
 
+    isAuth: state.value.isAuth,
     token: '123',
   };
 };
