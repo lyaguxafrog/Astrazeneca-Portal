@@ -8,7 +8,7 @@ from ckeditor.fields import RichTextField
 
 class Events(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название мероприятия")
-    date = models.CharField(max_length=255, verbose_name="Дата мероприятия")
+    date = models.DateField(verbose_name="Дата мероприятия")
     cover = models.ImageField(upload_to='event_covers/')
     text = RichTextField(verbose_name="Описание мероприятия",
                          null=True, blank=True)
