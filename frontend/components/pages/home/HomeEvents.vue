@@ -4,7 +4,7 @@
 
     <ItemsSlider :items="events.data" :desktop-slides-per-view="2.75" #default="{ item }">
       <a :href="item.url" target="_blank">
-        <img :src="item.cover" alt="" />
+        <img :src="`${baseUrl}/${item.cover}`" alt="" />
       </a>
     </ItemsSlider>
   </div>
@@ -15,6 +15,7 @@ import { useEventsStore } from '~/utils/composables/store/events';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 
 const { getEvents } = useEventsStore();
+const { baseUrl } = useRuntimeConfig().public;
 const events = await getEvents();
 </script>
 

@@ -6,7 +6,6 @@
     <div class="speciality-slider__title">УКАЖИТЕ ВАШУ СПЕЦИАЛЬНОСТЬ:</div>
 
     <div class="speciality-slider__wrapper">
-      {{ specialities }}
       <Swiper
         v-if="specialities"
         class="speciality-slider__swiper"
@@ -20,7 +19,7 @@
       >
         <SwiperSlide v-for="slide in specialities" :key="slide.id" class="speciality-slider__slide">
           <div class="speciality-slider__slide-content" @click="saveSpeciality(slide.id)">
-            <img :src="slide.image" alt="" />
+            <img :src="`${baseUrl}${slide.image_url}`" alt="" />
             <p>
               {{ slide.name }}
             </p>
@@ -49,6 +48,7 @@ import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
 const { sendAuthToken } = useAuth();
+const { baseUrl } = useRuntimeConfig().public;
 
 const { getSpecialities, setSpeciality } = useSpecialityStore();
 

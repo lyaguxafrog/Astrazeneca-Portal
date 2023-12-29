@@ -118,12 +118,21 @@ const onSlideChange = (index: number | undefined) => {
     flex-direction: column;
 
     height: 100%;
+
+    @include hover {
+      .articles-page__slide-title {
+        color: $accent-color;
+      }
+    }
+
     &-title {
       margin-bottom: 28px;
 
       font-family: $secondary-font-family;
       font-size: 40px;
       line-height: 35px;
+
+      transition: color $tr-dur;
     }
     &-image {
       width: 100%;

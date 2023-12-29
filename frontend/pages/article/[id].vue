@@ -218,7 +218,7 @@ const content = await getArticle(articleId.value);
 
   &__description {
     max-width: 1100px;
-    margin-top: 79px;
+    margin-top: 110px;
 
     font-size: 18px;
     line-height: 19px;
@@ -316,9 +316,21 @@ const content = await getArticle(articleId.value);
 
         &:after {
           top: auto;
-          right: 12px;
+          right: 5px;
           bottom: -12px;
           left: auto;
+        }
+      }
+
+      @include md {
+        &-text {
+          width: 43.1%;
+          &:after {
+            bottom: -24px;
+          }
+        }
+        img {
+          margin: 10px 0;
         }
       }
     }

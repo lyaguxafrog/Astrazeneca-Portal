@@ -1,5 +1,4 @@
 <template>
-  {{ videos }}
   <div class="videos-slider">
     <div class="videos-slider__materials">
       <div class="videos-slider__materials-head">
@@ -8,7 +7,7 @@
           :size="$screen.mdAndDown ? 386 : 1066"
           color="#00C2FF"
         />
-        <div class="videos-slider__materials-title">
+        <div v-if="speciality" class="videos-slider__materials-title">
           <span>PRO</span>{{ speciality.pro }}
           <small>рака легкого</small>
         </div>
@@ -46,9 +45,9 @@
           <nuxt-link class="items-slider__content" :to="`video/${item.id}`">
             <div
               class="videos-slider__title items-slier__visible-on-active"
-              v-html="item.video_article"
+              v-html="item.video_article_url"
             />
-            <img class="videos-slider__image" :src="item.previewUrl" alt="" />
+            <img class="videos-slider__image" :src="`${baseUrl}${item.video_cover_url}`" alt="" />
             <PlayVideoButton />
           </nuxt-link>
         </template>
@@ -68,6 +67,7 @@ import { useSpecialityStore } from '~/utils/composables/store/speciality';
 const { $screen } = useScreen();
 const { getVideos } = useVideosStore();
 const { speciality } = useSpecialityStore();
+const { baseUrl } = useRuntimeConfig().public;
 
 const videos = await getVideos();
 
@@ -243,6 +243,14 @@ const setType = (type: VideoContentType) => {
           margin-bottom: 14px;
           margin-left: 0;
         }
+      }
+    }
+    .items-slider__content {
+      @include aspect(1, 1);
+
+      img {
+        height: 100%;
+        object-fit: cover;
       }
     }
   }

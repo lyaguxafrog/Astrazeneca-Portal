@@ -3,7 +3,7 @@ import { useRequest } from '~/utils/composables/useRequest';
 import { loadableEmpty } from '~/utils/functions/loadable';
 
 export type Event = {
-  id: string;
+  id: number;
   cover: string;
   date: string;
   name: string;
