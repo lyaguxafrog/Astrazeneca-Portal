@@ -41,7 +41,7 @@ class Drug(models.Model):
     icons = models.ManyToManyField(Icon, blank=True, related_name='drugs', verbose_name="Иконки")
     faq = models.ManyToManyField(DrugFAQ, blank=True, related_name='drugs', verbose_name="FAQ")
     speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность')
-    url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True)
+    url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True, blank=True)
 
     def __str__(self):
         return self.name
