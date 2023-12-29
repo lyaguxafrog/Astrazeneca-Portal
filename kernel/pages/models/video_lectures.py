@@ -17,7 +17,7 @@ class VideoLectures(models.Model):
     conspect = RichTextField(verbose_name="Конспект видео")
     video = models.FileField(upload_to='video_lectures/', verbose_name='Видео')
     video_cover = models.ImageField(upload_to='video_covers/', verbose_name="Обложка видео")
-    drug = models.OneToOneField("pages.Drug", on_delete=models.CASCADE, blank=True, null=True, verbose_name='Препарат')
+    drug = models.ManyToManyField("pages.Drug", blank=True, null=True, verbose_name='Препарат')
     video_recomendations = models.ManyToManyField('VideoLectures', null=True, blank=True)
     access_number = RichTextField(verbose_name="Поле для добавления расшифровок и номеров одобрения")
     speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность')
