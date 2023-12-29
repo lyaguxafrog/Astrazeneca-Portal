@@ -2,7 +2,7 @@
 
 from rest_framework import generics
 from pages.models import Drug
-from pages.serializers import DrugListSerializer, DrutSerializer
+from pages.serializers import DrugListSerializer, DrugSerializer
 
 class DrugListAPIView(generics.ListAPIView):
     queryset = Drug.objects.all()
@@ -10,4 +10,4 @@ class DrugListAPIView(generics.ListAPIView):
 
 class DrugDetailAPIView(generics.RetrieveAPIView):
     queryset = Drug.objects.all()
-    serializer_class = DrutSerializer
+    serializer_class = DrugSerializer

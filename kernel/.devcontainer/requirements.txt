@@ -13,4 +13,6 @@ django-multiupload==0.6.1
 django-multiselectfield==0.1.12
 django-filter==23.5
 django-haystack>=3.0.0
-elasticsearch == 2.4.1
+drf-haystack == 1.8.13
+whoosh == 2.7.4
+drf_haystack == 1.8.13

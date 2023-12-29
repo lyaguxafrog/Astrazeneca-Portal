@@ -12,7 +12,7 @@ class Story(models.Model):
                              null=True, blank=True)
     cover_image = models.ImageField(upload_to='story_covers/',
                                     null=True, blank=True)
-    link_to_page = models.URLField()
+    link_to_page = models.URLField(null=True, blank=True)
     specialties = models.ManyToManyField('pages.Specialty',
                                          blank=True, null=True)
     is_active = models.BooleanField(default=True)

@@ -30,7 +30,8 @@ class ArticlesBySpecialitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Articles
-        fields = ['id', 'article_name', 'cover']
+        fields = ['id', 'article_name', 'cover',
+                  'short_description', 'information', 'first_abzac']
 
 
     def get_cover(self, obj):
