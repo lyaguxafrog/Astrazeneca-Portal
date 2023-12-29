@@ -7,6 +7,7 @@ export type Article = {
   id: number;
   article_name: string;
   cover: string;
+  information: string;
 };
 
 export type ArticlePlump = {
@@ -14,6 +15,7 @@ export type ArticlePlump = {
   article_name: string;
   cover: string;
   access_number: string;
+  first_abzac: string;
   article_type: 'статья';
   content_blocks: [
     {

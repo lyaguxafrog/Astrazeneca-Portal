@@ -62,6 +62,7 @@ $root: histories-slider;
 .#{$root} {
   position: relative;
 
+  width: 100%;
   max-width: 606px;
 
   &.min {
@@ -133,6 +134,8 @@ $root: histories-slider;
       font-weight: 300;
       text-align: center;
       letter-spacing: -0.2px;
+
+      transition: color $tr-dur;
     }
   }
 

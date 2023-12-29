@@ -47,7 +47,9 @@
               class="videos-slider__title items-slier__visible-on-active"
               v-html="item.video_article_url"
             />
-            <img class="videos-slider__image" :src="`${baseUrl}${item.video_cover_url}`" alt="" />
+            <div class="videos-slider__img">
+              <img class="videos-slider__image" :src="`${baseUrl}${item.video_cover_url}`" alt="" />
+            </div>
             <PlayVideoButton />
           </nuxt-link>
         </template>
@@ -155,13 +157,29 @@ const setType = (type: VideoContentType) => {
     font-size: 40px;
   }
 
-  img {
-    display: block;
+  .items-slider__content {
+    @include hover {
+      img {
+        transform: scale(1.03);
+      }
+    }
+  }
 
-    width: 100%;
-    object-fit: cover;
+  .videos-slider__img {
+    overflow: hidden;
 
     border-radius: 34px;
+
+    img {
+      display: block;
+
+      width: 100%;
+      object-fit: cover;
+
+      border-radius: 34px;
+
+      transition: transform $tr-dur;
+    }
   }
 
   &__link {

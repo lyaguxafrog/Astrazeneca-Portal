@@ -32,7 +32,7 @@ const { back } = useBack();
   align-items: flex-start;
 
   min-height: 228px;
-  margin-bottom: -162px;
+  margin-bottom: -140px;
   padding: 20px;
 
   &__back {

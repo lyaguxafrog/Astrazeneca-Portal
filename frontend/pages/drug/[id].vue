@@ -45,7 +45,7 @@
           </div>
         </div>
         <AppButton class="drug-page__right-btn" :petite="$screen.mdAndDown"> Инструкция </AppButton>
-        <div class="drug-page__slider">
+        <div v-if="content.application_practices.length" class="drug-page__slider">
           <div class="drug-page__slider-title">Практика применения</div>
 
           <div class="drug-page__slider-wrapper">
@@ -59,10 +59,19 @@
                 :slides-per-view="2"
                 :space-between="40"
               >
-                <SwiperSlide v-for="item in slides" :key="item.id">
-                  <div class="drug-page__slider-item">
+                <SwiperSlide v-for="item in content.application_practices" :key="item.id">
+                  <nuxt-link
+                    class="drug-page__slider-item"
+                    :to="item.type === 'video' ? `/video/${item.id}` : `/article/${item.id}`"
+                  >
+                    <img
+                      v-if="item.image"
+                      onerror="this.style.display = 'none'"
+                      class="drug-page__slider-item-bg"
+                      :src="`${baseUrl}${item.image}`"
+                    />
                     <p>{{ item.name }}</p>
-                  </div>
+                  </nuxt-link>
                 </SwiperSlide>
               </Swiper>
               <div ref="nextRef" class="swiper-button next">
@@ -247,6 +256,8 @@ const openProps = (item) => {
 
     img {
       width: 100%;
+      max-height: 500px;
+      object-fit: contain;
     }
 
     &-icons {
@@ -306,14 +317,50 @@ const openProps = (item) => {
     }
 
     &-item {
-      padding: 64px;
-      aspect-ratio: 1;
+      position: relative;
 
+      display: block;
+
+      padding: 64px;
+      overflow: hidden;
+      @include aspect(1, 1);
       font-size: 32px;
       line-height: 30px;
 
-      background: url('~/assets/img/drug/bg.png') no-repeat center center / cover;
+      background: conic-gradient(
+        from 164deg at 50% 50%,
+        #e130ff 8.287965506315231deg,
+        #002f75 180deg,
+        #00d1ff 350.40282011032104deg
+      );
       border-radius: 40px;
+
+      &-bg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        display: block;
+
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+        transition: transform $tr-dur;
+      }
+
+      p {
+        position: relative;
+        z-index: 2;
+      }
+
+      @include hover {
+        .drug-page__slider-item-bg {
+          transform: scale(1.05);
+        }
+      }
     }
 
     .swiper-button {

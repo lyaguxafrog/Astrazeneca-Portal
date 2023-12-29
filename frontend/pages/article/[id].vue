@@ -16,10 +16,7 @@
 
     <div class="article-page__intro">{{ content.article_name }}</div>
 
-    <div class="article-page__bold">
-      Первый абзац текста, краткое содержание и ключевая идея текста в одно-два предложения. Первый
-      абзац текста, краткое содержание и ключевая идея текста в одно-два предложения.
-    </div>
+    <div class="article-page__bold" v-html="content.first_abzac" />
 
     <template v-for="block in content.content_blocks">
       <div

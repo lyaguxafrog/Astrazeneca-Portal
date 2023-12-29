@@ -16,6 +16,7 @@ const { $screen } = useScreen();
   position: absolute;
   top: 56%;
   left: 50%;
+  @include z-index(2);
 
   display: flex;
   justify-content: center;

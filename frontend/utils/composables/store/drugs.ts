@@ -18,6 +18,12 @@ export type DrugPlump = {
   }[];
   application_practice_articles: number[];
   application_practice_videos: number[];
+  application_practices: {
+    id: number;
+    type: 'article' | 'video';
+    image: string;
+    name: string;
+  }[];
 };
 
 export const useDrugsStore = () => {

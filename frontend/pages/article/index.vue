@@ -30,14 +30,16 @@
             v-html="item.article_name"
           />
           <img class="articles-page__slide-image" :src="`${baseUrl}${item.cover}`" alt="" />
-          <p v-html="'item.text'" class="for-desktop" />
+          <p class="for-desktop" v-html="item.information" />
         </nuxt-link>
       </template>
     </ItemsSlider>
 
-    <p v-if="activeSlideContent" class="for-mobile-or-tablet">
-      {{ 'activeSlideContent.text' }}
-    </p>
+    <p
+      v-if="activeSlideContent"
+      class="for-mobile-or-tablet"
+      v-html="activeSlideContent.information"
+    />
   </div>
 </template>
 

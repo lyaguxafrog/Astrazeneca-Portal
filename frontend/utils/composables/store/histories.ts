@@ -16,7 +16,7 @@ export const useHistoriesStore = () => {
   }));
 
   const getHistories = async (specialityId?: number) => {
-    let url = '/stories';
+    let url = '/stories/speciality/0';
 
     if (specialityId) {
       url += `/speciality/${specialityId}`;

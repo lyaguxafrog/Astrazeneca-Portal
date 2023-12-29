@@ -19,12 +19,16 @@ export type Video = {
 export type VideoPlump = {
   id: number;
   video_article: string;
-  video: string;
-  video_cover: string;
+  video_url: string;
+  video_cover_url: string;
   conspect: string;
   access_number: string;
   content_type: VideoContentType;
-  video_recomendations: number[];
+  video_recomendations: {
+    id: number;
+    preview: string;
+    title: string;
+  }[];
 };
 
 export const useVideosStore = () => {
@@ -50,7 +54,7 @@ export const useVideosStore = () => {
   };
 
   const getVideo = async (id: number) => {
-    const res = await useRequest<Video>(`/video-lectures/${id}`, {
+    const res = await useRequest<VideoPlump>(`/video-lectures/${id}`, {
       method: 'GET',
     });
 

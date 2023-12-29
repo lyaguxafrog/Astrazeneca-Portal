@@ -5,25 +5,32 @@
     <BgEllipse size="984" color="#B32FC9" pale class="video-page__second-ellipse" />
 
     <div class="video-page__title">{{ content.video_article }}</div>
-    <div class="video-page__video">
-      <video :src="content.video" :style="{ backgroundImage: `url(${content.video_cover})` }" />
-      <PlayVideoButton class="video-page__video-play" />
+    <div class="video-page__video" @click="startVideo">
+      <video ref="videoEl" :controls="isStarted" :src="`${baseUrl}${content.video_url}`" />
+      <template v-if="!isStarted">
+        <img :src="`${baseUrl}${content.video_cover_url}`" class="video-page__video-cover" />
+        <PlayVideoButton class="video-page__video-play" />
+      </template>
     </div>
 
     <div class="video-page__subtitle">Конспект видео:</div>
 
     <div class="video-page__text" v-html="content.conspect" />
 
-    <div class="video-page__recommended">
+    <div v-if="content.video_recomendations.length" class="video-page__recommended">
       <div class="video-page__recommended-title">
         Рекомендуемые<br />
         видео
       </div>
 
-      <ItemsSlider :desktop-slides-per-view="3" :items="videos" #default="{ item }">
-        <nuxt-link class="video-page__recommended-slide" :to="item.link">
+      <ItemsSlider
+        :desktop-slides-per-view="3"
+        :items="content.video_recomendations"
+        #default="{ item }"
+      >
+        <nuxt-link class="video-page__recommended-slide" :to="`/video/${item.id}`">
           <p v-html="item.title" />
-          <img :src="item.previewUrl" alt="" />
+          <img :src="`${baseUrl}${item.preview}`" alt="" />
           <PlayVideoButton class="video-page__recommended-slide-play" />
         </nuxt-link>
       </ItemsSlider>
@@ -31,7 +38,7 @@
   </div>
 
   <Teleport to="#footerAccessInfo">
-    {{ content?.access_number }}
+    <span v-html="content?.access_number"></span>
   </Teleport>
 </template>
 
@@ -46,43 +53,17 @@ import { definePageMeta } from '#imports';
 
 const $route = useRoute();
 const { getVideo } = useVideosStore();
+const { baseUrl } = useRuntimeConfig().public;
 
 const videoId = toRef(() => $route.params.id);
 
 const content = await getVideo(+videoId.value);
-
-const videos = ref([
-  {
-    id: '1',
-    previewUrl: '/img/video.png',
-    link: '/video/1',
-    title: 'Заголовок видео',
-  },
-  {
-    id: '2',
-    previewUrl: '/img/video.png',
-    link: '/video/2',
-    title: 'Заголовок видео',
-  },
-  {
-    id: '3',
-    previewUrl: '/img/video.png',
-    link: '/video/3',
-    title: 'Заголовок видео',
-  },
-  {
-    id: '4',
-    previewUrl: '/img/video.png',
-    link: '/video/4',
-    title: 'Заголовок видео',
-  },
-  {
-    id: '5',
-    previewUrl: '/img/video.png',
-    link: '/video/5',
-    title: 'Заголовок видео',
-  },
-]);
+const isStarted = ref(false);
+const videoEl = ref();
+const startVideo = () => {
+  videoEl.value.play();
+  isStarted.value = true;
+};
 </script>
 
 <style scoped lang="scss">
@@ -123,6 +104,16 @@ const videos = ref([
       object-position: center;
 
       background-size: cover;
+    }
+
+    &-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -173,6 +164,12 @@ const videos = ref([
     }
 
     &-slide {
+      img {
+        display: block;
+
+        @include aspect(1, 1);
+        object-fit: cover;
+      }
       &-play {
         transform: translate(-50%, -50%) scale(0.7);
       }
