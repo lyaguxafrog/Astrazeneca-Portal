@@ -10,7 +10,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from users.views import (SaveContentView, GetSavedContentView, 
                     SignUpAPIView, SignInAPIView,
-                    HandleSSORedirectAPIView, SaveTokensAPIView, CreateUserAPIView)
+                    HandleSSORedirectAPIView, SaveTokensAPIView, UserRegistrationView)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -31,7 +31,7 @@ urlpatterns = [
     path('sso/sso-redirect/', HandleSSORedirectAPIView.as_view(), name='sso-redirect'),
     # path('sso/save-tokens/', SaveTokensAPIView.as_view(), name='save-tokens'),
 
-    path('create_user/', CreateUserAPIView.as_view(), name='create_user'),
+    path('create_user/', UserRegistrationView.as_view(), name='create_user'),
 
     path('save-content/', SaveContentView.as_view(), name='save-content-create'),
     path('save-content/get/<int:user_id>', GetSavedContentView.as_view(),
