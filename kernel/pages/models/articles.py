@@ -27,13 +27,16 @@ class Articles(models.Model):
                             related_name='articles',
                             blank=True,
                             verbose_name="Специальности")
+
     drug = models.ManyToManyField('pages.Drug',
                                   blank=True,
                                   verbose_name='Препараты')
+
     article_type = models.CharField(max_length=255,
                             choices=ARTICLE_TYPE_CHOICES,
                             blank=True,
                             verbose_name='Тип статьи')
+
     information = RichTextField(verbose_name='текстовый блок для ввода инфы о статьи на разводящей станице статей')
 
 

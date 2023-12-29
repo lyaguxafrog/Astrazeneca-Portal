@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from ckeditor.widgets import CKEditorWidget
 from django.forms import Textarea
-from pages.models import Drug, Icon, Drug_FAQ
+from pages.models import Drug, Icon, DrugFAQ
 from django.db import models
 
 class IconInline(admin.TabularInline):
@@ -15,7 +15,7 @@ class IconInline(admin.TabularInline):
     verbose_name_plural = 'Иконки'
 
 class Drug_FAQInline(admin.TabularInline):
-    model = Drug_FAQ
+    model = DrugFAQ
     extra = 1
     formfield_overrides = {
         models.CharField: {'widget': Textarea(attrs={'rows': 2, 'cols': 80})},
@@ -27,7 +27,7 @@ class Drug_FAQInline(admin.TabularInline):
 class DrugAdmin(admin.ModelAdmin):
     list_display = ('name', 'display_articles', 'display_videos')
     fields = ('name', 'brief_info', 'application_practice_articles',
-              'application_practice_videos', 'image', 'approvals_and_decodings', 'icons')
+              'application_practice_videos', 'image', 'approvals_and_decodings', 'icons', 'faq')
     inlines = [Drug_FAQInline, IconInline]
 
     def display_articles(self, obj):

@@ -22,6 +22,15 @@ class Icon(models.Model):
     def __str__(self):
         return str(self.image_file)
 
+class DrugFAQ(models.Model):
+
+    drug = models.ForeignKey('Drug', on_delete=models.CASCADE,
+                             related_name="FAQ")
+    title = models.CharField(verbose_name="Заголовок")
+    text = RichTextField(verbose_name="Текст")
+    order = models.PositiveBigIntegerField(verbose_name='Порядковый номер')
+
+
 class Drug(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название препарата")
     brief_info = models.TextField(verbose_name="Краткое описание препарата")
@@ -30,6 +39,7 @@ class Drug(models.Model):
     application_practice_videos = models.ManyToManyField('pages.VideoLectures', blank=True, related_name='application_practice_videos', verbose_name="Видео в практике применения")
     approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения")
     icons = models.ManyToManyField(Icon, blank=True, related_name='drugs', verbose_name="Иконки")
+    faq = models.ManyToManyField(DrugFAQ, blank=True, related_name='drugs', verbose_name="FAQ")
     speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность')
     url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True)
 
@@ -39,12 +49,3 @@ class Drug(models.Model):
     class Meta:
         verbose_name = 'Препарат'
         verbose_name_plural = 'Препараты'
-
-
-class Drug_FAQ(models.Model):
-
-    drug = models.ForeignKey('Drug', on_delete=models.CASCADE,
-                             related_name="FAQ")
-    title = models.CharField(verbose_name="Заголовок")
-    text = RichTextField(verbose_name="Текст")
-    order = models.PositiveBigIntegerField(verbose_name='Порядковый номер')

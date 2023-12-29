@@ -2,7 +2,7 @@
 
 
 from rest_framework import serializers
-from pages.models import Drug, Icon
+from pages.models import Drug, Icon, DrugFAQ
 
 
 class DrugListSerializer(serializers.ModelSerializer):
@@ -25,9 +25,18 @@ class IconSerializer(serializers.ModelSerializer):
     def get_image_file(self, obj):
         return obj.image_file.url if obj.image_file else None
 
-class DrutSerializer(serializers.ModelSerializer):
+class FAQSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DrugFAQ
+        fields = ['title',
+                  'text',
+                  'order']
+
+
+class DrugSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     icons = IconSerializer(many=True, read_only=True)
+    faq = FAQSerializer(many=True, read_only=True)
 
     class Meta:
         model = Drug

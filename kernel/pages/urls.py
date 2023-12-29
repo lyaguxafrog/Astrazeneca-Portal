@@ -4,10 +4,10 @@
 from django.urls import path
 from rest_framework import views
 from .views import (StoryListAPIView, StoryDetailAPIView,
-                    ArticleDetailAPIView, DrugListAPIView,
-                    SpecialityStoryListAPIView,
-                    DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
-                    VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView)
+               ArticleDetailAPIView, DrugListAPIView,
+               SpecialityStoryListAPIView,
+               DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
+               VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView)
 
 urlpatterns = [
 
