@@ -7,7 +7,8 @@ from .views import (StoryListAPIView, StoryDetailAPIView,
                ArticleDetailAPIView, DrugListAPIView,
                SpecialityStoryListAPIView,
                DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
-               VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView)
+               VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView,
+               MainPageApproveNumberAPIView)
 
 urlpatterns = [
 
@@ -22,7 +23,7 @@ urlpatterns = [
      path('stories/speciality/<int:id>/',
           SpecialityStoryListAPIView.as_view(), name='story-list-by-speciality'),
 
-
+     path('main_page,', MainPageApproveNumberAPIView.as_view(), name='main-page'),
 
      path('articles/<int:id>', ArticleDetailAPIView.as_view(),
          name='article'),

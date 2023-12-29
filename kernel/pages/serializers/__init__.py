@@ -9,3 +9,5 @@ from .video import VideoLecturesListSerializer, VideoLecturesSerializer
 from .speciality import SpecialtySerializer
 
 from .search import SearchResultsSerializer
+
+from .main_page import MainPageApproveNumberSerializer
