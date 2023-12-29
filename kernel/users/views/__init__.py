@@ -5,3 +5,4 @@ from .content_save import SaveContentView, GetSavedContentView
 from .sso_callback import (SignInAPIView, SignUpAPIView,
                            HandleSSORedirectAPIView, SaveTokensAPIView)
 
+from .users import UserRegistrationView
