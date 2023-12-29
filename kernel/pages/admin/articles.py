@@ -29,10 +29,13 @@ class ArticlesAdmin(admin.ModelAdmin):
 
 
     fieldsets = [
-        ('Основная информация', {'fields': ['article_name', 'cover']}),
-        ('Дополнительная информация', {'fields': ['short_description',
-                                                  'information',
-                                                  'final_content',
+        ('Основная информация', {'fields': ['article_name',
+                                            'cover',
+                                            'short_description',
+                                            'information',
+                                            'first_abzac']}),
+
+        ('Дополнительная информация', {'fields': ['final_content',
                                                   'access_number',
                                                   'speciality',
                                                   'drug', 'article_type']}),
