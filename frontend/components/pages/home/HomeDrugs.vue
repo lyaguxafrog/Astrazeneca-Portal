@@ -83,6 +83,8 @@ const drugs = await getDrugs();
 
     img {
       width: 100%;
+      max-height: 550px;
+      object-fit: contain;
     }
 
     &-link {

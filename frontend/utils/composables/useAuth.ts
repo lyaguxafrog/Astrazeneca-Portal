@@ -12,6 +12,7 @@ export const useAuth = () => {
 
   const state = useState('auth-state', () => ({
     isAuth: !!accessToken.value,
+    userId: 0,
   }));
 
   const toLogin = async () => {
@@ -34,7 +35,7 @@ export const useAuth = () => {
       // accessToken.value = `${token}`;
       state.value.isAuth = true;
 
-      const res = await useRequest('/create_user', {
+      const res = await useRequest('/create_user/', {
         method: 'POST',
         body: {
           temporary_token: token,
@@ -60,5 +61,6 @@ export const useAuth = () => {
 
     isAuth: state.value.isAuth,
     token: '123',
+    userId: toRef(() => state.value.userId),
   };
 };

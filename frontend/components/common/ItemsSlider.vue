@@ -1,7 +1,7 @@
 <template>
   <div class="items-slider" :class="{ hidePagination }">
     <Swiper
-      centered-slides
+      :centered-slides="centeredSlides"
       :space-between="$screen.mdAndDown ? 40 : 100"
       :slides-per-view="$screen.mdAndDown ? mobileSlidesPerView : desktopSlidesPerView"
       :initial-slide="items.length < 3 ? 0 : initialSlide"
@@ -49,10 +49,12 @@ withDefaults(
     initialSlide?: number;
     withNavigation?: boolean;
     hidePagination?: boolean;
+    centeredSlides?: boolean;
   }>(),
   {
     initialSlide: 1,
     mobileSlidesPerView: 1.5,
+    centeredSlides: true,
   }
 );
 

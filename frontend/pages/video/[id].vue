@@ -25,6 +25,7 @@
 
       <ItemsSlider
         :desktop-slides-per-view="3"
+        :centered-slides="content.video_recomendations.length > 3"
         :items="content.video_recomendations"
         #default="{ item }"
       >
@@ -114,6 +115,7 @@ const startVideo = () => {
 
       width: 100%;
       height: 100%;
+      object-fit: cover;
     }
   }
 

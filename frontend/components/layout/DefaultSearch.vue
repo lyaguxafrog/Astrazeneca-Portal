@@ -3,7 +3,7 @@
     <div class="search__container">
       <div class="search__input">
         <AppIcon :name="IconName.SearchBlack" :size="$screen.mdAndDown ? 20 : 30" />
-        <input ref="inputEl" type="text" placeholder="Поиск по сайту" />
+        <input ref="inputEl" v-model="searchString" type="text" placeholder="Поиск по сайту" />
       </div>
 
       <div ref="scrollEl" class="search__results">
@@ -26,8 +26,10 @@
 </template>
 
 <script setup lang="ts">
+import { watchDebounced } from '@vueuse/core';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
+import { useRequest } from '~/utils/composables/useRequest';
 import { useScreen } from '~/utils/composables/useScreen';
 
 const { $screen } = useScreen();
@@ -35,6 +37,26 @@ const { $screen } = useScreen();
 const isOpen = ref();
 const inputEl = ref();
 const scrollEl = ref();
+
+const searchString = ref('');
+
+const search = async () => {
+  const res = await useRequest('/', {
+    method: 'GET',
+  });
+
+  console.log(res);
+};
+
+watchDebounced(
+  searchString,
+  () => {
+    search();
+  },
+  {
+    debounce: 500,
+  }
+);
 
 const open = () => {
   disableScroll(scrollEl.value, $screen.value.mdAndDown);
