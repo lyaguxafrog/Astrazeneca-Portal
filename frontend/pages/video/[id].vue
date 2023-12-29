@@ -1,5 +1,5 @@
 <template>
-  <InsidePageHead />
+  <InsidePageHead :content-type="ContentType.Video" :content-id="+videoId" />
   <div v-if="content" class="video-page">
     <BgEllipse size="1138" color="#4DDFFF" pale class="video-page__first-ellipse" />
     <BgEllipse size="984" color="#B32FC9" pale class="video-page__second-ellipse" />
@@ -50,7 +50,7 @@ import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
-import { definePageMeta } from '#imports';
+import { ContentType } from '~/utils/types';
 
 const $route = useRoute();
 const { getVideo } = useVideosStore();

@@ -21,10 +21,9 @@ import { useAuth } from '~/utils/composables/useAuth';
 const { $screen } = useScreen();
 const $route = useRoute();
 
-const { toLogin, isAuth } = useAuth();
+const { toLogin, userId } = useAuth();
 
-//const isShowGuard = ref(!isAuth && !$route.query.access_token);
-const isShowGuard = ref(false);
+const isShowGuard = ref(!userId.value && !$route.query.access_token);
 const scrollEl = ref();
 
 watch(

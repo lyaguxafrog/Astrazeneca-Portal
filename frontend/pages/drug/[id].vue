@@ -26,22 +26,20 @@
 
       <div class="drug-page__right">
         <div
-          v-for="item in list"
-          :key="item.id"
+          v-for="item in content.faq"
+          :key="item.order"
           ref="itemsEls"
           class="drug-page__right-item"
-          :class="{ expanded: activeItem?.id === item.id }"
+          :class="{ expanded: activeItem?.order === item.order }"
           @click="openProps(item)"
         >
           <div class="drug-page__right-item-title">
-            {{ item.name }}
+            {{ item.title }}
 
             <AppIcon size="15" class="for-mobile-or-tablet" :name="IconName.DropIcon" />
           </div>
           <div class="drug-page__right-item-content for-mobile-or-tablet">
-            <p>
-              {{ item.text }}
-            </p>
+            <p v-html="item.text" />
           </div>
         </div>
         <AppButton class="drug-page__right-btn" :petite="$screen.mdAndDown"> Инструкция </AppButton>
@@ -82,8 +80,19 @@
               </div>
             </template>
 
-            <ItemsSlider v-else :desktop-slides-per-view="2" :items="slides" #default="{ item }">
+            <ItemsSlider
+              v-else-if="content.application_practices.length"
+              :desktop-slides-per-view="2"
+              :items="content.application_practices"
+              #default="{ item }"
+            >
               <div class="drug-page__slider-item">
+                <img
+                  v-if="item.image"
+                  onerror="this.style.display = 'none'"
+                  class="drug-page__slider-item-bg"
+                  :src="`${baseUrl}${item.image}`"
+                />
                 <p v-html="item.name" />
               </div>
             </ItemsSlider>
@@ -93,19 +102,20 @@
     </div>
 
     <AppModal :name="ModalsName.DrugProps">
-      <div class="drug-page__modal">
+      <div v-if="activeItem" class="drug-page__modal">
         <div class="drug-page__modal-title">
-          {{ activeItem.name }}
+          {{ activeItem.title }}
         </div>
-        <div class="drug-page__modal-text">
-          {{ activeItem.text }}
-        </div>
-        <div class="drug-page__modal-description">
+        <div class="drug-page__modal-text" v-html="activeItem.text" />
+        <!--        <div class="drug-page__modal-description">
           <p v-html="activeItem.description" />
           <AppButton primary mini @click="openProps(list[1])"> Противопоказания </AppButton>
-        </div>
+        </div>-->
       </div>
     </AppModal>
+    <Teleport to="#footerAccessInfo">
+      <p v-html="content.approvals_and_decodings"></p>
+    </Teleport>
   </div>
 </template>
 
@@ -114,11 +124,12 @@ import { Navigation } from 'swiper/modules';
 import { useRoute } from '#app';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { IconName } from '~/components/app/AppIcon.utils';
-import { useDrugsStore } from '~/utils/composables/store/drugs';
+import { DrugFaq, DrugPlump, useDrugsStore } from '~/utils/composables/store/drugs';
 import { ModalsName, useModal } from '~/utils/composables/useModal';
 import { useScreen } from '~/utils/composables/useScreen';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
+import { ArticlePlump } from '~/utils/composables/store/articles';
 
 const nextRef = ref(null);
 const prevRef = ref(null);
@@ -134,55 +145,10 @@ const { getDrug } = useDrugsStore();
 
 const content = await getDrug(drugId.value);
 
-const list = [
-  {
-    id: '1',
-    name: 'Показания к применению',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    description:
-      'Место под расшифровки<br>Номера одобрения: ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ',
-  },
-  {
-    id: '2',
-    name: 'Противопоказания',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    description:
-      'Место под расшифровки<br>Номера одобрения: ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ',
-  },
-  {
-    id: '3',
-    name: 'Противопоказания',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    description:
-      'Место под расшифровки<br>Номера одобрения: ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ',
-  },
-  {
-    id: '4',
-    name: 'Противопоказания',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    description:
-      'Место под расшифровки<br>Номера одобрения: ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ',
-  },
-  {
-    id: '5',
-    name: 'Противопоказания',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    description:
-      'Место под расшифровки<br>Номера одобрения: ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ',
-  },
-  {
-    id: '6',
-    name: 'Противопоказания',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    description:
-      'Место под расшифровки<br>Номера одобрения: ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ',
-  },
-];
-
-const activeItem = ref();
+const activeItem = ref<DrugFaq>();
 const itemsEls = ref();
-const openProps = (item) => {
-  if (activeItem.value?.id === item.id) {
+const openProps = (item: DrugFaq) => {
+  if (activeItem.value?.order === item.order) {
     activeItem.value = undefined;
   } else {
     activeItem.value = item;
@@ -191,15 +157,16 @@ const openProps = (item) => {
   if (!$screen.value.mdAndDown) {
     openModal(ModalsName.DrugProps);
   } else {
-    itemsEls.value.forEach((el) => {
-      const content = el.querySelector('.drug-page__right-item-content');
-
-      content.style.height = `0`;
+    itemsEls.value.forEach((el: HTMLElement) => {
+      const content = el.querySelector('.drug-page__right-item-content') as HTMLElement;
+      if (content) {
+        content.style.height = `0`;
+      }
     });
 
-    const activeIndex = list.findIndex((el) => el.id === activeItem.value?.id);
+    const activeIndex = content?.faq.findIndex((el) => el.order === activeItem.value?.order);
 
-    if (activeIndex >= 0 && itemsEls.value[activeIndex]) {
+    if ((activeIndex || activeIndex === 0) && activeIndex >= 0 && itemsEls.value[activeIndex]) {
       const content = itemsEls.value[activeIndex].querySelector('.drug-page__right-item-content');
 
       const height = content.scrollHeight;
@@ -432,7 +399,7 @@ const openProps = (item) => {
   }
 
   @include md-and-down {
-    padding: 35px 27px;
+    padding: 35px 27px 10px;
 
     &__first-ellipse {
       top: 70px;
@@ -462,12 +429,13 @@ const openProps = (item) => {
       img {
         display: block;
 
-        width: 60%;
-        margin: 0 auto;
+        width: 72%;
+        margin: 20px auto 0;
       }
 
       &-icons {
-        margin-top: -7px;
+        max-width: 500px;
+        margin: -24px auto 0;
         padding: 0 28px;
 
         img {

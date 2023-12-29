@@ -7,11 +7,18 @@ export type Drug = {
   image: string;
 };
 
+export type DrugFaq = {
+  order: number;
+  title: string;
+  text: string;
+};
+
 export type DrugPlump = {
   id: number;
   name: string;
   image: string;
   brief_info: string;
+  approvals_and_decodings: string;
   icons: {
     id: number;
     image_file: string;
@@ -24,6 +31,7 @@ export type DrugPlump = {
     image: string;
     name: string;
   }[];
+  faq: DrugFaq[];
 };
 
 export const useDrugsStore = () => {

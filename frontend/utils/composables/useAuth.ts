@@ -9,10 +9,10 @@ export const useAuth = () => {
   const { speciality } = useSpecialityStore();
 
   const accessToken = useCookie('access-token');
+  const userId = useCookie('user-id');
 
   const state = useState('auth-state', () => ({
-    isAuth: !!accessToken.value,
-    userId: 0,
+    userId: userId.value ? +userId.value : 0,
   }));
 
   const toLogin = async () => {
@@ -28,14 +28,15 @@ export const useAuth = () => {
   };
 
   const sendAuthToken = async () => {
+    const userIdCookie = useCookie('user-id');
+
     const token = $route.query.access_token;
     const refresh = $route.query.refresh;
 
     if (token && speciality.value) {
-      // accessToken.value = `${token}`;
-      state.value.isAuth = true;
-
-      const res = await useRequest('/create_user/', {
+      const res = await useRequest<{
+        user_id: number;
+      }>('/create_user/', {
         method: 'POST',
         body: {
           temporary_token: token,
@@ -43,15 +44,18 @@ export const useAuth = () => {
         },
       });
 
-      console.log(res);
+      if (res.data) {
+        userIdCookie.value = `${res.data.user_id}`;
+        state.value.userId = res.data.user_id;
+      }
 
-      /*$router.replace({
+      $router.replace({
         query: {
           ...$route.query,
           access_token: undefined,
           refresh: undefined,
         },
-      });*/
+      });
     }
   };
 
@@ -59,7 +63,6 @@ export const useAuth = () => {
     toLogin,
     sendAuthToken,
 
-    isAuth: state.value.isAuth,
     token: '123',
     userId: toRef(() => state.value.userId),
   };

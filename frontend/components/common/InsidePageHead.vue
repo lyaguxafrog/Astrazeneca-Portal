@@ -5,8 +5,8 @@
       v-if="!hideFavouritesButton"
       class="inside-page-head__fav"
       big
-      content-type="video"
-      :content-id="1"
+      :content-type="contentType"
+      :content-id="contentId"
       :active="false"
     />
   </div>
@@ -14,9 +14,12 @@
 
 <script setup lang="ts">
 import { useBack } from '~/utils/composables/useHistory';
+import { ContentType } from '~/utils/types';
 
 defineProps<{
   hideFavouritesButton?: boolean;
+  contentType: ContentType;
+  contentId: number;
 }>();
 
 const { back } = useBack();
