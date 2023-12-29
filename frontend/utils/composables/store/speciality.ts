@@ -8,7 +8,7 @@ const specialityCookieName = 'selected-speciality';
 type Speciality = {
   id: number;
   name: string;
-  image: string;
+  image_url: string;
   pro: string;
 };
 

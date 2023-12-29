@@ -5,7 +5,9 @@ export { default as NextSliderBtn } from '~/assets/img/icons/slider-arrow.svg?co
 export { default as PrevSliderBtn } from '~/assets/img/icons/slider-arrow-prev.svg?component';
 export { default as Play } from '~/assets/img/icons/play.svg?component';
 export { default as Home } from '~/assets/img/icons/home.svg?component';
+export { default as HomeFill } from '~/assets/img/icons/home-fill.svg?component';
 export { default as Search } from '~/assets/img/icons/search.svg?component';
+export { default as SearchFill } from '~/assets/img/icons/search-fill.svg?component';
 export { default as SearchBlack } from '~/assets/img/icons/search-black.svg?component';
 export { default as NextSliderBtnBig } from '~/assets/img/icons/big-slider-arrow.svg?component';
 export { default as PrevSliderBtnBig } from '~/assets/img/icons/big-slider-arrow-prew.svg?component';
@@ -25,7 +27,9 @@ export enum IconName {
   PrevSliderBtn = 'PrevSliderBtn',
   Play = 'Play',
   Home = 'Home',
+  HomeFill = 'HomeFill',
   Search = 'Search',
+  SearchFill = 'SearchFill',
   NextSliderBtnBig = 'NextSliderBtnBig',
   PrevSliderBtnBig = 'PrevSliderBtnBig',
   RightArrow = 'RightArrow',

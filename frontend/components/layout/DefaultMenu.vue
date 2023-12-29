@@ -1,16 +1,33 @@
 <template>
   <div class="default-menu">
     <div class="default-menu__nav">
-      <nuxt-link to="/" class="default-menu__btn">
-        <AppIcon :name="IconName.Home" :size="$screen.mdAndDown ? 26 : 36" />
+      <nuxt-link to="/" class="default-menu__btn" :class="{ active: $route.name === 'index' }">
+        <AppIcon
+          :name="$route.name === 'index' ? IconName.HomeFill : IconName.Home"
+          :size="$screen.mdAndDown ? 26 : 36"
+        />
         <span>Главная</span>
       </nuxt-link>
-      <nuxt-link to="/favourites" class="default-menu__btn">
-        <AppIcon :name="IconName.HeartIcon" :size="$screen.mdAndDown ? 26 : 40" />
+      <nuxt-link
+        to="/favourites"
+        class="default-menu__btn"
+        :class="{ active: $route.name === 'favourites' }"
+      >
+        <AppIcon
+          :name="$route.name === 'favourites' ? IconName.HeartIconFill : IconName.HeartIcon"
+          :size="$screen.mdAndDown ? 29 : 40"
+        />
         <span>Избранное</span>
       </nuxt-link>
-      <div class="default-menu__btn" @click="openSearch">
-        <AppIcon :name="IconName.Search" :size="$screen.mdAndDown ? 26 : 34" />
+      <div
+        class="default-menu__btn"
+        @click="openSearch"
+        :class="{ active: $route.name === 'search' }"
+      >
+        <AppIcon
+          :name="$route.name === 'search' ? IconName.SearchFill : IconName.Search"
+          :size="$screen.mdAndDown ? 26 : 34"
+        />
         <span>Поиск</span>
       </div>
     </div>
@@ -18,8 +35,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from '#app';
-import { IconName } from '~/components/app/AppIcon.utils';
+import { useRouter, useRoute } from '#app';
+import { HomeFill, HomeFull, IconName } from '~/components/app/AppIcon.utils';
 import { useScreen } from '~/utils/composables/useScreen';
 
 const emit = defineEmits<{
@@ -27,6 +44,7 @@ const emit = defineEmits<{
 }>();
 
 const $router = useRouter();
+const $route = useRoute();
 const { $screen } = useScreen();
 
 const openSearch = () => {
@@ -56,6 +74,16 @@ const openSearch = () => {
 
     cursor: pointer;
 
+    &.active {
+      pointer-events: none;
+    }
+
+    @include hover {
+      span {
+        color: $accent-color;
+      }
+    }
+
     &:nth-of-type(2) {
       span {
         margin-top: 3px;
@@ -67,6 +95,8 @@ const openSearch = () => {
 
       font-size: 11px;
       color: $primary-color;
+
+      transition: color $tr-dur;
     }
   }
 

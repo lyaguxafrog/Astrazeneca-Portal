@@ -118,6 +118,7 @@ $root: histories-slider;
 
       width: 100%;
       height: 120px;
+      @include aspect(120, 120);
 
       border: 5px solid;
       border-radius: 50%;
