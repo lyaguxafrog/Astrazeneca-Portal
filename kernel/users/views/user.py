@@ -9,13 +9,18 @@ from users.serializers import UserProfileSerializer
 
 class UserRegistrationView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = UserProfileSerializer(data=request.data)
+        temporary_token = request.data.get('temporary_token')
+        existing_user_profile = UserProfile.objects.filter(temporary_token=temporary_token).first()
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'user_id': serializer.instance.id}, status=status.HTTP_201_CREATED)
+        if existing_user_profile:
+            return Response({'user_id': existing_user_profile.id}, status=status.HTTP_200_OK)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer = UserProfileSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'user_id': serializer.instance.id}, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def handle_temporary_token(self, temporary_token):
         try:
