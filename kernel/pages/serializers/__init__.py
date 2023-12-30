@@ -8,6 +8,6 @@ from .event import EventsSerializer
 from .video import VideoLecturesListSerializer, VideoLecturesSerializer
 from .speciality import SpecialtySerializer
 
-from .search import SearchResultsSerializer
+from .search import SearchSerializer
 
 from .main_page import MainPageApproveNumberSerializer
