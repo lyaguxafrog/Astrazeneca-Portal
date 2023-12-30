@@ -44,9 +44,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
             if content_type == 'article':
                 articles = Articles.objects.filter(id__in=content_ids)
                 serialized_content['article'] = ArticleSerializer(articles, many=True).data
-            elif content_type == 'video_lecture':
+            elif content_type == 'video':
                 video_lectures = VideoLectures.objects.filter(id__in=content_ids)
-                serialized_content['video_lecture'] = VideoLecturesSerializer(video_lectures, many=True).data
+                serialized_content['video'] = VideoLecturesSerializer(video_lectures, many=True).data
             elif content_type == 'drug':
                 drugs = Drug.objects.filter(id__in=content_ids)
                 serialized_content['drug'] = DrugSerializer(drugs, many=True).data
@@ -67,3 +67,9 @@ class ContentSaveSerializer(serializers.Serializer):
 class GetSavedContentViewSerializer(serializers.Serializer):
     message = serializers.CharField()
     saved_content = serializers.DictField()
+
+
+class ContentRemoveSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    content_type = serializers.CharField()
+    content_id = serializers.IntegerField()

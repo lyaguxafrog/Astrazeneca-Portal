@@ -7,7 +7,8 @@ from users.models import UserProfile
 from pages.models import Articles, Drug, Events, VideoLectures
 from users.serializers import (ContentSaveSerializer, ArticleSerializer,
                                DrugSerializer, VideoLecturesSerializer,
-                               EventsSerializer, GetSavedContentViewSerializer)
+                               EventsSerializer, GetSavedContentViewSerializer,
+                               ContentRemoveSerializer)
 from users.serializers.save_content import UserProfileSerializer
 
 from drf_yasg.utils import swagger_auto_schema
@@ -56,9 +57,9 @@ class GetSavedContentView(generics.RetrieveAPIView):
             if content_type == 'article':
                 articles = Articles.objects.filter(id__in=content_ids)
                 serialized_content['article'] = ArticleSerializer(articles, many=True).data
-            elif content_type == 'video_lecture':
+            elif content_type == 'video':
                 video_lectures = VideoLectures.objects.filter(id__in=content_ids)
-                serialized_content['video_lecture'] = VideoLecturesSerializer(video_lectures, many=True).data
+                serialized_content['video'] = VideoLecturesSerializer(video_lectures, many=True).data
             elif content_type == 'drug':
                 drugs = Drug.objects.filter(id__in=content_ids)
                 serialized_content['drug'] = DrugSerializer(drugs, many=True).data
@@ -71,3 +72,40 @@ class GetSavedContentView(generics.RetrieveAPIView):
             "message": "Успех",
             "saved_content": serialized_content,
         }
+
+
+class RemoveContentView(generics.DestroyAPIView):
+    serializer_class = ContentRemoveSerializer
+
+    @swagger_auto_schema(
+        request_body=ContentRemoveSerializer,
+        responses={204: 'Content removed successfully'},
+    )
+    def delete(self, request, *args, **kwargs):
+        serializer = ContentRemoveSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = serializer.validated_data.get("user_id")
+            content_type = serializer.validated_data.get("content_type")
+            content_id = serializer.validated_data.get("content_id")
+
+            try:
+                user_profile = UserProfile.objects.get(id=user_id)
+
+                # Remove content from the saved_content dictionary
+                saved_content = user_profile.saved_content.get(content_type, [])
+                if content_id in saved_content:
+                    saved_content.remove(content_id)
+                    user_profile.saved_content[content_type] = saved_content
+                    user_profile.save()
+
+                    return Response(status=status.HTTP_204_NO_CONTENT)
+                else:
+                    return Response({"message": f"Content {content_id} not found in favorites"},
+                                    status=status.HTTP_404_NOT_FOUND)
+
+            except UserProfile.DoesNotExist:
+                return Response({"message": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as e:
+                return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

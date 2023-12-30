@@ -21,7 +21,7 @@ urlpatterns = [
      path('stories/', StoryListAPIView.as_view(), name='story-list'),
      path('stories/<int:id>/', SpecialityStoryListAPIView.as_view(), name='specialty-story-list'),
 
-     path('main_page,', MainPageApproveNumberAPIView.as_view(), name='main-page'),
+     path('main_page', MainPageApproveNumberAPIView.as_view(), name='main-page'),
 
      path('articles/<int:id>', ArticleDetailAPIView.as_view(),
          name='article'),
