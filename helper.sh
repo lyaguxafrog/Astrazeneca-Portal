@@ -28,7 +28,7 @@ if [[ $1 = 'update' ]]; then
 	git pull
 	docker stop portal-backend-nginx-1
 	docker rm portal-backend-nginx-1
-	dokcer-compose up -d --build
+	docker-compose up -d --build
 
 	exit 0
 fi
