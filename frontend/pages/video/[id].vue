@@ -46,11 +46,11 @@
 <script setup lang="ts">
 import { useRoute } from '#app';
 import { useVideosStore } from '~/utils/composables/store/videos';
+import { ContentType } from '~/utils/types';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
-import { ContentType } from '~/utils/types';
 
 const $route = useRoute();
 const { getVideo } = useVideosStore();

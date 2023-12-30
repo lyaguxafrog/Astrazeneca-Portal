@@ -4,6 +4,7 @@
     class="app-button"
     :to="to"
     :class="{ icon: mode === 'icon', primary, petite, mini, white, selected }"
+    :target="target"
   >
     <slot />
   </component>
@@ -20,6 +21,7 @@ defineProps<{
   mini?: boolean;
   white?: boolean;
   selected?: boolean;
+  target?: '_blank';
 }>();
 </script>
 

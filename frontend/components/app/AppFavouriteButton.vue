@@ -6,7 +6,7 @@
     @click="toggleFavourite(contentType, contentId)"
   >
     <AppIcon v-if="!active" :name="IconName.HeartIcon" :size="iconSize" />
-    <AppIcon v-else :name="IconName.HeartIconFill" :size="iconSize" />
+    <AppIcon v-else :name="IconName.HeartIconFill" :size="iconSize + 4" />
   </AppButton>
 </template>
 

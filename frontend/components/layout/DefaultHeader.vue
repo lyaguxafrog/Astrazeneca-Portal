@@ -12,7 +12,6 @@
 
           <DefaultMenu @openSearch="openSearch" />
         </div>
-
         <div class="default-header__title" :class="{ hide: !isExtendsHeader }">
           <div class="default-header__title-content"><span>PRO</span>Рак Легкого</div>
         </div>

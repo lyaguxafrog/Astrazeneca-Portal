@@ -7,7 +7,7 @@
       big
       :content-type="contentType"
       :content-id="contentId"
-      :active="false"
+      :active="isInFavourite(contentType, contentId)"
     />
   </div>
 </template>
@@ -15,6 +15,9 @@
 <script setup lang="ts">
 import { useBack } from '~/utils/composables/useHistory';
 import { ContentType } from '~/utils/types';
+import { useFavourites } from '~/utils/composables/useFavourites';
+
+const { isInFavourite } = useFavourites();
 
 defineProps<{
   hideFavouritesButton?: boolean;

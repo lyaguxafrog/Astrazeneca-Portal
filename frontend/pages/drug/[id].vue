@@ -42,7 +42,15 @@
             <p v-html="item.text" />
           </div>
         </div>
-        <AppButton class="drug-page__right-btn" :petite="$screen.mdAndDown"> Инструкция </AppButton>
+        <AppButton
+          v-if="content.url_field"
+          class="drug-page__right-btn"
+          target="_blank"
+          :to="content.url_field"
+          :petite="$screen.mdAndDown"
+        >
+          Инструкция
+        </AppButton>
         <div v-if="content.application_practices.length" class="drug-page__slider">
           <div class="drug-page__slider-title">Практика применения</div>
 

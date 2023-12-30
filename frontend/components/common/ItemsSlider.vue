@@ -151,7 +151,7 @@ const onSlideChange = () => {
     width: 100%;
     object-fit: cover;
 
-    border-radius: 34px;
+    border-radius: 48px;
   }
 
   @include md-and-down {

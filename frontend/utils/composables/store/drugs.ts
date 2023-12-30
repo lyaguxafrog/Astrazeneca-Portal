@@ -18,6 +18,7 @@ export type DrugPlump = {
   name: string;
   image: string;
   brief_info: string;
+  url_field: string;
   approvals_and_decodings: string;
   icons: {
     id: number;

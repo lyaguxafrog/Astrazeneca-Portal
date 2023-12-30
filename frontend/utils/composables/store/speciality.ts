@@ -14,6 +14,7 @@ type Speciality = {
 
 export function useSpecialityStore() {
   const specialityCookie = useCookie(specialityCookieName);
+
   const state = useState('speciality', () => ({
     specialities: loadableEmpty<Speciality[]>(),
     speciality: specialityCookie.value ? +specialityCookie.value : -1,
@@ -35,7 +36,6 @@ export function useSpecialityStore() {
   };
 
   const setSpeciality = (id: number) => {
-    const specialityCookie = useCookie(specialityCookieName);
     state.value.speciality = id;
     specialityCookie.value = `${id}`;
   };
