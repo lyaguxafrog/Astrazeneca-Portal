@@ -6,6 +6,11 @@ export type History = {
   id: string;
   title: string;
   avatar: string;
+  cover_image: string;
+  is_active: boolean;
+  link_to_page: boolean;
+  video: boolean;
+  specialties: number[];
 };
 
 export const useHistoriesStore = () => {
@@ -15,12 +20,23 @@ export const useHistoriesStore = () => {
     histories: loadableEmpty<History[]>(),
   }));
 
-  const getHistories = async (specialityId?: number) => {
-    let url = '/stories/speciality/0';
+  const showedStories = computed(() => {
+    const data = state.value.histories.data;
+
+    if (!data) {
+      return [];
+    }
+
+    const specialityId = speciality.value?.id;
 
     if (specialityId) {
-      url += `/speciality/${specialityId}`;
+      return data.filter((s) => !s.specialties.length || s.specialties.includes(specialityId));
     }
+
+    return data.filter((s) => !s.specialties.length);
+  });
+  const getHistories = async () => {
+    let url = '/stories';
 
     if (!state.value.histories.loaded) {
       const res = await useRequest<History[]>(url, {
@@ -32,25 +48,10 @@ export const useHistoriesStore = () => {
         state.value.histories.loaded = true;
       }
     }
-
-    return state.value.histories.data;
   };
 
-  watch(
-    speciality,
-    () => {
-      if (speciality.value) {
-        state.value.histories.loaded = false;
-        getHistories(speciality.value.id);
-      }
-    },
-    {
-      deep: true,
-    }
-  );
-
   return {
-    histories: toRef(() => state.value.histories),
+    histories: showedStories,
 
     getHistories,
   };

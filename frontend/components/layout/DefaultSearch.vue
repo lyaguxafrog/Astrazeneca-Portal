@@ -7,19 +7,23 @@
       </div>
 
       <div ref="scrollEl" class="search__results">
-        <div v-for="block in result" :key="block.id" class="search__results-block">
-          <div class="search__results-block-title">
-            {{ block.name }}
+        <template v-for="block in result">
+          <div v-if="block.items.length" :key="block.id" class="search__results-block">
+            <div class="search__results-block-title">
+              {{ block.name }}
+            </div>
+            <nuxt-link
+              v-for="item in block.items"
+              :key="item.id"
+              class="search__results-block-item"
+              :to="item.link"
+              :style="{ backgroundColor: $screen.mdAndDown ? block.color : '' }"
+              @click="close"
+            >
+              {{ item.name }} <span :style="{ color: block.color }">| {{ block.postfix }}</span>
+            </nuxt-link>
           </div>
-          <div
-            v-for="item in block.items"
-            :key="item.id"
-            class="search__results-block-item"
-            :style="{ backgroundColor: $screen.mdAndDown ? block.color : '' }"
-          >
-            {{ item.name }} <span :style="{ color: block.color }">| {{ block.postfix }}</span>
-          </div>
-        </div>
+        </template>
       </div>
     </div>
   </div>
@@ -32,6 +36,12 @@ import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useScreen } from '~/utils/composables/useScreen';
 
+type SearchResult = {
+  id: number;
+  title: string;
+  model: 'video_lecture' | 'article';
+};
+
 const { $screen } = useScreen();
 
 const isOpen = ref();
@@ -40,12 +50,63 @@ const scrollEl = ref();
 
 const searchString = ref('');
 
+const result = ref<
+  {
+    id: string;
+    name: string;
+    postfix: string;
+    color: string;
+    items: {
+      id: number;
+      name: string;
+      link: string;
+    }[];
+  }[]
+>([
+  {
+    id: '1',
+    name: 'Статьи',
+    postfix: 'статья',
+    color: '#00B0BB',
+    items: [],
+  },
+  {
+    id: '2',
+    name: 'Видео',
+    postfix: 'видео',
+    color: '#8300A4',
+    items: [],
+  },
+  {
+    id: '3',
+    name: 'Кейсы',
+    postfix: 'кейс',
+    color: '#00B0BB',
+    items: [],
+  },
+]);
 const search = async () => {
-  const res = await useRequest('/', {
+  const res = await useRequest<SearchResult[]>(`/search/${searchString.value}`, {
     method: 'GET',
   });
 
-  console.log(res);
+  if (res.data) {
+    res.data.forEach((r) => {
+      const data = {
+        id: r.id,
+        name: r.title,
+        link: r.model === 'video_lecture' ? `/video/${r.id}` : `/article/${r.id}`,
+      };
+
+      if (r.model === 'video_lecture') {
+        result.value[1].items.push(data);
+      }
+
+      if (r.model === 'article') {
+        result.value[0].items.push(data);
+      }
+    });
+  }
 };
 
 watchDebounced(
@@ -73,58 +134,6 @@ const close = () => {
     isOpen.value = false;
   }
 };
-
-const result = [
-  {
-    id: '1',
-    name: 'Статьи',
-    postfix: 'статья',
-    color: '#00B0BB',
-    items: [
-      {
-        id: '1',
-        name: 'Терапия как метод диагностики и лечения',
-        link: '/article/1',
-      },
-    ],
-  },
-  {
-    id: '2',
-    name: 'Видео',
-    postfix: 'видео',
-    color: '#8300A4',
-    items: [
-      {
-        id: '1',
-        name: 'Неоадъювантная лекарственная терапия',
-        link: '/video/1',
-      },
-      {
-        id: '2',
-        name: 'Неоадъювантная лекарственная терапия',
-        link: '/video/2',
-      },
-    ],
-  },
-  {
-    id: '3',
-    name: 'Кейсы',
-    postfix: 'кейс',
-    color: '#00B0BB',
-    items: [
-      {
-        id: '1',
-        name: 'Новые возможности в терапии при раке легкого',
-        link: '/video/1',
-      },
-      {
-        id: '2',
-        name: 'Новые возможности в терапии при раке легкого',
-        link: '/video/2',
-      },
-    ],
-  },
-];
 
 defineExpose({
   open,
@@ -202,9 +211,17 @@ defineExpose({
       }
 
       &-item {
+        display: block;
+
+        width: fit-content;
+
         font-size: 18px;
         line-height: 42px;
         letter-spacing: -0.18px;
+
+        @include hover {
+          color: $accent-color;
+        }
       }
     }
   }

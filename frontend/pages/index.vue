@@ -21,6 +21,10 @@
 
       <HomeDrugs />
     </template>
+
+    <Teleport to="#footerAccessInfo">
+      <div v-html="accessInfo.data?.number" />
+    </Teleport>
   </div>
   <SpecialitySlider v-if="showSpecialitySlider" class="home__specialitySlider" />
 </template>
@@ -30,19 +34,22 @@ import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
-import { useDrugsStore } from '~/utils/composables/store/drugs';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import DefaultHistoriesSlider from '~/components/layout/DefaultHistoriesSlider.vue';
 import HomeVideosSlider from '~/components/pages/home/HomeVideosSlider.vue';
 import HomeDrugs from '~/components/pages/home/HomeDrugs.vue';
 import HomeEvents from '~/components/pages/home/HomeEvents.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
+import { useRequest } from '~/utils/composables/useRequest';
 
 const { $screen } = useScreen();
 const { speciality } = useSpecialityStore();
-const { getDrugs } = useDrugsStore();
 
-const drugs = await getDrugs();
+const accessInfo = await useRequest<{
+  number: string;
+}>('/main_page,', {
+  method: 'GET',
+});
 
 const showSpecialitySlider = toRef(() => $screen.value.mdAndDown && !speciality.value);
 

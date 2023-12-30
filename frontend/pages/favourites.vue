@@ -31,9 +31,13 @@
 
 <script setup lang="ts">
 import { useScreen } from '~/utils/composables/useScreen';
+import { useFavourites } from '~/utils/composables/useFavourites';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
+const { getFavourites } = useFavourites();
+
+await getFavourites();
 
 const favourites = [
   {
@@ -82,11 +86,11 @@ const favourites = [
   min-height: 100vh;
   padding: 56px;
 
-  background: url('~/assets/img/home/bg.png') no-repeat bottom 48px left 0;
+  background: url('~/assets/img/home/bg.png') no-repeat top -340px left 0;
 
   &-first-ellipse {
-    top: -400px;
-    left: -800px;
+    top: 130px;
+    left: -740px;
   }
 
   &__head {

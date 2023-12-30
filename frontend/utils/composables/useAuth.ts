@@ -6,7 +6,7 @@ export const useAuth = () => {
   const $router = useRouter();
   const $route = useRoute();
 
-  const { speciality } = useSpecialityStore();
+  const { speciality, setSpeciality } = useSpecialityStore();
 
   const accessToken = useCookie('access-token');
   const userId = useCookie('user-id');
@@ -27,6 +27,43 @@ export const useAuth = () => {
     }
   };
 
+  const checkAccessToken = async () => {
+    const userIdCookie = useCookie('user-id');
+
+    const token = $route.query.access_token;
+
+    if (!token) {
+      return;
+    }
+
+    try {
+      const res = await useRequest<{
+        user_id: number;
+        specialty: number;
+      }>(`/get_user/${token}`, {
+        method: 'GET',
+      });
+
+      if (res.data?.user_id) {
+        userIdCookie.value = `${res.data.user_id}`;
+        state.value.userId = res.data.user_id;
+        setSpeciality(res.data.specialty);
+
+        await $router.replace({
+          query: {
+            ...$route.query,
+            access_token: undefined,
+            refresh: undefined,
+          },
+        });
+      } else {
+        setSpeciality(0);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const sendAuthToken = async () => {
     const userIdCookie = useCookie('user-id');
 
@@ -40,7 +77,7 @@ export const useAuth = () => {
         method: 'POST',
         body: {
           temporary_token: token,
-          specialty_id: speciality.value.id,
+          specialty: speciality.value.id,
         },
       });
 
@@ -49,7 +86,7 @@ export const useAuth = () => {
         state.value.userId = res.data.user_id;
       }
 
-      $router.replace({
+      await $router.replace({
         query: {
           ...$route.query,
           access_token: undefined,
@@ -62,6 +99,7 @@ export const useAuth = () => {
   return {
     toLogin,
     sendAuthToken,
+    checkAccessToken,
 
     token: '123',
     userId: toRef(() => state.value.userId),
