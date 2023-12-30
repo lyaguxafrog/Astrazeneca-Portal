@@ -18,10 +18,8 @@ urlpatterns = [
      path('articles/specialty/<int:specialty_id>/',
           ArticlesBySpecialtyAPIView.as_view(), name='articles_by_specialty'),
 
-     # path('stories/', StoryListAPIView.as_view(), name='story-list'),
-     path('stories/<int:id>/', StoryDetailAPIView.as_view(), name='story-detail'),
-     path('stories/speciality/<int:id>/',
-          SpecialityStoryListAPIView.as_view(), name='story-list-by-speciality'),
+     path('stories/', StoryListAPIView.as_view(), name='story-list'),
+     path('stories/<int:id>/', SpecialityStoryListAPIView.as_view(), name='specialty-story-list'),
 
      path('main_page,', MainPageApproveNumberAPIView.as_view(), name='main-page'),
 
