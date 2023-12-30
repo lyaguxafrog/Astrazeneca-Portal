@@ -7,3 +7,4 @@ from .savedbyuser import SavedByUser
 from .speciality import Specialty
 from .stories import Story
 from .video_lectures import VideoLectures
+from .main_page import MainPageApproveNumber

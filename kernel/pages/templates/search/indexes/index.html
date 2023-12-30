@@ -1,0 +1,18 @@
+{% load bootstrap34%}
+{% block page %}
+    <h1>Поиск</h1>
+    {% if object_list %}
+        {% for object in object_list %}
+            <div>
+                <a href="{{ object.get_absolute_url }}">
+                    <h2>{{ object.itle }}</h2>
+                </a>
+                {{ object.content|safe }}
+                <p><a class="btn btn-default btn-sm" href="{{ object.get_absolute_url }}">Читать далее</a></p>
+            </div>
+        {% endfor %}
+        {% bootstrap_pagination object_list url=last_question %}
+    {% else %}
+        <p>Не найдено публикаций по вашему запросу<br>Попробуйте повторить запрос с другой формулировкой</p>
+    {% endif %}
+{% endblock %}

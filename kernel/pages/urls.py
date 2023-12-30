@@ -7,7 +7,8 @@ from .views import (StoryListAPIView, StoryDetailAPIView,
                ArticleDetailAPIView, DrugListAPIView,
                SpecialityStoryListAPIView,
                DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
-               VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView)
+               VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView,
+               MainPageApproveNumberAPIView, SearchAPIView)
 
 urlpatterns = [
 
@@ -17,17 +18,15 @@ urlpatterns = [
      path('articles/specialty/<int:specialty_id>/',
           ArticlesBySpecialtyAPIView.as_view(), name='articles_by_specialty'),
 
-     # path('stories/', StoryListAPIView.as_view(), name='story-list'),
-     path('stories/<int:id>/', StoryDetailAPIView.as_view(), name='story-detail'),
-     path('stories/speciality/<int:id>/',
-          SpecialityStoryListAPIView.as_view(), name='story-list-by-speciality'),
+     path('stories/', StoryListAPIView.as_view(), name='story-list'),
+     path('stories/<int:id>/', SpecialityStoryListAPIView.as_view(), name='specialty-story-list'),
 
-
+     path('main_page,', MainPageApproveNumberAPIView.as_view(), name='main-page'),
 
      path('articles/<int:id>', ArticleDetailAPIView.as_view(),
          name='article'),
 
-     # path('search/', SearchResultsView.as_view(), name='search-results'),
+    path('search/<str:query>/', SearchAPIView.as_view(), name='search_api'),
 
 
     path('drugs/', DrugListAPIView.as_view(), name='drugs-list'),

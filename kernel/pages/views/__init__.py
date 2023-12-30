@@ -6,3 +6,5 @@ from .drugs import DrugDetailAPIView, DrugListAPIView
 from .events import EventsAPIView
 from .video import VideoLecturesDetail, VideoLecturesList
 from .speciality import SpecialtyListAPIView
+from .main_page import MainPageApproveNumberAPIView
+from .search import SearchAPIView

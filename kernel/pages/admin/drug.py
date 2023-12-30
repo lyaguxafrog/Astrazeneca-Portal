@@ -27,7 +27,7 @@ class Drug_FAQInline(admin.TabularInline):
 class DrugAdmin(admin.ModelAdmin):
     list_display = ('name', 'display_articles', 'display_videos')
     fields = ('name', 'brief_info', 'application_practice_articles',
-              'application_practice_videos', 'image', 'approvals_and_decodings', 'icons', 'faq')
+              'application_practice_videos', 'image', 'approvals_and_decodings', 'url_field', 'icons', 'faq')
     inlines = [Drug_FAQInline, IconInline]
 
     def display_articles(self, obj):
