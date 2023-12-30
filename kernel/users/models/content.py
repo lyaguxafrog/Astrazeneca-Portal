@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from users.models import UserProfile
 
 class SavedContent(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
