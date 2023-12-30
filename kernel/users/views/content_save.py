@@ -1,12 +1,16 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import UserProfile
-from users.serializers import ContentSaveSerializer
-from drf_yasg.utils import swagger_auto_schema
+from pages.models import Articles, Drug, Events, VideoLectures
+from users.serializers import (ContentSaveSerializer, ArticleSerializer,
+                               DrugSerializer, VideoLecturesSerializer,
+                               EventsSerializer, GetSavedContentViewSerializer)
+from users.serializers.save_content import UserProfileSerializer
 
+from drf_yasg.utils import swagger_auto_schema
 
 class SaveContentView(APIView):
     # permission_classes = [IsAuthenticated]
@@ -40,17 +44,30 @@ class SaveContentView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class GetSavedContentView(APIView):
+class GetSavedContentView(generics.RetrieveAPIView):
+    serializer_class = GetSavedContentViewSerializer
 
-    @swagger_auto_schema(
-        responses={200: 'Success'},
-    )
-    def get(self, request, user_id, *args, **kwargs):
-        try:
-            user_profile = UserProfile.objects.get(id=user_id)
-            saved_content = user_profile.saved_content
-            return Response({"message": "Успех", "saved_content": saved_content}, status=status.HTTP_200_OK)
-        except UserProfile.DoesNotExist:
-            return Response({"message": "Профиль пользователя не найден"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    def get_object(self):
+        user_profile = UserProfile.objects.get(id=self.kwargs['user_id'])
+        saved_content = user_profile.saved_content
+        serialized_content = {}
+
+        for content_type, content_ids in saved_content.items():
+            if content_type == 'article':
+                articles = Articles.objects.filter(id__in=content_ids)
+                serialized_content['article'] = ArticleSerializer(articles, many=True).data
+            elif content_type == 'video_lecture':
+                video_lectures = VideoLectures.objects.filter(id__in=content_ids)
+                serialized_content['video_lecture'] = VideoLecturesSerializer(video_lectures, many=True).data
+            elif content_type == 'drug':
+                drugs = Drug.objects.filter(id__in=content_ids)
+                serialized_content['drug'] = DrugSerializer(drugs, many=True).data
+            elif content_type == 'event':
+                events = Events.objects.filter(id__in=content_ids)
+                serialized_content['event'] = EventsSerializer(events, many=True).data
+            # Добавьте обработку других типов контента здесь
+
+        return {
+            "message": "Успех",
+            "saved_content": serialized_content,
+        }
