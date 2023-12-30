@@ -9,6 +9,13 @@ from drf_yasg.utils import swagger_auto_schema
 
 
 class UserRegistrationView(APIView):
+
+    @swagger_auto_schema(
+            request_body=UserProfileSerializer,
+            responses={200: 'User created'}
+    )
+
+
     def post(self, request, *args, **kwargs):
         temporary_token = request.data.get('temporary_token')
         existing_user_profile = UserProfile.objects.filter(temporary_token=temporary_token).first()
