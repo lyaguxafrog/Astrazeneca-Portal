@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from users.models import UserProfile
 from pages.models import Specialty
 from users.serializers import UserProfileSerializer
+from drf_yasg.utils import swagger_auto_schema
 
 
 
@@ -47,3 +48,24 @@ class UserRegistrationView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Specialty.DoesNotExist:
             return Response("Specialty not found", status=status.HTTP_404_NOT_FOUND)
+
+
+class GetUserByTokenView(APIView):
+
+    @swagger_auto_schema(
+        responses={200: UserProfileSerializer()},
+    )
+    def get(self, request, *args, **kwargs):
+        temporary_token = self.kwargs.get('temporary_token')
+        try:
+            user_profile = UserProfile.objects.get(temporary_token=temporary_token)
+            serializer = UserProfileSerializer(user_profile)
+            response_data = {
+                "user_id": user_profile.id,
+                **serializer.data  # Добавляем все поля из сериализатора
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        except UserProfile.DoesNotExist:
+            return Response({"message": "Профиль пользователя не найден"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
