@@ -3,6 +3,8 @@
 
 from rest_framework import serializers
 from pages.models import Drug, Icon, DrugFAQ
+from urllib.parse import urlparse
+
 
 
 class DrugListSerializer(serializers.ModelSerializer):
@@ -45,6 +47,19 @@ class DrugSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         return obj.image.url if obj.image else None
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+
+        # Обработка поля file_field для получения относительного пути
+        file_field_url = data.get('file_field')
+        if file_field_url:
+            parsed_url = urlparse(file_field_url)
+            # Оставляем только относительный путь, начиная с /media/
+            relative_path = parsed_url.path if parsed_url.path.startswith('/media/') else None
+            data['file_field'] = relative_path
+
+        return data
 
     def get_application_practices(self, obj):
         articles = obj.application_practice_articles.all()

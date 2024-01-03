@@ -57,7 +57,7 @@ class GetSavedContentView(generics.RetrieveAPIView):
             if content_type == 'article':
                 articles = Articles.objects.filter(id__in=content_ids)
                 serialized_content['article'] = ArticleSerializer(articles, many=True).data
-            elif content_type == 'video':
+            elif content_type == 'video1':
                 video_lectures = VideoLectures.objects.filter(id__in=content_ids)
                 serialized_content['video'] = VideoLecturesSerializer(video_lectures, many=True).data
             elif content_type == 'drug':
