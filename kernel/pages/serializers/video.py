@@ -80,10 +80,34 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
 class VideoLecturesListSerializer(serializers.ModelSerializer):
     video_cover_url = serializers.SerializerMethodField()
     video_article_url = serializers.SerializerMethodField()
+    video_cover_1400px_url = serializers.SerializerMethodField()
+    video_cover_2800px_url = serializers.SerializerMethodField()
+    video_cover_390px_url = serializers.SerializerMethodField()
+    video_cover_780px_url = serializers.SerializerMethodField()
 
     class Meta:
         model = VideoLectures
-        fields = ['id', 'video_cover_url', 'video_article_url', 'content_type', 'speciality']
+        fields = ['id',
+                  'video_cover_url',
+                  'video_article_url',
+                  'content_type',
+                  'speciality',
+                'video_cover_1400px_url',
+                'video_cover_2800px_url',
+                'video_cover_390px_url',
+                'video_cover_780px_url']
+
+    def get_video_cover_1400px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_1400px)
+
+    def get_video_cover_2800px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_2800px)
+
+    def get_video_cover_390px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_390px)
+
+    def get_video_cover_780px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_780px)
 
     def get_video_cover_url(self, obj):
         return self.get_relative_url(obj.video_cover)
