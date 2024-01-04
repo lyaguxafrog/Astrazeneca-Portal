@@ -35,7 +35,8 @@ class SearchAPIView(generics.ListAPIView):
 
         events_queryset = Events.objects.filter(
             Q(name__icontains=search_param) |
-            Q(text__icontains=search_param)
+            Q(text__icontains=search_param) |
+            Q(url__icontains=search_param)
         ).annotate(model_type=Value('event', output_field=CharField()))
 
         video_lectures_queryset = VideoLectures.objects.filter(
@@ -50,7 +51,7 @@ class SearchAPIView(generics.ListAPIView):
             list(content_blocks_queryset.values('id', 'text', 'model_type', model=Value('content_block'))) +
             list(drugs_queryset.values('id', 'name', 'model_type', model=Value('drug'))) +
             list(drug_faqs_queryset.values('id', 'title', 'model_type', model=Value('drug_faq'))) +
-            list(events_queryset.values('id', 'name', 'model_type', model=Value('event'))) +
+            list(events_queryset.values('id', 'name', 'url', 'model_type', model=Value('event'))) +
             list(video_lectures_queryset.values('id', 'video_article', 'model_type', model=Value('video_lecture')))
         )
 
