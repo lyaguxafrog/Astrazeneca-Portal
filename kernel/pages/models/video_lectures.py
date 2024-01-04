@@ -9,6 +9,9 @@ from django.db.models.signals import pre_save
 from django.dispatch import Signal, receiver
 from pathlib import Path
 from io import BytesIO
+from django.core.files.base import ContentFile
+from django.core.files import File
+
 
 
 class VideoLectures(models.Model):
@@ -57,21 +60,32 @@ class DisableSignals:
 @receiver(pre_save, sender=VideoLectures)
 def process_video_cover(sender, instance, **kwargs):
     if instance.video_cover:
-        file_path = Path(instance.video_cover.path)
+        file_path = instance.video_cover.path
 
-        # Check if the file exists
-        if file_path.exists():
-            # Disable signals to avoid recursion
+        # Проверяем, существует ли файл
+        if Path(file_path).exists():
+            # Отключаем сигналы для избежания рекурсии
             with DisableSignals(sender=VideoLectures):
                 image = Image.open(file_path)
 
-                # Create and save images with different sizes
-                instance.video_cover_1400px.save(f"{instance.video_cover.name}_1400px.jpg", BytesIO(image.resize((1400, 1400)).tobytes()), save=False)
-                instance.video_cover_2800px.save(f"{instance.video_cover.name}_2800px.jpg", BytesIO(image.resize((2800, 2800)).tobytes()), save=False)
-                instance.video_cover_390px.save(f"{instance.video_cover.name}_390px.jpg", BytesIO(image.resize((390, 390)).tobytes()), save=False)
-                instance.video_cover_780px.save(f"{instance.video_cover.name}_780px.jpg", BytesIO(image.resize((780, 780)).tobytes()), save=False)
+                # Создаем байтовый поток и сохраняем изображения с разными размерами
+                image_stream_1400px = BytesIO()
+                image.resize((1400, 1400)).save(image_stream_1400px, format='JPEG')
+                instance.video_cover_1400px.save(f"{instance.video_cover.name}_1400px.jpg", File(image_stream_1400px), save=False)
 
-                # Manually save changes to the model instance
+                image_stream_2800px = BytesIO()
+                image.resize((2800, 2800)).save(image_stream_2800px, format='JPEG')
+                instance.video_cover_2800px.save(f"{instance.video_cover.name}_2800px.jpg", File(image_stream_2800px), save=False)
+
+                image_stream_390px = BytesIO()
+                image.resize((390, 390)).save(image_stream_390px, format='JPEG')
+                instance.video_cover_390px.save(f"{instance.video_cover.name}_390px.jpg", File(image_stream_390px), save=False)
+
+                image_stream_780px = BytesIO()
+                image.resize((780, 780)).save(image_stream_780px, format='JPEG')
+                instance.video_cover_780px.save(f"{instance.video_cover.name}_780px.jpg", File(image_stream_780px), save=False)
+
+                # Сохраняем изменения в модели вручную
                 instance.save()
         else:
-            print(f"File not found: {file_path}")
+            print(f"Файл не найден: {file_path}")
