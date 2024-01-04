@@ -9,13 +9,45 @@ from urllib.parse import urlparse
 
 class DrugListSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+    image_1400px = serializers.SerializerMethodField()
+    image_2800px = serializers.SerializerMethodField()
+    image_390px = serializers.SerializerMethodField()
+    image_780px = serializers.SerializerMethodField()
 
     class Meta:
         model = Drug
-        fields = ['id', 'name', 'brief_info', 'image']
+        fields = [
+            'id',
+            'name',
+            'brief_info',
+            'image',
+            'image_1400px',
+            'image_2800px',
+            'image_390px',
+            'image_780px',
+                  ]
+
+    def get_image_1400px(self, obj):
+        return self.get_relative_url(obj.image_1400px)
+
+    def get_image_2800px(self, obj):
+        return self.get_relative_url(obj.image_2800px)
+
+    def get_image_390px(self, obj):
+        return self.get_relative_url(obj.image_390px)
+
+    def get_image_780px(self, obj):
+        return self.get_relative_url(obj.image_780px)
 
     def get_image(self, obj):
         return obj.image.url if obj.image else None
+
+    def get_relative_url(self, file_field_or_url):
+        if file_field_or_url and hasattr(file_field_or_url, 'url'):
+            return file_field_or_url.url
+        elif isinstance(file_field_or_url, str) and file_field_or_url.startswith('http'):
+            return file_field_or_url
+        return None
 
 class IconSerializer(serializers.ModelSerializer):
     image_file = serializers.SerializerMethodField()
@@ -40,6 +72,10 @@ class DrugSerializer(serializers.ModelSerializer):
     icons = IconSerializer(many=True, read_only=True)
     faq = FAQSerializer(many=True, read_only=True)
     application_practices = serializers.SerializerMethodField()
+    image_1400px = serializers.SerializerMethodField()
+    image_2800px = serializers.SerializerMethodField()
+    image_390px = serializers.SerializerMethodField()
+    image_780px = serializers.SerializerMethodField()
 
     class Meta:
         model = Drug
@@ -47,6 +83,18 @@ class DrugSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         return obj.image.url if obj.image else None
+
+    def get_image_1400px(self, obj):
+        return obj.image_1400px.url if obj.image_1400px else None
+
+    def get_image_2800px(self, obj):
+        return obj.image_2800px.url if obj.image_2800px else None
+
+    def get_image_390px(self, obj):
+        return obj.image_390px.url if obj.image_390px else None
+
+    def get_image_780px(self, obj):
+        return obj.image_780px.url if obj.image_780px else None
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

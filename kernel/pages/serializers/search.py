@@ -6,6 +6,7 @@ class SearchSerializer(serializers.Serializer):
     title = serializers.SerializerMethodField()
     model = serializers.CharField()
     id = serializers.IntegerField()
+    url = serializers.URLField()
 
     def get_title(self, instance):
         model_name = instance['model']
@@ -24,4 +25,4 @@ class SearchSerializer(serializers.Serializer):
         return ''
 
     class Meta:
-        fields = ['title', 'model', 'id']
+        fields = ['title', 'model', 'id', 'url']
