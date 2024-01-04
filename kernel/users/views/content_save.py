@@ -10,6 +10,7 @@ from users.serializers import (ContentSaveSerializer, ArticleSerializer,
                                EventsSerializer, GetSavedContentViewSerializer,
                                ContentRemoveSerializer)
 from users.serializers.save_content import UserProfileSerializer
+from collections import OrderedDict
 
 from drf_yasg.utils import swagger_auto_schema
 
@@ -52,27 +53,31 @@ class GetSavedContentView(generics.RetrieveAPIView):
     def get_object(self):
         user_profile = UserProfile.objects.get(id=self.kwargs['user_id'])
         saved_content = user_profile.saved_content
-        serialized_content = {}
+        serialized_content = OrderedDict()
 
         for content_type, content_ids in saved_content.items():
-            if content_type == 'article':
-                articles = Articles.objects.filter(id__in=content_ids)
-                serialized_content['article'] = ArticleSerializer(articles, many=True).data
-            elif content_type == 'video':
-                video_lectures = VideoLectures.objects.filter(id__in=content_ids)
-                serialized_content['video'] = VideoLecturesSerializer(video_lectures, many=True).data
-            elif content_type == 'drug':
-                drugs = Drug.objects.filter(id__in=content_ids)
-                serialized_content['drug'] = DrugSerializer(drugs, many=True).data
-            elif content_type == 'event':
-                events = Events.objects.filter(id__in=content_ids)
-                serialized_content['event'] = EventsSerializer(events, many=True).data
+            content_type_serialized = []
+
+            for content_id in content_ids:
+                if content_type == 'article':
+                    article = Articles.objects.get(id=content_id)
+                    content_type_serialized.append(ArticleSerializer(article).data)
+                elif content_type == 'video':
+                    video_lecture = VideoLectures.objects.get(id=content_id)
+                    content_type_serialized.append(VideoLecturesSerializer(video_lecture).data)
+                elif content_type == 'drug':
+                    drug = Drug.objects.get(id=content_id)
+                    content_type_serialized.append(DrugSerializer(drug).data)
+                elif content_type == 'event':
+                    event = Events.objects.get(id=content_id)
+                    content_type_serialized.append(EventsSerializer(event).data)
+
+            serialized_content[content_type] = content_type_serialized
 
         return {
             "message": "Успех",
             "saved_content": serialized_content,
         }
-
 
 
 class RemoveContentView(generics.DestroyAPIView):
