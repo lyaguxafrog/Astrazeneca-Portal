@@ -20,7 +20,8 @@ export type VideoPlump = {
   id: number;
   video_article: string;
   video_url: string;
-  video_cover_url: string;
+  video_cover_url?: string;
+  video_cover: string;
   conspect: string;
   access_number: string;
   content_type: VideoContentType;

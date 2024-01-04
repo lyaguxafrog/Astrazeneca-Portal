@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
@@ -39,16 +40,18 @@ import { useScreen } from '~/utils/composables/useScreen';
 type SearchResult = {
   id: number;
   title: string;
-  model: 'video_lecture' | 'article';
+  model: 'video_lecture' | 'article' | 'event';
 };
 
+const $route = useRoute();
+const $router = useRouter();
 const { $screen } = useScreen();
 
 const isOpen = ref();
 const inputEl = ref();
 const scrollEl = ref();
 
-const searchString = ref('');
+const searchString = ref($route.query.s);
 
 const result = ref<
   {
@@ -84,8 +87,21 @@ const result = ref<
     color: '#00B0BB',
     items: [],
   },
+  {
+    id: '4',
+    name: 'Мероприятия',
+    postfix: 'мероприятие',
+    color: '#a8a8a8',
+    items: [],
+  },
 ]);
 const search = async () => {
+  await $router.replace({
+    query: {
+      s: searchString.value,
+    },
+  });
+
   const res = await useRequest<SearchResult[]>(`/search/${searchString.value}`, {
     method: 'GET',
   });
@@ -105,6 +121,10 @@ const search = async () => {
       if (r.model === 'article') {
         result.value[0].items.push(data);
       }
+
+      if (r.model === 'event') {
+        result.value[3].items.push(data);
+      }
     });
   }
 };
@@ -116,6 +136,7 @@ watchDebounced(
   },
   {
     debounce: 500,
+    immediate: true,
   }
 );
 
@@ -278,6 +299,7 @@ defineExpose({
         }
 
         &-item {
+          width: 100%;
           padding: 17px;
           aspect-ratio: 1;
 

@@ -9,7 +9,7 @@ export type History = {
   cover_image: string;
   is_active: boolean;
   link_to_page: boolean;
-  video: boolean;
+  video: string;
   specialties: number[];
 };
 
@@ -36,8 +36,16 @@ export const useHistoriesStore = () => {
     return data.filter((s) => !s.specialties.length);
   });
   const getHistories = async () => {
+    const specialityId = speciality.value?.id;
+
+    let url = '/stories';
+
+    if (specialityId) {
+      url += `/${specialityId}`;
+    }
+
     if (!state.value.histories.loaded) {
-      const res = await useRequest<History[]>('/stories/', {
+      const res = await useRequest<History[]>(url, {
         method: 'GET',
       });
 

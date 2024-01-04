@@ -43,7 +43,16 @@
           </div>
         </div>
         <AppButton
-          v-if="content.url_field"
+          v-if="content.file_field"
+          class="drug-page__right-btn"
+          target="_blank"
+          :to="`${baseUrl}${content.file_field}`"
+          :petite="$screen.mdAndDown"
+        >
+          Инструкция
+        </AppButton>
+        <AppButton
+          v-else-if="content.url_field"
           class="drug-page__right-btn"
           target="_blank"
           :to="content.url_field"

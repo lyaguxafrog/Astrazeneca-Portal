@@ -7,6 +7,8 @@
       :initial-slide="items.length < 3 ? 0 : initialSlide"
       :modules="[Pagination, Navigation]"
       :pagination="{ clickable: true }"
+      :slides-offset-before="$screen.mdAndDown ? 22 : undefined"
+      :slides-offset-after="$screen.mdAndDown ? 22 : undefined"
       :navigation="{
         nextEl: nextRef,
         prevEl: prevRef,
