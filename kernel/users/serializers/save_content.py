@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework import serializers
-from pages.models import Articles, Drug, VideoLectures, Events
+from pages.models import Articles, Drug, VideoLectures, Events, Story
 from users.models import UserProfile
 from collections import OrderedDict
 
@@ -24,6 +24,11 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
 class EventsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Events
+        fields = '__all__'
+
+class StorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Story
         fields = '__all__'
 
 class GetSavedContentViewSerializer(serializers.Serializer):
