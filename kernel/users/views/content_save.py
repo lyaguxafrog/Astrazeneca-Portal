@@ -45,6 +45,7 @@ class SaveContentView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class GetSavedContentView(generics.RetrieveAPIView):
     serializer_class = GetSavedContentViewSerializer
 
@@ -57,7 +58,7 @@ class GetSavedContentView(generics.RetrieveAPIView):
             if content_type == 'article':
                 articles = Articles.objects.filter(id__in=content_ids)
                 serialized_content['article'] = ArticleSerializer(articles, many=True).data
-            elif content_type == 'video1':
+            elif content_type == 'video':
                 video_lectures = VideoLectures.objects.filter(id__in=content_ids)
                 serialized_content['video'] = VideoLecturesSerializer(video_lectures, many=True).data
             elif content_type == 'drug':
@@ -66,12 +67,12 @@ class GetSavedContentView(generics.RetrieveAPIView):
             elif content_type == 'event':
                 events = Events.objects.filter(id__in=content_ids)
                 serialized_content['event'] = EventsSerializer(events, many=True).data
-            # Добавьте обработку других типов контента здесь
 
         return {
             "message": "Успех",
             "saved_content": serialized_content,
         }
+
 
 
 class RemoveContentView(generics.DestroyAPIView):
