@@ -47,7 +47,7 @@ const { speciality } = useSpecialityStore();
 
 const accessInfo = await useRequest<{
   number: string;
-}>('/main_page,', {
+}>('/main_page', {
   method: 'GET',
 });
 
@@ -74,6 +74,8 @@ watch(
 
 <style lang="scss" scoped>
 .home {
+  background: url('~/assets/img/home/bg.png') no-repeat top -340px left 0;
+
   &__intro {
     position: relative;
 

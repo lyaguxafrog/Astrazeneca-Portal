@@ -1,5 +1,5 @@
 <template>
-  <InsidePageHead />
+  <InsidePageHead :content-type="ContentType.Article" :content-id="+articleId" />
   <div v-if="content" class="article-page">
     <BgEllipse size="1138" color="#4DDFFF" pale class="article-page__first-ellipse" />
     <BgEllipse
@@ -54,6 +54,7 @@ import { useArticlesStore } from '~/utils/composables/store/articles';
 import { useScreen } from '~/utils/composables/useScreen';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import { ContentType } from '~/utils/types';
 
 const $route = useRoute();
 const { $screen } = useScreen();

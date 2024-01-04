@@ -22,8 +22,8 @@
           ref="videosRef"
           playsinline
           :muted="muted"
-          :src="history.url"
-          :style="{ backgroundImage: `url(${history.preview})` }"
+          :src="`${baseUrl}${history.video}`"
+          :style="{ backgroundImage: `url(${baseUrl}${history.cover_image})` }"
           @touchend="onVideoTouchEnd"
         />
         <AppButton mode="icon" class="history__volume" petite @click="toggleVolume">
@@ -36,7 +36,7 @@
     </Swiper>
 
     <div v-if="activeHistory" class="history__controls">
-      <AppFavouriteButton white :active="false" />
+      <AppFavouriteButton white :content-type="ContentType.Story" :content-id="activeHistory.id" />
       <AppButton primary :to="activeHistory.link" petite class="history__link"> Перейти </AppButton>
     </div>
 
@@ -60,13 +60,14 @@ import { useScreen } from '~/utils/composables/useScreen';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
 import { useBack } from '~/utils/composables/useHistory';
 import { IconName } from '~/components/app/AppIcon.utils';
+import { ContentType } from '~/utils/types';
 
 definePageMeta({
   hideFooter: true,
 });
 
 const { histories } = useHistoriesStore();
-
+const { baseUrl } = useRuntimeConfig().public;
 const $router = useRouter();
 const $route = useRoute();
 const { $screen } = useScreen();

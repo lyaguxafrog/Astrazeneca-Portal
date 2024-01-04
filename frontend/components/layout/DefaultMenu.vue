@@ -80,7 +80,7 @@ const openSearch = () => {
 
     @include hover {
       span {
-        color: $accent-color;
+        color: $white-color;
       }
     }
 
