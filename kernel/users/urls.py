@@ -11,7 +11,7 @@ from drf_yasg import openapi
 from users.views import (SaveContentView, GetSavedContentView,
                     SignUpAPIView, SignInAPIView,
                     HandleSSORedirectAPIView, SaveTokensAPIView, UserRegistrationView,
-                    GetUserByTokenView)
+                    GetUserByTokenView, RemoveContentView)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -37,5 +37,6 @@ urlpatterns = [
 
     path('save-content/', SaveContentView.as_view(), name='save-content-create'),
     path('save-content/get/<int:user_id>', GetSavedContentView.as_view(),
-         name='get-saved-content')
+         name='get-saved-content'),
+    path('save-content/remove/', RemoveContentView.as_view(), name='remove-content')
 ]

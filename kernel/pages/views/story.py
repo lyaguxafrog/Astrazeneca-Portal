@@ -9,14 +9,12 @@ class StoryListAPIView(generics.ListAPIView):
     serializer_class = StoryListSerializer
 
     def get_queryset(self):
-        specialty_id = self.kwargs.get('id')  # Извлекаем id специальности из URL-параметров
+        specialty_id = self.kwargs.get('id')
 
         if specialty_id:
-            # Если передан id специальности, фильтруем истории по специальности
-            return Story.objects.filter(specialties__id=specialty_id, is_active=True)
+            return Story.objects.filter(specialties__id=specialty_id, is_active=True).exclude(specialties__isnull=False)
         else:
-            # Если id специальности не передан, возвращаем все истории
-            return Story.objects.filter(is_active=True)
+            return Story.objects.filter(is_active=True).exclude(specialties__isnull=False)
 
 class SpecialityStoryListAPIView(generics.ListAPIView):
     serializer_class = StoryListSerializer
@@ -25,10 +23,8 @@ class SpecialityStoryListAPIView(generics.ListAPIView):
         specialty_id = self.kwargs.get('id')
 
         if specialty_id:
-            # Если передан id специальности, фильтруем истории по специальности и тем, которые не привязаны
             return Story.objects.filter(Q(specialties__id=specialty_id) | Q(specialties__isnull=True), is_active=True)
         else:
-            # Если id специальности не передан, возвращаем все истории
             return Story.objects.filter(is_active=True)
 
 

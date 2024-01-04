@@ -9,6 +9,12 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
     video_article_url = serializers.SerializerMethodField()
     video_url = serializers.SerializerMethodField()
     video_recomendations = serializers.SerializerMethodField()
+    video_cover_1400px_url = serializers.SerializerMethodField()
+    video_cover_2800px_url = serializers.SerializerMethodField()
+    video_cover_390px_url = serializers.SerializerMethodField()
+    video_cover_780px_url = serializers.SerializerMethodField()
+
+
 
     class Meta:
         model = VideoLectures
@@ -20,14 +26,29 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
             'video_article',
             'short_description',
             'conspect',
-            'video',
-            'video_cover',
             'access_number',
             'content_type',
             'drug',
             'video_recomendations',
-            'speciality'
+            'speciality',
+            'video_cover_1400px_url',
+            'video_cover_2800px_url',
+            'video_cover_390px_url',
+            'video_cover_780px_url'
+
         ]
+
+    def get_video_cover_1400px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_1400px)
+
+    def get_video_cover_2800px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_2800px)
+
+    def get_video_cover_390px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_390px)
+
+    def get_video_cover_780px_url(self, obj):
+        return self.get_relative_url(obj.video_cover_780px)
 
     def get_video_cover_url(self, obj):
         return self.get_relative_url(obj.video_cover)
@@ -39,7 +60,6 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
         return self.get_relative_url(obj.video)
 
     def get_video_recomendations(self, obj):
-        # Customize this part based on your actual model structure
         return [
             {
                 'id': recommendation.id,
