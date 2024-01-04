@@ -6,7 +6,7 @@ class SearchSerializer(serializers.Serializer):
     title = serializers.SerializerMethodField()
     model = serializers.CharField()
     id = serializers.IntegerField()
-    url = serializers.URLField()
+    url = serializers.URLField(required=False)  # Make the URL field optional
 
     def get_title(self, instance):
         model_name = instance['model']
