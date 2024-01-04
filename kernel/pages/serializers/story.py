@@ -6,10 +6,18 @@ from django.db import models
 
 class StoryListSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
+    video = serializers.SerializerMethodField()
+    cover_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Story
         fields = '__all__'
+
+    def get_video(self, obj):
+        return self.get_relative_url(obj.video)
+
+    def get_cover_image(self, obj):
+        return self.get_relative_url(obj.cover_image)
 
     def get_avatar(self, obj):
         return self.get_relative_url(obj.avatar)
