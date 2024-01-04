@@ -89,8 +89,6 @@ const setType = (type: VideoContentType) => {
 
     padding: 77px 0 9px;
 
-    background: url('~/assets/img/home/bg.png') no-repeat top -340px left 0;
-
     &-head {
       padding: 0 56px;
     }

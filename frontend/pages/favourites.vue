@@ -35,48 +35,9 @@ import { useFavourites } from '~/utils/composables/useFavourites';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
-const { getFavourites } = useFavourites();
+const { getFavourites, favourites } = useFavourites();
 
 await getFavourites();
-
-const favourites = [
-  {
-    id: '1',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '2',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '3',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '4',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '5',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '6',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '7',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '8',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '9',
-    name: 'Название единицы контента',
-  },
-];
 </script>
 
 <style scoped lang="scss">

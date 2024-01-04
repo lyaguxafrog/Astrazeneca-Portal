@@ -23,7 +23,7 @@
           playsinline
           :muted="muted"
           :src="history.url"
-          :style="{ backgroundImage: `url(${history.preview})` }"
+          :style="{ backgroundImage: `url(${history.cover_image})` }"
           @touchend="onVideoTouchEnd"
         />
         <AppButton mode="icon" class="history__volume" petite @click="toggleVolume">

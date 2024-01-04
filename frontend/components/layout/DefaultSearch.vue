@@ -218,10 +218,6 @@ defineExpose({
         font-size: 18px;
         line-height: 42px;
         letter-spacing: -0.18px;
-
-        @include hover {
-          color: $accent-color;
-        }
       }
     }
   }

@@ -24,7 +24,7 @@ export const useHistoriesStore = () => {
     const data = state.value.histories.data;
 
     if (!data) {
-      return [];
+      return [] as History[];
     }
 
     const specialityId = speciality.value?.id;
@@ -36,10 +36,8 @@ export const useHistoriesStore = () => {
     return data.filter((s) => !s.specialties.length);
   });
   const getHistories = async () => {
-    let url = '/stories';
-
     if (!state.value.histories.loaded) {
-      const res = await useRequest<History[]>(url, {
+      const res = await useRequest<History[]>('/stories/', {
         method: 'GET',
       });
 
