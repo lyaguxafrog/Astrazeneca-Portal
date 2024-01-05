@@ -28,7 +28,7 @@ const { toggleFavourite, isInFavourite } = useFavourites();
 
 const iconSize = toRef(() => ($screen.value.mdAndDown ? 26 : props.big ? 42 : 38));
 
-const isActive = isInFavourite(props.contentType, props.contentId);
+const isActive = toRef(() => isInFavourite(props.contentType, props.contentId));
 </script>
 
 <style lang="scss" scoped></style>

@@ -41,6 +41,16 @@
             {{ (fav as ArticlePlump).article_name }}
           </p>
         </nuxt-link>
+        <nuxt-link
+          v-else-if="fav.type === ContentType.Stories"
+          class="favourites__item"
+          :style="{ backgroundImage: `url('${baseUrl}${(fav as History).cover_image}')` }"
+          :to="`histories/?id=${fav.id}`"
+        >
+          <p>
+            {{ (fav as History).title }}
+          </p>
+        </nuxt-link>
       </template>
     </div>
   </div>
@@ -50,6 +60,7 @@
 import { useScreen } from '~/utils/composables/useScreen';
 import { VideoPlump } from '~/utils/composables/store/videos';
 import { ArticlePlump } from '~/utils/composables/store/articles';
+import { History } from '~/utils/composables/store/histories';
 import { useFavourites } from '~/utils/composables/useFavourites';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { ContentType } from '~/utils/types';
