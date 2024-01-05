@@ -7,6 +7,6 @@ from pages.models import Specialty
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    saved_content = models.JSONField(default=list, null=True)
+    saved_content = models.JSONField(default=dict, null=True)
     temporary_token = models.CharField(null=True, unique=True)
     specialty = models.ForeignKey(Specialty, on_delete=models.SET_NULL, null=True, blank=True, related_name='users')
