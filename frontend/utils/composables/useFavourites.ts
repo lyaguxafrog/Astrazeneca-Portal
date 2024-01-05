@@ -8,7 +8,7 @@ import { loadableEmpty } from '~/utils/functions/loadable';
 export type Favourites = {
   [ContentType.Video]?: VideoPlump[];
   [ContentType.Article]?: VideoPlump[];
-  [ContentType.Story]?: VideoPlump[];
+  [ContentType.Stories]?: VideoPlump[];
 };
 
 export const useFavourites = () => {

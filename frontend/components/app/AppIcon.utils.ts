@@ -19,6 +19,9 @@ export { default as CloseIcon } from '~/assets/img/icons/close-icon.svg?componen
 export { default as DropIcon } from '~/assets/img/icons/dropdown.svg?component';
 export { default as VolumeOn } from '~/assets/img/icons/volume-high.svg?component';
 export { default as VolumeOff } from '~/assets/img/icons/volume-off.svg?component';
+export { default as Note } from '~/assets/img/icons/note.svg?component';
+export { default as Video } from '~/assets/img/icons/VideoCamera.svg?component';
+export { default as Megaphone } from 'assets/img/icons/megaphone.svg?component';
 
 export enum IconName {
   HeartIcon = 'HeartIcon',
@@ -41,4 +44,7 @@ export enum IconName {
   SearchBlack = 'SearchBlack',
   VolumeOn = 'VolumeOn',
   VolumeOff = 'VolumeOff',
+  Note = 'Note',
+  Video = 'Video',
+  Megaphone = 'Megaphone',
 }

@@ -25,6 +25,10 @@ a {
   color: $primary-color;
 }
 
+.swiper-wrapper {
+  width: fit-content !important;
+}
+
 .swiper-button {
   color: $primary-color;
 

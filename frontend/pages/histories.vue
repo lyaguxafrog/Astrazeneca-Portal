@@ -36,7 +36,11 @@
     </Swiper>
 
     <div v-if="activeHistory" class="history__controls">
-      <AppFavouriteButton white :content-type="ContentType.Story" :content-id="activeHistory.id" />
+      <AppFavouriteButton
+        white
+        :content-type="ContentType.Stories"
+        :content-id="activeHistory.id"
+      />
       <AppButton primary :to="activeHistory.link" petite class="history__link"> Перейти </AppButton>
     </div>
 

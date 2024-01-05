@@ -35,7 +35,7 @@ export const useHistoriesStore = () => {
 
     return data.filter((s) => !s.specialties.length);
   });
-  const getHistories = async () => {
+  const getHistories = async (force?: boolean) => {
     const specialityId = speciality.value?.id;
 
     let url = '/stories';
@@ -44,7 +44,7 @@ export const useHistoriesStore = () => {
       url += `/${specialityId}`;
     }
 
-    if (!state.value.histories.loaded) {
+    if (!state.value.histories.loaded || force) {
       const res = await useRequest<History[]>(url, {
         method: 'GET',
       });
