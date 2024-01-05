@@ -37,6 +37,7 @@ class SaveContentView(APIView):
                 # Присваиваем обновленный контент обратно
                 user_profile.saved_content[content_type] = saved_content
 
+
                 user_profile.save()
                 return Response({"message": f"Контент {content_id} успешно сохранен"}, status=status.HTTP_201_CREATED)
             except UserProfile.DoesNotExist:
