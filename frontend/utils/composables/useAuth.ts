@@ -1,10 +1,12 @@
 import { useRoute, useRouter, useState } from '#app';
 import { useRequest } from '~/utils/composables/useRequest';
+import { useHistoriesStore } from '~/utils/composables/store/histories';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 
 export const useAuth = () => {
   const $router = useRouter();
   const $route = useRoute();
+  const historiesStore = useHistoriesStore();
 
   const { speciality, setSpeciality } = useSpecialityStore();
 
@@ -93,6 +95,8 @@ export const useAuth = () => {
           refresh: undefined,
         },
       });
+
+      await historiesStore.getHistories(true);
     }
   };
 

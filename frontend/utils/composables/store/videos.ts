@@ -11,6 +11,10 @@ export type Video = {
   video_article_url: string;
   video: string;
   video_cover_url: string;
+  video_cover_2800px_url: string;
+  video_cover_1400px_url: string;
+  video_cover_780px_url: string;
+  video_cover_390px_url: string;
   conspect: string;
   access_number: string;
   content_type: VideoContentType;

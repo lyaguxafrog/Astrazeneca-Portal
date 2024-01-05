@@ -21,6 +21,12 @@
               @click="close"
             >
               {{ item.name }} <span :style="{ color: block.color }">| {{ block.postfix }}</span>
+              <AppIcon
+                v-if="$screen.mdAndDown"
+                class="search__results-block-icon"
+                :name="block.icon"
+                :size="26"
+              />
             </nuxt-link>
           </div>
         </template>
@@ -32,7 +38,7 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
-import { IconName } from '~/components/app/AppIcon.utils';
+import { IconName, Video } from '~/components/app/AppIcon.utils';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useScreen } from '~/utils/composables/useScreen';
@@ -40,6 +46,7 @@ import { useScreen } from '~/utils/composables/useScreen';
 type SearchResult = {
   id: number;
   title: string;
+  url?: string;
   model: 'video_lecture' | 'article' | 'event';
 };
 
@@ -62,8 +69,9 @@ const result = ref<
     items: {
       id: number;
       name: string;
-      link: string;
+      link?: string;
     }[];
+    icon: IconName;
   }[]
 >([
   {
@@ -72,6 +80,7 @@ const result = ref<
     postfix: 'статья',
     color: '#00B0BB',
     items: [],
+    icon: IconName.Note,
   },
   {
     id: '2',
@@ -79,6 +88,7 @@ const result = ref<
     postfix: 'видео',
     color: '#8300A4',
     items: [],
+    icon: IconName.Video,
   },
   {
     id: '3',
@@ -86,6 +96,7 @@ const result = ref<
     postfix: 'кейс',
     color: '#00B0BB',
     items: [],
+    icon: IconName.Note,
   },
   {
     id: '4',
@@ -93,11 +104,13 @@ const result = ref<
     postfix: 'мероприятие',
     color: '#a8a8a8',
     items: [],
+    icon: IconName.Megaphone,
   },
 ]);
 const search = async () => {
   await $router.replace({
     query: {
+      ...$route.query,
       s: searchString.value,
     },
   });
@@ -111,7 +124,12 @@ const search = async () => {
       const data = {
         id: r.id,
         name: r.title,
-        link: r.model === 'video_lecture' ? `/video/${r.id}` : `/article/${r.id}`,
+        link:
+          r.model === 'event'
+            ? r.url
+            : r.model === 'video_lecture'
+            ? `/video/${r.id}`
+            : `/article/${r.id}`,
       };
 
       if (r.model === 'video_lecture') {
@@ -222,6 +240,13 @@ defineExpose({
 
       border-bottom: 1px solid #bebebe;
 
+      &-icon {
+        display: block;
+
+        margin-top: auto;
+        margin-left: auto;
+      }
+
       &-title {
         margin-bottom: 1px;
 
@@ -299,6 +324,9 @@ defineExpose({
         }
 
         &-item {
+          display: flex;
+          flex-direction: column;
+
           width: 100%;
           padding: 17px;
           aspect-ratio: 1;

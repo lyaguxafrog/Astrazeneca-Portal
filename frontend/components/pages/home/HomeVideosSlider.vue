@@ -48,7 +48,12 @@
               v-html="item.video_article_url"
             />
             <div class="videos-slider__img">
-              <img class="videos-slider__image" :src="`${baseUrl}${item.video_cover_url}`" alt="" />
+              <AppImage
+                class="videos-slider__image"
+                :url="item.video_cover_url"
+                :url-full-x2="item.video_cover_2800px_url"
+                :url-full="item.video_cover_1400px_url"
+              />
             </div>
             <PlayVideoButton />
           </nuxt-link>
@@ -157,7 +162,7 @@ const setType = (type: VideoContentType) => {
 
   .items-slider__content {
     @include hover {
-      img {
+      .videos-slider__image {
         transform: scale(1.03);
       }
     }
@@ -168,7 +173,7 @@ const setType = (type: VideoContentType) => {
 
     border-radius: 34px;
 
-    img {
+    .videos-slider__image {
       display: block;
 
       width: 100%;

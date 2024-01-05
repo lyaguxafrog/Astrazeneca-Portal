@@ -1,6 +1,7 @@
 <template>
   <div class="items-slider" :class="{ hidePagination }">
     <Swiper
+      grab-cursor
       :centered-slides="centeredSlides"
       :space-between="$screen.mdAndDown ? 40 : 100"
       :slides-per-view="$screen.mdAndDown ? mobileSlidesPerView : desktopSlidesPerView"
