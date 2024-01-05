@@ -3,7 +3,7 @@ import { useRequest } from '~/utils/composables/useRequest';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 
 export type History = {
-  id: string;
+  id: number;
   title: string;
   avatar: string;
   cover_image: string;

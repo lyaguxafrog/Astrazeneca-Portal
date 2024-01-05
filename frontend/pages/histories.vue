@@ -1,5 +1,5 @@
 <template>
-  <div ref="historiesEl" class="histories">
+  <div v-if="histories.length" ref="historiesEl" class="histories">
     <Swiper
       class="histories__swiper"
       grab-cursor
@@ -13,7 +13,7 @@
         nextEl: nextRef,
         prevEl: prevRef,
       }"
-      :initial-slide="activeSlide"
+      :initial-slide="activeHistoryIndex"
       @swiper="onSwiper"
       @slide-change="onSlideChange"
     >
@@ -78,9 +78,13 @@ const { $screen } = useScreen();
 const swiper = ref<SwiperType>();
 const videosRef = ref<HTMLVideoElement[]>([]);
 
-const activeSlide = ref(+($route.query.index || 0));
-const activeHistory = toRef(() => histories.value[activeSlide.value]);
-const activeVideo = toRef(() => videosRef.value[activeSlide.value]);
+const activeSlideId = ref(+($route.query.id || 0));
+
+const activeHistoryIndex = toRef(() =>
+  histories.value.findIndex((h) => h.id === activeSlideId.value)
+);
+const activeHistory = toRef(() => histories.value[activeHistoryIndex.value]);
+const activeVideo = toRef(() => videosRef.value[activeHistoryIndex.value]);
 const muted = ref(true);
 
 const nextRef = ref(null);
@@ -129,8 +133,8 @@ const startActiveVideo = () => {
 
 const onSlideChange = () => {
   if (swiper.value) {
-    activeSlide.value = swiper.value.realIndex;
-    $router.replace({ query: { index: activeSlide.value } });
+    activeSlideId.value = histories.value[swiper.value.realIndex].id;
+    $router.replace({ query: { id: activeHistory.value.id } });
 
     startActiveVideo();
   }
