@@ -85,22 +85,37 @@ def process_video_cover(sender, instance, **kwargs):
             with DisableSignals(sender=Drug):
                 image = Image.open(file_path)
 
-                # Создаем байтовый поток и сохраняем изображения с разными размерами
-                image_stream_1400px = BytesIO()
-                image.resize((1400, 1400)).save(image_stream_1400px, format='JPEG')
-                instance.image_1400px.save(f"{instance.image.name}_1400px.jpg", File(image_stream_1400px), save=False)
+                # Определяем высоту и ширину оригинала
+                original_width, original_height = image.size
 
-                image_stream_2800px = BytesIO()
-                image.resize((2800, 2800)).save(image_stream_2800px, format='JPEG')
-                instance.image_2800px.save(f"{instance.image.name}_2800px.jpg", File(image_stream_2800px), save=False)
+                # Задаем высоту для измененных изображений
+                target_height_390 = 390
+                target_height_780 = 780
+                target_height_1400 = 1400
+                target_height_2800 = 2800
 
+                # Рассчитываем новую ширину с сохранением пропорций
+                target_width_390 = int(original_width / original_height * target_height_390)
+                target_width_780 = int(original_width / original_height * target_height_780)
+                target_width_1400 = int(original_width / original_height * target_height_1400)
+                target_width_2800 = int(original_width / original_height * target_height_2800)
+
+                # Масштабируем изображения с новыми размерами
                 image_stream_390px = BytesIO()
-                image.resize((390, 390)).save(image_stream_390px, format='JPEG')
+                image.resize((target_width_390, target_height_390)).save(image_stream_390px, format='JPEG')
                 instance.image_390px.save(f"{instance.image.name}_390px.jpg", File(image_stream_390px), save=False)
 
                 image_stream_780px = BytesIO()
-                image.resize((780, 780)).save(image_stream_780px, format='JPEG')
+                image.resize((target_width_780, target_height_780)).save(image_stream_780px, format='JPEG')
                 instance.image_780px.save(f"{instance.image.name}_780px.jpg", File(image_stream_780px), save=False)
+
+                image_stream_1400px = BytesIO()
+                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='JPEG')
+                instance.image_1400px.save(f"{instance.image.name}_1400px.jpg", File(image_stream_1400px), save=False)
+
+                image_stream_2800px = BytesIO()
+                image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='JPEG')
+                instance.image_2800px.save(f"{instance.image.name}_2800px.jpg", File(image_stream_2800px), save=False)
 
                 # Сохраняем изменения в модели вручную
                 instance.save()
