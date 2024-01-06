@@ -125,12 +125,12 @@ class DrugSerializer(serializers.ModelSerializer):
                 'name': article.article_name,
             })
 
-        for video in videos:
-            combined_practices.append({
-                'id': video.id,
-                'type': 'video',
-                'image': video.video_cover.url if video.video_cover else None,
-                'name': video.video_article,
-            })
+        # for video in videos:
+        #     combined_practices.append({
+        #         'id': video.id,
+        #         'type': 'video',
+        #         'image': video.video_cover.url if video.video_cover else None,
+        #         'name': video.video_article,
+        #     })
 
         return combined_practices
