@@ -34,7 +34,6 @@
         </AppButton>
       </SwiperSlide>
     </Swiper>
-
     <div v-if="activeHistory" class="history__controls">
       <AppFavouriteButton
         white
@@ -102,6 +101,16 @@ const { direction } = useSwipe(historiesEl, {
     }
   },
 });
+
+watch(
+  () => $route.query.id,
+  (newValue) => {
+    if (newValue) {
+      activeSlideId.value = +newValue;
+      swiper.value?.slideTo(activeHistoryIndex.value);
+    }
+  }
+);
 
 const toggleVolume = () => {
   muted.value = !muted.value;
