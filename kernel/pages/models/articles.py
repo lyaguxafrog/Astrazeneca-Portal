@@ -50,11 +50,11 @@ class Articles(models.Model):
     def get_absolute_url(self):
         return reverse('article_detail', args=[str(self.id)])
 
-    def display_drugs(self):
-        return format_html(
-                ', '.join([f'<a href="{reverse("admin:pages_drug_change", args=[dr.id])}">{dr}</a>' for dr in self.drug.all()]))
+    # def display_drugs(self):
+    #     return format_html(
+    #             ', '.join([f'<a href="{reverse("admin:pages_drug_change", args=[dr.id])}">{dr}</a>' for dr in self.drug.all()]))
 
-    display_drugs.short_description = 'Препараты'
+    # display_drugs.short_description = 'Препараты'
 
 
 class ContentBlock(models.Model):
