@@ -51,10 +51,12 @@ class Drug(models.Model):
     url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True, blank=True)
     file_field = models.FileField(verbose_name="Инструкция в формате PDF", null=True, blank=True, upload_to='pdf_files/')
 
+
     image_desktop_1400px = models.ImageField(upload_to='drugs/1400px/', verbose_name="Изображение 1400px", null=True, blank=True)
     image_desktop_700px = models.ImageField(upload_to='drugs/700px/', verbose_name="Изображение 700px", null=True, blank=True)
-    image_mobile_420px = models.ImageField(upload_to='drugs/420px/', verbose_name="Изображение 420px", null=True, blank=True)
-    image_mobile_840px = models.ImageField(upload_to='drugs/840px/', verbose_name="Изображение 840px", null=True, blank=True)
+    image_mobile_270px = models.ImageField(upload_to='drugs/270px/', verbose_name="Изображение 270px", null=True, blank=True)
+    image_mobile_540px = models.ImageField(upload_to='drugs/540px/', verbose_name="Изображение 540px", null=True, blank=True)
+
 
     def __str__(self):
         return self.name
@@ -63,7 +65,7 @@ class Drug(models.Model):
         verbose_name = 'Препарат'
         verbose_name_plural = 'Препараты'
 
-
+# блять почему я этим на бекенде занимаюсь
 class DisableSignals:
     def __init__(self, sender):
         self.sender = sender
@@ -127,21 +129,21 @@ def process_drug_cover(sender, instance, **kwargs):
                     original_width, original_height = image.size
 
                     # Задаем новую ширину для измененных изображений
-                    target_width_420 = 420
-                    target_width_840 = 840
+                    target_width_270 = 270
+                    target_width_540 = 540
 
                     # Рассчитываем новую высоту с сохранением пропорций
-                    target_height_420 = int(original_height / original_width * target_width_420)
-                    target_height_840 = int(original_height / original_width * target_width_840)
+                    target_height_270 = int(original_height / original_width * target_width_270)
+                    target_height_540 = int(original_height / original_width * target_width_540)
 
                     # Масштабируем изображения с новыми размерами
-                    image_stream_420px = BytesIO()
-                    image.resize((target_width_420, target_height_420)).save(image_stream_420px, format='PNG')
-                    instance.image_mobile_420px.save(f"{instance.image_mobile.name}_420px.png", File(image_stream_420px), save=False)
+                    image_stream_270px = BytesIO()
+                    image.resize((target_width_270, target_height_270)).save(image_stream_270px, format='PNG')
+                    instance.image_mobile_270px.save(f"{instance.image_mobile.name}_270px.png", File(image_stream_270px), save=False)
 
-                    image_stream_840px = BytesIO()
-                    image.resize((target_width_840, target_height_840)).save(image_stream_840px, format='PNG')
-                    instance.image_mobile_840px.save(f"{instance.image_mobile.name}_840px.png", File(image_stream_840px), save=False)
+                    image_stream_540px = BytesIO()
+                    image.resize((target_width_540, target_height_540)).save(image_stream_540px, format='PNG')
+                    instance.image_mobile_540px.save(f"{instance.image_mobile.name}_540px.png", File(image_stream_540px), save=False)
 
                     # Сохраняем изменения в модели вручную
                     instance.save()
