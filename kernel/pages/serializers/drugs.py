@@ -65,7 +65,7 @@ class FAQSerializer(serializers.ModelSerializer):
 class DrugSerializer(serializers.ModelSerializer):
     icons = IconSerializer(many=True, read_only=True)
     faq = FAQSerializer(many=True, read_only=True)
-    # application_practices = serializers.SerializerMethodField()
+    application_practices = serializers.SerializerMethodField()
     image_desktop_1400px = serializers.SerializerMethodField()
     image_desktop_700px = serializers.SerializerMethodField()
     image_mobile_270px = serializers.SerializerMethodField()
@@ -78,7 +78,7 @@ class DrugSerializer(serializers.ModelSerializer):
             "id",
             "icons",
             "faq",
-            # "application_practices",
+            "application_practices",
             "image_desktop_1400px",
             "image_desktop_700px",
             "image_mobile_270px",
@@ -111,26 +111,33 @@ class DrugSerializer(serializers.ModelSerializer):
         return None
 
 
-    # def get_application_practices(self, obj):
-    #     articles = obj.application_practice_articles.all()
-    #     videos = obj.application_practice_videos.all()
+    def get_application_practices(self, obj):
+        articles = obj.application_practice_articles.all()
+        videos = obj.application_practice_videos.all()
 
-    #     # Combine articles and videos into a single list
-    #     # combined_practices = []
-    #     # for article in articles:
-    #     #     combined_practices.append({
-    #     #         'id': article.id,
-    #     #         'type': 'article',
-    #     #         'image': article.cover.url if article.cover else None,
-    #     #         'name': article.article_name,
-    #     #     })
+        # Combine articles and videos into a single list
+        combined_practices = []
+        for article in articles:
+            combined_practices.append({
+                'id': article.id,
+                'type': 'article',
+                'image': article.cover.url if article.cover else None,
+                'name': article.article_name,
+            })
 
-    #     # for video in videos:
-    #     #     combined_practices.append({
-    #     #         'id': video.id,
-    #     #         'type': 'video',
-    #     #         'image': video.video_cover.url if video.video_cover else None,
-    #     #         'name': video.video_article,
-    #     #     })
+        for video in videos:
+            combined_practices.append({
+                'id': video.id,
+                'type': 'video',
+                'name': video.video_article,
+                'video_cover_desktop_1400px': video.video_cover_desktop_1400px.url if video.video_cover_desktop_1400px else None,
+                'video_cover_desktop_2800px': video.video_cover_desktop_2800px.url if video.video_cover_desktop_2800px else None,
+                'recomendation_cover_desktop_430px': video.recomendation_cover_desktop_430px.url if video.recomendation_cover_desktop_430px else None,
+                'recomendation_cover_desktop_860px': video.recomendation_cover_desktop_860px.url if video.recomendation_cover_desktop_860px else None,
+                'video_cover_mobile_420px': video.video_cover_mobile_420px.url if video.video_cover_mobile_420px else None,
+                'video_cover_mobile_840px': video.video_cover_mobile_840px.url if video.video_cover_mobile_840px else None,
+                'recomendation_cover_mobile_270px': video.recomendation_cover_mobile_270px.url if video.recomendation_cover_mobile_270px else None,
+                'recomendation_cover_mobile_540px': video.recomendation_cover_mobile_540px.url if video.recomendation_cover_mobile_540px else None,
+            })
 
-    #     return combined_practices
+        return combined_practices
