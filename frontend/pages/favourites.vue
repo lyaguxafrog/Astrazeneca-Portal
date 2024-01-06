@@ -24,9 +24,9 @@
         <nuxt-link
           v-if="fav.type === ContentType.Video"
           class="favourites__item"
-          :style="{ backgroundImage: `url('${baseUrl}${(fav as VideoPlump).video_cover}')` }"
           :to="`video/${fav.id}`"
         >
+          <img :src="`${baseUrl}${(fav as VideoPlump).video_cover}`" class="favourites__item-bg" />
           <p>
             {{ (fav as VideoPlump).video_article }}
           </p>
@@ -34,9 +34,9 @@
         <nuxt-link
           v-else-if="fav.type === ContentType.Article"
           class="favourites__item"
-          :style="{ backgroundImage: `url('${baseUrl}${(fav as ArticlePlump).cover}')` }"
           :to="`article/${fav.id}`"
         >
+          <img :src="`${baseUrl}${(fav as ArticlePlump).cover}`" class="favourites__item-bg" />
           <p>
             {{ (fav as ArticlePlump).article_name }}
           </p>
@@ -44,9 +44,9 @@
         <nuxt-link
           v-else-if="fav.type === ContentType.Stories"
           class="favourites__item"
-          :style="{ backgroundImage: `url('${baseUrl}${(fav as History).cover_image}')` }"
           :to="`histories/?id=${fav.id}`"
         >
+          <img :src="`${baseUrl}${(fav as History).cover_image}`" class="favourites__item-bg" />
           <p>
             {{ (fav as History).title }}
           </p>
@@ -132,23 +132,45 @@ const showedFavourites = computed(() => {
   }
 
   &__item {
+    position: relative;
+    @include z-index(1);
+
     display: flex;
     flex-direction: column;
 
     padding: 30px;
     aspect-ratio: 1;
 
+    overflow: hidden;
+
     font-size: 21px;
     line-height: 19px;
     letter-spacing: -0.21px;
 
-    background: url('~/assets/img/favs/bg.png') no-repeat center center / 100%;
     border-radius: 40px;
 
     transition: background $tr-dur;
 
+    &-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+
+      display: block;
+
+      width: 100%;
+      height: 100%;
+      object-position: center;
+      object-fit: cover;
+
+      transition: transform $tr-dur;
+    }
+
     @include hover {
-      background-size: 108%;
+      .favourites__item-bg {
+        transform: scale(1.1);
+      }
     }
 
     p {
