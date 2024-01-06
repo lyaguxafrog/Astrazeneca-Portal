@@ -39,9 +39,5 @@ class ArticlesAdmin(admin.ModelAdmin):
         ('Дополнительная информация', {'fields': ['final_content', 'access_number', 'speciality', 'drug', 'article_type']}),
     ]
 
-    # def get_formsets_with_inlines(self, request, obj=None):
-    #     for inline in self.get_inline_instances(request, obj):
-    #         yield inline.get_formset(request, obj), inline
-
 
 admin.site.register(Articles, ArticlesAdmin)
