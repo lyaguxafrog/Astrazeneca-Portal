@@ -39,8 +39,8 @@ class Drug(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название препарата")
     brief_info = models.TextField(verbose_name="Краткое описание препарата")
 
-    image_desktop = models.ImageField(upload_to='drug_images/', verbose_name="Изображение препарата для десктопа")
-    image_mobile = models.ImageField(upload_to='drug_images/', verbose_name='Изображение препарата для мобильной')
+    image_desktop = models.ImageField(upload_to='drug_images/', verbose_name="Изображение препарата для десктопа", null=True, blank=True)
+    image_mobile = models.ImageField(upload_to='drug_images/', verbose_name='Изображение препарата для мобильной', null=True, blank=True)
 
     application_practice_articles = models.ManyToManyField('pages.Articles', blank=True, related_name='application_practice_articles', verbose_name="Статьи в практике применения")
     application_practice_videos = models.ManyToManyField('pages.VideoLectures', blank=True, related_name='application_practice_videos', verbose_name="Видео в практике применения")
