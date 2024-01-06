@@ -97,7 +97,7 @@ def process_video_cover(sender, instance, **kwargs):
 
                 image_stream_1400px = BytesIO()
                 image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='PNG')
-                instance.image_desktop_1400px.save(f"{instance.video_cover_desktop.name}_1400px.png", File(image_stream_1400px), save=False)
+                instance.video_cover_desktop_1400px.save(f"{instance.video_cover_desktop.name}_1400px.png", File(image_stream_1400px), save=False)
 
                 image_stream_430px = BytesIO()
                 image.resize((target_width_430, target_height_430)).save(image_stream_430px, format='PNG')

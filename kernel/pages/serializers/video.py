@@ -5,22 +5,24 @@ from rest_framework import serializers
 from pages.models import VideoLectures
 
 class VideoLecturesSerializer(serializers.ModelSerializer):
-    video_cover_url = serializers.SerializerMethodField()
     video_article_url = serializers.SerializerMethodField()
     video_url = serializers.SerializerMethodField()
     video_recomendations = serializers.SerializerMethodField()
-    video_cover_1400px_url = serializers.SerializerMethodField()
-    video_cover_2800px_url = serializers.SerializerMethodField()
-    video_cover_390px_url = serializers.SerializerMethodField()
-    video_cover_780px_url = serializers.SerializerMethodField()
 
+    video_cover_desktop_1400px = serializers.SerializerMethodField()
+    video_cover_desktop_2800px = serializers.SerializerMethodField()
+    recomendation_cover_desktop_430px = serializers.SerializerMethodField()
+    recomendation_cover_desktop_860px = serializers.SerializerMethodField()
+    video_cover_mobile_420px = serializers.SerializerMethodField()
+    video_cover_mobile_840px = serializers.SerializerMethodField()
+    recomendation_cover_mobile_270px = serializers.SerializerMethodField()
+    recomendation_cover_mobile_540px = serializers.SerializerMethodField()
 
 
     class Meta:
         model = VideoLectures
         fields = [
             'id',
-            'video_cover_url',
             'video_article_url',
             'video_url',
             'video_article',
@@ -31,27 +33,40 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
             'drug',
             'video_recomendations',
             'speciality',
-            'video_cover_1400px_url',
-            'video_cover_2800px_url',
-            'video_cover_390px_url',
-            'video_cover_780px_url'
 
+            'video_cover_desktop_1400px',
+            'video_cover_desktop_2800px',
+            'recomendation_cover_desktop_430px',
+            'recomendation_cover_desktop_860px',
+            'video_cover_mobile_420px',
+            'video_cover_mobile_840px',
+            'recomendation_cover_mobile_270px',
+            'recomendation_cover_mobile_540px',
         ]
 
-    def get_video_cover_1400px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_1400px)
+    def get_video_cover_desktop_1400px(self, obj):
+        return self.get_relative_url(obj.video_cover_desktop_1400px)
 
-    def get_video_cover_2800px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_2800px)
+    def get_video_cover_desktop_2800px(self, obj):
+        return self.get_relative_url(obj.video_cover_desktop_2800px)
 
-    def get_video_cover_390px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_390px)
+    def get_recomendation_cover_desktop_430px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_desktop_430px)
 
-    def get_video_cover_780px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_780px)
+    def get_recomendation_cover_desktop_860px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_desktop_860px)
 
-    def get_video_cover_url(self, obj):
-        return self.get_relative_url(obj.video_cover)
+    def get_video_cover_mobile_420px(self, obj):
+        return self.get_relative_url(obj.video_cover_mobile_420px)
+
+    def get_video_cover_mobile_840px(self, obj):
+        return self.get_relative_url(obj.video_cover_mobile_840px)
+
+    def get_recomendation_cover_mobile_270px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_mobile_270px)
+
+    def get_recomendation_cover_mobile_540px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_mobile_540px)
 
     def get_video_article_url(self, obj):
         return self.get_relative_url(obj.video_article)
@@ -78,39 +93,55 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
 
 
 class VideoLecturesListSerializer(serializers.ModelSerializer):
-    video_cover_url = serializers.SerializerMethodField()
     video_article_url = serializers.SerializerMethodField()
-    video_cover_1400px_url = serializers.SerializerMethodField()
-    video_cover_2800px_url = serializers.SerializerMethodField()
-    video_cover_390px_url = serializers.SerializerMethodField()
-    video_cover_780px_url = serializers.SerializerMethodField()
+    video_cover_desktop_1400px = serializers.SerializerMethodField()
+    video_cover_desktop_2800px = serializers.SerializerMethodField()
+    recomendation_cover_desktop_430px = serializers.SerializerMethodField()
+    recomendation_cover_desktop_860px = serializers.SerializerMethodField()
+    video_cover_mobile_420px = serializers.SerializerMethodField()
+    video_cover_mobile_840px = serializers.SerializerMethodField()
+    recomendation_cover_mobile_270px = serializers.SerializerMethodField()
+    recomendation_cover_mobile_540px = serializers.SerializerMethodField()
 
     class Meta:
         model = VideoLectures
         fields = ['id',
-                  'video_cover_url',
                   'video_article_url',
                   'content_type',
                   'speciality',
-                'video_cover_1400px_url',
-                'video_cover_2800px_url',
-                'video_cover_390px_url',
-                'video_cover_780px_url']
+                    'video_cover_desktop_1400px',
+                    'video_cover_desktop_2800px',
+                    'recomendation_cover_desktop_430px',
+                    'recomendation_cover_desktop_860px',
+                    'video_cover_mobile_420px',
+                    'video_cover_mobile_840px',
+                    'recomendation_cover_mobile_270px',
+                    'recomendation_cover_mobile_540px',
+            ]
 
-    def get_video_cover_1400px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_1400px)
+    def get_video_cover_desktop_1400px(self, obj):
+        return self.get_relative_url(obj.video_cover_desktop_1400px)
 
-    def get_video_cover_2800px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_2800px)
+    def get_video_cover_desktop_2800px(self, obj):
+        return self.get_relative_url(obj.video_cover_desktop_2800px)
 
-    def get_video_cover_390px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_390px)
+    def get_recomendation_cover_desktop_430px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_desktop_430px)
 
-    def get_video_cover_780px_url(self, obj):
-        return self.get_relative_url(obj.video_cover_780px)
+    def get_recomendation_cover_desktop_860px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_desktop_860px)
 
-    def get_video_cover_url(self, obj):
-        return self.get_relative_url(obj.video_cover)
+    def get_video_cover_mobile_420px(self, obj):
+        return self.get_relative_url(obj.video_cover_mobile_420px)
+
+    def get_video_cover_mobile_840px(self, obj):
+        return self.get_relative_url(obj.video_cover_mobile_840px)
+
+    def get_recomendation_cover_mobile_270px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_mobile_270px)
+
+    def get_recomendation_cover_mobile_540px(self, obj):
+        return self.get_relative_url(obj.recomendation_cover_mobile_540px)
 
     def get_video_article_url(self, obj):
         return self.get_relative_url(obj.video_article)
