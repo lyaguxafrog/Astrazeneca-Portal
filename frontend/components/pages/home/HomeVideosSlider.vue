@@ -161,6 +161,11 @@ const setType = (type: VideoContentType) => {
   }
 
   .items-slider__content {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+
     @include hover {
       .videos-slider__image {
         transform: scale(1.03);
@@ -169,6 +174,7 @@ const setType = (type: VideoContentType) => {
   }
 
   .videos-slider__img {
+    margin-top: auto;
     overflow: hidden;
 
     border-radius: 34px;
