@@ -38,7 +38,10 @@ class DrugFAQ(models.Model):
 class Drug(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название препарата")
     brief_info = models.TextField(verbose_name="Краткое описание препарата")
-    image = models.ImageField(upload_to='drug_images/', verbose_name="Изображение препарата")
+
+    image_desktop = models.ImageField(upload_to='drug_images/', verbose_name="Изображение препарата для десктопа")
+    image_mobile = models.ImageField(upload_to='drug_images/', verbose_name='Изображение препарата для мобильной')
+
     application_practice_articles = models.ManyToManyField('pages.Articles', blank=True, related_name='application_practice_articles', verbose_name="Статьи в практике применения")
     application_practice_videos = models.ManyToManyField('pages.VideoLectures', blank=True, related_name='application_practice_videos', verbose_name="Видео в практике применения")
     approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения")
@@ -48,10 +51,12 @@ class Drug(models.Model):
     url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True, blank=True)
     file_field = models.FileField(verbose_name="Инструкция в формате PDF", null=True, blank=True, upload_to='pdf_files/')
 
-    image_1400px = models.ImageField(upload_to='drugs/1400px/', verbose_name="Изображение 1400px", null=True, blank=True)
-    image_2800px = models.ImageField(upload_to='drugs/2800px/', verbose_name="Изображение 2800px", null=True, blank=True)
-    image_390px = models.ImageField(upload_to='drugs/390px/', verbose_name="Изображение 390px", null=True, blank=True)
-    image_780px = models.ImageField(upload_to='drugs/780px/', verbose_name="Изображение 780px", null=True, blank=True)
+
+    image_desktop_1400px = models.ImageField(upload_to='drugs/1400px/', verbose_name="Изображение 1400px", null=True, blank=True)
+    image_desktop_700px = models.ImageField(upload_to='drugs/700px/', verbose_name="Изображение 700px", null=True, blank=True)
+    image_mobile_270px = models.ImageField(upload_to='drugs/270px/', verbose_name="Изображение 270px", null=True, blank=True)
+    image_mobile_540px = models.ImageField(upload_to='drugs/540px/', verbose_name="Изображение 540px", null=True, blank=True)
+
 
     def __str__(self):
         return self.name
@@ -60,7 +65,7 @@ class Drug(models.Model):
         verbose_name = 'Препарат'
         verbose_name_plural = 'Препараты'
 
-
+# блять почему я этим на бекенде занимаюсь
 class DisableSignals:
     def __init__(self, sender):
         self.sender = sender
@@ -75,9 +80,9 @@ class DisableSignals:
 
 # Обработчик сигнала pre_save
 @receiver(pre_save, sender=Drug)
-def process_video_cover(sender, instance, **kwargs):
-    if instance.image:
-        file_path = instance.image.path
+def process_drug_cover(sender, instance, **kwargs):
+    if instance.image_desktop:
+        file_path = instance.image_desktop.path
 
         # Проверяем, существует ли файл
         if Path(file_path).exists():
@@ -88,36 +93,57 @@ def process_video_cover(sender, instance, **kwargs):
                 # Определяем высоту и ширину оригинала
                 original_width, original_height = image.size
 
-                # Задаем высоту для измененных изображений
-                target_height_390 = 390
-                target_height_780 = 780
-                target_height_1400 = 1400
-                target_height_2800 = 2800
+                # Задаем новую ширину для измененных изображений
+                target_width_700 = 700
+                target_width_1400 = 1400
 
-                # Рассчитываем новую ширину с сохранением пропорций
-                target_width_390 = int(original_width / original_height * target_height_390)
-                target_width_780 = int(original_width / original_height * target_height_780)
-                target_width_1400 = int(original_width / original_height * target_height_1400)
-                target_width_2800 = int(original_width / original_height * target_height_2800)
+                # Рассчитываем новую высоту с сохранением пропорций
+                target_height_700 = int(original_height / original_width * target_width_700)
+                target_height_1400 = int(original_height / original_width * target_width_1400)
 
                 # Масштабируем изображения с новыми размерами
-                image_stream_390px = BytesIO()
-                image.resize((target_width_390, target_height_390)).save(image_stream_390px, format='JPEG')
-                instance.image_390px.save(f"{instance.image.name}_390px.jpg", File(image_stream_390px), save=False)
-
-                image_stream_780px = BytesIO()
-                image.resize((target_width_780, target_height_780)).save(image_stream_780px, format='JPEG')
-                instance.image_780px.save(f"{instance.image.name}_780px.jpg", File(image_stream_780px), save=False)
+                image_stream_700px = BytesIO()
+                image.resize((target_width_700, target_height_700)).save(image_stream_700px, format='PNG')
+                instance.image_desktop_700px.save(f"{instance.image_desktop.name}_700px.png", File(image_stream_700px), save=False)
 
                 image_stream_1400px = BytesIO()
-                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='JPEG')
-                instance.image_1400px.save(f"{instance.image.name}_1400px.jpg", File(image_stream_1400px), save=False)
-
-                image_stream_2800px = BytesIO()
-                image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='JPEG')
-                instance.image_2800px.save(f"{instance.image.name}_2800px.jpg", File(image_stream_2800px), save=False)
+                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='PNG')
+                instance.image_desktop_1400px.save(f"{instance.image_desktop.name}_1400px.png", File(image_stream_1400px), save=False)
 
                 # Сохраняем изменения в модели вручную
                 instance.save()
         else:
             print(f"Файл не найден: {file_path}")
+
+
+        if instance.image_mobile:
+            file_path = instance.image_mobile.path
+
+            # Проверяем, существует ли файл
+            if Path(file_path).exists():
+                # Отключаем сигналы для избежания рекурсии
+                with DisableSignals(sender=Drug):
+                    image = Image.open(file_path)
+
+                    # Определяем высоту и ширину оригинала
+                    original_width, original_height = image.size
+
+                    # Задаем новую ширину для измененных изображений
+                    target_width_270 = 270
+                    target_width_540 = 540
+
+                    # Рассчитываем новую высоту с сохранением пропорций
+                    target_height_270 = int(original_height / original_width * target_width_270)
+                    target_height_540 = int(original_height / original_width * target_width_540)
+
+                    # Масштабируем изображения с новыми размерами
+                    image_stream_270px = BytesIO()
+                    image.resize((target_width_270, target_height_270)).save(image_stream_270px, format='PNG')
+                    instance.image_mobile_270px.save(f"{instance.image_mobile.name}_270px.png", File(image_stream_270px), save=False)
+
+                    image_stream_540px = BytesIO()
+                    image.resize((target_width_540, target_height_540)).save(image_stream_540px, format='PNG')
+                    instance.image_mobile_540px.save(f"{instance.image_mobile.name}_540px.png", File(image_stream_540px), save=False)
+
+                    # Сохраняем изменения в модели вручную
+                    instance.save()
