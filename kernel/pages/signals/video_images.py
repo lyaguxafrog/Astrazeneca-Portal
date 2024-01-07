@@ -98,7 +98,7 @@ def process_video_cover(sender, instance, **kwargs):
 
                 image_stream_540px = BytesIO()
                 image.resize((target_width_540, target_height_540)).save(image_stream_540px, format='WEBP')
-                instance.recomendation_cover_desktop_540px.save(f"{instance.video_cover_mobile.name}_540px.webp", File(image_stream_540px), save=False)
+                instance.recomendation_cover_mobile_540px.save(f"{instance.video_cover_mobile.name}_540px.webp", File(image_stream_540px), save=False)
 
                 instance.save()
 

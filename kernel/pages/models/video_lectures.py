@@ -40,12 +40,3 @@ class VideoLectures(models.Model):
 
     def __str__(self):
         return self.video_article
-
-
-#    avatar_desktop_120px = models.ImageField(null=True, blank=True)
-#     avatar_desktop_280px = models.ImageField(null=True, blank=True)
-#     avatar_mobile_70px = models.ImageField(null=True, blank=True)
-#     avatar_mobile_140px = models.ImageField(null=True, blank=True)
-
-#     cover_450px = models.ImageField(null=True, blank=True)
-#     cover_900px = models.ImageField(null=True, blank=True)
