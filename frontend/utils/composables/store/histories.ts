@@ -23,6 +23,8 @@ export const useHistoriesStore = () => {
   const showedStories = computed(() => {
     const data = state.value.histories.data;
 
+    console.log(data);
+
     if (!data) {
       return [] as History[];
     }
@@ -57,7 +59,7 @@ export const useHistoriesStore = () => {
   };
 
   return {
-    histories: showedStories,
+    histories: toRef(() => state.value.histories.data),
 
     getHistories,
   };
