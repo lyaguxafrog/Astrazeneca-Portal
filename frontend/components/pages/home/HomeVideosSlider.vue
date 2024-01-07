@@ -236,9 +236,12 @@ const setType = (type: VideoContentType) => {
       font-size: 16px;
     }
 
-    &__image {
-      height: auto;
+    &__img {
       @include aspect(1, 1);
+    }
+
+    &__image {
+      height: 100%;
     }
     &__materials {
       padding: 3px 0 5px;

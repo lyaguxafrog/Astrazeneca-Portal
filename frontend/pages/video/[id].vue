@@ -31,7 +31,9 @@
       >
         <nuxt-link class="video-page__recommended-slide" :to="`/video/${item.id}`">
           <p v-html="item.title" />
-          <img :src="`${baseUrl}${item.preview}`" alt="" />
+          <div class="video-page__recommended-slide-img">
+            <img :src="`${baseUrl}${item.preview}`" alt="" />
+          </div>
           <PlayVideoButton class="video-page__recommended-slide-play" />
         </nuxt-link>
       </ItemsSlider>
@@ -171,12 +173,15 @@ const startVideo = () => {
 
       height: 100%;
 
+      &-img {
+        margin-top: auto;
+        @include aspect(1, 1);
+      }
+
       img {
         display: block;
 
-        margin-top: auto;
-
-        @include aspect(1, 1);
+        height: 100%;
         object-fit: cover;
       }
       &-play {

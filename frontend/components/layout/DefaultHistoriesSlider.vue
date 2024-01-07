@@ -16,7 +16,13 @@
         >
           <nuxt-link :to="`/histories?id=${history.id}`">
             <div class="histories-slider__item-content">
-              <img :src="`${baseUrl}/${history.avatar}`" alt="" :style="{ borderColor: '#fff' }" />
+              <div class="histories-slider__item-content-img">
+                <img
+                  :src="`${baseUrl}/${history.avatar}`"
+                  alt=""
+                  :style="{ borderColor: '#fff' }"
+                />
+              </div>
               <p>
                 {{ history.title }}
               </p>
@@ -110,6 +116,12 @@ $root: histories-slider;
 
       width: 120px;
 
+      &-img {
+        display: grid;
+
+        @include aspect(120, 120);
+      }
+
       @include hover {
         p {
           color: $accent-color;
@@ -123,7 +135,6 @@ $root: histories-slider;
       width: 100%;
       height: 120px;
       object-fit: cover;
-      @include aspect(120, 120);
 
       border: 5px solid;
       border-radius: 50%;
@@ -185,8 +196,9 @@ $root: histories-slider;
       &-content {
         width: 100%;
       }
+
       img {
-        height: auto;
+        height: 100%;
 
         border-width: 2px;
       }
