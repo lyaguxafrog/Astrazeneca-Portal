@@ -17,7 +17,7 @@ export function useSpecialityStore() {
 
   const state = useState('speciality', () => ({
     specialities: loadableEmpty<Speciality[]>(),
-    speciality: specialityCookie.value ? +specialityCookie.value : -1,
+    speciality: specialityCookie.value ? +specialityCookie.value : undefined,
   }));
 
   const getSpecialities = async () => {

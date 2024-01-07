@@ -40,6 +40,8 @@ export const useHistoriesStore = () => {
 
     let url = '/stories';
 
+    console.log(specialityId);
+
     if (specialityId) {
       url += `/${specialityId}`;
     }

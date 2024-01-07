@@ -51,13 +51,13 @@ import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
-const { getArticles } = useArticlesStore();
+const { getArticles, articles } = useArticlesStore();
 const { baseUrl } = useRuntimeConfig().public;
 
-const articles = await getArticles();
+await getArticles();
 
 const activeSlide = ref(1);
-const activeSlideContent = toRef(() => articles.data?.[activeSlide.value]);
+const activeSlideContent = toRef(() => articles.value.data?.[activeSlide.value]);
 const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
     activeSlide.value = index;

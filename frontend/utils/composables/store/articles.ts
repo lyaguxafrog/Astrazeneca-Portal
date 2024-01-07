@@ -47,8 +47,6 @@ export const useArticlesStore = () => {
         state.value.articles.loaded = true;
       }
     }
-
-    return state.value.articles;
   };
 
   const getArticle = async (id: number) => {
@@ -60,6 +58,8 @@ export const useArticlesStore = () => {
   };
 
   return {
+    articles: toRef(() => state.value.articles),
+
     getArticle,
     getArticles,
   };
