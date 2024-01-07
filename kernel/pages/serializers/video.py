@@ -7,7 +7,7 @@ from pages.models import VideoLectures
 class VideoLecturesSerializer(serializers.ModelSerializer):
     video_article_url = serializers.SerializerMethodField()
     video_url = serializers.SerializerMethodField()
-    video_recomendations = serializers.SerializerMethodField()
+    # video_recomendations = serializers.SerializerMethodField()
 
     video_cover_desktop_1400px = serializers.SerializerMethodField()
     video_cover_desktop_2800px = serializers.SerializerMethodField()
@@ -31,7 +31,7 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
             'access_number',
             'content_type',
             'drug',
-            'video_recomendations',
+            # 'video_recomendations',
             'speciality',
 
             'video_cover_desktop_1400px',
@@ -74,15 +74,15 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
     def get_video_url(self, obj):
         return self.get_relative_url(obj.video)
 
-    def get_video_recomendations(self, obj):
-        return [
-            {
-                'id': recommendation.id,
-                'title': recommendation.video_article,
-                'preview': self.get_relative_url(recommendation.video_cover)
-            }
-            for recommendation in obj.video_recomendations.all()
-        ]
+    # def get_video_recomendations(self, obj):
+    #     return [
+    #         {
+    #             'id': recommendation.id,
+    #             'title': recommendation.video_article,
+    #             'preview': self.get_relative_url(recommendation.video_cover)
+    #         }
+    #         for recommendation in obj.video_recomendations.all()
+    #     ]
 
     def get_relative_url(self, file_field_or_url):
         if file_field_or_url and hasattr(file_field_or_url, 'url'):
