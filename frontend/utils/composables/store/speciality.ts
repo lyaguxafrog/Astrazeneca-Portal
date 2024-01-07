@@ -21,6 +21,8 @@ export function useSpecialityStore() {
   const init = () => {
     const specialityCookie = useCookie(specialityCookieName);
 
+    console.log(specialityCookie.value);
+
     state.value.speciality = specialityCookie.value ? +specialityCookie.value : undefined;
   };
 

@@ -48,9 +48,7 @@ defineProps<{
 
 const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
-const { histories, getHistories } = useHistoriesStore();
-
-await getHistories();
+const { histories } = useHistoriesStore();
 
 const nextRef = ref(null);
 const prevRef = ref(null);
