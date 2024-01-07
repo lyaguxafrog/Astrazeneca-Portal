@@ -13,12 +13,16 @@ type Speciality = {
 };
 
 export function useSpecialityStore() {
-  const specialityCookie = useCookie(specialityCookieName);
-
   const state = useState('speciality', () => ({
     specialities: loadableEmpty<Speciality[]>(),
-    speciality: specialityCookie.value ? +specialityCookie.value : undefined,
+    speciality: undefined as number | undefined,
   }));
+
+  const init = () => {
+    const specialityCookie = useCookie(specialityCookieName);
+
+    state.value.speciality = specialityCookie.value ? +specialityCookie.value : undefined;
+  };
 
   const getSpecialities = async () => {
     if (!state.value.specialities.loaded) {
@@ -36,6 +40,8 @@ export function useSpecialityStore() {
   };
 
   const setSpeciality = (id: number) => {
+    const specialityCookie = useCookie(specialityCookieName);
+
     state.value.speciality = id;
     specialityCookie.value = `${id}`;
   };
@@ -46,6 +52,7 @@ export function useSpecialityStore() {
       state.value.specialities.data?.find((s) => s.id === state.value.speciality)
     ),
 
+    init,
     setSpeciality,
     getSpecialities,
   };
