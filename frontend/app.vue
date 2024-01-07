@@ -28,10 +28,7 @@ initSpecialityStore();
 
 await checkAccessToken();
 await getFavourites();
-
-onMounted(async () => {
-  await getHistories();
-});
+await getHistories();
 
 const nuxtApp = useNuxtApp();
 
