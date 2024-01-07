@@ -8,7 +8,7 @@ export const useAuth = () => {
   const $route = useRoute();
   const historiesStore = useHistoriesStore();
 
-  const { speciality, setSpeciality } = useSpecialityStore();
+  const { specialityId, setSpeciality } = useSpecialityStore();
 
   const accessToken = useCookie('access-token');
   const userId = useCookie('user-id');
@@ -49,7 +49,7 @@ export const useAuth = () => {
       if (res.data?.user_id) {
         userIdCookie.value = `${res.data.user_id}`;
         state.value.userId = res.data.user_id;
-        setSpeciality(res.data.specialty);
+        await setSpeciality(res.data.specialty);
 
         await $router.replace({
           query: {
@@ -59,7 +59,7 @@ export const useAuth = () => {
           },
         });
       } else {
-        setSpeciality(0);
+        await setSpeciality(0);
       }
     } catch (e) {
       console.error(e);
@@ -72,14 +72,16 @@ export const useAuth = () => {
     const token = $route.query.access_token;
     const refresh = $route.query.refresh;
 
-    if (token && speciality.value) {
+    console.log(token, specialityId.value);
+
+    if (token && specialityId.value) {
       const res = await useRequest<{
         user_id: number;
       }>('/create_user/', {
         method: 'POST',
         body: {
           temporary_token: token,
-          specialty: speciality.value.id,
+          specialty: specialityId.value,
         },
       });
 

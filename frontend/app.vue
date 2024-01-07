@@ -1,11 +1,9 @@
 <template>
   <div class="app">
-    <ClientOnly>
-      <IEZaglushka />
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </ClientOnly>
+    <IEZaglushka />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 

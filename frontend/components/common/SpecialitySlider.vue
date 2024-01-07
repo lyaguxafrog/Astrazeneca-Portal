@@ -52,9 +52,9 @@ const { baseUrl } = useRuntimeConfig().public;
 
 const { getSpecialities, setSpeciality } = useSpecialityStore();
 
-const saveSpeciality = (id: number) => {
-  setSpeciality(id);
-  sendAuthToken();
+const saveSpeciality = async (id: number) => {
+  await setSpeciality(id);
+  await sendAuthToken();
 };
 
 const specialities = await getSpecialities();

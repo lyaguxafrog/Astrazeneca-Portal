@@ -50,7 +50,7 @@ export function useSpecialityStore() {
   return {
     specialities: toRef(() => state.value.specialities),
     specialityId: toRef(() => state.value.specialityId),
-    speciality: toRef(() =>
+    speciality: computed(() =>
       state.value.specialities.data?.find((s) => s.id === state.value.specialityId)
     ),
 
