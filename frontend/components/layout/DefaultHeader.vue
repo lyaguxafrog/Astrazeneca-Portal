@@ -54,9 +54,9 @@ import { useScreen } from '~/utils/composables/useScreen';
 
 const $route = useRoute();
 const { $screen } = useScreen();
-const { speciality } = useSpecialityStore();
+const { specialityId } = useSpecialityStore();
 
-const isExtendsHeader = toRef(() => !speciality.value && $route.name !== 'histories');
+const isExtendsHeader = toRef(() => !specialityId.value && $route.name !== 'histories');
 
 const searchEl = ref();
 const scrollHeaderEl = ref();

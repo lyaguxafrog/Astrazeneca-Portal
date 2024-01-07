@@ -8,7 +8,7 @@
       <DefaultHeader v-if="!$screen.mdAndDown" />
       <slot />
       <DefaultFooter v-if="!meta.hideFooter" class="default-layout__footer" />
-      <DefaultMenu v-if="!meta.hideFooter && speciality" class="for-mobile-or-tablet" />
+      <DefaultMenu v-if="!meta.hideFooter && specialityId" class="for-mobile-or-tablet" />
     </ClientOnly>
   </div>
 </template>
@@ -23,7 +23,7 @@ import DefaultGuard from '~/components/layout/DefaultGuard.vue';
 import DefaultMenu from '~/components/layout/DefaultMenu.vue';
 
 const $router = useRouter();
-const { speciality } = useSpecialityStore();
+const { specialityId } = useSpecialityStore();
 
 const meta = toRef(() => $router.currentRoute.value.meta);
 
