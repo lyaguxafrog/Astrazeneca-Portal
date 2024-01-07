@@ -54,7 +54,9 @@ const { $screen } = useScreen();
 const { getArticles, articles } = useArticlesStore();
 const { baseUrl } = useRuntimeConfig().public;
 
-await getArticles();
+onMounted(() => {
+  getArticles();
+});
 
 const activeSlide = ref(1);
 const activeSlideContent = toRef(() => articles.value.data?.[activeSlide.value]);
