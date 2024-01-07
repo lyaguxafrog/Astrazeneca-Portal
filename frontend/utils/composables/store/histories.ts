@@ -27,7 +27,7 @@ export const useHistoriesStore = () => {
       return [] as History[];
     }
 
-    if (specialityId) {
+    if (specialityId.value) {
       return data.filter(
         (s) => !s.specialties.length || s.specialties.includes(specialityId.value)
       );

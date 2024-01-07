@@ -1,5 +1,6 @@
 <template>
   <div class="histories-slider" :class="{ min }">
+    {{ histories }}
     <template v-if="histories?.length">
       <Swiper
         :slides-per-view="4"
