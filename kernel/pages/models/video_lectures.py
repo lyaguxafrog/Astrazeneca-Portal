@@ -1,17 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from distutils.command import upload
-from tkinter.tix import Tree
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
-from PIL import Image
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
-from pathlib import Path
-from io import BytesIO
-from django.core.files import File
-
 
 
 class VideoLectures(models.Model):
@@ -51,112 +42,10 @@ class VideoLectures(models.Model):
         return self.video_article
 
 
-class DisableSignals:
-    def __init__(self, sender):
-        self.sender = sender
-        self._receivers = None
+#    avatar_desktop_120px = models.ImageField(null=True, blank=True)
+#     avatar_desktop_280px = models.ImageField(null=True, blank=True)
+#     avatar_mobile_70px = models.ImageField(null=True, blank=True)
+#     avatar_mobile_140px = models.ImageField(null=True, blank=True)
 
-    def __enter__(self):
-        self._receivers = pre_save.receivers
-        pre_save.receivers = []
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        pre_save.receivers = self._receivers
-
-# Обработчик сигнала pre_save
-@receiver(pre_save, sender=VideoLectures)
-def process_video_cover(sender, instance, **kwargs):
-    if instance.video_cover_desktop:
-        file_path = instance.video_cover_desktop.path
-
-        # Проверяем, существует ли файл
-        if Path(file_path).exists():
-            # Отключаем сигналы для избежания рекурсии
-            with DisableSignals(sender=VideoLectures):
-                image = Image.open(file_path)
-
-                # Определяем высоту и ширину оригинала
-                original_width, original_height = image.size
-
-                # Задаем новую ширину для измененных изображений
-                target_width_2800 = 2800
-                target_width_1400 = 1400
-                target_width_430 = 430
-                target_width_860 = 860
-
-                # Рассчитываем новую высоту с сохранением пропорций
-                target_height_2800 = int(original_height / original_width * target_width_2800)
-                target_height_1400 = int(original_height / original_width * target_width_1400)
-                target_height_430 = int(original_height / original_width * target_width_430)
-                target_height_860 = int(original_height / original_width * target_width_860)
-
-                # Масштабируем изображения с новыми размерами
-                image_stream_2800px = BytesIO()
-                image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='WEBP')
-                instance.video_cover_desktop_2800px.save(f"{instance.video_cover_desktop.name}_2800px.webp", File(image_stream_2800px), save=False)
-
-                image_stream_1400px = BytesIO()
-                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='WEBP')
-                instance.video_cover_desktop_1400px.save(f"{instance.video_cover_desktop.name}_1400px.webp", File(image_stream_1400px), save=False)
-
-                image_stream_430px = BytesIO()
-                image.resize((target_width_430, target_height_430)).save(image_stream_430px, format='WEBP')
-                instance.recomendation_cover_desktop_430px.save(f"{instance.video_cover_desktop.name}_430px.webp", File(image_stream_430px), save=False)
-
-                image_stream_860px = BytesIO()
-                image.resize((target_width_860, target_height_860)).save(image_stream_860px, format='WEBP')
-                instance.recomendation_cover_desktop_860px.save(f"{instance.video_cover_desktop.name}_860px.webp", File(image_stream_860px), save=False)
-
-                # Сохраняем изменения в модели вручную
-                instance.save()
-
-        else:
-            print(f"Файл не найден: {file_path}")
-
-
-    if instance.video_cover_mobile:
-        file_path = instance.video_cover_mobile.path
-
-        # Проверяем, существует ли файл
-        if Path(file_path).exists():
-            # Отключаем сигналы для избежания рекурсии
-            with DisableSignals(sender=VideoLectures):
-                image = Image.open(file_path)
-
-                # Определяем высоту и ширину оригинала
-                original_width, original_height = image.size
-
-                # Задаем новую ширину для измененных изображений
-                target_width_420 = 420
-                target_width_840 = 840
-                target_width_270 = 270
-                target_width_540 = 540
-
-                # Рассчитываем новую высоту с сохранением пропорций
-                target_height_420= int(original_height / original_width * target_width_420)
-                target_height_840 = int(original_height / original_width * target_width_840)
-                target_height_270 = int(original_height / original_width * target_width_270)
-                target_height_540 = int(original_height / original_width * target_width_540)
-
-                # Масштабируем изображения с новыми размерами
-                image_stream_420px = BytesIO()
-                image.resize((target_width_420, target_height_420)).save(image_stream_420px, format='WEBP')
-                instance.video_cover_mobile_420px.save(f"{instance.video_cover_mobile.name}_420px.webp", File(image_stream_420px), save=False)
-
-                image_stream_840px = BytesIO()
-                image.resize((target_width_840, target_height_840)).save(image_stream_840px, format='WEBP')
-                instance.video_cover_mobile_840px.save(f"{instance.video_cover_mobile.name}_840px.webp", File(image_stream_840px), save=False)
-
-                image_stream_270x = BytesIO()
-                image.resize((target_width_270, target_height_270)).save(image_stream_270x, format='WEBP')
-                instance.recomendation_cover_mobile_270px.save(f"{instance.video_cover_mobile.name}_270px.webp", File(image_stream_270x), save=False)
-
-                image_stream_540px = BytesIO()
-                image.resize((target_width_860, target_height_860)).save(image_stream_860px, format='WEBP')
-                instance.recomendation_cover_desktop_860px.save(f"{instance.video_cover_mobile.name}_860px.webp", File(image_stream_860px), save=False)
-
-                # Сохраняем изменения в модели вручную
-                instance.save()
-
-        else:
-            print(f"Файл не найден: {file_path}")
+#     cover_450px = models.ImageField(null=True, blank=True)
+#     cover_900px = models.ImageField(null=True, blank=True)
