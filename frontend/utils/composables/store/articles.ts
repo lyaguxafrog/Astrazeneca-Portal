@@ -30,15 +30,15 @@ export type ArticlePlump = {
 };
 
 export const useArticlesStore = () => {
-  const { speciality } = useSpecialityStore();
+  const { specialityId } = useSpecialityStore();
 
   const state = useState('acticles-store', () => ({
     articles: loadableEmpty<Article[]>([]),
   }));
 
   const getArticles = async () => {
-    if (!state.value.articles.loaded && speciality.value) {
-      const res = await useRequest<Article[]>(`/articles/specialty/${speciality.value.id}`, {
+    if (!state.value.articles.loaded && specialityId.value) {
+      const res = await useRequest<Article[]>(`/articles/specialty/${specialityId.value}`, {
         method: 'GET',
       });
 

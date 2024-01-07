@@ -14,7 +14,7 @@ export type History = {
 };
 
 export const useHistoriesStore = () => {
-  const { speciality } = useSpecialityStore();
+  const { specialityId } = useSpecialityStore();
 
   const state = useState('histories-state', () => ({
     histories: loadableEmpty<History[]>(),
@@ -27,23 +27,21 @@ export const useHistoriesStore = () => {
       return [] as History[];
     }
 
-    const specialityId = speciality.value?.id;
-
     if (specialityId) {
-      return data.filter((s) => !s.specialties.length || s.specialties.includes(specialityId));
+      return data.filter(
+        (s) => !s.specialties.length || s.specialties.includes(specialityId.value)
+      );
     }
 
     return data.filter((s) => !s.specialties.length);
   });
   const getHistories = async (force?: boolean) => {
-    const specialityId = speciality.value?.id;
-
     let url = '/stories';
 
-    console.log(specialityId);
+    console.log(specialityId.value);
 
-    if (specialityId) {
-      url += `/${specialityId}`;
+    if (specialityId.value) {
+      url += `/${specialityId.value}`;
     }
 
     if (!state.value.histories.loaded || force) {
