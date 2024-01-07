@@ -103,12 +103,12 @@ def process_drug_cover(sender, instance, **kwargs):
 
                 # Масштабируем изображения с новыми размерами
                 image_stream_700px = BytesIO()
-                image.resize((target_width_700, target_height_700)).save(image_stream_700px, format='PNG')
-                instance.image_desktop_700px.save(f"{instance.image_desktop.name}_700px.png", File(image_stream_700px), save=False)
+                image.resize((target_width_700, target_height_700)).save(image_stream_700px, format='WEBP')
+                instance.image_desktop_700px.save(f"{instance.image_desktop.name}_700px.webp", File(image_stream_700px), save=False)
 
                 image_stream_1400px = BytesIO()
-                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='PNG')
-                instance.image_desktop_1400px.save(f"{instance.image_desktop.name}_1400px.png", File(image_stream_1400px), save=False)
+                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='WEBP')
+                instance.image_desktop_1400px.save(f"{instance.image_desktop.name}_1400px.webp", File(image_stream_1400px), save=False)
 
                 # Сохраняем изменения в модели вручную
                 instance.save()
@@ -138,12 +138,12 @@ def process_drug_cover(sender, instance, **kwargs):
 
                     # Масштабируем изображения с новыми размерами
                     image_stream_270px = BytesIO()
-                    image.resize((target_width_270, target_height_270)).save(image_stream_270px, format='PNG')
-                    instance.image_mobile_270px.save(f"{instance.image_mobile.name}_270px.png", File(image_stream_270px), save=False)
+                    image.resize((target_width_270, target_height_270)).save(image_stream_270px, format='WEBP')
+                    instance.image_mobile_270px.save(f"{instance.image_mobile.name}_270px.webp", File(image_stream_270px), save=False)
 
                     image_stream_540px = BytesIO()
-                    image.resize((target_width_540, target_height_540)).save(image_stream_540px, format='PNG')
-                    instance.image_mobile_540px.save(f"{instance.image_mobile.name}_540px.png", File(image_stream_540px), save=False)
+                    image.resize((target_width_540, target_height_540)).save(image_stream_540px, format='WEBP')
+                    instance.image_mobile_540px.save(f"{instance.image_mobile.name}_540px.webp", File(image_stream_540px), save=False)
 
                     # Сохраняем изменения в модели вручную
                     instance.save()

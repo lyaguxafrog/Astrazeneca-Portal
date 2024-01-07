@@ -92,20 +92,20 @@ def process_video_cover(sender, instance, **kwargs):
 
                 # Масштабируем изображения с новыми размерами
                 image_stream_2800px = BytesIO()
-                image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='PNG')
-                instance.video_cover_desktop_2800px.save(f"{instance.video_cover_desktop.name}_2800px.png", File(image_stream_2800px), save=False)
+                image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='WEBP')
+                instance.video_cover_desktop_2800px.save(f"{instance.video_cover_desktop.name}_2800px.webp", File(image_stream_2800px), save=False)
 
                 image_stream_1400px = BytesIO()
-                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='PNG')
-                instance.video_cover_desktop_1400px.save(f"{instance.video_cover_desktop.name}_1400px.png", File(image_stream_1400px), save=False)
+                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='WEBP')
+                instance.video_cover_desktop_1400px.save(f"{instance.video_cover_desktop.name}_1400px.webp", File(image_stream_1400px), save=False)
 
                 image_stream_430px = BytesIO()
-                image.resize((target_width_430, target_height_430)).save(image_stream_430px, format='PNG')
-                instance.recomendation_cover_desktop_430px.save(f"{instance.video_cover_desktop.name}_430px.png", File(image_stream_430px), save=False)
+                image.resize((target_width_430, target_height_430)).save(image_stream_430px, format='WEBP')
+                instance.recomendation_cover_desktop_430px.save(f"{instance.video_cover_desktop.name}_430px.webp", File(image_stream_430px), save=False)
 
                 image_stream_860px = BytesIO()
-                image.resize((target_width_860, target_height_860)).save(image_stream_860px, format='PNG')
-                instance.recomendation_cover_desktop_860px.save(f"{instance.video_cover_desktop.name}_860px.png", File(image_stream_860px), save=False)
+                image.resize((target_width_860, target_height_860)).save(image_stream_860px, format='WEBP')
+                instance.recomendation_cover_desktop_860px.save(f"{instance.video_cover_desktop.name}_860px.webp", File(image_stream_860px), save=False)
 
                 # Сохраняем изменения в модели вручную
                 instance.save()
@@ -140,20 +140,20 @@ def process_video_cover(sender, instance, **kwargs):
 
                 # Масштабируем изображения с новыми размерами
                 image_stream_420px = BytesIO()
-                image.resize((target_width_420, target_height_420)).save(image_stream_420px, format='PNG')
-                instance.video_cover_mobile_420px.save(f"{instance.video_cover_mobile.name}_420px.png", File(image_stream_420px), save=False)
+                image.resize((target_width_420, target_height_420)).save(image_stream_420px, format='WEBP')
+                instance.video_cover_mobile_420px.save(f"{instance.video_cover_mobile.name}_420px.webp", File(image_stream_420px), save=False)
 
                 image_stream_840px = BytesIO()
-                image.resize((target_width_840, target_height_840)).save(image_stream_840px, format='PNG')
-                instance.video_cover_mobile_840px.save(f"{instance.video_cover_mobile.name}_840px.png", File(image_stream_840px), save=False)
+                image.resize((target_width_840, target_height_840)).save(image_stream_840px, format='WEBP')
+                instance.video_cover_mobile_840px.save(f"{instance.video_cover_mobile.name}_840px.webp", File(image_stream_840px), save=False)
 
                 image_stream_270x = BytesIO()
-                image.resize((target_width_270, target_height_270)).save(image_stream_270x, format='PNG')
-                instance.recomendation_cover_mobile_270px.save(f"{instance.video_cover_mobile.name}_270px.png", File(image_stream_270x), save=False)
+                image.resize((target_width_270, target_height_270)).save(image_stream_270x, format='WEBP')
+                instance.recomendation_cover_mobile_270px.save(f"{instance.video_cover_mobile.name}_270px.webp", File(image_stream_270x), save=False)
 
                 image_stream_540px = BytesIO()
-                image.resize((target_width_860, target_height_860)).save(image_stream_860px, format='PNG')
-                instance.recomendation_cover_desktop_860px.save(f"{instance.video_cover_mobile.name}_860px.png", File(image_stream_860px), save=False)
+                image.resize((target_width_860, target_height_860)).save(image_stream_860px, format='WEBP')
+                instance.recomendation_cover_desktop_860px.save(f"{instance.video_cover_mobile.name}_860px.webp", File(image_stream_860px), save=False)
 
                 # Сохраняем изменения в модели вручную
                 instance.save()
