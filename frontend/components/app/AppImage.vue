@@ -23,6 +23,8 @@ const { baseUrl } = useRuntimeConfig().public;
 <style scoped lang="scss">
 picture {
   img {
+    display: block;
+
     width: 100%;
     height: 100%;
 

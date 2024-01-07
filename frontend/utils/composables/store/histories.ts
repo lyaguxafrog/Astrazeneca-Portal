@@ -20,28 +20,8 @@ export const useHistoriesStore = () => {
     histories: loadableEmpty<History[]>([]),
   }));
 
-  const showedStories = computed(() => {
-    const data = state.value.histories.data;
-
-    console.log(data);
-
-    if (!data) {
-      return [] as History[];
-    }
-
-    if (specialityId.value) {
-      return data.filter(
-        (s) => !s.specialties.length || s.specialties.includes(specialityId.value)
-      );
-    }
-
-    return data.filter((s) => !s.specialties.length);
-  });
-
   const getHistories = async (force?: boolean) => {
     let url = '/stories';
-
-    console.log(specialityId.value);
 
     if (specialityId.value) {
       url += `/${specialityId.value}`;
@@ -53,7 +33,6 @@ export const useHistoriesStore = () => {
       });
 
       if (res.data) {
-        console.log(res.data);
         state.value.histories.data = res.data;
         state.value.histories.loaded = true;
       }

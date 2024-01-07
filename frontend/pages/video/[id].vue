@@ -166,8 +166,15 @@ const startVideo = () => {
     }
 
     &-slide {
+      display: flex;
+      flex-direction: column;
+
+      height: 100%;
+
       img {
         display: block;
+
+        margin-top: auto;
 
         @include aspect(1, 1);
         object-fit: cover;
@@ -188,7 +195,7 @@ const startVideo = () => {
       padding: 0 $mobile-page-pudding;
 
       font-size: 27px;
-      line-height: 20px;
+      line-height: 24px;
     }
 
     &__fav {

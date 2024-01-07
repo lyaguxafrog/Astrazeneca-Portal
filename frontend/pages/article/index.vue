@@ -139,7 +139,7 @@ const onSlideChange = (index: number | undefined) => {
     &-image {
       width: 100%;
       height: 530px;
-      margin-top: auto;
+      // margin-top: auto;
       object-fit: cover;
 
       border-radius: 40px;

@@ -465,10 +465,13 @@ const openProps = (item: DrugFaq) => {
       width: 100%;
       margin-top: 16px;
 
-      border-top: 1px solid $primary-color;
-
       &-item {
         padding: 12px 0;
+
+        &:first-of-type {
+          border-top: 1px solid $primary-color;
+        }
+
         &-title {
           display: flex;
           justify-content: space-between;

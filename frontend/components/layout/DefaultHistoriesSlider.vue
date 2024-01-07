@@ -1,6 +1,5 @@
 <template>
   <div class="histories-slider" :class="{ min }">
-    {{ histories }}
     <template v-if="histories?.length">
       <Swiper
         :slides-per-view="4"
@@ -49,10 +48,14 @@ defineProps<{
 
 const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
-const { histories } = useHistoriesStore();
+const { histories, getHistories } = useHistoriesStore();
 
 const nextRef = ref(null);
 const prevRef = ref(null);
+
+onMounted(async () => {
+  await getHistories();
+});
 </script>
 
 <style lang="scss" scoped>
