@@ -17,7 +17,7 @@ export const useHistoriesStore = () => {
   const { specialityId } = useSpecialityStore();
 
   const state = useState('histories-state', () => ({
-    histories: loadableEmpty<History[]>(),
+    histories: loadableEmpty<History[]>([]),
   }));
 
   const showedStories = computed(() => {
@@ -37,6 +37,7 @@ export const useHistoriesStore = () => {
 
     return data.filter((s) => !s.specialties.length);
   });
+
   const getHistories = async (force?: boolean) => {
     let url = '/stories';
 
@@ -52,6 +53,7 @@ export const useHistoriesStore = () => {
       });
 
       if (res.data) {
+        console.log(res.data);
         state.value.histories.data = res.data;
         state.value.histories.loaded = true;
       }
