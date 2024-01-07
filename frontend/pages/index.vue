@@ -147,6 +147,8 @@ watch(
   }
 
   @include md-and-down {
+    background: none;
+
     &__specialitySlider {
       position: fixed;
       top: 0;

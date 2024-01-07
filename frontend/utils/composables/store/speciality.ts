@@ -19,8 +19,8 @@ export function useSpecialityStore() {
     speciality: undefined as Speciality | undefined,
   }));
 
-  const init = () => {
-    const specialityCookie = useCookie(specialityCookieName);
+  const init = async () => {
+    const specialityCookie = await useCookie(specialityCookieName);
 
     state.value.specialityId = specialityCookie.value ? +specialityCookie.value : undefined;
   };
@@ -40,8 +40,8 @@ export function useSpecialityStore() {
     return state.value.specialities.data;
   };
 
-  const setSpeciality = (id: number) => {
-    const specialityCookie = useCookie(specialityCookieName);
+  const setSpeciality = async (id: number) => {
+    const specialityCookie = await useCookie(specialityCookieName);
 
     state.value.specialityId = id;
     specialityCookie.value = `${id}`;
