@@ -87,7 +87,14 @@ $root: modal;
     right: 26px;
     @include z-index(2);
 
+    color: $primary-color;
+
     cursor: pointer;
+    transition: color $tr-dur;
+
+    @include hover {
+      color: $accent-color;
+    }
   }
 
   &__scroll {

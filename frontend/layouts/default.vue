@@ -6,7 +6,9 @@
       <DefaultGuard />
 
       <DefaultHeader v-if="!$screen.mdAndDown" />
-      <slot />
+      <div class="default-layout__content">
+        <slot />
+      </div>
       <DefaultFooter v-if="!meta.hideFooter" class="default-layout__footer" />
       <DefaultMenu v-if="!meta.hideFooter && specialityId" class="for-mobile-or-tablet" />
     </ClientOnly>
@@ -37,6 +39,10 @@ const { $screen } = useScreen();
 
   width: 100vw;
   min-height: 100vh;
+
+  &__content {
+    min-height: 100vh;
+  }
 
   &__footer {
     margin-top: auto;

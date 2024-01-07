@@ -20,7 +20,10 @@
               :style="{ backgroundColor: $screen.mdAndDown ? block.color : '' }"
               @click="close"
             >
-              {{ item.name }} <span :style="{ color: block.color }">| {{ block.postfix }}</span>
+              {{ item.name }}
+              <span v-if="!$screen.mdAndDown" :style="{ color: block.color }"
+                >| {{ block.postfix }}</span
+              >
               <AppIcon
                 v-if="$screen.mdAndDown"
                 class="search__results-block-icon"
@@ -264,6 +267,10 @@ defineExpose({
         font-size: 18px;
         line-height: 42px;
         letter-spacing: -0.18px;
+
+        @include hover {
+          color: $accent-color;
+        }
       }
     }
   }
@@ -328,6 +335,7 @@ defineExpose({
           flex-direction: column;
 
           width: 100%;
+          height: 100%;
           padding: 17px;
           aspect-ratio: 1;
 

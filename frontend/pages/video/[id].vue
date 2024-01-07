@@ -33,8 +33,8 @@
           <p v-html="item.title" />
           <div class="video-page__recommended-slide-img">
             <img :src="`${baseUrl}${item.preview}`" alt="" />
+            <PlayVideoButton class="video-page__recommended-slide-play" />
           </div>
-          <PlayVideoButton class="video-page__recommended-slide-play" />
         </nuxt-link>
       </ItemsSlider>
     </div>
@@ -163,8 +163,6 @@ const startVideo = () => {
       display: block;
 
       width: 100%;
-
-      border-radius: 40px;
     }
 
     &-slide {
@@ -174,8 +172,19 @@ const startVideo = () => {
       height: 100%;
 
       &-img {
+        position: relative;
+
         margin-top: auto;
+        overflow: hidden;
         @include aspect(1, 1);
+
+        border-radius: 40px;
+
+        @include hover {
+          img {
+            transform: scale(1.05);
+          }
+        }
       }
 
       img {
@@ -183,6 +192,8 @@ const startVideo = () => {
 
         height: 100%;
         object-fit: cover;
+
+        transition: transform $tr-dur;
       }
       &-play {
         transform: translate(-50%, -50%) scale(0.7);

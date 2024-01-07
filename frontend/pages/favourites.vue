@@ -16,7 +16,9 @@
         >
       </div>
 
-      <AppButton primary>Настроить профиль AZ-MOST</AppButton>
+      <AppButton primary to="https://az-most.ru" target="_blank"
+        >Настроить профиль AZ-MOST</AppButton
+      >
     </div>
 
     <div class="favourites__grid">
@@ -151,6 +153,18 @@ const showedFavourites = computed(() => {
 
     transition: background $tr-dur;
 
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+
+      background-color: rgba(#000, 0.3);
+    }
+
     &-bg {
       position: absolute;
       top: 0;
@@ -174,6 +188,9 @@ const showedFavourites = computed(() => {
     }
 
     p {
+      position: relative;
+      z-index: 2;
+
       margin-top: auto;
     }
   }

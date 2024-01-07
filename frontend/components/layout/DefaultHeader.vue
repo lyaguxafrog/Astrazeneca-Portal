@@ -4,9 +4,9 @@
       <div class="default-header__main" :class="{ min: !isExtendsHeader }">
         <div class="default-header__first-row">
           <transition mode="out-in">
-            <div v-if="!isExtendsHeader" class="default-header__title min">
+            <nuxt-link v-if="!isExtendsHeader" to="/" class="default-header__title min">
               <span>PRO</span>Рак Легкого
-            </div>
+            </nuxt-link>
             <div v-else></div>
           </transition>
 

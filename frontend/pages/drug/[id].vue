@@ -103,7 +103,10 @@
               :items="content.application_practices"
               #default="{ item }"
             >
-              <div class="drug-page__slider-item">
+              <nuxt-link
+                :to="item.type === 'video' ? `/video/${item.id}` : `/article/${item.id}`"
+                class="drug-page__slider-item"
+              >
                 <img
                   v-if="item.image"
                   onerror="this.style.display = 'none'"
@@ -111,7 +114,7 @@
                   :src="`${baseUrl}${item.image}`"
                 />
                 <p v-html="item.name" />
-              </div>
+              </nuxt-link>
             </ItemsSlider>
           </div>
         </div>
@@ -274,6 +277,11 @@ const openProps = (item: DrugFaq) => {
       cursor: pointer;
       transition: color $tr-dur;
 
+      p {
+        position: relative;
+        z-index: 2;
+      }
+
       @include hover {
         color: $white-color;
       }
@@ -318,6 +326,18 @@ const openProps = (item: DrugFaq) => {
         #00d1ff 350.40282011032104deg
       );
       border-radius: 40px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+
+        background-color: rgba(#000, 0.3);
+      }
 
       &-bg {
         position: absolute;

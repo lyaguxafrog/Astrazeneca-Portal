@@ -35,6 +35,14 @@ const events = await getEvents();
     text-transform: uppercase;
   }
 
+  a {
+    transition: filter $tr-dur;
+
+    @include hover {
+      filter: hue-rotate(45deg);
+    }
+  }
+
   @include md-and-down {
     &__title {
       margin-top: 0;

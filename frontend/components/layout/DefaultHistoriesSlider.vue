@@ -93,9 +93,9 @@ $root: histories-slider;
 
         p {
           margin-top: 14px;
-          padding-bottom: 2px;
 
           font-size: 17px;
+          word-break: break-word;
 
           transition: font-size $tr-dur, color $tr-dur;
         }
@@ -149,6 +149,7 @@ $root: histories-slider;
       font-weight: 300;
       text-align: center;
       letter-spacing: -0.2px;
+      @include ellipsis(2);
 
       transition: color $tr-dur;
     }

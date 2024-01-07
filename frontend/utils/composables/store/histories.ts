@@ -8,7 +8,7 @@ export type History = {
   avatar: string;
   cover_image: string;
   is_active: boolean;
-  link_to_page: boolean;
+  link_to_page: string;
   video: string;
   specialties: number[];
 };
