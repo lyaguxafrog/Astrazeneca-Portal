@@ -1,17 +1,20 @@
 <template>
   <picture>
-    <source :srcset="`${baseUrl}${urlFull}, ${baseUrl}${urlFullX2} 2x`" />
-    <img :src="`${baseUrl}${url}`" />
+    <source
+      v-if="urlFull && urlFullX2"
+      :srcset="`${baseUrl}${urlFull}, ${baseUrl}${urlFullX2} 2x`"
+    />
+    <img :src="`${baseUrl}${url}`" loading="lazy" />
   </picture>
 </template>
 
 <script setup lang="ts">
 defineProps<{
   url: string;
-  urlFullX2: string;
-  urlFull: string;
-  urlThinX2: string;
-  urlThin: string;
+  urlFullX2?: string;
+  urlFull?: string;
+  urlThinX2?: string;
+  urlThin?: string;
 }>();
 
 const { baseUrl } = useRuntimeConfig().public;
