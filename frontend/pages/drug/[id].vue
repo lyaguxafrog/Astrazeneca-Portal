@@ -121,7 +121,7 @@
       </div>
     </div>
 
-    <AppModal :name="ModalsName.DrugProps">
+    <AppModal :name="ModalsName.DrugProps" :on-close="onModalClose">
       <div v-if="activeItem" class="drug-page__modal">
         <div class="drug-page__modal-title">
           {{ activeItem.title }}
@@ -167,6 +167,11 @@ const content = await getDrug(drugId.value);
 
 const activeItem = ref<DrugFaq>();
 const itemsEls = ref();
+
+const onModalClose = () => {
+  activeItem.value = undefined;
+};
+
 const openProps = (item: DrugFaq) => {
   if (activeItem.value?.order === item.order) {
     activeItem.value = undefined;
