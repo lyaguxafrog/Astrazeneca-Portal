@@ -15,24 +15,67 @@ class ContentBlockSerializer(serializers.ModelSerializer):
 
 class ArticlesSerializer(serializers.ModelSerializer):
     content_blocks = ContentBlockSerializer(many=True, read_only=True)
-    cover = serializers.SerializerMethodField()
+    cover_desktop_1400px = serializers.SerializerMethodField()
+    cover_desktop_2800px = serializers.SerializerMethodField()
+    cover_mobile_840px = serializers.SerializerMethodField()
+    cover_mobile_420px = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Articles
         fields = '__all__'
 
-    def get_cover(self, obj):
-        return obj.cover.url if obj.cover else None
+
+    def get_cover_desktop_1400px(self, obj):
+        return self.get_relative_url(obj.cover_desktop_1400px)
+
+    def get_cover_desktop_2800px(self, obj):
+        return self.get_relative_url(obj.cover_desktop_2800px)
+
+    def get_cover_mobile_840px(self, obj):
+        return self.get_relative_url(obj.cover_mobile_840px)
+
+    def get_cover_mobile_420px(self, obj):
+        return self.get_relative_url(obj.cover_mobile_420px)
+
+    def get_relative_url(self, file_field_or_url):
+        if file_field_or_url and hasattr(file_field_or_url, 'url'):
+            return file_field_or_url.url
+        elif isinstance(file_field_or_url, str) and file_field_or_url.startswith('http'):
+            return file_field_or_url
+        return None
+
 
 class ArticlesBySpecialitySerializer(serializers.ModelSerializer):
-    cover = serializers.SerializerMethodField()
+    cover_desktop_1400px = serializers.SerializerMethodField()
+    cover_desktop_2800px = serializers.SerializerMethodField()
+    cover_mobile_840px = serializers.SerializerMethodField()
+    cover_mobile_420px = serializers.SerializerMethodField()
 
 
     class Meta:
         model = Articles
-        fields = ['id', 'article_name', 'cover',
+        fields = ['id', 'article_name', 'cover_desktop_1400px',
+                  'cover_desktop_2800px', 'cover_mobile_840px', 'cover_mobile_420px',
                   'short_description', 'information', 'first_abzac']
 
 
-    def get_cover(self, obj):
-        return obj.cover.url if obj.cover else None
+
+    def get_cover_desktop_1400px(self, obj):
+        return self.get_relative_url(obj.cover_desktop_1400px)
+
+    def get_cover_desktop_2800px(self, obj):
+        return self.get_relative_url(obj.cover_desktop_2800px)
+
+    def get_cover_mobile_840px(self, obj):
+        return self.get_relative_url(obj.cover_mobile_840px)
+
+    def get_cover_mobile_420px(self, obj):
+        return self.get_relative_url(obj.cover_mobile_420px)
+
+    def get_relative_url(self, file_field_or_url):
+        if file_field_or_url and hasattr(file_field_or_url, 'url'):
+            return file_field_or_url.url
+        elif isinstance(file_field_or_url, str) and file_field_or_url.startswith('http'):
+            return file_field_or_url
+        return None

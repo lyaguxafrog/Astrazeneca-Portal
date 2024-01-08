@@ -2,7 +2,7 @@
 
 
 from PIL import Image
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from pathlib import Path
 from io import BytesIO
@@ -17,13 +17,13 @@ class DisableSignals:
         self._receivers = None
 
     def __enter__(self):
-        self._receivers = pre_save.receivers
-        pre_save.receivers = []
+        self._receivers = post_save.receivers
+        post_save.receivers = []
 
     def __exit__(self, exc_type, exc_value, traceback):
-        pre_save.receivers = self._receivers
+        post_save.receivers = self._receivers
 
-@receiver(pre_save, sender=Story)
+@receiver(post_save, sender=Story)
 def process_avatar_story(sender, instance, **kwargs):
     if instance.avatar:
         file_path = instance.avatar.path
@@ -66,7 +66,7 @@ def process_avatar_story(sender, instance, **kwargs):
         else:
             print(f"Файл не найден: {file_path}")
 
-@receiver(pre_save, sender=Story)
+@receiver(post_save, sender=Story)
 def process_cover_story(sender, instance, **kwargs):
     if instance.avatar:
         file_path = instance.avatar.path
