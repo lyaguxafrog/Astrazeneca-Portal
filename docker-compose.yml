@@ -37,6 +37,7 @@ services:
     volumes:
       - ./kernel/static:/static
       - ./kernel/media:/media
+      - /path/to/certbot/data:/var/www/certbot
     ports:
       - '80:80'
     restart: always
