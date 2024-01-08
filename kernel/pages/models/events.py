@@ -16,7 +16,7 @@ class Events(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название мероприятия")
     date = models.DateField(verbose_name="Дата мероприятия")
     cover = models.ImageField(upload_to='event_covers/', verbose_name='Обложка')
-    text = RichTextField(verbose_name="Описание мероприятия",
+    text = RichTextField(verbose_name="Описание мероприятия(для поиска)",
                          null=True, blank=True)
     url = models.URLField(null=True, blank=True)
 

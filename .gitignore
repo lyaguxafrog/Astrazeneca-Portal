@@ -1,3 +1,5 @@
 db/
-
+logs/
+.idea/
 .vscode/extensions.json
+.author
