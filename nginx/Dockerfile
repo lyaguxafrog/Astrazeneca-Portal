@@ -5,10 +5,6 @@ RUN apk update && \
 
 COPY ./prod.conf /etc/nginx/conf.d/default.conf
 
-# Добавляем конфигурацию для Certbot
-COPY ./nginx.conf /etc/nginx/nginx.conf
-
-# Копируем entrypoint скрипт, который будет выполнять Certbot
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
