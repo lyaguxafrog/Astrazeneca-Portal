@@ -3,13 +3,13 @@ import { useRequest } from '~/utils/composables/useRequest';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 
 export type History = {
-  id: string;
+  id: number;
   title: string;
   avatar: string;
   cover_image: string;
   is_active: boolean;
   link_to_page: boolean;
-  video: boolean;
+  video: string;
   specialties: number[];
 };
 
@@ -24,7 +24,7 @@ export const useHistoriesStore = () => {
     const data = state.value.histories.data;
 
     if (!data) {
-      return [];
+      return [] as History[];
     }
 
     const specialityId = speciality.value?.id;
@@ -35,10 +35,16 @@ export const useHistoriesStore = () => {
 
     return data.filter((s) => !s.specialties.length);
   });
-  const getHistories = async () => {
+  const getHistories = async (force?: boolean) => {
+    const specialityId = speciality.value?.id;
+
     let url = '/stories';
 
-    if (!state.value.histories.loaded) {
+    if (specialityId) {
+      url += `/${specialityId}`;
+    }
+
+    if (!state.value.histories.loaded || force) {
       const res = await useRequest<History[]>(url, {
         method: 'GET',
       });

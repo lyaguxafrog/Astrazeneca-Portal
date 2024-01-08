@@ -20,63 +20,70 @@
     </div>
 
     <div class="favourites__grid">
-      <div v-for="fav in favourites" :key="fav.id" class="favourites__item">
-        <p>
-          {{ fav.name }}
-        </p>
-      </div>
+      <template v-for="fav in showedFavourites">
+        <nuxt-link
+          v-if="fav.type === ContentType.Video"
+          class="favourites__item"
+          :to="`video/${fav.id}`"
+        >
+          <img :src="`${baseUrl}${(fav as VideoPlump).video_cover}`" class="favourites__item-bg" />
+          <p>
+            {{ (fav as VideoPlump).video_article }}
+          </p>
+        </nuxt-link>
+        <nuxt-link
+          v-else-if="fav.type === ContentType.Article"
+          class="favourites__item"
+          :to="`article/${fav.id}`"
+        >
+          <img :src="`${baseUrl}${(fav as ArticlePlump).cover}`" class="favourites__item-bg" />
+          <p>
+            {{ (fav as ArticlePlump).article_name }}
+          </p>
+        </nuxt-link>
+        <nuxt-link
+          v-else-if="fav.type === ContentType.Stories"
+          class="favourites__item"
+          :to="`histories/?id=${fav.id}`"
+        >
+          <img :src="`${baseUrl}${(fav as History).cover_image}`" class="favourites__item-bg" />
+          <p>
+            {{ (fav as History).title }}
+          </p>
+        </nuxt-link>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useScreen } from '~/utils/composables/useScreen';
+import { VideoPlump } from '~/utils/composables/store/videos';
+import { ArticlePlump } from '~/utils/composables/store/articles';
+import { History } from '~/utils/composables/store/histories';
 import { useFavourites } from '~/utils/composables/useFavourites';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import { ContentType } from '~/utils/types';
 
+const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
-const { getFavourites } = useFavourites();
+const { getFavourites, favourites } = useFavourites();
 
 await getFavourites();
 
-const favourites = [
-  {
-    id: '1',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '2',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '3',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '4',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '5',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '6',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '7',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '8',
-    name: 'Название единицы контента',
-  },
-  {
-    id: '9',
-    name: 'Название единицы контента',
-  },
-];
+const showedFavourites = computed(() => {
+  if (!favourites.value) {
+    return [];
+  }
+
+  const keys = Object.keys(favourites.value.data);
+
+  return keys.reduce((res, k) => {
+    res = res.concat(favourites.value.data[k].map((f) => ({ ...f, type: k })));
+
+    return res;
+  }, [] as ((VideoPlump | ArticlePlump) & { type: ContentType })[]);
+});
 </script>
 
 <style scoped lang="scss">
@@ -125,18 +132,46 @@ const favourites = [
   }
 
   &__item {
+    position: relative;
+    @include z-index(1);
+
     display: flex;
     flex-direction: column;
 
     padding: 30px;
     aspect-ratio: 1;
 
+    overflow: hidden;
+
     font-size: 21px;
     line-height: 19px;
     letter-spacing: -0.21px;
 
-    background: url('~/assets/img/favs/bg.png') no-repeat center center / cover;
     border-radius: 40px;
+
+    transition: background $tr-dur;
+
+    &-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+
+      display: block;
+
+      width: 100%;
+      height: 100%;
+      object-position: center;
+      object-fit: cover;
+
+      transition: transform $tr-dur;
+    }
+
+    @include hover {
+      .favourites__item-bg {
+        transform: scale(1.1);
+      }
+    }
 
     p {
       margin-top: auto;

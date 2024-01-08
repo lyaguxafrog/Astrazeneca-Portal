@@ -1,12 +1,15 @@
 <template>
   <div class="items-slider" :class="{ hidePagination }">
     <Swiper
+      grab-cursor
       :centered-slides="centeredSlides"
       :space-between="$screen.mdAndDown ? 40 : 100"
       :slides-per-view="$screen.mdAndDown ? mobileSlidesPerView : desktopSlidesPerView"
       :initial-slide="items.length < 3 ? 0 : initialSlide"
       :modules="[Pagination, Navigation]"
       :pagination="{ clickable: true }"
+      :slides-offset-before="$screen.mdAndDown ? 22 : undefined"
+      :slides-offset-after="$screen.mdAndDown ? 22 : undefined"
       :navigation="{
         nextEl: nextRef,
         prevEl: prevRef,
@@ -151,7 +154,7 @@ const onSlideChange = () => {
     width: 100%;
     object-fit: cover;
 
-    border-radius: 48px;
+    border-radius: 54px;
   }
 
   @include md-and-down {

@@ -1,5 +1,5 @@
 <template>
-  <div ref="historiesEl" class="histories">
+  <div v-if="histories.length" ref="historiesEl" class="histories">
     <Swiper
       class="histories__swiper"
       grab-cursor
@@ -13,7 +13,7 @@
         nextEl: nextRef,
         prevEl: prevRef,
       }"
-      :initial-slide="activeSlide"
+      :initial-slide="activeHistoryIndex"
       @swiper="onSwiper"
       @slide-change="onSlideChange"
     >
@@ -22,8 +22,8 @@
           ref="videosRef"
           playsinline
           :muted="muted"
-          :src="history.url"
-          :style="{ backgroundImage: `url(${history.preview})` }"
+          :src="`${baseUrl}${history.video}`"
+          :style="{ backgroundImage: `url(${baseUrl}${history.cover_image})` }"
           @touchend="onVideoTouchEnd"
         />
         <AppButton mode="icon" class="history__volume" petite @click="toggleVolume">
@@ -34,9 +34,12 @@
         </AppButton>
       </SwiperSlide>
     </Swiper>
-
     <div v-if="activeHistory" class="history__controls">
-      <AppFavouriteButton white :active="false" />
+      <AppFavouriteButton
+        white
+        :content-type="ContentType.Stories"
+        :content-id="activeHistory.id"
+      />
       <AppButton primary :to="activeHistory.link" petite class="history__link"> Перейти </AppButton>
     </div>
 
@@ -60,22 +63,27 @@ import { useScreen } from '~/utils/composables/useScreen';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
 import { useBack } from '~/utils/composables/useHistory';
 import { IconName } from '~/components/app/AppIcon.utils';
+import { ContentType } from '~/utils/types';
 
 definePageMeta({
   hideFooter: true,
 });
 
 const { histories } = useHistoriesStore();
-
+const { baseUrl } = useRuntimeConfig().public;
 const $router = useRouter();
 const $route = useRoute();
 const { $screen } = useScreen();
 const swiper = ref<SwiperType>();
 const videosRef = ref<HTMLVideoElement[]>([]);
 
-const activeSlide = ref(+($route.query.index || 0));
-const activeHistory = toRef(() => histories.value[activeSlide.value]);
-const activeVideo = toRef(() => videosRef.value[activeSlide.value]);
+const activeSlideId = ref(+($route.query.id || 0));
+
+const activeHistoryIndex = toRef(() =>
+  histories.value.findIndex((h) => h.id === activeSlideId.value)
+);
+const activeHistory = toRef(() => histories.value[activeHistoryIndex.value]);
+const activeVideo = toRef(() => videosRef.value[activeHistoryIndex.value]);
 const muted = ref(true);
 
 const nextRef = ref(null);
@@ -93,6 +101,16 @@ const { direction } = useSwipe(historiesEl, {
     }
   },
 });
+
+watch(
+  () => $route.query.id,
+  (newValue) => {
+    if (newValue) {
+      activeSlideId.value = +newValue;
+      swiper.value?.slideTo(activeHistoryIndex.value);
+    }
+  }
+);
 
 const toggleVolume = () => {
   muted.value = !muted.value;
@@ -124,8 +142,8 @@ const startActiveVideo = () => {
 
 const onSlideChange = () => {
   if (swiper.value) {
-    activeSlide.value = swiper.value.realIndex;
-    $router.replace({ query: { index: activeSlide.value } });
+    activeSlideId.value = histories.value[swiper.value.realIndex].id;
+    $router.replace({ query: { id: activeHistory.value.id } });
 
     startActiveVideo();
   }

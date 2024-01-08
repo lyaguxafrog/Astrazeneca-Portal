@@ -21,6 +21,12 @@
               @click="close"
             >
               {{ item.name }} <span :style="{ color: block.color }">| {{ block.postfix }}</span>
+              <AppIcon
+                v-if="$screen.mdAndDown"
+                class="search__results-block-icon"
+                :name="block.icon"
+                :size="26"
+              />
             </nuxt-link>
           </div>
         </template>
@@ -30,8 +36,9 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
-import { IconName } from '~/components/app/AppIcon.utils';
+import { IconName, Video } from '~/components/app/AppIcon.utils';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useScreen } from '~/utils/composables/useScreen';
@@ -39,16 +46,19 @@ import { useScreen } from '~/utils/composables/useScreen';
 type SearchResult = {
   id: number;
   title: string;
-  model: 'video_lecture' | 'article';
+  url?: string;
+  model: 'video_lecture' | 'article' | 'event';
 };
 
+const $route = useRoute();
+const $router = useRouter();
 const { $screen } = useScreen();
 
 const isOpen = ref();
 const inputEl = ref();
 const scrollEl = ref();
 
-const searchString = ref('');
+const searchString = ref($route.query.s);
 
 const result = ref<
   {
@@ -59,8 +69,9 @@ const result = ref<
     items: {
       id: number;
       name: string;
-      link: string;
+      link?: string;
     }[];
+    icon: IconName;
   }[]
 >([
   {
@@ -69,6 +80,7 @@ const result = ref<
     postfix: 'статья',
     color: '#00B0BB',
     items: [],
+    icon: IconName.Note,
   },
   {
     id: '2',
@@ -76,6 +88,7 @@ const result = ref<
     postfix: 'видео',
     color: '#8300A4',
     items: [],
+    icon: IconName.Video,
   },
   {
     id: '3',
@@ -83,9 +96,25 @@ const result = ref<
     postfix: 'кейс',
     color: '#00B0BB',
     items: [],
+    icon: IconName.Note,
+  },
+  {
+    id: '4',
+    name: 'Мероприятия',
+    postfix: 'мероприятие',
+    color: '#a8a8a8',
+    items: [],
+    icon: IconName.Megaphone,
   },
 ]);
 const search = async () => {
+  await $router.replace({
+    query: {
+      ...$route.query,
+      s: searchString.value,
+    },
+  });
+
   const res = await useRequest<SearchResult[]>(`/search/${searchString.value}`, {
     method: 'GET',
   });
@@ -95,7 +124,12 @@ const search = async () => {
       const data = {
         id: r.id,
         name: r.title,
-        link: r.model === 'video_lecture' ? `/video/${r.id}` : `/article/${r.id}`,
+        link:
+          r.model === 'event'
+            ? r.url
+            : r.model === 'video_lecture'
+            ? `/video/${r.id}`
+            : `/article/${r.id}`,
       };
 
       if (r.model === 'video_lecture') {
@@ -104,6 +138,10 @@ const search = async () => {
 
       if (r.model === 'article') {
         result.value[0].items.push(data);
+      }
+
+      if (r.model === 'event') {
+        result.value[3].items.push(data);
       }
     });
   }
@@ -116,6 +154,7 @@ watchDebounced(
   },
   {
     debounce: 500,
+    immediate: true,
   }
 );
 
@@ -201,6 +240,13 @@ defineExpose({
 
       border-bottom: 1px solid #bebebe;
 
+      &-icon {
+        display: block;
+
+        margin-top: auto;
+        margin-left: auto;
+      }
+
       &-title {
         margin-bottom: 1px;
 
@@ -218,10 +264,6 @@ defineExpose({
         font-size: 18px;
         line-height: 42px;
         letter-spacing: -0.18px;
-
-        @include hover {
-          color: $accent-color;
-        }
       }
     }
   }
@@ -282,6 +324,10 @@ defineExpose({
         }
 
         &-item {
+          display: flex;
+          flex-direction: column;
+
+          width: 100%;
           padding: 17px;
           aspect-ratio: 1;
 

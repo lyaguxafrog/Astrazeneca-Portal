@@ -48,7 +48,12 @@
               v-html="item.video_article_url"
             />
             <div class="videos-slider__img">
-              <img class="videos-slider__image" :src="`${baseUrl}${item.video_cover_url}`" alt="" />
+              <AppImage
+                class="videos-slider__image"
+                :url="item.video_cover_url"
+                :url-full-x2="item.video_cover_2800px_url"
+                :url-full="item.video_cover_1400px_url"
+              />
             </div>
             <PlayVideoButton />
           </nuxt-link>
@@ -88,8 +93,6 @@ const setType = (type: VideoContentType) => {
     position: relative;
 
     padding: 77px 0 9px;
-
-    background: url('~/assets/img/home/bg.png') no-repeat top -340px left 0;
 
     &-head {
       padding: 0 56px;
@@ -158,19 +161,25 @@ const setType = (type: VideoContentType) => {
   }
 
   .items-slider__content {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+
     @include hover {
-      img {
+      .videos-slider__image {
         transform: scale(1.03);
       }
     }
   }
 
   .videos-slider__img {
+    margin-top: auto;
     overflow: hidden;
 
     border-radius: 34px;
 
-    img {
+    .videos-slider__image {
       display: block;
 
       width: 100%;

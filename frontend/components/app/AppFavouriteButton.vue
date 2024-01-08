@@ -5,7 +5,7 @@
     white
     @click="toggleFavourite(contentType, contentId)"
   >
-    <AppIcon v-if="!active" :name="IconName.HeartIcon" :size="iconSize" />
+    <AppIcon v-if="!isActive" :name="IconName.HeartIcon" :size="iconSize" />
     <AppIcon v-else :name="IconName.HeartIconFill" :size="iconSize + 4" />
   </AppButton>
 </template>
@@ -17,7 +17,6 @@ import { useFavourites } from '~/utils/composables/useFavourites';
 import { ContentType } from '~/utils/types';
 
 const props = defineProps<{
-  active: boolean;
   big?: boolean;
   white?: boolean;
   contentType: ContentType;
@@ -25,9 +24,11 @@ const props = defineProps<{
 }>();
 
 const { $screen } = useScreen();
-const { toggleFavourite } = useFavourites();
+const { toggleFavourite, isInFavourite } = useFavourites();
 
 const iconSize = toRef(() => ($screen.value.mdAndDown ? 26 : props.big ? 42 : 38));
+
+const isActive = toRef(() => isInFavourite(props.contentType, props.contentId));
 </script>
 
 <style lang="scss" scoped></style>
