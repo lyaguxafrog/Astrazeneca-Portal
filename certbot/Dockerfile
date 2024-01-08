@@ -1,3 +1,3 @@
-FROM certbot:latest
+FROM certbot/certbot:latest
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]
