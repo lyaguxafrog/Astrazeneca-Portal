@@ -42,10 +42,7 @@ services:
       - '80:80'
       - '443:443'
     restart: always
-
-
-  # certbot:
-  #   build: ./certbot
-  #   volumes:
-  #     - ./certbot/www/:/var/www/certbot/:rw
-  #     - ./certbot/conf/:/etc/letsencrypt/:rw
+    entrypoint: ["./entrypoint.sh"]
+    command: ["nginx", "-g", "daemon off;"]
+    environment:
+      WAIT_FOR_NUXT: "10"
