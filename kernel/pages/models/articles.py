@@ -14,9 +14,9 @@ class Articles(models.Model):
 
     article_name = models.CharField(max_length=1024, verbose_name='Заголовок')
     cover_desktop = models.ImageField(upload_to='article_covers/',
-                               blank=True, null=True, verbose_name="Обложка(десктоп)")
+                               verbose_name="Обложка(десктоп)")
     cover_mobile = models.ImageField(verbose_name='Обложка(мобильная)',
-                                     null=True, blank=True, upload_to='articles_cover/')
+                                upload_to='articles_cover/')
     first_abzac = RichTextField(verbose_name = "Первый абзац")
     short_description = RichTextField(verbose_name="Краткое описание")
 
