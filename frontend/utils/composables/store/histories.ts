@@ -10,6 +10,7 @@ export type History = {
   is_active: boolean;
   link_to_page: string;
   video: string;
+  color: string | null;
   specialties: number[];
 };
 

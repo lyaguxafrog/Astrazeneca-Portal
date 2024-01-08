@@ -20,7 +20,7 @@
                 <img
                   :src="`${baseUrl}/${history.avatar}`"
                   alt=""
-                  :style="{ borderColor: '#fff' }"
+                  :style="{ borderColor: history.color }"
                 />
               </div>
               <p>
