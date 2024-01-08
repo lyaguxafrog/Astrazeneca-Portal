@@ -3,7 +3,7 @@
 from pages.models import VideoLectures
 
 from PIL import Image
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from pathlib import Path
 from io import BytesIO
@@ -16,13 +16,13 @@ class DisableSignals:
         self._receivers = None
 
     def __enter__(self):
-        self._receivers = pre_save.receivers
-        pre_save.receivers = []
+        self._receivers = post_save.receivers
+        post_save.receivers = []
 
     def __exit__(self, exc_type, exc_value, traceback):
-        pre_save.receivers = self._receivers
+        post_save.receivers = self._receivers
 
-@receiver(pre_save, sender=VideoLectures)
+@receiver(post_save, sender=VideoLectures)
 def process_video_cover(sender, instance, **kwargs):
     if instance.video_cover_desktop:
         file_path = instance.video_cover_desktop.path

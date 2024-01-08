@@ -35,7 +35,7 @@ class ArticlesAdmin(admin.ModelAdmin):
     inlines = [ContentBlockInline]
 
     fieldsets = [
-        ('Основная информация', {'fields': ['article_name', 'cover', 'short_description', 'information', 'first_abzac']}),
+        ('Основная информация', {'fields': ['article_name', 'cover_desktop', 'cover_mobile', 'short_description', 'information', 'first_abzac']}),
         ('Дополнительная информация', {'fields': ['final_content', 'access_number', 'speciality', 'drug', 'article_type']}),
     ]
 

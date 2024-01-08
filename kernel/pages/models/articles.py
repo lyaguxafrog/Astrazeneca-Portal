@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
+from doctest import BLANKLINE_MARKER
 from django.db import models
-from django.urls import reverse
-from django.utils.html import format_html
 from ckeditor.fields import RichTextField
 
 
@@ -14,8 +13,10 @@ class Articles(models.Model):
     ]
 
     article_name = models.CharField(max_length=1024, verbose_name='Заголовок')
-    cover = models.ImageField(upload_to='article_covers/',
-                               blank=True, null=True, verbose_name="Обложка")
+    cover_desktop = models.ImageField(upload_to='article_covers/',
+                               blank=True, null=True, verbose_name="Обложка(десктоп)")
+    cover_mobile = models.ImageField(verbose_name='Обложка(мобильная)',
+                                     null=True, blank=True, upload_to='articles_cover/')
     first_abzac = RichTextField(verbose_name = "Первый абзац")
     short_description = RichTextField(verbose_name="Краткое описание")
 
@@ -38,6 +39,15 @@ class Articles(models.Model):
                             verbose_name='Тип статьи')
 
     information = RichTextField(verbose_name='текстовый блок для ввода инфы о статьи на разводящей станице статей')
+
+    cover_desktop_1400px = models.ImageField(upload_to='articles_cover/1400px/',
+                                             null=True, blank=True)
+    cover_desktop_2800px = models.ImageField(upload_to='articles_cover/2800px/',
+                                             null=True, blank=True)
+    cover_mobile_420px = models.ImageField(upload_to='articles_cover/420px/',
+                                           null=True, blank=True)
+    cover_mobile_840px = models.ImageField(upload_to='articles_cover/840px/',
+                                           null=True, blank=True)
 
 
     class Meta:
