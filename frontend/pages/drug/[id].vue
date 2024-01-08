@@ -318,11 +318,13 @@ const openProps = (item: DrugFaq) => {
 
       display: block;
 
-      padding: 64px;
+      padding: 64px 30px 64px 64px;
       overflow: hidden;
       @include aspect(1, 1);
+
       font-size: 32px;
       line-height: 30px;
+      word-break: break-word;
 
       background: conic-gradient(
         from 164deg at 50% 50%,

@@ -160,6 +160,7 @@ const onSlideChange = (index: number | undefined) => {
 
       font-size: 24px;
       line-height: 28px;
+      word-break: break-word;
 
       transition: opacity $tr-dur;
     }
