@@ -1,5 +1,8 @@
 FROM nginx:1.19.0-alpine
 
+# Install Certbot
+RUN apk add --no-cache certbot
+
 # Copy Nginx configuration
 COPY ./prod.conf /etc/nginx/conf.d/default.conf
 
