@@ -1,23 +1,28 @@
 # -*- coding: utf-8 -*-
 
-
 from django.db import models
 from ckeditor.fields import RichTextField
 
-class MainPageApproveNumber(models.Model):
+class SingletonModelManager(models.Manager):
+    def get_or_create_singleton(self):
+        obj, created = self.get_or_create(pk=1)
+        return obj
+
+class SingletonModel(models.Model):
+    class Meta:
+        abstract = True
+
+    objects = SingletonModelManager()
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super(SingletonModel, self).save(*args, **kwargs)
+
+class MainPageApproveNumber(SingletonModel):
     number = RichTextField(verbose_name="Номер одобрения")
 
     def __str__(self):
         return "Номер одобрения на главной странице"
-
-    def save(self, *args, **kwargs):
-        existing_instance = MainPageApproveNumber.objects.first()
-
-        if existing_instance:
-            existing_instance.number = self.number
-            existing_instance.save()
-        else:
-            super(MainPageApproveNumber, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Главная страница'

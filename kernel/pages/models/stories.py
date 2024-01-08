@@ -12,6 +12,13 @@ from django.core.files import File
 
 
 class Story(models.Model):
+    COLOR_CHOISE = [
+    ('#00D1FF', 'Синий 🟦'),
+    ('#E130FF', 'Фиолетовый 🟪' ),
+    ('#fff', 'Белый ⬜')
+]
+
+
     avatar = models.ImageField(upload_to='story_avatars/')
     title = models.CharField(max_length=255)
     content = models.TextField()
@@ -23,6 +30,9 @@ class Story(models.Model):
     specialties = models.ManyToManyField('pages.Specialty',
                                          blank=True, null=True)
     is_active = models.BooleanField(default=True)
+
+    color = models.CharField(max_length=255, choices=COLOR_CHOISE,
+                             verbose_name="Цвет", null=True, blank=True)
 
 
     avatar_desktop_120px = models.ImageField(null=True, blank=True)
