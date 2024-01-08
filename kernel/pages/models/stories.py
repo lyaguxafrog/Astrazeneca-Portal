@@ -63,7 +63,7 @@ class DisableSignals:
         pre_save.receivers = self._receivers
 
 @receiver(pre_save, sender=Story)
-def process_avatar_story(sender, instance, **kwargs):
+def process_story(sender, instance, **kwargs):
     if instance.avatar:
         file_path = instance.avatar.path
 
