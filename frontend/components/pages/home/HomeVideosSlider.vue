@@ -54,8 +54,8 @@
                 :url-full-x2="item.video_cover_2800px_url"
                 :url-full="item.video_cover_1400px_url"
               />
+              <PlayVideoButton />
             </div>
-            <PlayVideoButton />
           </nuxt-link>
         </template>
       </ItemsSlider>
@@ -174,6 +174,8 @@ const setType = (type: VideoContentType) => {
   }
 
   .videos-slider__img {
+    position: relative;
+
     margin-top: auto;
     overflow: hidden;
 
@@ -234,8 +236,12 @@ const setType = (type: VideoContentType) => {
       font-size: 16px;
     }
 
+    &__img {
+      @include aspect(1, 1);
+    }
+
     &__image {
-      height: auto;
+      height: 100%;
     }
     &__materials {
       padding: 3px 0 5px;

@@ -72,6 +72,8 @@ const content = await getArticle(articleId.value);
 
   padding: 9px 92px 100px;
 
+  word-break: break-word;
+
   &__first-ellipse {
     top: -150px;
     left: -840px;

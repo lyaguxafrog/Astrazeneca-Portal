@@ -15,13 +15,15 @@ import { useFavourites } from '~/utils/composables/useFavourites';
 import IEZaglushka from '~/components/IEZaglushka.vue';
 
 const { initBreakpoints } = useScreen();
-const { getSpecialities } = useSpecialityStore();
+const { getSpecialities, init: initSpecialityStore } = useSpecialityStore();
 const { checkAccessToken } = useAuth();
 const { getFavourites } = useFavourites();
 
 initBreakpoints();
 
 await getSpecialities();
+initSpecialityStore();
+
 await checkAccessToken();
 await getFavourites();
 

@@ -16,7 +16,13 @@
         >
           <nuxt-link :to="`/histories?id=${history.id}`">
             <div class="histories-slider__item-content">
-              <img :src="`${baseUrl}/${history.avatar}`" alt="" :style="{ borderColor: '#fff' }" />
+              <div class="histories-slider__item-content-img">
+                <img
+                  :src="`${baseUrl}/${history.avatar}`"
+                  alt=""
+                  :style="{ borderColor: history.color }"
+                />
+              </div>
               <p>
                 {{ history.title }}
               </p>
@@ -50,10 +56,12 @@ const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
 const { histories, getHistories } = useHistoriesStore();
 
-await getHistories();
-
 const nextRef = ref(null);
 const prevRef = ref(null);
+
+onMounted(async () => {
+  await getHistories();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -85,9 +93,9 @@ $root: histories-slider;
 
         p {
           margin-top: 14px;
-          padding-bottom: 2px;
 
           font-size: 17px;
+          word-break: break-word;
 
           transition: font-size $tr-dur, color $tr-dur;
         }
@@ -108,6 +116,12 @@ $root: histories-slider;
 
       width: 120px;
 
+      &-img {
+        display: grid;
+
+        @include aspect(120, 120);
+      }
+
       @include hover {
         p {
           color: $accent-color;
@@ -121,7 +135,6 @@ $root: histories-slider;
       width: 100%;
       height: 120px;
       object-fit: cover;
-      @include aspect(120, 120);
 
       border: 5px solid;
       border-radius: 50%;
@@ -136,6 +149,7 @@ $root: histories-slider;
       font-weight: 300;
       text-align: center;
       letter-spacing: -0.2px;
+      @include ellipsis(2);
 
       transition: color $tr-dur;
     }
@@ -183,8 +197,9 @@ $root: histories-slider;
       &-content {
         width: 100%;
       }
+
       img {
-        height: auto;
+        height: 100%;
 
         border-width: 2px;
       }

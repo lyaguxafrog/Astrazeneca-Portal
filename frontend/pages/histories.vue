@@ -40,7 +40,15 @@
         :content-type="ContentType.Stories"
         :content-id="activeHistory.id"
       />
-      <AppButton primary :to="activeHistory.link" petite class="history__link"> Перейти </AppButton>
+      <AppButton
+        v-if="activeHistory.link_to_page"
+        primary
+        :to="activeHistory.link_to_page"
+        petite
+        class="history__link"
+      >
+        Перейти
+      </AppButton>
     </div>
 
     <div v-if="!$screen.mdAndDown" ref="nextRef" class="swiper-button next">

@@ -103,7 +103,10 @@
               :items="content.application_practices"
               #default="{ item }"
             >
-              <div class="drug-page__slider-item">
+              <nuxt-link
+                :to="item.type === 'video' ? `/video/${item.id}` : `/article/${item.id}`"
+                class="drug-page__slider-item"
+              >
                 <img
                   v-if="item.image"
                   onerror="this.style.display = 'none'"
@@ -111,14 +114,14 @@
                   :src="`${baseUrl}${item.image}`"
                 />
                 <p v-html="item.name" />
-              </div>
+              </nuxt-link>
             </ItemsSlider>
           </div>
         </div>
       </div>
     </div>
 
-    <AppModal :name="ModalsName.DrugProps">
+    <AppModal :name="ModalsName.DrugProps" :on-close="onModalClose">
       <div v-if="activeItem" class="drug-page__modal">
         <div class="drug-page__modal-title">
           {{ activeItem.title }}
@@ -164,6 +167,11 @@ const content = await getDrug(drugId.value);
 
 const activeItem = ref<DrugFaq>();
 const itemsEls = ref();
+
+const onModalClose = () => {
+  activeItem.value = undefined;
+};
+
 const openProps = (item: DrugFaq) => {
   if (activeItem.value?.order === item.order) {
     activeItem.value = undefined;
@@ -274,6 +282,11 @@ const openProps = (item: DrugFaq) => {
       cursor: pointer;
       transition: color $tr-dur;
 
+      p {
+        position: relative;
+        z-index: 2;
+      }
+
       @include hover {
         color: $white-color;
       }
@@ -305,11 +318,13 @@ const openProps = (item: DrugFaq) => {
 
       display: block;
 
-      padding: 64px;
+      padding: 64px 30px 64px 64px;
       overflow: hidden;
       @include aspect(1, 1);
+
       font-size: 32px;
       line-height: 30px;
+      word-break: break-word;
 
       background: conic-gradient(
         from 164deg at 50% 50%,
@@ -318,6 +333,18 @@ const openProps = (item: DrugFaq) => {
         #00d1ff 350.40282011032104deg
       );
       border-radius: 40px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+
+        background-color: rgba(#000, 0.3);
+      }
 
       &-bg {
         position: absolute;
@@ -465,10 +492,13 @@ const openProps = (item: DrugFaq) => {
       width: 100%;
       margin-top: 16px;
 
-      border-top: 1px solid $primary-color;
-
       &-item {
         padding: 12px 0;
+
+        &:first-of-type {
+          border-top: 1px solid $primary-color;
+        }
+
         &-title {
           display: flex;
           justify-content: space-between;

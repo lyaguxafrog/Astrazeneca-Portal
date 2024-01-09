@@ -4,9 +4,9 @@
       <div class="default-header__main" :class="{ min: !isExtendsHeader }">
         <div class="default-header__first-row">
           <transition mode="out-in">
-            <div v-if="!isExtendsHeader" class="default-header__title min">
+            <nuxt-link v-if="!isExtendsHeader" to="/" class="default-header__title min">
               <span>PRO</span>Рак Легкого
-            </div>
+            </nuxt-link>
             <div v-else></div>
           </transition>
 
@@ -54,9 +54,9 @@ import { useScreen } from '~/utils/composables/useScreen';
 
 const $route = useRoute();
 const { $screen } = useScreen();
-const { speciality } = useSpecialityStore();
+const { specialityId } = useSpecialityStore();
 
-const isExtendsHeader = toRef(() => !speciality.value && $route.name !== 'histories');
+const isExtendsHeader = toRef(() => !specialityId.value && $route.name !== 'histories');
 
 const searchEl = ref();
 const scrollHeaderEl = ref();

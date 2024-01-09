@@ -29,7 +29,9 @@
             class="articles-page__slide-title for-desktop items-slier__visible-on-active"
             v-html="item.article_name"
           />
-          <img class="articles-page__slide-image" :src="`${baseUrl}${item.cover}`" alt="" />
+          <div class="articles-page__slide-image-wrapper">
+            <img class="articles-page__slide-image" :src="`${baseUrl}${item.cover}`" alt="" />
+          </div>
           <p class="for-desktop" v-html="item.information" />
         </nuxt-link>
       </template>
@@ -51,13 +53,13 @@ import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
 const { $screen } = useScreen();
-const { getArticles } = useArticlesStore();
+const { getArticles, articles } = useArticlesStore();
 const { baseUrl } = useRuntimeConfig().public;
 
-const articles = await getArticles();
+await getArticles();
 
 const activeSlide = ref(1);
-const activeSlideContent = toRef(() => articles.data?.[activeSlide.value]);
+const activeSlideContent = toRef(() => articles.value.data?.[activeSlide.value]);
 const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
     activeSlide.value = index;
@@ -122,8 +124,8 @@ const onSlideChange = (index: number | undefined) => {
     height: 100%;
 
     @include hover {
-      .articles-page__slide-title {
-        color: $accent-color;
+      .articles-page__slide-image {
+        transform: scale(1.05);
       }
     }
 
@@ -138,11 +140,19 @@ const onSlideChange = (index: number | undefined) => {
     }
     &-image {
       width: 100%;
-      height: 530px;
-      margin-top: auto;
+      height: 100%;
       object-fit: cover;
 
-      border-radius: 40px;
+      transition: transform $tr-dur;
+
+      &-wrapper {
+        width: 100%;
+        height: 530px;
+        // margin-top: auto;
+        overflow: hidden;
+
+        border-radius: 40px;
+      }
     }
 
     p {
@@ -150,6 +160,7 @@ const onSlideChange = (index: number | undefined) => {
 
       font-size: 24px;
       line-height: 28px;
+      word-break: break-word;
 
       transition: opacity $tr-dur;
     }
@@ -179,7 +190,7 @@ const onSlideChange = (index: number | undefined) => {
         line-height: 20px;
         font-weight: 900;
       }
-      &-image {
+      &-image-wrapper {
         height: auto;
       }
     }

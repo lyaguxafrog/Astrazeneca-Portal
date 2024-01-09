@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <template v-if="speciality">
+    <template v-if="specialityId">
       <HomeVideosSlider />
 
       <HomeEvents />
@@ -43,7 +43,7 @@ import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
 import { useRequest } from '~/utils/composables/useRequest';
 
 const { $screen } = useScreen();
-const { speciality } = useSpecialityStore();
+const { specialityId } = useSpecialityStore();
 
 const accessInfo = await useRequest<{
   number: string;
@@ -51,10 +51,10 @@ const accessInfo = await useRequest<{
   method: 'GET',
 });
 
-const showSpecialitySlider = toRef(() => $screen.value.mdAndDown && !speciality.value);
+const showSpecialitySlider = toRef(() => $screen.value.mdAndDown && !specialityId.value);
 
 watch(
-  speciality,
+  specialityId,
   (newValue) => {
     if (!$screen.value.mdAndDown) {
       return;
@@ -147,6 +147,8 @@ watch(
   }
 
   @include md-and-down {
+    background: none;
+
     &__specialitySlider {
       position: fixed;
       top: 0;

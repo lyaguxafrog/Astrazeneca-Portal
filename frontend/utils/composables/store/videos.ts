@@ -41,11 +41,11 @@ export const useVideosStore = () => {
     videos: loadableEmpty<Video[]>([]),
   }));
 
-  const { speciality } = useSpecialityStore();
+  const { specialityId } = useSpecialityStore();
 
   const getVideos = async () => {
-    if (!state.value.videos.loaded && speciality.value?.id) {
-      const res = await useRequest<Video[]>(`/video-lectures/speciality/${speciality.value.id}`, {
+    if (!state.value.videos.loaded && specialityId.value) {
+      const res = await useRequest<Video[]>(`/video-lectures/speciality/${specialityId.value}`, {
         method: 'GET',
       });
 
