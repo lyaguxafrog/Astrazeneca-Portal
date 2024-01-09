@@ -24,12 +24,13 @@ services:
     depends_on:
       - db
 
-
   nuxt:
     build: ./frontend
     expose:
       - '3000:3000'
     restart: always
+    depends_on:
+      - db
 
   nginx:
     image: nginx:1.19.8-alpine
@@ -40,10 +41,10 @@ services:
       - '443:443'
     volumes:
       - ./kernel/static:/var/www/html/static
-      - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx-conf.d:/etc/nginx/conf.d
       - ./data/etc-letsencrypt/:/etc/letsencrypt
       - www-html:/var/www/html
-    restart: unless-stopped
+
 
   certbot:
     image: certbot/certbot
@@ -52,9 +53,8 @@ services:
       - ./data/etc-letsencrypt:/etc/letsencrypt
       - ./kernel/static:/var/www/html/static
       - www-html:/var/www/html
-    depends_on:
-      - nginx
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 100000 & wait $${!}; done;'"  
+    command: certonly --webroot --webroot-path=/var/www/html --email \
+      maccree.a@yandex.ru --agree-tos --no-eff-email -d astraportal.dev-demo.online
 
 volumes:
   pg_data:
