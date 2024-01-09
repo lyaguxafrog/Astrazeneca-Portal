@@ -112,7 +112,24 @@ const result = ref<
     icon: IconName.Megaphone,
   },
 ]);
+
+const clearResults = () => {
+  result.value.forEach((x) => (x.items = []));
+
+  $router.replace({
+    query: {
+      ...$route.query,
+      s: '',
+    },
+  });
+};
+
 const search = async () => {
+  if (!searchString.value) {
+    clearResults();
+    return;
+  }
+
   await $router.replace({
     query: {
       ...$route.query,
@@ -125,6 +142,8 @@ const search = async () => {
   });
 
   if (res.data) {
+    clearResults();
+
     res.data.forEach((r) => {
       const data = {
         id: r.id,

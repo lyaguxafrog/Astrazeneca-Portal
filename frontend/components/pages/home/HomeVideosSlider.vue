@@ -20,19 +20,21 @@
 
           <div class="videos-slider__materials-buttons-wrapper">
             <AppButton
+              v-if="lectures.length"
               :primary="selectedType === 'видеолекция'"
               :selected="selectedType === 'видеолекция'"
               :petite="$screen.mdAndDown"
-              @click="setType('видеолекция')"
+              @click="setType(VideoContentType.Video)"
             >
               <template v-if="!$screen.mdAndDown"> Видеолекции </template>
               <template v-else> Видеоматериалы </template>
             </AppButton>
             <AppButton
+              v-if="cases.length"
               :primary="selectedType === 'кейс'"
               :selected="selectedType === 'кейс'"
               :petite="$screen.mdAndDown"
-              @click="setType('кейс')"
+              @click="setType(VideoContentType.Case)"
             >
               Клинические случаи
             </AppButton>
@@ -80,9 +82,14 @@ const { baseUrl } = useRuntimeConfig().public;
 
 const videos = await getVideos();
 
-const selectedType = ref<VideoContentType>('видеолекция');
+const selectedType = ref<VideoContentType>(VideoContentType.Video);
 
-const shownVideos = computed(() => videos?.filter((v) => v.content_type === selectedType.value));
+const lectures = computed(() => videos?.filter((v) => v.content_type === VideoContentType.Video));
+const cases = computed(() => videos?.filter((v) => v.content_type === VideoContentType.Case));
+
+const shownVideos = computed(() =>
+  selectedType.value === VideoContentType.Video ? lectures.value : cases.value
+);
 
 const setType = (type: VideoContentType) => {
   selectedType.value = type;

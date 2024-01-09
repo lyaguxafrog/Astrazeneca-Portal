@@ -33,7 +33,7 @@
 
       <div v-if="block.content_type === 'text_with_image'" class="article-page__image-and-text">
         <img :src="`${baseUrl}${block.image}`" />
-        <span v-html="block.text" />
+        <p v-html="block.text" />
       </div>
     </template>
     <div
@@ -214,6 +214,10 @@ const content = await getArticle(articleId.value);
 
       width: 245px;
       margin-right: 55px;
+    }
+
+    p {
+      padding-top: 17px;
     }
   }
 
