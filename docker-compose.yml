@@ -30,7 +30,7 @@ services:
       - '3000:3000'
     restart: always
 
-  dev-nginx:
+  nginx:
       image: nginx:1.19.8-alpine
       depends_on:
         - nuxt
