@@ -14,8 +14,14 @@ export const useAuth = () => {
   const userId = useCookie('user-id');
 
   const state = useState('auth-state', () => ({
-    userId: userId.value ? +userId.value : 0,
+    userId: 0,
   }));
+
+  const init = async () => {
+    const userId = await useCookie('user-id');
+
+    state.value.userId = userId.value ? +userId.value : 0;
+  };
 
   const toLogin = async () => {
     const res = await useRequest<{
@@ -30,7 +36,7 @@ export const useAuth = () => {
   };
 
   const checkAccessToken = async () => {
-    const userIdCookie = useCookie('user-id');
+    const userIdCookie = await useCookie('user-id');
 
     const token = $route.query.access_token;
 
@@ -105,6 +111,7 @@ export const useAuth = () => {
   };
 
   return {
+    init,
     toLogin,
     sendAuthToken,
     checkAccessToken,

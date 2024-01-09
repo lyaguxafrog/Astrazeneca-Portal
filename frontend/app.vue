@@ -18,20 +18,21 @@ import IEZaglushka from '~/components/IEZaglushka.vue';
 
 const { initBreakpoints } = useScreen();
 const { getSpecialities, init: initSpecialityStore } = useSpecialityStore();
-const { checkAccessToken } = useAuth();
+const { checkAccessToken, init: initAuth } = useAuth();
 const { getFavourites } = useFavourites();
 
 initBreakpoints();
+await initAuth();
 
 await getSpecialities();
-initSpecialityStore();
+await initSpecialityStore();
 
-//await checkAccessToken();
+await checkAccessToken();
 await getFavourites();
-
+/*
 onMounted(async () => {
   await checkAccessToken();
-});
+});*/
 
 const nuxtApp = useNuxtApp();
 
