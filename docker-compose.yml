@@ -31,18 +31,23 @@ services:
     restart: always
 
   nginx:
-    build: ./nginx
-    depends_on:
-      - nuxt
-    volumes:
-      - ./kernel/static:/static
-      - ./kernel/media:/media
-      - /path/to/certbot/data:/var/www/certbot
-    ports:
-      - '80:80'
-      - '443:443'
-    restart: always
-    entrypoint: ["./entrypoint.sh"]
-    command: ["nginx", "-g", "daemon off;"]
-    environment:
-      WAIT_FOR_NUXT: "10"
+      image: nginx:1.19.8-alpine
+      depends_on:
+        - nuxt
+      ports:
+        - '80:80'
+        - '443:443'
+      volumes:
+        - ./kernel/static:/var/www/html/static
+        - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
+        - ./data/etc-letsencrypt/:/etc/letsencrypt
+        - www-html:/var/www/html
+    certbot:
+      image: certbot/certbot
+      container_name: certbot
+      volumes:
+        - ./data/etc-letsencrypt:/etc/letsencrypt
+        - ./kernel/static:/var/www/html/static
+        - www-html:/var/www/html
+      command: certonly --webroot --webroot-path=/var/www/html --email \
+        maccre.a@yandex.ru --agree-tos --no-eff-email -d astraportal.dev-demo.online
