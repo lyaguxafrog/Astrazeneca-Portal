@@ -2,7 +2,7 @@
   <div class="inside-page-head">
     <div class="inside-page-head__back" @click="back">&lt; Назад</div>
     <AppFavouriteButton
-      v-if="!hideFavouritesButton"
+      v-if="contentType && contentId"
       class="inside-page-head__fav"
       big
       :content-type="contentType"
@@ -16,9 +16,8 @@ import { useBack } from '~/utils/composables/useHistory';
 import { ContentType } from '~/utils/types';
 
 defineProps<{
-  hideFavouritesButton?: boolean;
-  contentType: ContentType;
-  contentId: number;
+  contentType?: ContentType;
+  contentId?: number;
 }>();
 
 const { back } = useBack();

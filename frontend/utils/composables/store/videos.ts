@@ -4,7 +4,10 @@ import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { loadableEmpty } from '~/utils/functions/loadable';
 import { ArticlePlump } from '~/utils/composables/store/articles';
 
-export type VideoContentType = 'видеолекция' | 'кейс';
+export enum VideoContentType {
+  Video = 'видеолекция',
+  Case = 'кейс',
+}
 
 export type Video = {
   id: number;

@@ -64,6 +64,7 @@ export const useAuth = () => {
             ...$route.query,
             access_token: undefined,
             refresh: undefined,
+            status: undefined,
           },
         });
       } else {
@@ -103,6 +104,7 @@ export const useAuth = () => {
           ...$route.query,
           access_token: undefined,
           refresh: undefined,
+          status: undefined,
         },
       });
 

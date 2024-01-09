@@ -37,6 +37,7 @@ const { $screen } = useScreen();
 
   width: 100vw;
   min-height: 100vh;
+  overflow: hidden;
 
   &__footer {
     margin-top: auto;

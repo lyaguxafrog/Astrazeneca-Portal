@@ -107,7 +107,7 @@ watch(
 
   &__main {
     padding-bottom: 50px;
-    padding-left: 94px;
+    padding-left: 70px;
 
     background-color: $main-bg-color;
     box-shadow: 0 4px 94px 0 rgba(19, 37, 72, 0.45);
@@ -164,7 +164,7 @@ watch(
     &.min {
       height: auto;
       margin-top: 1px;
-      margin-left: -40px;
+      margin-left: -16px;
       padding-top: 0;
 
       font-size: 22px;

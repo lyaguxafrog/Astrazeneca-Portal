@@ -9,11 +9,7 @@
           prevEl: prevRef,
         }"
       >
-        <SwiperSlide
-          v-for="(history, index) in histories"
-          :key="history.id"
-          class="histories-slider__item"
-        >
+        <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
           <nuxt-link :to="`/histories?id=${history.id}`">
             <div class="histories-slider__item-content">
               <div class="histories-slider__item-content-img">
@@ -72,10 +68,12 @@ $root: histories-slider;
 
   width: 100%;
   max-width: 606px;
+  margin-left: -16px;
 
   &.min {
     width: 100%;
     max-width: 440px;
+    margin-left: 0;
 
     transition: max-width $tr-dur;
 
@@ -92,9 +90,11 @@ $root: histories-slider;
         }
 
         p {
-          margin-top: 14px;
+          margin-top: 8px;
+          padding-bottom: 2px;
 
           font-size: 17px;
+          line-height: 1.1;
           word-break: break-word;
 
           transition: font-size $tr-dur, color $tr-dur;
@@ -109,6 +109,12 @@ $root: histories-slider;
   }
 
   &__item {
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     &-content {
       display: flex;
       flex-direction: column;
@@ -143,9 +149,10 @@ $root: histories-slider;
     p {
       width: 100%;
       margin-top: 17px;
+      padding-bottom: 2px;
 
       font-size: 20px;
-      line-height: 0.9;
+      line-height: 1;
       font-weight: 300;
       text-align: center;
       letter-spacing: -0.2px;
@@ -158,11 +165,11 @@ $root: histories-slider;
   .swiper-button {
     position: absolute;
     top: 26%;
-    left: -43px;
+    left: -30px;
     @include z-index(3);
 
     &.next {
-      right: -17px;
+      right: -30px;
       left: auto;
     }
   }

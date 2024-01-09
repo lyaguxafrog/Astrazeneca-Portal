@@ -1,4 +1,5 @@
 <template>
+  <InsidePageHead />
   <div v-if="content" class="drug-page">
     <BgEllipse
       :size="$screen.mdAndDown ? 290 : 1138"
@@ -151,6 +152,8 @@ import { useScreen } from '~/utils/composables/useScreen';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import { ArticlePlump } from '~/utils/composables/store/articles';
+import { ContentType } from '~/utils/types';
+import InsidePageHead from '~/components/common/InsidePageHead.vue';
 
 const nextRef = ref(null);
 const prevRef = ref(null);
