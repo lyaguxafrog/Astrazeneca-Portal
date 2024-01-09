@@ -23,8 +23,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    networks:
-      - portal-backend_default
+
 
   nuxt:
     build: ./frontend
