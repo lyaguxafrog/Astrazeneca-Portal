@@ -42,7 +42,11 @@ services:
         - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
         - ./data/etc-letsencrypt/:/etc/letsencrypt
         - www-html:/var/www/html
+<<<<<<< HEAD
   certbot:
+=======
+    certbot:
+>>>>>>> edd807000174d0b2342ea29d222b9b7362a9eeed
       image: certbot/certbot
       container_name: certbot
       volumes:
@@ -51,9 +55,12 @@ services:
         - www-html:/var/www/html
       command: certonly --webroot --webroot-path=/var/www/html --email \
         maccre.a@yandex.ru --agree-tos --no-eff-email -d astraportal.dev-demo.online
+<<<<<<< HEAD
 
 volumes:
   pg_data:
   static:
   etc-letsencrypt:
   www-html:
+=======
+>>>>>>> edd807000174d0b2342ea29d222b9b7362a9eeed
