@@ -40,7 +40,7 @@ services:
       - '443:443'
     volumes:
       - ./kernel/static:/var/www/html/static
-      - ./nginx/nginx-conf.d:/etc/nginx/conf.d 
+      - ./nginx:/etc/nginx/conf.d
       - ./data/etc-letsencrypt/:/etc/letsencrypt
       - www-html:/var/www/html
 
