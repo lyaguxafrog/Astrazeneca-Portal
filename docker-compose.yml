@@ -32,16 +32,27 @@ services:
 
 
   nginx:
-    image: nginx:latest
+    build: ./nginx
     depends_on:
-      - kernel
-    ports:
-      - 80:80
-      - 443:443
-    restart: always
+      - nuxt
     volumes:
-      - ./nginx:/etc/nginx/conf.d/:ro
-      - ./certbot/www:/var/www/certbot/:ro
+      - ./kernel/static:/static
+      - ./kernel/media:/media
+    ports:
+      - '80:80'
+    restart: always
+
+  # nginx:
+  #   image: nginx:latest
+  #   depends_on:
+  #     - kernel
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   restart: always
+  #   volumes:
+  #     - ./nginx:/etc/nginx/conf.d/:ro
+  #     - ./certbot/www:/var/www/certbot/:ro
 
 
   # certbot:
