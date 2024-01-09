@@ -17,6 +17,8 @@ import ItemsSlider from '~/components/common/ItemsSlider.vue';
 const { getEvents } = useEventsStore();
 const { baseUrl } = useRuntimeConfig().public;
 const events = await getEvents();
+
+const initialSlide = computed(() => {});
 </script>
 
 <style scoped lang="scss">

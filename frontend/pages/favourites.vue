@@ -28,7 +28,14 @@
           class="favourites__item"
           :to="`video/${fav.id}`"
         >
-          <img :src="`${baseUrl}${(fav as VideoPlump).video_cover}`" class="favourites__item-bg" />
+          <AppImage
+            class="favourites__item-bg"
+            :url="fav.video_cover_desktop_1400px"
+            :url-full-x2="fav.video_cover_desktop_2800px"
+            :url-full="fav.video_cover_desktop_1400px"
+            :url-thin-x2="fav.video_cover_mobile_840px"
+            :url-thin="fav.video_cover_mobile_420px"
+          />
           <p>
             {{ (fav as VideoPlump).video_article }}
           </p>
@@ -38,7 +45,14 @@
           class="favourites__item"
           :to="`article/${fav.id}`"
         >
-          <img :src="`${baseUrl}${(fav as ArticlePlump).cover}`" class="favourites__item-bg" />
+          <AppImage
+            class="favourites__item-bg"
+            :url="fav.cover_desktop_1400px"
+            :url-full-x2="fav.cover_desktop_2800px"
+            :url-full="fav.cover_desktop_1400px"
+            :url-thin-x2="fav.cover_mobile_840px"
+            :url-thin="fav.cover_mobile_420px"
+          />
           <p>
             {{ (fav as ArticlePlump).article_name }}
           </p>

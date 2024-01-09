@@ -1,5 +1,5 @@
 <template>
-  <div class="default-header">
+  <div class="default-header" :class="{ extends: isExtendsHeader }">
     <div ref="scrollHeaderEl" class="default-header__content">
       <div class="default-header__main" :class="{ min: !isExtendsHeader }">
         <div class="default-header__first-row">
@@ -88,6 +88,10 @@ watch(
   height: 270px;
 
   box-shadow: 0 4px 94px 0 rgba(0, 0, 0, 0.45);
+
+  &.extends {
+    margin-bottom: 100vh;
+  }
 
   &__content {
     height: 100vh;

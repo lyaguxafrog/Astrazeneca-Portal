@@ -20,7 +20,9 @@
               :style="{ backgroundColor: $screen.mdAndDown ? block.color : '' }"
               @click="close"
             >
-              {{ item.name }}
+              <p>
+                {{ item.name }}
+              </p>
               <span v-if="!$screen.mdAndDown" :style="{ color: block.color }"
                 >| {{ block.postfix }}</span
               >
@@ -344,6 +346,10 @@ defineExpose({
           color: $white-color;
 
           border-radius: 20px;
+          p {
+            word-break: break-word;
+            @include ellipsis(5);
+          }
         }
       }
     }

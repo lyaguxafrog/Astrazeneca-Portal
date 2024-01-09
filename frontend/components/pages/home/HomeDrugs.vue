@@ -24,7 +24,11 @@
       #default="{ item }"
     >
       <nuxt-link class="home-drugs__item link" :to="`/drug/${item.id}`">
-        <AppImage :url="item.image" :url-full="item.image" :url-full-x2="item.image" />
+        <AppImage
+          :url="item.image_desktop_1400px"
+          :url-full="item.image_desktop_1400px"
+          :url-full-x2="item.image_desktop_1400px"
+        />
         <div class="home-drugs__item-link">Узнать подробнее</div>
         <div class="swiper-lazy-preloader" />
       </nuxt-link>

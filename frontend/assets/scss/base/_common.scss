@@ -34,6 +34,8 @@ a {
 
   transition: color $tr-dur;
   cursor: pointer;
+
+  user-select: none;
   &.swiper-button-disabled {
     color: $dimmed-color;
     pointer-events: none;

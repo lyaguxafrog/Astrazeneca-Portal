@@ -1,6 +1,11 @@
 <template>
   <picture>
     <source
+      v-if="urlThin && urlThinX2"
+      :srcset="`${baseUrl}${urlThin}, ${baseUrl}${urlThinX2} 2x`"
+      media="(max-width: 992px)"
+    />
+    <source
       v-if="urlFull && urlFullX2"
       :srcset="`${baseUrl}${urlFull}, ${baseUrl}${urlFullX2} 2x`"
     />

@@ -100,7 +100,7 @@ const historiesEl = ref();
 
 const { back } = useBack();
 
-const { direction } = useSwipe(historiesEl, {
+/*const { direction } = useSwipe(historiesEl, {
   passive: false,
   threshold: 150,
   onSwipe: () => {
@@ -108,7 +108,7 @@ const { direction } = useSwipe(historiesEl, {
       back();
     }
   },
-});
+});*/
 
 watch(
   () => $route.query.id,
