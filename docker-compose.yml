@@ -32,28 +32,23 @@ services:
 
 
   nginx:
-    image: nginx:1.19.8-alpine
+    image: nginx:latest
     depends_on:
       - kernel
     ports:
-      - '80:80'
-      - '443:443'
+      - 80:80
+      - 443:443
+    restart: always
     volumes:
-      - ./kernel/static:/var/www/html/static
-      - ./nginx:/etc/nginx/conf.d
-      - ./data/etc-letsencrypt/:/etc/letsencrypt
-      - www-html:/var/www/html
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
 
 
   certbot:
-    image: certbot/certbot
-    container_name: certbot
+    image: certbot/cerbot:latest
     volumes:
-      - ./data/etc-letsencrypt:/etc/letsencrypt
-      - ./kernel/static:/var/www/html/static
-      - www-html:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email \
-      maccree.a@yandex.ru --agree-tos --no-eff-email -d astraportal.dev-demo.online
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
 volumes:
   pg_data:
