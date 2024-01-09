@@ -6,7 +6,10 @@ import { useSpecialityStore } from '~/utils/composables/store/speciality';
 export type Article = {
   id: number;
   article_name: string;
-  cover: string;
+  cover_desktop_1400px: string;
+  cover_desktop_2800px: string;
+  cover_mobile_420px: string;
+  cover_mobile_840px: string;
   information: string;
 };
 

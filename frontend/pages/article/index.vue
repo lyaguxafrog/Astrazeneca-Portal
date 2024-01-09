@@ -30,7 +30,14 @@
             v-html="item.article_name"
           />
           <div class="articles-page__slide-image-wrapper">
-            <img class="articles-page__slide-image" :src="`${baseUrl}${item.cover}`" alt="" />
+            <AppImage
+              class="articles-page__slide-image"
+              :url="item.cover_desktop_1400px"
+              :url-full-x2="item.cover_desktop_2800px"
+              :url-full="item.cover_desktop_1400px"
+              :url-thin-x2="item.cover_mobile_840px"
+              :url-thin="item.cover_mobile_420px"
+            />
           </div>
           <p class="for-desktop" v-html="item.information" />
         </nuxt-link>
@@ -125,7 +132,9 @@ const onSlideChange = (index: number | undefined) => {
 
     @include hover {
       .articles-page__slide-image {
-        transform: scale(1.05);
+        &:deep(img) {
+          transform: scale(1.05);
+        }
       }
     }
 
@@ -139,11 +148,13 @@ const onSlideChange = (index: number | undefined) => {
       transition: color $tr-dur;
     }
     &-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      &:deep(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
 
-      transition: transform $tr-dur;
+        transition: transform $tr-dur;
+      }
 
       &-wrapper {
         width: 100%;

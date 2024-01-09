@@ -5,6 +5,10 @@ import { loadableEmpty } from '~/utils/functions/loadable';
 export type Drug = {
   id: number;
   image: string;
+  image_desktop_1400px: string;
+  image_desktop_700px: string;
+  image_mobile_540px: string;
+  image_mobile_270px: string;
 };
 
 export type DrugFaq = {
@@ -16,7 +20,6 @@ export type DrugFaq = {
 export type DrugPlump = {
   id: number;
   name: string;
-  image: string;
   brief_info: string;
   url_field: string;
   file_field: string;
@@ -30,10 +33,17 @@ export type DrugPlump = {
   application_practices: {
     id: number;
     type: 'article' | 'video';
-    image: string;
+    recomendation_cover_desktop_860px: string;
+    recomendation_cover_mobile_540px: string;
+    recomendation_cover_desktop_430px: string;
+    recomendation_cover_mobile_270px: string;
     name: string;
   }[];
   faq: DrugFaq[];
+  image_desktop_1400px: string;
+  image_desktop_700px: string;
+  image_mobile_540px: string;
+  image_mobile_270px: string;
 };
 
 export const useDrugsStore = () => {

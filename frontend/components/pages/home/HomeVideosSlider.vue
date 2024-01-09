@@ -50,9 +50,11 @@
             <div class="videos-slider__img">
               <AppImage
                 class="videos-slider__image"
-                :url="item.video_cover_url"
-                :url-full-x2="item.video_cover_2800px_url"
-                :url-full="item.video_cover_1400px_url"
+                :url="item.video_cover_desktop_1400px"
+                :url-full-x2="item.video_cover_desktop_2800px"
+                :url-full="item.video_cover_desktop_1400px"
+                :url-thin-x2="item.video_cover_mobile_840px"
+                :url-thin="item.video_cover_mobile_420px"
               />
               <PlayVideoButton />
             </div>

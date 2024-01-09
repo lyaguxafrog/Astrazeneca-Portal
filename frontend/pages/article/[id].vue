@@ -203,6 +203,8 @@ const content = await getArticle(articleId.value);
   }
 
   &__image-and-text {
+    margin-top: 5px;
+
     font-size: 24px;
     line-height: 32px;
     letter-spacing: -0.24px;
@@ -211,14 +213,13 @@ const content = await getArticle(articleId.value);
       float: left;
 
       width: 245px;
-      margin-top: -17px;
       margin-right: 55px;
     }
   }
 
   &__description {
     max-width: 1100px;
-    margin-top: 110px;
+    margin-top: 130px;
 
     font-size: 18px;
     line-height: 19px;

@@ -12,7 +12,7 @@
     </div>
     <div class="drug-page__content">
       <div class="drug-page__left">
-        <img :src="`${baseUrl}${content.image}`" alt="" />
+        <img :src="`${baseUrl}${content.image_desktop_1400px}`" alt="" />
 
         <div class="drug-page__left-icons">
           <img
@@ -79,11 +79,11 @@
                     class="drug-page__slider-item"
                     :to="item.type === 'video' ? `/video/${item.id}` : `/article/${item.id}`"
                   >
-                    <img
-                      v-if="item.image"
+                    <AppImage
+                      v-if="item.recomendation_cover_mobile_540px"
                       onerror="this.style.display = 'none'"
                       class="drug-page__slider-item-bg"
-                      :src="`${baseUrl}${item.image}`"
+                      :url="item.recomendation_cover_mobile_540px"
                     />
                     <p>{{ item.name }}</p>
                   </nuxt-link>
@@ -107,11 +107,12 @@
                 :to="item.type === 'video' ? `/video/${item.id}` : `/article/${item.id}`"
                 class="drug-page__slider-item"
               >
-                <img
-                  v-if="item.image"
+                {{ item }}
+                <AppImage
+                  v-if="item.recomendation_cover_mobile_540px"
                   onerror="this.style.display = 'none'"
                   class="drug-page__slider-item-bg"
-                  :src="`${baseUrl}${item.image}`"
+                  :url="item.recomendation_cover_mobile_540px"
                 />
                 <p v-html="item.name" />
               </nuxt-link>
@@ -256,7 +257,7 @@ const openProps = (item: DrugFaq) => {
       display: flex;
       justify-content: space-between;
 
-      margin-top: -3px;
+      margin-top: 10px;
       padding: 0 51px 0 5px;
       img {
         width: 20%;

@@ -12,7 +12,7 @@
       <a href="">Адрес техподдержки сайта</a>
     </div>
     <div class="default-footer__disclaimer">
-      <span id="footerAccessInfo"></span>
+      <span id="footerAccessInfo" />
     </div>
   </div>
 </template>
