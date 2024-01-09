@@ -43,7 +43,7 @@ services:
       - ./nginx/nginx-conf.d:/etc/nginx/conf.d
       - ./data/etc-letsencrypt/:/etc/letsencrypt
       - www-html:/var/www/html
-    command: cp ./nginx/prod.conf /etc/nginx/conf.d/default.conf
+    command: cp nginx/prod.conf /etc/nginx/conf.d/default.conf
 
 
   certbot:
