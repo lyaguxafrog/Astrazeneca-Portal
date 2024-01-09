@@ -1,7 +1,8 @@
 from django.db.models import Q, Value, CharField
 from rest_framework import generics
 from rest_framework.response import Response
-from pages.models import Articles, ContentBlock, Drug, DrugFAQ, Events, VideoLectures
+from pages.models import (Articles, ContentBlock, Drug,
+                        DrugFAQ, Events, VideoLectures)
 from pages.serializers import SearchSerializer
 
 
@@ -49,10 +50,14 @@ class SearchAPIView(generics.ListAPIView):
         queryset = (
             # list(articles_queryset.values('id', 'article_name', 'model_type', model=Value('article'))) +
             # list(content_blocks_queryset.values('id', 'text', 'model_type', model=Value('content_block'))) +
-            list(drugs_queryset.values('id', 'name', 'model_type', model=Value('drug'))) +
-            list(drug_faqs_queryset.values('id', 'title', 'model_type', model=Value('drug_faq'))) +
-            list(events_queryset.values('id', 'name', 'url', 'model_type', model=Value('event'))) +
-            list(video_lectures_queryset.values('id', 'video_article', 'model_type', model=Value('video_lecture')))
+            list(drugs_queryset.values('id', 'name',
+                                       'model_type', model=Value('drug'))) +
+            list(drug_faqs_queryset.values('id', 'title',
+                                    'model_type', model=Value('drug_faq'))) +
+            list(events_queryset.values('id', 'name', 'url',
+                                    'model_type', model=Value('event'))) +
+            list(video_lectures_queryset.values('id', 'video_article',
+                                'model_type', model=Value('video_lecture')))
         )
 
         return queryset
