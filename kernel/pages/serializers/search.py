@@ -10,11 +10,11 @@ class SearchSerializer(serializers.Serializer):
 
     def get_title(self, instance):
         model_name = instance['model']
-        if model_name == 'article':
-            return instance.get('article_name', '')
-        elif model_name == 'content_block':
-            return instance.get('text', '')
-        elif model_name == 'drug':
+        # if model_name == 'article':
+        #     return instance.get('article_name', '')
+        # if model_name == 'content_block':
+        #     return instance.get('text', '')
+        if model_name == 'drug':
             return instance.get('name', '')
         elif model_name == 'drug_faq':
             return instance.get('title', '')
