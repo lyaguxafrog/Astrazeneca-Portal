@@ -17,6 +17,8 @@ import ItemsSlider from '~/components/common/ItemsSlider.vue';
 const { getEvents } = useEventsStore();
 const { baseUrl } = useRuntimeConfig().public;
 const events = await getEvents();
+
+const initialSlide = computed(() => {});
 </script>
 
 <style scoped lang="scss">
@@ -33,6 +35,14 @@ const events = await getEvents();
     line-height: 28px;
     font-weight: 900;
     text-transform: uppercase;
+  }
+
+  a {
+    transition: filter $tr-dur;
+
+    @include hover {
+      filter: hue-rotate(45deg);
+    }
   }
 
   @include md-and-down {

@@ -1,12 +1,12 @@
 <template>
-  <div class="default-header">
+  <div class="default-header" :class="{ extends: isExtendsHeader }">
     <div ref="scrollHeaderEl" class="default-header__content">
       <div class="default-header__main" :class="{ min: !isExtendsHeader }">
         <div class="default-header__first-row">
           <transition mode="out-in">
-            <div v-if="!isExtendsHeader" class="default-header__title min">
+            <nuxt-link v-if="!isExtendsHeader" to="/" class="default-header__title min">
               <span>PRO</span>Рак Легкого
-            </div>
+            </nuxt-link>
             <div v-else></div>
           </transition>
 
@@ -54,9 +54,9 @@ import { useScreen } from '~/utils/composables/useScreen';
 
 const $route = useRoute();
 const { $screen } = useScreen();
-const { speciality } = useSpecialityStore();
+const { specialityId } = useSpecialityStore();
 
-const isExtendsHeader = toRef(() => !speciality.value && $route.name !== 'histories');
+const isExtendsHeader = toRef(() => !specialityId.value && $route.name !== 'histories');
 
 const searchEl = ref();
 const scrollHeaderEl = ref();
@@ -88,6 +88,10 @@ watch(
   height: 270px;
 
   box-shadow: 0 4px 94px 0 rgba(0, 0, 0, 0.45);
+
+  &.extends {
+    margin-bottom: 100vh;
+  }
 
   &__content {
     height: 100vh;

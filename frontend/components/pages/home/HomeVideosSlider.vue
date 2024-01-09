@@ -50,12 +50,14 @@
             <div class="videos-slider__img">
               <AppImage
                 class="videos-slider__image"
-                :url="item.video_cover_url"
-                :url-full-x2="item.video_cover_2800px_url"
-                :url-full="item.video_cover_1400px_url"
+                :url="item.video_cover_desktop_1400px"
+                :url-full-x2="item.video_cover_desktop_2800px"
+                :url-full="item.video_cover_desktop_1400px"
+                :url-thin-x2="item.video_cover_mobile_840px"
+                :url-thin="item.video_cover_mobile_420px"
               />
+              <PlayVideoButton />
             </div>
-            <PlayVideoButton />
           </nuxt-link>
         </template>
       </ItemsSlider>
@@ -174,6 +176,8 @@ const setType = (type: VideoContentType) => {
   }
 
   .videos-slider__img {
+    position: relative;
+
     margin-top: auto;
     overflow: hidden;
 
@@ -234,8 +238,12 @@ const setType = (type: VideoContentType) => {
       font-size: 16px;
     }
 
+    &__img {
+      @include aspect(1, 1);
+    }
+
     &__image {
-      height: auto;
+      height: 100%;
     }
     &__materials {
       padding: 3px 0 5px;

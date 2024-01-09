@@ -164,9 +164,9 @@ $screen-xxl-min: 1440px;
 }
 
 @mixin aspect($width: 16, $height: 9) {
-  aspect-ratio: $width / $height;
+  aspect-ratio: calc($width / $height);
 
-  @supports not (aspect-ratio: $width / $height) {
+  @supports not (aspect-ratio: calc($width / $height)) {
     &::before {
       content: '';
       float: left;

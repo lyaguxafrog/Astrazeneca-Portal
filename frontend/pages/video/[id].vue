@@ -8,7 +8,14 @@
     <div class="video-page__video" @click="startVideo">
       <video ref="videoEl" :controls="isStarted" :src="`${baseUrl}${content.video_url}`" />
       <template v-if="!isStarted">
-        <img :src="`${baseUrl}${content.video_cover_url}`" class="video-page__video-cover" />
+        <AppImage
+          class="video-page__video-cover"
+          :url="content.video_cover_desktop_1400px"
+          :url-full-x2="content.video_cover_desktop_2800px"
+          :url-full="content.video_cover_desktop_1400px"
+          :url-thin-x2="content.video_cover_mobile_840px"
+          :url-thin="content.video_cover_mobile_420px"
+        />
         <PlayVideoButton class="video-page__video-play" />
       </template>
     </div>
@@ -17,7 +24,7 @@
 
     <div class="video-page__text" v-html="content.conspect" />
 
-    <div v-if="content.video_recomendations.length" class="video-page__recommended">
+    <div v-if="content.video_recomendations?.length" class="video-page__recommended">
       <div class="video-page__recommended-title">
         Рекомендуемые<br />
         видео
@@ -25,14 +32,16 @@
 
       <ItemsSlider
         :desktop-slides-per-view="3"
-        :centered-slides="content.video_recomendations.length > 3"
+        :centered-slides="content.video_recomendations?.length > 3"
         :items="content.video_recomendations"
         #default="{ item }"
       >
         <nuxt-link class="video-page__recommended-slide" :to="`/video/${item.id}`">
           <p v-html="item.title" />
-          <img :src="`${baseUrl}${item.preview}`" alt="" />
-          <PlayVideoButton class="video-page__recommended-slide-play" />
+          <div class="video-page__recommended-slide-img">
+            <img :src="`${baseUrl}${item.preview}`" alt="" />
+            <PlayVideoButton class="video-page__recommended-slide-play" />
+          </div>
         </nuxt-link>
       </ItemsSlider>
     </div>
@@ -161,16 +170,37 @@ const startVideo = () => {
       display: block;
 
       width: 100%;
-
-      border-radius: 40px;
     }
 
     &-slide {
+      display: flex;
+      flex-direction: column;
+
+      height: 100%;
+
+      &-img {
+        position: relative;
+
+        margin-top: auto;
+        overflow: hidden;
+        @include aspect(1, 1);
+
+        border-radius: 40px;
+
+        @include hover {
+          img {
+            transform: scale(1.05);
+          }
+        }
+      }
+
       img {
         display: block;
 
-        @include aspect(1, 1);
+        height: 100%;
         object-fit: cover;
+
+        transition: transform $tr-dur;
       }
       &-play {
         transform: translate(-50%, -50%) scale(0.7);
@@ -188,7 +218,7 @@ const startVideo = () => {
       padding: 0 $mobile-page-pudding;
 
       font-size: 27px;
-      line-height: 20px;
+      line-height: 24px;
     }
 
     &__fav {

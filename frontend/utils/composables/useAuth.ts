@@ -8,14 +8,20 @@ export const useAuth = () => {
   const $route = useRoute();
   const historiesStore = useHistoriesStore();
 
-  const { speciality, setSpeciality } = useSpecialityStore();
+  const { specialityId, setSpeciality } = useSpecialityStore();
 
   const accessToken = useCookie('access-token');
   const userId = useCookie('user-id');
 
   const state = useState('auth-state', () => ({
-    userId: userId.value ? +userId.value : 0,
+    userId: 0,
   }));
+
+  const init = async () => {
+    const userId = await useCookie('user-id');
+
+    state.value.userId = userId.value ? +userId.value : 0;
+  };
 
   const toLogin = async () => {
     const res = await useRequest<{
@@ -30,7 +36,7 @@ export const useAuth = () => {
   };
 
   const checkAccessToken = async () => {
-    const userIdCookie = useCookie('user-id');
+    const userIdCookie = await useCookie('user-id');
 
     const token = $route.query.access_token;
 
@@ -46,10 +52,12 @@ export const useAuth = () => {
         method: 'GET',
       });
 
+      console.log(res.data?.user_id);
+
       if (res.data?.user_id) {
         userIdCookie.value = `${res.data.user_id}`;
         state.value.userId = res.data.user_id;
-        setSpeciality(res.data.specialty);
+        await setSpeciality(res.data.specialty);
 
         await $router.replace({
           query: {
@@ -59,7 +67,7 @@ export const useAuth = () => {
           },
         });
       } else {
-        setSpeciality(0);
+        await setSpeciality(0);
       }
     } catch (e) {
       console.error(e);
@@ -72,14 +80,16 @@ export const useAuth = () => {
     const token = $route.query.access_token;
     const refresh = $route.query.refresh;
 
-    if (token && speciality.value) {
+    console.log(token, specialityId.value);
+
+    if (token && specialityId.value) {
       const res = await useRequest<{
         user_id: number;
       }>('/create_user/', {
         method: 'POST',
         body: {
           temporary_token: token,
-          specialty: speciality.value.id,
+          specialty: specialityId.value,
         },
       });
 
@@ -101,6 +111,7 @@ export const useAuth = () => {
   };
 
   return {
+    init,
     toLogin,
     sendAuthToken,
     checkAccessToken,

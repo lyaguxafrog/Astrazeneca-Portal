@@ -11,10 +11,10 @@ export type Video = {
   video_article_url: string;
   video: string;
   video_cover_url: string;
-  video_cover_2800px_url: string;
-  video_cover_1400px_url: string;
-  video_cover_780px_url: string;
-  video_cover_390px_url: string;
+  video_cover_desktop_2800px: string;
+  video_cover_desktop_1400px: string;
+  video_cover_mobile_840px: string;
+  video_cover_mobile_420px: string;
   conspect: string;
   access_number: string;
   content_type: VideoContentType;
@@ -24,12 +24,15 @@ export type VideoPlump = {
   id: number;
   video_article: string;
   video_url: string;
-  video_cover_url?: string;
+  video_cover_desktop_2800px: string;
+  video_cover_desktop_1400px: string;
+  video_cover_mobile_840px: string;
+  video_cover_mobile_420px: string;
   video_cover: string;
   conspect: string;
   access_number: string;
   content_type: VideoContentType;
-  video_recomendations: {
+  video_recomendations?: {
     id: number;
     preview: string;
     title: string;
@@ -41,11 +44,11 @@ export const useVideosStore = () => {
     videos: loadableEmpty<Video[]>([]),
   }));
 
-  const { speciality } = useSpecialityStore();
+  const { specialityId } = useSpecialityStore();
 
   const getVideos = async () => {
-    if (!state.value.videos.loaded && speciality.value?.id) {
-      const res = await useRequest<Video[]>(`/video-lectures/speciality/${speciality.value.id}`, {
+    if (!state.value.videos.loaded && specialityId.value) {
+      const res = await useRequest<Video[]>(`/video-lectures/speciality/${specialityId.value}`, {
         method: 'GET',
       });
 

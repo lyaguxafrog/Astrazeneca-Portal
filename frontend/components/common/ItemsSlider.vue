@@ -2,14 +2,16 @@
   <div class="items-slider" :class="{ hidePagination }">
     <Swiper
       grab-cursor
+      loop
+      :loop-additional-slides="2"
       :centered-slides="centeredSlides"
       :space-between="$screen.mdAndDown ? 40 : 100"
       :slides-per-view="$screen.mdAndDown ? mobileSlidesPerView : desktopSlidesPerView"
       :initial-slide="items.length < 3 ? 0 : initialSlide"
       :modules="[Pagination, Navigation]"
       :pagination="{ clickable: true }"
-      :slides-offset-before="$screen.mdAndDown ? 22 : undefined"
-      :slides-offset-after="$screen.mdAndDown ? 22 : undefined"
+      :slides-offset-before="!centeredSlides && $screen.mdAndDown ? 22 : undefined"
+      :slides-offset-after="!centeredSlides && $screen.mdAndDown ? 22 : undefined"
       :navigation="{
         nextEl: nextRef,
         prevEl: prevRef,
@@ -17,7 +19,7 @@
       @swiper="onSwiper"
       @slide-change="onSlideChange"
     >
-      <SwiperSlide v-for="item in items" :key="item.id" class="items-slider__slide">
+      <SwiperSlide v-for="item in loopSlides" :key="item.id" class="items-slider__slide">
         <slot name="default" :item="item"></slot>
       </SwiperSlide>
     </Swiper>
@@ -44,7 +46,7 @@ export type SliderProps = {
   id: number;
 };
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     items: T[];
     desktopSlidesPerView: number;
@@ -79,6 +81,22 @@ const swiper = ref<SwiperType>();
 const onSwiper = (s: SwiperType) => {
   swiper.value = s;
 };
+
+const loopSlides = computed(() => {
+  return props.items;
+
+  const slidesPerView = $screen.value.mdAndDown
+    ? props.mobileSlidesPerView
+    : props.desktopSlidesPerView;
+
+  const diff = Math.ceil(slidesPerView) - props.items.length;
+
+  if (diff > 0) {
+    return props.items.concat(props.items.slice(0, diff));
+  }
+
+  return props.items;
+});
 
 const onSlideChange = () => {
   emit('onSlideChange', swiper.value?.realIndex);

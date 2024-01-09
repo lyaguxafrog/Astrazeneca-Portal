@@ -8,40 +8,24 @@ export type History = {
   avatar: string;
   cover_image: string;
   is_active: boolean;
-  link_to_page: boolean;
+  link_to_page: string;
   video: string;
+  color: string | null;
   specialties: number[];
 };
 
 export const useHistoriesStore = () => {
-  const { speciality } = useSpecialityStore();
+  const { specialityId } = useSpecialityStore();
 
   const state = useState('histories-state', () => ({
-    histories: loadableEmpty<History[]>(),
+    histories: loadableEmpty<History[]>([]),
   }));
 
-  const showedStories = computed(() => {
-    const data = state.value.histories.data;
-
-    if (!data) {
-      return [] as History[];
-    }
-
-    const specialityId = speciality.value?.id;
-
-    if (specialityId) {
-      return data.filter((s) => !s.specialties.length || s.specialties.includes(specialityId));
-    }
-
-    return data.filter((s) => !s.specialties.length);
-  });
   const getHistories = async (force?: boolean) => {
-    const specialityId = speciality.value?.id;
-
     let url = '/stories';
 
-    if (specialityId) {
-      url += `/${specialityId}`;
+    if (specialityId.value) {
+      url += `/${specialityId.value}`;
     }
 
     if (!state.value.histories.loaded || force) {
@@ -57,7 +41,7 @@ export const useHistoriesStore = () => {
   };
 
   return {
-    histories: showedStories,
+    histories: toRef(() => state.value.histories.data),
 
     getHistories,
   };

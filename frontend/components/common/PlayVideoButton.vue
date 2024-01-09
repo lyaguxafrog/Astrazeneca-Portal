@@ -14,7 +14,7 @@ const { $screen } = useScreen();
 <style scoped lang="scss">
 .play-button {
   position: absolute;
-  top: 56%;
+  top: 50%;
   left: 50%;
   @include z-index(2);
 

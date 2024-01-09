@@ -1,9 +1,11 @@
 <template>
   <div class="app">
-    <IEZaglushka />
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+    <ClientOnly>
+      <IEZaglushka />
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </ClientOnly>
   </div>
 </template>
 
@@ -15,15 +17,22 @@ import { useFavourites } from '~/utils/composables/useFavourites';
 import IEZaglushka from '~/components/IEZaglushka.vue';
 
 const { initBreakpoints } = useScreen();
-const { getSpecialities } = useSpecialityStore();
-const { checkAccessToken } = useAuth();
+const { getSpecialities, init: initSpecialityStore } = useSpecialityStore();
+const { checkAccessToken, init: initAuth } = useAuth();
 const { getFavourites } = useFavourites();
 
 initBreakpoints();
+await initAuth();
 
 await getSpecialities();
+await initSpecialityStore();
+
 await checkAccessToken();
 await getFavourites();
+/*
+onMounted(async () => {
+  await checkAccessToken();
+});*/
 
 const nuxtApp = useNuxtApp();
 
