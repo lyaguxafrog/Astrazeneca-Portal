@@ -121,7 +121,10 @@ class DrugSerializer(serializers.ModelSerializer):
             combined_practices.append({
                 'id': article.id,
                 'type': 'article',
-                'image': article.cover.url if article.cover else None,
+                'cover_desktop_1400px': article.cover_desktop_1400px.url if article.cover_desktop_1400px else None,
+                'cover_desktop_2800px': article.cover_desktop_2800px.url if article.cover_desktop_2800px else None,
+                'cover_mobile_420px': article.cover_mobile_420px.url if article.cover_mobile_420px else None,
+                'cover_mobile_840px': article.cover_mobile_840px.url if article.cover_mobile_840px else None,
                 'name': article.article_name,
             })
 
