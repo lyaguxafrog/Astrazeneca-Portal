@@ -23,6 +23,8 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      - portal-backend_default
 
   nuxt:
     build: ./frontend
@@ -54,7 +56,7 @@ services:
     depends_on:
       - nginx
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 100000 & wait $${!}; done;'"  
-    
+
 volumes:
   pg_data:
   static:
