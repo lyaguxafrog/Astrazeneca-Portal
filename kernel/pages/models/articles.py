@@ -13,10 +13,14 @@ class Articles(models.Model):
     ]
 
     article_name = models.CharField(max_length=1024, verbose_name='Заголовок')
+    main_cover_desktop = models.ImageField(upload_to='article_cover/',
+                                   verbose_name='Главная картинка статьи(десктоп)', null=True, blank=True)
+    main_cover_mobile = models.ImageField(upload_to='article_cover/',
+                            verbose_name='Главная картинка статьи(мобильная)', null=True, blank=True)
     cover_desktop = models.ImageField(upload_to='article_covers/',
                                verbose_name="Обложка(десктоп)")
     cover_mobile = models.ImageField(verbose_name='Обложка(мобильная)',
-                                upload_to='articles_cover/')
+                                upload_to='article_cover/')
     first_abzac = RichTextField(verbose_name = "Первый абзац")
     short_description = RichTextField(verbose_name="Краткое описание")
 
@@ -40,14 +44,23 @@ class Articles(models.Model):
 
     information = RichTextField(verbose_name='текстовый блок для ввода инфы о статьи на разводящей станице статей')
 
-    cover_desktop_1400px = models.ImageField(upload_to='articles_cover/1400px/',
+    cover_desktop_1400px = models.ImageField(upload_to='article_cover/1400px/',
                                              null=True, blank=True)
-    cover_desktop_2800px = models.ImageField(upload_to='articles_cover/2800px/',
+    cover_desktop_2800px = models.ImageField(upload_to='article_cover/2800px/',
                                              null=True, blank=True)
-    cover_mobile_420px = models.ImageField(upload_to='articles_cover/420px/',
+    cover_mobile_420px = models.ImageField(upload_to='article_cover/420px/',
                                            null=True, blank=True)
-    cover_mobile_840px = models.ImageField(upload_to='articles_cover/840px/',
+    cover_mobile_840px = models.ImageField(upload_to='article_cover/840px/',
                                            null=True, blank=True)
+
+    main_cover_desktop_1600px = models.ImageField(
+        upload_to='article_cover/main_cover/', null=True, blank=True)
+    main_cover_desktop_3200px = models.ImageField(
+        upload_to='article_cover/main_cover/', null=True, blank=True)
+    main_cover_mobile_360px = models.ImageField(
+        upload_to='article_cover/main_cover/', null=True, blank=True)
+    main_cover_mobile_720px = models.ImageField(
+        upload_to='article_cover/main_cover/', null=True, blank=True)
 
 
     class Meta:

@@ -20,6 +20,10 @@ class ArticlesSerializer(serializers.ModelSerializer):
     cover_mobile_840px = serializers.SerializerMethodField()
     cover_mobile_420px = serializers.SerializerMethodField()
 
+    main_cover_desktop_1600px = serializers.SerializerMethodField()
+    main_cover_desktop_3200px = serializers.SerializerMethodField()
+    main_cover_mobile_360px = serializers.SerializerMethodField()
+    main_cover_mobile_720px = serializers.SerializerMethodField()
 
     class Meta:
         model = Articles
@@ -27,7 +31,7 @@ class ArticlesSerializer(serializers.ModelSerializer):
 
 
     def get_cover_desktop_1400px(self, obj):
-        return self.get_relative_url(obj.cover_desktop_1400px)
+        return self.get_relative_url(obj.main_cover_desktop_1600px)
 
     def get_cover_desktop_2800px(self, obj):
         return self.get_relative_url(obj.cover_desktop_2800px)
@@ -37,6 +41,18 @@ class ArticlesSerializer(serializers.ModelSerializer):
 
     def get_cover_mobile_420px(self, obj):
         return self.get_relative_url(obj.cover_mobile_420px)
+
+    def get_main_cover_desktop_1600px(self, obj):
+        return self.get_relative_url(obj.main_cover_desktop_1600px)
+
+    def get_main_cover_desktop_3200px(self, obj):
+        return self.get_relative_url(obj.main_cover_desktop_3200px)
+
+    def get_main_cover_mobile_360px(self, obj):
+        return self.get_relative_url(obj.main_cover_mobile_360px)
+
+    def get_main_cover_mobile_720px(self, obj):
+        return self.get_relative_url(obj.main_cover_mobile_720px)
 
     def get_relative_url(self, file_field_or_url):
         if file_field_or_url and hasattr(file_field_or_url, 'url'):
