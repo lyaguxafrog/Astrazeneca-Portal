@@ -19,8 +19,7 @@ class Story(models.Model):
     content = models.TextField()
     video = models.FileField(upload_to='story_videos/',
                              null=True, blank=True)
-    cover_image = models.ImageField(upload_to='story_covers/',
-                                    null=True, blank=True)
+    cover_image = models.ImageField(upload_to='story_covers/')
     link_to_page = models.URLField(null=True, blank=True)
     specialties = models.ManyToManyField('pages.Specialty',
                                          blank=True, null=True)
