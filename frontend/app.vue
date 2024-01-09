@@ -26,8 +26,12 @@ initBreakpoints();
 await getSpecialities();
 initSpecialityStore();
 
-await checkAccessToken();
+//await checkAccessToken();
 await getFavourites();
+
+onMounted(async () => {
+  await checkAccessToken();
+});
 
 const nuxtApp = useNuxtApp();
 
