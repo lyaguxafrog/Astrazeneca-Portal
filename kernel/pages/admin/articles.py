@@ -47,3 +47,4 @@ class ArticlesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Articles, ArticlesAdmin)
+
