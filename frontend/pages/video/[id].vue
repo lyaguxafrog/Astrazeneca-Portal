@@ -39,7 +39,13 @@
         <nuxt-link class="video-page__recommended-slide" :to="`/video/${item.id}`">
           <p v-html="item.title" />
           <div class="video-page__recommended-slide-img">
-            <img :src="`${baseUrl}${item.preview}`" alt="" />
+            <AppImage
+              :url="item.recomendation_cover_desktop_430px"
+              :url-full-x2="item.recomendation_cover_desktop_430px"
+              :url-full="item.recomendation_cover_desktop_430px"
+              :url-thin-x2="item.recomendation_cover_mobile_540px"
+              :url-thin="item.recomendation_cover_mobile_270px"
+            />
             <PlayVideoButton class="video-page__recommended-slide-play" />
           </div>
         </nuxt-link>
@@ -81,6 +87,10 @@ const startVideo = () => {
   position: relative;
 
   padding: 0 92px;
+
+  @include lg-and-down {
+    padding: 0 40px;
+  }
 
   &__first-ellipse {
     top: -90px;
@@ -188,20 +198,20 @@ const startVideo = () => {
         border-radius: 40px;
 
         @include hover {
-          img {
+          :deep(img) {
             transform: scale(1.05);
           }
         }
+        :deep(img) {
+          display: block;
+
+          height: 100%;
+          object-fit: cover;
+
+          transition: transform $tr-dur;
+        }
       }
 
-      img {
-        display: block;
-
-        height: 100%;
-        object-fit: cover;
-
-        transition: transform $tr-dur;
-      }
       &-play {
         transform: translate(-50%, -50%) scale(0.7);
       }
@@ -258,8 +268,10 @@ const startVideo = () => {
         font-size: 16px;
       }
 
-      img {
-        border-radius: 16px;
+      &-slide {
+        &-img {
+          border-radius: 16px;
+        }
       }
     }
   }

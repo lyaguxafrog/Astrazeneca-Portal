@@ -4,7 +4,13 @@
 
     <ItemsSlider :items="events.data" :desktop-slides-per-view="2.75" #default="{ item }">
       <a :href="item.url" target="_blank">
-        <img :src="`${baseUrl}/${item.cover}`" alt="" />
+        <AppImage
+          :url="item.cover"
+          :url-full-x2="item.image_2800px"
+          :url-full="item.image_1400px"
+          :url-thin-x2="item.image_780px"
+          :url-thin="item.image_390px"
+        />
       </a>
     </ItemsSlider>
   </div>

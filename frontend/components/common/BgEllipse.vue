@@ -38,6 +38,10 @@ const bg = toRef(() =>
     opacity: 0.5;
   }
 
+  @include only-safari {
+    filter: none;
+  }
+
   @include md-and-down {
     &:not(.pale) {
       opacity: 1;

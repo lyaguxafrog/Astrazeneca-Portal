@@ -1,20 +1,17 @@
 <template>
-  <InsidePageHead hide-favourites-button />
-  <div v-if="articles.data?.length" class="articles-page">
-    <BgEllipse size="1138" color="#4DDFFF" pale class="articles-page__first-ellipse" />
+  <div v-if="articles.data?.length" class="articles">
+    <div class="articles__title">
+      Статьи
+    </div>
+    <BgEllipse size="1138" color="#4DDFFF" pale class="articles__first-ellipse" />
     <BgEllipse
       :size="!$screen.mdAndDown ? 984 : 306"
       color="#B32FC9"
       :pale="!$screen.mdAndDown"
-      class="articles-page__second-ellipse"
+      class="articles__second-ellipse"
     />
 
-    <div class="articles-page__title">
-      <span>PRO</span>терапию
-      <small>рака легкого</small>
-    </div>
-
-    <div v-if="activeSlideContent" class="articles-page__slide-title for-mobile-or-tablet">
+    <div v-if="activeSlideContent" class="articles__slide-title for-mobile-or-tablet">
       {{ activeSlideContent.article_name }}
     </div>
 
@@ -24,14 +21,14 @@
       @onSlideChange="onSlideChange"
     >
       <template #default="{ item }">
-        <nuxt-link class="articles-page__slide" :to="`/article/${item.id}`">
+        <nuxt-link class="articles__slide" :to="`/article/${item.id}`">
           <div
-            class="articles-page__slide-title for-desktop items-slier__visible-on-active"
+            class="articles__slide-title for-desktop items-slier__visible-on-active"
             v-html="item.article_name"
           />
-          <div class="articles-page__slide-image-wrapper">
+          <div class="articles__slide-image-wrapper">
             <AppImage
-              class="articles-page__slide-image"
+              class="articles__slide-image"
               :url="item.cover_desktop_1400px"
               :url-full-x2="item.cover_desktop_2800px"
               :url-full="item.cover_desktop_1400px"
@@ -52,10 +49,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useScreen } from '~/utils/composables/useScreen';
 import { useArticlesStore } from '~/utils/composables/store/articles';
-import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 
@@ -74,11 +70,22 @@ const onSlideChange = (index: number | undefined) => {
 };
 </script>
 
-<style scoped lang="scss">
-.articles-page {
+<style lang="scss" scoped>
+.articles {
   position: relative;
 
+  margin-top: 100px;
   padding-bottom: 40px;
+
+  &__title {
+    margin-bottom: 50px;
+    margin-left: 96px;
+
+    font-family: $secondary-font-family;
+    font-size: 50px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
 
   &__first-ellipse {
     top: -100px;
@@ -89,29 +96,6 @@ const onSlideChange = (index: number | undefined) => {
     top: 0;
     right: -570px;
     left: auto;
-  }
-
-  &__title {
-    padding: 9px 92px 35px;
-
-    font-family: $secondary-font-family;
-    font-size: 50px;
-    line-height: 28px;
-    font-weight: 900;
-    color: $primary-color;
-    text-transform: uppercase;
-    span {
-      color: $accent-color;
-    }
-    small {
-      display: block;
-
-      margin-top: 17px;
-
-      font-size: 30px;
-      line-height: 44px;
-      font-weight: 400;
-    }
   }
 
   &::v-deep {
@@ -131,7 +115,7 @@ const onSlideChange = (index: number | undefined) => {
     height: 100%;
 
     @include hover {
-      .articles-page__slide-image {
+      .articles__slide-image {
         &:deep(img) {
           transform: scale(1.05);
         }
@@ -180,19 +164,10 @@ const onSlideChange = (index: number | undefined) => {
   @include md-and-down {
     &__title {
       margin-bottom: 30px;
-      padding: 0 27px;
+      margin-left: 25px;
 
-      font-size: 27px;
-      line-height: 28px;
-
-      small {
-        margin-top: 2px;
-
-        font-size: 18px;
-        line-height: 22px;
-      }
+      font-size: 36px;
     }
-
     &__slide {
       &-title {
         padding: 0 27px;

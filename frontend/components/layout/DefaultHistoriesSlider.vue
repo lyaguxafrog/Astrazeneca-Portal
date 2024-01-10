@@ -90,8 +90,10 @@ $root: histories-slider;
         }
 
         p {
+          width: calc(100% + 28px);
           margin-top: 8px;
-          padding-bottom: 2px;
+          margin-left: -14px;
+          padding-bottom: 1px;
 
           font-size: 17px;
           line-height: 1.1;
@@ -149,14 +151,13 @@ $root: histories-slider;
     p {
       width: 100%;
       margin-top: 17px;
-      padding-bottom: 2px;
 
       font-size: 20px;
       line-height: 1;
       font-weight: 300;
       text-align: center;
       letter-spacing: -0.2px;
-      @include ellipsis(2);
+      @include ellipsis(3);
 
       transition: color $tr-dur;
     }
@@ -190,6 +191,7 @@ $root: histories-slider;
 
   @include md-and-down {
     max-width: 100%;
+    margin-left: 0;
 
     &__item {
       display: flex;
@@ -203,6 +205,9 @@ $root: histories-slider;
 
       &-content {
         width: 100%;
+        &-img {
+          width: 100%;
+        }
       }
 
       img {
@@ -226,9 +231,15 @@ $root: histories-slider;
 
     p {
       margin-top: 8px;
+    }
+  }
 
-      font-size: 9px;
-      letter-spacing: -0.09px;
+  @include xs {
+    &__item {
+      p {
+        font-size: 9px;
+        letter-spacing: -0.09px;
+      }
     }
   }
 }

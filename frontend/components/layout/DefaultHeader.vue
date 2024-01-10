@@ -85,7 +85,7 @@ watch(
   position: relative;
   @include z-index(4);
 
-  height: 270px;
+  height: 280px;
 
   box-shadow: 0 4px 94px 0 rgba(0, 0, 0, 0.45);
 

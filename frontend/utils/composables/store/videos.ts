@@ -37,8 +37,11 @@ export type VideoPlump = {
   content_type: VideoContentType;
   video_recomendations?: {
     id: number;
-    preview: string;
     title: string;
+    recomendation_cover_desktop_430px: string;
+    recomendation_cover_desktop_860px: string;
+    recomendation_cover_mobile_270px: string;
+    recomendation_cover_mobile_540px: string;
   }[];
 };
 

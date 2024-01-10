@@ -13,7 +13,14 @@
     </div>
     <div class="drug-page__content">
       <div class="drug-page__left">
-        <img :src="`${baseUrl}${content.image_desktop_1400px}`" alt="" />
+        <AppImage
+          responsiveHeight
+          :url="content.image_desktop_700px"
+          :url-full="content.image_desktop_700px"
+          :url-full-x2="content.image_desktop_1400px"
+          :url-thin-x2="content.image_mobile_540px"
+          :url-thin="content.image_mobile_270px"
+        />
 
         <div class="drug-page__left-icons">
           <img
@@ -81,10 +88,12 @@
                     :to="item.type === 'video' ? `/video/${item.id}` : `/article/${item.id}`"
                   >
                     <AppImage
-                      v-if="item.recomendation_cover_mobile_540px"
-                      onerror="this.style.display = 'none'"
                       class="drug-page__slider-item-bg"
-                      :url="item.recomendation_cover_mobile_540px"
+                      :url="item.recomendation_cover_desktop_430px || item.cover_desktop_1400px"
+                      :url-full-x2="item.recomendation_cover_desktop_860px || item.cover_desktop_2800px"
+                      :url-full="item.recomendation_cover_desktop_430px || item.cover_desktop_1400px"
+                      :url-thin-x2="item.recomendation_cover_mobile_540px || item.cover_mobile_840px"
+                      :url-thin="item.recomendation_cover_mobile_270px || item.cover_mobile_420px"
                     />
                     <p>{{ item.name }}</p>
                   </nuxt-link>
@@ -108,12 +117,13 @@
                 :to="item.type === 'video' ? `/video/${item.id}` : `/article/${item.id}`"
                 class="drug-page__slider-item"
               >
-                {{ item }}
                 <AppImage
-                  v-if="item.recomendation_cover_mobile_540px"
-                  onerror="this.style.display = 'none'"
                   class="drug-page__slider-item-bg"
-                  :url="item.recomendation_cover_mobile_540px"
+                  :url="item.recomendation_cover_desktop_430px"
+                  :url-full-x2="item.recomendation_cover_desktop_430px"
+                  :url-full="item.recomendation_cover_desktop_430px"
+                  :url-thin-x2="item.recomendation_cover_mobile_540px"
+                  :url-thin="item.recomendation_cover_mobile_270px"
                 />
                 <p v-html="item.name" />
               </nuxt-link>
@@ -151,8 +161,6 @@ import { ModalsName, useModal } from '~/utils/composables/useModal';
 import { useScreen } from '~/utils/composables/useScreen';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
-import { ArticlePlump } from '~/utils/composables/store/articles';
-import { ContentType } from '~/utils/types';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 
 const nextRef = ref(null);
@@ -562,6 +570,10 @@ const openProps = (item: DrugFaq) => {
         line-height: 21px;
 
         border-radius: 20px;
+
+        p {
+          @include ellipsis(5);
+        }
       }
 
       &-title {

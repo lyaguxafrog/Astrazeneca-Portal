@@ -33,10 +33,15 @@ export type DrugPlump = {
   application_practices: {
     id: number;
     type: 'article' | 'video';
-    recomendation_cover_desktop_860px: string;
-    recomendation_cover_mobile_540px: string;
-    recomendation_cover_desktop_430px: string;
-    recomendation_cover_mobile_270px: string;
+    recomendation_cover_desktop_860px?: string;
+    recomendation_cover_desktop_430px?: string;
+    recomendation_cover_mobile_540px?: string;
+    recomendation_cover_mobile_270px?: string;
+
+    cover_desktop_1400px?: string;
+    cover_desktop_2800px?: string;
+    cover_mobile_420px?: string;
+    cover_mobile_840px?: string;
     name: string;
   }[];
   faq: DrugFaq[];

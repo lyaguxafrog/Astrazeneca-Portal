@@ -17,6 +17,8 @@
     <template v-if="specialityId">
       <HomeVideosSlider />
 
+      <HomeArticles />
+
       <HomeEvents />
 
       <HomeDrugs />
@@ -40,6 +42,7 @@ import HomeVideosSlider from '~/components/pages/home/HomeVideosSlider.vue';
 import HomeDrugs from '~/components/pages/home/HomeDrugs.vue';
 import HomeEvents from '~/components/pages/home/HomeEvents.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
+import HomeArticles from '~/components/pages/home/HomeArticles.vue';
 import { useRequest } from '~/utils/composables/useRequest';
 
 const { $screen } = useScreen();
@@ -82,7 +85,7 @@ watch(
     display: flex;
     flex-direction: column;
 
-    min-height: 100vh;
+    min-height: calc(100vh - 60px - 18px);
     padding-bottom: 18px;
 
     background: url('~/assets/img/home/intro-bg.png') no-repeat bottom 39px left 46% / auto 99%;
