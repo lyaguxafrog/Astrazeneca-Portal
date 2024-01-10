@@ -1,0 +1,19 @@
+name: Деплой на dev-сервер
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Деплой на dev сервер
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SERVER_IP }}
+          username: root
+          key: ${{ secrets.DEV_ID_RSA }}
+          script: |
+            cd portal-backend
+            ./helper.sh update
