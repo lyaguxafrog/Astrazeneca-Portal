@@ -105,6 +105,7 @@ defineProps<{
 
     &.petite {
       height: 42px;
+      min-height: 42px;
 
       font-size: 17px;
     }
