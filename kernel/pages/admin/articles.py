@@ -37,7 +37,7 @@ class ArticlesAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Основная информация', {'fields': ['article_name', 'cover_desktop',
                                     'cover_mobile', 'main_cover_desktop',
-                                    'main_cover_mobile', 'short_description',
+                                    'main_cover_mobile',
                                     'information', 'first_abzac']}),
         ('Дополнительная информация', {'fields': ['final_content',
                                                   'access_number',
@@ -47,4 +47,3 @@ class ArticlesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Articles, ArticlesAdmin)
-

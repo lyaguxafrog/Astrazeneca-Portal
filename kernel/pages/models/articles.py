@@ -22,10 +22,7 @@ class Articles(models.Model):
     cover_mobile = models.ImageField(verbose_name='Обложка(мобильная)',
                                 upload_to='article_cover/')
     first_abzac = RichTextField(verbose_name = "Первый абзац")
-    short_description = RichTextField(verbose_name="Краткое описание")
-
     final_content = RichTextField(verbose_name = "Заключение")
-
     access_number = RichTextField(
         verbose_name="Поле для добавления расшифровок и номеров одобрения")
     speciality = models.ManyToManyField('pages.Specialty',

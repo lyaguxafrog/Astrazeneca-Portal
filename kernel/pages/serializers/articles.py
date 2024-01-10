@@ -73,7 +73,7 @@ class ArticlesBySpecialitySerializer(serializers.ModelSerializer):
         model = Articles
         fields = ['id', 'article_name', 'cover_desktop_1400px',
                   'cover_desktop_2800px', 'cover_mobile_840px', 'cover_mobile_420px',
-                  'short_description', 'information', 'first_abzac']
+                  'information', 'first_abzac']
 
 
 
