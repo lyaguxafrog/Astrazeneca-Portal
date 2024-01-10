@@ -36,6 +36,25 @@ INSTALLED_APPS = [
     'users',
 ]
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 300,
+        'width': 800,
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
+            ['NumberedList', 'BulletedList'],
+            ['TextColor'],
+            ['Link', 'Unlink'],
+            ['Image', 'Source'],
+        ],
+        'extraPlugins': ','.join(['font', 'colorbutton']),
+        'font_names': 'Arial;Comic Sans MS;Courier New;Georgia;Times New Roman;Verdana',
+        'fontSize_sizes': '8/8px;10/10px;12/12px;14/14px;16/16px;18/18px;24/24px;36/36px',
+        'colorButton_colors': 'e50914,3f3f3f,00bcd4,2196f3,4caf50,ffeb3b,ff9800,ff5722',
+    },
+}
 
 
 HAYSTACK_CONNECTIONS = {
@@ -51,7 +70,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -127,7 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ru-ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 

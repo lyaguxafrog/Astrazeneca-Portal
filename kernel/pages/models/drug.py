@@ -8,16 +8,24 @@ from ckeditor.fields import RichTextField
 
 
 class Drug(models.Model):
-    name = models.CharField(max_length=255, verbose_name="Название препарата")
-    brief_info = models.TextField(verbose_name="Краткое описание препарата")
+    name = models.CharField(max_length=255, verbose_name="Название препарата *")
+    brief_info = models.TextField(verbose_name="Краткое описание препарата *")
 
-    image_desktop = models.ImageField(upload_to='drug_images/', verbose_name="Изображение препарата для десктопа")
-    image_mobile = models.ImageField(upload_to='drug_images/', verbose_name='Изображение препарата для мобильной')
+    image_desktop = models.ImageField(upload_to='drug_images/',
+                        verbose_name="Изображение препарата для десктопа *")
+    image_mobile = models.ImageField(upload_to='drug_images/',
+                        verbose_name='Изображение препарата для мобильной *')
 
-    application_practice_articles = models.ManyToManyField('pages.Articles', blank=True, related_name='application_practice_articles', verbose_name="Статьи в практике применения")
-    application_practice_videos = models.ManyToManyField('pages.VideoLectures', blank=True, related_name='application_practice_videos', verbose_name="Видео в практике применения")
-    approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения")
-    speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность')
+    application_practice_articles = models.ManyToManyField('pages.Articles',
+                    blank=True, related_name='application_practice_articles',
+                    verbose_name="Статьи в практике применения")
+
+    application_practice_videos = models.ManyToManyField('pages.VideoLectures',
+                    blank=True, related_name='application_practice_videos',
+                    verbose_name="Видео в практике применения")
+
+    approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения *")
+    speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность *')
     url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True, blank=True)
     file_field = models.FileField(verbose_name="Инструкция в формате PDF", null=True, blank=True, upload_to='pdf_files/')
 
@@ -40,10 +48,10 @@ class DrugFAQ(models.Model):
 
     drug = models.ForeignKey('Drug', on_delete=models.CASCADE,
                              related_name="faq")
-    title = models.CharField(verbose_name="Заголовок")
-    text = RichTextField(verbose_name="Текст")
+    title = models.CharField(verbose_name="Заголовок *")
+    text = RichTextField(verbose_name="Текст *")
     approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения", null=True, blank=True)
-    order = models.PositiveBigIntegerField(verbose_name='Порядковый номер')
+    order = models.PositiveBigIntegerField(verbose_name='Порядковый номер *')
 
 class Icon(models.Model):
     IMAGE_TYPES = (
@@ -55,7 +63,7 @@ class Icon(models.Model):
                     related_name='icons', verbose_name="Препарат")
 
     image_file = models.FileField(upload_to='icon_files/',
-            verbose_name="Иконка",
+            verbose_name="Иконка *",
             help_text="Поддерживаются изображения и SVG", blank=True)
 
     def __str__(self):
