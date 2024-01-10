@@ -207,6 +207,7 @@ $root: histories-slider;
         width: 100%;
         &-img {
           width: 100%;
+          height: 100%;
         }
       }
 
