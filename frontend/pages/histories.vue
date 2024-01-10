@@ -161,6 +161,7 @@ const toggleVolume = () => {
   muted.value = !muted.value;
   activeVideo.value.muted = muted.value;
 };
+
 const stopAll = () => {
   videosRef.value.forEach((v) => {
     v.currentTime = 0;
