@@ -14,13 +14,13 @@ class Articles(models.Model):
 
     article_name = models.CharField(max_length=120, verbose_name='Заголовок *')
     main_cover_desktop = models.ImageField(upload_to='article_cover/',
-                                   verbose_name='Главная картинка статьи(десктоп) *')
+                                   verbose_name='Главная картинка статьи(десктоп) *', null=True, blank=True)
     main_cover_mobile = models.ImageField(upload_to='article_cover/',
-                            verbose_name='Главная картинка статьи(мобильная) *')
+                            verbose_name='Главная картинка статьи(мобильная) *', null=True, blank=True)
     cover_desktop = models.ImageField(upload_to='article_covers/',
-                               verbose_name="Обложка(десктоп) *")
+                               verbose_name="Обложка(десктоп) *", null=True, blank=True)
     cover_mobile = models.ImageField(verbose_name='Обложка(мобильная) *',
-                                upload_to='article_cover/')
+                                upload_to='article_cover/', null=True, blank=True)
     first_abzac = RichTextField(verbose_name = "Первый абзац *")
     final_content = RichTextField(verbose_name = "Заключение *")
     access_number = RichTextField(
