@@ -8,10 +8,10 @@ export type Event = {
   name: string;
   url: string;
   cover: string;
-  image_2800px: string;
-  image_1400px: string;
-  image_780px: string;
-  image_390px: string;
+  image_desktop_1400px: string;
+  image_desktop_570px: string;
+  image_mobile_540px: string;
+  image_mobile_270px: string;
 };
 export const useEventsStore = () => {
   const state = useState('events-state', () => ({

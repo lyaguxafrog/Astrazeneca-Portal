@@ -1,21 +1,22 @@
 <template>
-  <InsidePageHead class="histories__back" />
-  <div v-if="histories.length" ref="historiesEl" class="histories">
-    <Swiper
-      class="histories__swiper"
-      grab-cursor
-      centered-slides
-      slide-to-clicked-slide
-      :slides-per-view="1"
-      :space-between="$screen.mdAndDown ? 0 : 0"
-      :modules="[Pagination, Navigation]"
-      :pagination="{ clickable: true }"
-      :navigation="{
+  <div :class="{stop: stopSwipe}">
+    <InsidePageHead v-if="!$screen.mdAndDown" class="histories__back" />
+    <div v-if="histories.length" ref="historiesEl" class="histories" >
+      <Swiper
+        class="histories__swiper"
+        grab-cursor
+        centered-slides
+        slide-to-clicked-slide
+        :slides-per-view="1"
+        :space-between="$screen.mdAndDown ? 0 : 0"
+        :modules="[Pagination, Navigation]"
+        :pagination="{ clickable: true }"
+        :navigation="{
         nextEl: nextRef,
         prevEl: prevRef,
       }"
-      :initial-slide="activeHistoryIndex"
-      :breakpoints="{
+        :initial-slide="activeHistoryIndex"
+        :breakpoints="{
         1200: {
           slidesPerView: 3
         },
@@ -23,54 +24,62 @@
           slidesPerView: 2
         }
       }"
-      @swiper="onSwiper"
-      @slide-change="onSlideChange"
-    >
-      <SwiperSlide v-for="history in histories" :key="history.id" class="history">
-        <video
-          ref="videosRef"
-          playsinline
-          :muted="muted"
-          :src="`${baseUrl}${history.video}`"
-          :style="{ backgroundImage: `url(${baseUrl}${history.cover_image})` }"
-          @touchend="onVideoTouchEnd"
+        @swiper="onSwiper"
+        @slide-change="onSlideChange"
+      >
+        <SwiperSlide v-for="history in histories" :key="history.id" class="history">
+          <AppImage
+            class="history__bg"
+            :url="history.cover_image"
+            :url-full-x2="history.cover_900px"
+            :url-full="history.cover_450px"
+            :url-thin-x2="history.cover_900px"
+            :url-thin="history.cover_450px"
+          />
+          <video
+            ref="videosRef"
+            playsinline
+            :muted="muted"
+            :src="`${baseUrl}${history.video}`"
+            @touchend="onVideoTouchEnd"
+          />
+          <AppButton v-if="!$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
+            <AppIcon
+              :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
+              :size="$screen.mdAndDown ? 30 : 48"
+            />
+          </AppButton>
+        </SwiperSlide>
+      </Swiper>
+      <div v-if="activeHistory" class="history__controls">
+        <AppFavouriteButton
+          white
+          :content-type="ContentType.Stories"
+          :content-id="activeHistory.id"
         />
-        <AppButton v-if="!$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
+        <AppButton v-if="$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
           <AppIcon
             :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
             :size="$screen.mdAndDown ? 30 : 48"
           />
         </AppButton>
-      </SwiperSlide>
-    </Swiper>
-    <div v-if="activeHistory" class="history__controls">
-      <AppFavouriteButton
-        white
-        :content-type="ContentType.Stories"
-        :content-id="activeHistory.id"
-      />
-      <AppButton v-if="$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
-        <AppIcon
-          :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
-          :size="$screen.mdAndDown ? 30 : 48"
-        />
-      </AppButton>
-      <AppButton
-        v-if="activeHistory.link_to_page"
-        primary
-        :to="activeHistory.link_to_page"
-        petite
-        class="history__link"
-      >
-        Перейти
-      </AppButton>
-    </div>
+        <AppButton
+          v-if="activeHistory.link_to_page"
+          primary
+          :to="activeHistory.link_to_page"
+          petite
+          class="history__link"
+        >
+          Перейти
+        </AppButton>
+      </div>
 
-    <div v-if="!$screen.mdAndDown" ref="nextRef" class="swiper-button next">
-      <AppIcon :name="IconName.NextSliderBtnBig" :size="48" />
-    </div>
-    <div v-if="!$screen.mdAndDown" ref="prevRef" class="swiper-button prev">
-      <AppIcon :name="IconName.PrevSliderBtnBig" :size="48" />
+      <div v-if="!$screen.mdAndDown" ref="nextRef" class="swiper-button next">
+        <AppIcon :name="IconName.NextSliderBtnBig" :size="48" />
+      </div>
+      <div v-if="!$screen.mdAndDown" ref="prevRef" class="swiper-button prev">
+        <AppIcon :name="IconName.PrevSliderBtnBig" :size="48" />
+      </div>
     </div>
   </div>
 </template>
@@ -117,13 +126,23 @@ const prevRef = ref(null);
 const historiesEl = ref();
 
 const { back } = useBack();
+const stopSwipe = ref(false);
 
 const { direction } = useSwipe(historiesEl, {
-  passive: false,
+  passive: !$screen.value.mdAndDown,
   threshold: 150,
-  onSwipe: () => {
+  onSwipeEnd: async () => {
+    if (!$screen.value.mdAndDown || stopSwipe.value) {
+      return;
+    }
+
     if (direction.value === 'up' || direction.value === 'down') {
-      back();
+      stopSwipe.value = true;
+      await back();
+
+      window.setTimeout(async () => {
+        stopSwipe.value = false;
+      }, 3000);
     }
   },
 });
@@ -193,6 +212,10 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.stop {
+  pointer-events: none;
+}
+
 .histories {
   position: relative;
 
@@ -203,6 +226,8 @@ onMounted(() => {
   &__back {
     height: 0;
     min-height: 0;
+    margin-bottom: 0;
+    padding: 0;
   }
 
   .history {
@@ -220,6 +245,14 @@ onMounted(() => {
           transition: none;
         }
       }
+    }
+
+    &__bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
     }
 
     &__controls {

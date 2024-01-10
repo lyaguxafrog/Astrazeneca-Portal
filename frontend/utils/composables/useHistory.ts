@@ -4,11 +4,11 @@ export function useBack() {
   const $router = useRouter();
 
   const prevRoute = toRef(() => $router.options.history.state.back);
-  const back = () => {
+  const back = async () => {
     if (prevRoute.value) {
-      $router.back();
+      await $router.back();
     } else {
-      $router.push('/');
+      await $router.push('/');
     }
   };
 

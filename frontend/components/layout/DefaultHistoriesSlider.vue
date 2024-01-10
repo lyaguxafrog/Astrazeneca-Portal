@@ -13,9 +13,13 @@
           <nuxt-link :to="`/histories?id=${history.id}`">
             <div class="histories-slider__item-content">
               <div class="histories-slider__item-content-img">
-                <img
-                  :src="`${baseUrl}/${history.avatar}`"
-                  alt=""
+                <AppImage
+                  class="article-page__intro-bg"
+                  :url="history.avatar"
+                  :url-full="history.avatar_desktop_120px"
+                  :url-full-x2="history.avatar_desktop_280px"
+                  :url-thin="history.avatar_desktop_70px"
+                  :url-thin-x2="history.avatar_desktop_140px"
                   :style="{ borderColor: history.color }"
                 />
               </div>
@@ -85,7 +89,7 @@ $root: histories-slider;
           transition: width $tr-dur;
         }
 
-        img {
+        &:deep(img) {
           height: 88px;
         }
 
@@ -135,17 +139,17 @@ $root: histories-slider;
           color: $accent-color;
         }
       }
-    }
 
-    img {
-      display: block;
+      :deep(img) {
+        display: block;
 
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
 
-      border: 5px solid;
-      border-radius: 50%;
+        border: 5px solid;
+        border-radius: 50%;
+      }
     }
 
     p {
@@ -182,7 +186,7 @@ $root: histories-slider;
       &-content {
         width: 100px;
 
-        img {
+        :deep(img) {
           height: 100px;
         }
       }
@@ -211,7 +215,7 @@ $root: histories-slider;
         }
       }
 
-      img {
+      :deep(img) {
         height: 100%;
 
         border-width: 2px;

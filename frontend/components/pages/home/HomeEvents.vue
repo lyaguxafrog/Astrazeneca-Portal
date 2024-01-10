@@ -6,10 +6,10 @@
       <a :href="item.url" target="_blank">
         <AppImage
           :url="item.cover"
-          :url-full-x2="item.image_2800px"
-          :url-full="item.image_1400px"
-          :url-thin-x2="item.image_780px"
-          :url-thin="item.image_390px"
+          :url-full-x2="item.image_desktop_1400px"
+          :url-full="item.image_desktop_570px"
+          :url-thin-x2="item.image_mobile_540px"
+          :url-thin="item.image_mobile_270px"
         />
       </a>
     </ItemsSlider>
