@@ -6,23 +6,23 @@ from pages.models import Events
 
 class EventsSerializer(serializers.ModelSerializer):
 
-    image_1400px = serializers.SerializerMethodField()
-    image_2800px = serializers.SerializerMethodField()
-    image_390px = serializers.SerializerMethodField()
-    image_780px = serializers.SerializerMethodField()
+    image_desktop_1400px = serializers.SerializerMethodField()
+    image_desktop_570px = serializers.SerializerMethodField()
+    image_mobile_540px = serializers.SerializerMethodField()
+    image_mobile_270px = serializers.SerializerMethodField()
 
 
-    def get_image_1400px(self, obj):
-        return self.get_relative_url(obj.image_1400px)
+    def get_image_desktop_1400px(self, obj):
+        return self.get_relative_url(obj.image_desktop_1400px)
 
-    def get_image_2800px(self, obj):
-        return self.get_relative_url(obj.image_2800px)
+    def get_image_desktop_570px(self, obj):
+        return self.get_relative_url(obj.image_desktop_570px)
 
-    def get_image_390px(self, obj):
-        return self.get_relative_url(obj.image_390px)
+    def get_image_mobile_540px(self, obj):
+        return self.get_relative_url(obj.image_mobile_540px)
 
-    def get_image_780px(self, obj):
-        return self.get_relative_url(obj.image_780px)
+    def get_image_mobile_270px(self, obj):
+        return self.get_relative_url(obj.image_mobile_270px)
 
     def get_image(self, obj):
         return obj.image.url if obj.image else None
@@ -40,6 +40,5 @@ class EventsSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # Update the 'cover' field to contain the relative path
         representation['cover'] = instance.cover.url if instance.cover else None
         return representation

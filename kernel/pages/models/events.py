@@ -15,10 +15,10 @@ class Events(models.Model):
     url = models.URLField(null=True, blank=True)
 
 
-    image_1400px = models.ImageField(upload_to='events/1400px/', verbose_name="Изображение 1400px", null=True, blank=True)
-    image_2800px = models.ImageField(upload_to='events/2800px/', verbose_name="Изображение 2800px", null=True, blank=True)
-    image_390px = models.ImageField(upload_to='events/390px/', verbose_name="Изображение 390px", null=True, blank=True)
-    image_780px = models.ImageField(upload_to='events/780px/', verbose_name="Изображение 780px", null=True, blank=True)
+    image_desktop_570px = models.ImageField(upload_to='events/570px/', null=True, blank=True)
+    image_desktop_1400px = models.ImageField(upload_to='events/1400px/', null=True, blank=True)
+    image_mobile_540px = models.ImageField(upload_to='events/270px/', null=True, blank=True)
+    image_mobile_270px = models.ImageField(upload_to='events/540px/', null=True, blank=True)
 
 
 
