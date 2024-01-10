@@ -38,10 +38,10 @@ export type VideoPlump = {
   video_recomendations?: {
     id: number;
     title: string;
-    recomendation_cover_desktop_430px: string;
-    recomendation_cover_desktop_860px: string;
-    recomendation_cover_mobile_270px: string;
-    recomendation_cover_mobile_540px: string;
+    recomendation_cover_desktop_500px: string;
+    recomendation_cover_desktop_1000px: string;
+    recomendation_cover_mobile_280px: string;
+    recomendation_cover_mobile_560px: string;
   }[];
 };
 

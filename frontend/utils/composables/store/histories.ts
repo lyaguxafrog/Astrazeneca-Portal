@@ -6,7 +6,13 @@ export type History = {
   id: number;
   title: string;
   avatar: string;
+  avatar_desktop_120px: string;
+  avatar_desktop_280px: string;
+  avatar_desktop_70px: string;
+  avatar_desktop_140px: string;
   cover_image: string;
+  cover_450px: string;
+  cover_900px: string;
   is_active: boolean;
   link_to_page: string;
   video: string;

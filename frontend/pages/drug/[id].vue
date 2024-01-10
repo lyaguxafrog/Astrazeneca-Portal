@@ -89,11 +89,11 @@
                   >
                     <AppImage
                       class="drug-page__slider-item-bg"
-                      :url="item.recomendation_cover_desktop_430px || item.cover_desktop_1400px"
-                      :url-full-x2="item.recomendation_cover_desktop_860px || item.cover_desktop_2800px"
+                      :url="item.recomendation_cover_desktop_500px || item.cover_desktop_1400px"
+                      :url-full-x2="item.recomendation_cover_desktop_1000px || item.cover_desktop_2800px"
                       :url-full="item.recomendation_cover_desktop_430px || item.cover_desktop_1400px"
-                      :url-thin-x2="item.recomendation_cover_mobile_540px || item.cover_mobile_840px"
-                      :url-thin="item.recomendation_cover_mobile_270px || item.cover_mobile_420px"
+                      :url-thin-x2="item.recomendation_cover_mobile_560px || item.cover_mobile_840px"
+                      :url-thin="item.recomendation_cover_mobile_280px || item.cover_mobile_420px"
                     />
                     <p>{{ item.name }}</p>
                   </nuxt-link>
@@ -119,11 +119,11 @@
               >
                 <AppImage
                   class="drug-page__slider-item-bg"
-                  :url="item.recomendation_cover_desktop_430px"
-                  :url-full-x2="item.recomendation_cover_desktop_430px"
-                  :url-full="item.recomendation_cover_desktop_430px"
-                  :url-thin-x2="item.recomendation_cover_mobile_540px"
-                  :url-thin="item.recomendation_cover_mobile_270px"
+                  :url="item.recomendation_cover_desktop_500px || item.cover_desktop_1400px"
+                  :url-full-x2="item.recomendation_cover_desktop_1000px || item.cover_desktop_2800px"
+                  :url-full="item.recomendation_cover_desktop_430px || item.cover_desktop_1400px"
+                  :url-thin-x2="item.recomendation_cover_mobile_560px || item.cover_mobile_840px"
+                  :url-thin="item.recomendation_cover_mobile_280px || item.cover_mobile_420px"
                 />
                 <p v-html="item.name" />
               </nuxt-link>
@@ -377,6 +377,8 @@ const openProps = (item: DrugFaq) => {
       p {
         position: relative;
         z-index: 2;
+
+        @include ellipsis(6);
       }
 
       @include hover {
@@ -572,7 +574,7 @@ const openProps = (item: DrugFaq) => {
         border-radius: 20px;
 
         p {
-          @include ellipsis(5);
+          line-height: 1.05;
         }
       }
 
