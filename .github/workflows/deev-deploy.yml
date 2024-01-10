@@ -10,7 +10,8 @@ jobs:
     steps:
       - name: Деплой на dev сервер
         run: |
-          sudo apt-get install -y sshpass
-          sshpass -p "${{ secrets.DEV_SSH_PASSWORD }}" ssh root@${{ secrets.DEV_SERVER_IP }} "cd portal-backend && ./helper.sh update"
+          sshpass -p "${{ secrets.DEV_SSH_PASSWORD }}" ssh root@${{ secrets.DEV_SERVER_IP }}
+          cd portal-backend
+          ./helper.sh update
         env:
           SSHPASS: ${{ secrets.DEV_SSH_PASSWORD }}
