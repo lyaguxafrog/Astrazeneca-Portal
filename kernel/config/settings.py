@@ -45,7 +45,7 @@ CKEDITOR_CONFIGS = {
             ['FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike'],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
             ['NumberedList', 'BulletedList'],
-            ['TextColor'],
+            ['TextColor', 'Table'],
             ['Link', 'Unlink'],
             ['Image', 'Source'],
         ],
