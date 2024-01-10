@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { resolve } from 'path';
 
-const SHARING_TITLE = 'Astra title';
+const SHARING_TITLE = 'Информационный Портал для специалистов здравоохранения';
 const SHARING_DESCRIPTION = 'Description';
 const SHARING_IMAGE = '/';
 

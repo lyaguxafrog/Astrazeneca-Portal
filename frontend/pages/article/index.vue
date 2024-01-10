@@ -72,6 +72,10 @@ const onSlideChange = (index: number | undefined) => {
     activeSlide.value = index;
   }
 };
+
+useHead({
+  title: 'Статьи',
+});
 </script>
 
 <style scoped lang="scss">

@@ -40,11 +40,11 @@
           <p v-html="item.title" />
           <div class="video-page__recommended-slide-img">
             <AppImage
-              :url="item.recomendation_cover_desktop_430px"
-              :url-full-x2="item.recomendation_cover_desktop_430px"
-              :url-full="item.recomendation_cover_desktop_430px"
-              :url-thin-x2="item.recomendation_cover_mobile_540px"
-              :url-thin="item.recomendation_cover_mobile_270px"
+              :url="item.recomendation_cover_desktop_500px"
+              :url-full-x2="item.recomendation_cover_desktop_1000px"
+              :url-full="item.recomendation_cover_desktop_500px"
+              :url-thin-x2="item.recomendation_cover_mobile_560px"
+              :url-thin="item.recomendation_cover_mobile_280px"
             />
             <PlayVideoButton class="video-page__recommended-slide-play" />
           </div>
@@ -66,6 +66,8 @@ import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import {toRef} from "vue";
+
 
 const $route = useRoute();
 const { getVideo } = useVideosStore();
@@ -74,6 +76,11 @@ const { baseUrl } = useRuntimeConfig().public;
 const videoId = toRef(() => $route.params.id);
 
 const content = await getVideo(+videoId.value);
+
+useHead({
+  title: content?.video_article ? content?.video_article : content?.content_type === ContentType.Video ? 'Видеолекции' : 'Клинические случаи',
+});
+
 const isStarted = ref(false);
 const videoEl = ref();
 const startVideo = () => {

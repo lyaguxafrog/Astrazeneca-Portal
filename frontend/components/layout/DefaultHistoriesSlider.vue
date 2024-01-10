@@ -109,6 +109,8 @@ $root: histories-slider;
     }
 
     .swiper-button {
+      top: 32px;
+
       transform: scale(0.8) translateY(-5px);
       transition: transform $tr-dur;
     }
@@ -169,7 +171,7 @@ $root: histories-slider;
 
   .swiper-button {
     position: absolute;
-    top: 26%;
+    top: 46px;
     left: -30px;
     @include z-index(3);
 

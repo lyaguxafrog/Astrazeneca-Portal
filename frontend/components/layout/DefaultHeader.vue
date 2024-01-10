@@ -19,7 +19,7 @@
         <div class="default-header__second-row">
           <DefaultHistoriesSlider :min="!isExtendsHeader" />
 
-          <div class="default-header__text">
+          <div class="default-header__text" :class="{ min: !isExtendsHeader }">
             <img src="~/assets/img/home/arrow-desktop.svg" alt="" />
             <p>
               информационный<br />
@@ -176,7 +176,7 @@ watch(
   &__second-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
     min-height: 135px;
   }
@@ -186,7 +186,7 @@ watch(
     align-items: center;
 
     max-width: 646px;
-    margin-top: -50px;
+    margin-top: 21px;
     margin-right: 9%;
     margin-left: 20px;
 
@@ -194,6 +194,10 @@ watch(
     font-size: 27px;
     line-height: 28px;
     text-transform: uppercase;
+
+    &.min {
+      margin-top: 4px;
+    }
 
     p {
       margin-left: 22px;

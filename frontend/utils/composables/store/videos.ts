@@ -1,4 +1,5 @@
 import { useState } from '#app';
+import { toRef } from 'vue';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { loadableEmpty } from '~/utils/functions/loadable';
@@ -52,9 +53,17 @@ export const useVideosStore = () => {
 
   const { specialityId } = useSpecialityStore();
 
-  const getVideos = async () => {
-    if (!state.value.videos.loaded && specialityId.value) {
-      const res = await useRequest<Video[]>(`/video-lectures/speciality/${specialityId.value}`, {
+  const getVideos = async (force?: boolean) => {
+    const loadAll = sessionStorage.getItem('showAllVideos');
+
+    let url = '/video-lectures';
+
+    if (!loadAll) {
+      url += `/speciality/${specialityId.value}`;
+    }
+
+    if ((!state.value.videos.loaded && specialityId.value) || force) {
+      const res = await useRequest<Video[]>(url, {
         method: 'GET',
       });
 
@@ -63,8 +72,6 @@ export const useVideosStore = () => {
         state.value.videos.loaded = true;
       }
     }
-
-    return state.value.videos.data;
   };
 
   const getVideo = async (id: number) => {
@@ -76,6 +83,8 @@ export const useVideosStore = () => {
   };
 
   return {
+    videos: toRef(() => state.value.videos.data),
+
     getVideos,
     getVideo,
   };

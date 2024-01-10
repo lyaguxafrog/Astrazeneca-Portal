@@ -34,12 +34,12 @@
 
       <div class="drug-page__right">
         <div
-          v-for="item in content.faq"
+          v-for="(item, index) in content.faq"
           :key="item.order"
           ref="itemsEls"
           class="drug-page__right-item"
           :class="{ expanded: activeItem?.order === item.order }"
-          @click="openProps(item)"
+          @click="openProps(item, index)"
         >
           <div class="drug-page__right-item-title">
             {{ item.title }}
@@ -139,10 +139,10 @@
           {{ activeItem.title }}
         </div>
         <div class="drug-page__modal-text" v-html="activeItem.text" />
-        <!--        <div class="drug-page__modal-description">
-          <p v-html="activeItem.description" />
-          <AppButton primary mini @click="openProps(list[1])"> Противопоказания </AppButton>
-        </div>-->
+        <div class="drug-page__modal-description">
+          <p v-if="activeItem.approvals_and_decodings" v-html="activeItem.approvals_and_decodings" />
+          <AppButton v-if="nextItem" primary mini @click="openProps(nextItem)"> {{nextItem.title}} </AppButton>
+        </div>
       </div>
     </AppModal>
     <Teleport to="#footerAccessInfo">
@@ -152,11 +152,12 @@
 </template>
 
 <script setup lang="ts">
-import { Navigation } from 'swiper/modules';
+import { ref } from 'vue';
 import { useRoute } from '#app';
+import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { IconName } from '~/components/app/AppIcon.utils';
-import { DrugFaq, DrugPlump, useDrugsStore } from '~/utils/composables/store/drugs';
+import { DrugFaq, useDrugsStore } from '~/utils/composables/store/drugs';
 import { ModalsName, useModal } from '~/utils/composables/useModal';
 import { useScreen } from '~/utils/composables/useScreen';
 import BgEllipse from '~/components/common/BgEllipse.vue';
@@ -178,10 +179,25 @@ const { getDrug } = useDrugsStore();
 const content = await getDrug(drugId.value);
 
 const activeItem = ref<DrugFaq>();
+const nextItem = ref<DrugFaq>();
 const itemsEls = ref();
 
 const onModalClose = () => {
   activeItem.value = undefined;
+};
+
+useHead({
+  title: content?.name ? content?.name : 'Препараты',
+});
+
+const selectNextItem = () => {
+  const index = content?.faq.findIndex((f) => f.order === activeItem.value?.order);
+
+  if (index !== content?.faq.length - 1) {
+    nextItem.value = content?.faq[index + 1];
+  } else {
+    nextItem.value = content?.faq[0];
+  }
 };
 
 const openProps = (item: DrugFaq) => {
@@ -189,6 +205,7 @@ const openProps = (item: DrugFaq) => {
     activeItem.value = undefined;
   } else {
     activeItem.value = item;
+    selectNextItem();
   }
 
   if (!$screen.value.mdAndDown) {
@@ -426,6 +443,8 @@ const openProps = (item: DrugFaq) => {
       margin-top: 40px;
 
       p {
+        margin-right: 10px;
+
         font-size: 14px;
         line-height: 18px;
         color: $primary-color;

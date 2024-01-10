@@ -123,11 +123,13 @@ const onSlideChange = (index: number | undefined) => {
     }
 
     &-title {
+      min-height: 76px;
       margin-bottom: 28px;
 
       font-family: $secondary-font-family;
       font-size: 40px;
-      line-height: 35px;
+      line-height: 38px;
+      @include ellipsis(2);
 
       transition: color $tr-dur;
     }
@@ -156,6 +158,7 @@ const onSlideChange = (index: number | undefined) => {
       font-size: 24px;
       line-height: 28px;
       word-break: break-word;
+      @include ellipsis(5);
 
       transition: opacity $tr-dur;
     }
@@ -170,11 +173,13 @@ const onSlideChange = (index: number | undefined) => {
     }
     &__slide {
       &-title {
-        padding: 0 27px;
+        min-height: auto;
+        padding: 0 27px 2px;
 
         font-size: 27px;
-        line-height: 24px;
+        line-height: 30px;
         font-weight: 900;
+        @include ellipsis(4);
       }
       &-image-wrapper {
         height: auto;
@@ -188,6 +193,7 @@ const onSlideChange = (index: number | undefined) => {
 
       font-size: 14px;
       line-height: 16px;
+      @include ellipsis(7);
     }
   }
 }

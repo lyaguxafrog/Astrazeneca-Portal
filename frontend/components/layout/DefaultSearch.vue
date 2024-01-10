@@ -33,7 +33,7 @@
                 v-if="$screen.mdAndDown"
                 class="search__results-block-icon"
                 :name="block.icon"
-                :size="26"
+                :size="$screen.xs ? 21 : 36"
               />
             </nuxt-link>
           </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick, ref } from 'vue';
 import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
 import { IconName, Video } from '~/components/app/AppIcon.utils';
@@ -125,14 +126,14 @@ const clearResults = () => {
   $router.replace({
     query: {
       ...$route.query,
-      s: '',
+      s: undefined,
     },
   });
 };
 
 const search = async () => {
+  clearResults();
   if (!searchString.value) {
-    clearResults();
     return;
   }
 
@@ -148,8 +149,6 @@ const search = async () => {
   });
 
   if (res.data) {
-    clearResults();
-
     if (!res.data.length) {
       isEmpty.value = true;
       return;
@@ -358,8 +357,8 @@ defineExpose({
 
     &__results {
       display: grid;
-      grid-gap: 24px;
-      grid-template-columns: repeat(3, calc((100% - 48px) / 3));
+      grid-gap: 16px;
+      grid-template-columns: repeat(3, calc((100% - 32px) / 3));
 
       min-height: initial;
       max-height: initial;
@@ -406,7 +405,18 @@ defineExpose({
 
   @include xs {
     &__results {
-      grid-template-columns: repeat(2, calc((100% - 24px) / 2));
+      grid-template-columns: repeat(3, calc((100% - 32px) / 3));
+
+      &-block {
+        &-item {
+          padding: 10px;
+
+          p {
+            font-size: 9px;
+            line-height: 10px;
+          }
+        }
+      }
     }
   }
 
