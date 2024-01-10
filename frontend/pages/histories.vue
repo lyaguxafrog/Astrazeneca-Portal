@@ -1,8 +1,9 @@
 <template>
   <div :class="{stop: stopSwipe}">
     <InsidePageHead v-if="!$screen.mdAndDown" class="histories__back" />
-    <div v-if="histories.length" ref="historiesEl" class="histories" >
+    <div v-if="histories.length" class="histories" >
       <Swiper
+        ref="historiesEl"
         class="histories__swiper"
         grab-cursor
         centered-slides
@@ -129,7 +130,6 @@ const { back } = useBack();
 const stopSwipe = ref(false);
 
 const { direction } = useSwipe(historiesEl, {
-  passive: !$screen.value.mdAndDown,
   threshold: 150,
   onSwipeEnd: async () => {
     if (!$screen.value.mdAndDown || stopSwipe.value) {
@@ -226,7 +226,9 @@ onMounted(() => {
   &__back {
     height: 0;
     min-height: 0;
-    margin-bottom: 0;
+    margin-top: 20px;
+    margin-bottom: -8px;
+    margin-left: 20px;
     padding: 0;
   }
 
@@ -269,6 +271,7 @@ onMounted(() => {
       position: absolute;
       right: 20px;
       bottom: 20px;
+      @include z-index(2);
 
       margin-left: 20px;
 
@@ -285,6 +288,9 @@ onMounted(() => {
   }
 
   video {
+    position: relative;
+    @include z-index(1);
+
     display: block;
 
     width: 100%;

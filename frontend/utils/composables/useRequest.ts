@@ -79,7 +79,7 @@ export async function useRequest<Res = unknown>(url: string, config: RequestConf
 
   const { data, pending, refresh, error } = await fetchMethod(url, () => $fetch(url, fetchConfig));
 
-  if (error?.value?.statusCode === 404) {
+  if (error?.value?.statusCode === 404 || error?.value?.statusCode === 500) {
     throw createError({
       statusCode: 404,
       statusMessage: 'Page Not Found',

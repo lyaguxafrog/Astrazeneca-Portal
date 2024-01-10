@@ -11,6 +11,10 @@
 <script setup lang="ts">
 import DefaultSearch from '~/components/layout/DefaultSearch.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+
+useHead({
+  title: 'Поиск',
+});
 </script>
 
 <style scoped lang="scss">

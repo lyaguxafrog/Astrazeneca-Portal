@@ -52,8 +52,6 @@ export const useAuth = () => {
         method: 'GET',
       });
 
-      console.log(res.data?.user_id);
-
       if (res.data?.user_id) {
         userIdCookie.value = `${res.data.user_id}`;
         state.value.userId = res.data.user_id;

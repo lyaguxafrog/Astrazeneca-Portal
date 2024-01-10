@@ -2,12 +2,12 @@
   <div v-if="items.length" class="items-slider" :class="{ hidePagination }">
     <Swiper
       grab-cursor
-      :loop="loopSlides.length > slidesPerView + 1"
+      :loop="!disableLoop && loopSlides.length > slidesPerView + 1"
       :loop-additional-slides="2"
       :centered-slides="centeredSlides"
       :space-between="40"
       :slides-per-view="slidesPerView"
-      :initial-slide="items.length < 3 ? 0 : initialSlide"
+      :initial-slide="initialSlideIndex"
       :modules="[Pagination, Navigation]"
       :pagination="{ clickable: true }"
       :slides-offset-before="!centeredSlides && $screen.mdAndDown ? 22 : undefined"
@@ -60,6 +60,7 @@ const props = withDefaults(
     withNavigation?: boolean;
     hidePagination?: boolean;
     centeredSlides?: boolean;
+    disableLoop?: boolean;
   }>(),
   {
     initialSlide: 1,
@@ -73,7 +74,7 @@ defineSlots<{
 }>();
 
 const emit = defineEmits<{
-  (event: 'onSlideChange', value: number | undefined): void;
+  (event: 'onSlideChange', value: number): void;
 }>();
 
 const { $screen } = useScreen();
@@ -106,8 +107,20 @@ const loopSlides = computed(() => {
 });
 
 const onSlideChange = () => {
-  emit('onSlideChange', swiper.value?.realIndex);
+  if (swiper.value) {
+    emit('onSlideChange', swiper.value.realIndex);
+  }
 };
+
+const initialSlideIndex = toRef(() => props.items.length < 3 ? 0 : props.initialSlide);
+
+const resetPosition = () => {
+  swiper.value?.slideTo(initialSlideIndex.value);
+};
+
+defineExpose({
+  resetPosition,
+});
 </script>
 
 <style lang="scss" scoped>

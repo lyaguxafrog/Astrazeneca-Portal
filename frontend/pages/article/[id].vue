@@ -76,6 +76,10 @@ const { baseUrl } = useRuntimeConfig().public;
 const articleId = toRef(() => +$route.params.id);
 
 const content = await getArticle(articleId.value);
+
+useHead({
+  title: content?.article_name ? content?.article_name : 'Статьи',
+});
 </script>
 
 <style scoped lang="scss">
@@ -147,6 +151,18 @@ const content = await getArticle(articleId.value);
     p {
       position: relative;
       z-index: 2;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+
+      background-color: rgba(#000, 0.3);
     }
   }
 
@@ -233,6 +249,8 @@ const content = await getArticle(articleId.value);
   }
 
   &__image-and-text {
+    display: flex;
+
     margin-top: 5px;
 
     font-size: 24px;
@@ -240,8 +258,6 @@ const content = await getArticle(articleId.value);
     letter-spacing: -0.24px;
 
     img {
-      float: left;
-
       width: 245px;
       margin-right: 55px;
     }
@@ -258,6 +274,15 @@ const content = await getArticle(articleId.value);
     font-size: 18px;
     line-height: 19px;
     font-weight: 300;
+  }
+
+  :deep(table) {
+    font-size: 20px;
+
+    border-color: $gray-color;
+    td, th {
+      padding: 6px 12px;
+    }
   }
 
   @include lg-and-down {
@@ -371,6 +396,8 @@ const content = await getArticle(articleId.value);
     }
 
     &__image-and-text {
+      display: block;
+
       font-size: 12px;
       line-height: 14px;
       letter-spacing: -0.12px;
@@ -381,6 +408,11 @@ const content = await getArticle(articleId.value);
         width: 100px;
         margin-top: 0;
         margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      p {
+        padding-top: 0;
       }
     }
 
