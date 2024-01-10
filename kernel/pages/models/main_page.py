@@ -19,7 +19,7 @@ class SingletonModel(models.Model):
         super(SingletonModel, self).save(*args, **kwargs)
 
 class MainPageApproveNumber(SingletonModel):
-    number = RichTextField(verbose_name="Номер одобрения")
+    number = RichTextField(verbose_name="Номер одобрения *", help_text='Существует в едином экземпляре.')
 
     def __str__(self):
         return "Номер одобрения на главной странице"

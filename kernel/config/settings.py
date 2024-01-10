@@ -44,10 +44,10 @@ CKEDITOR_CONFIGS = {
         'toolbar_Custom': [
             ['FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike'],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
-            [ 'NumberedList', 'BulletedList'],
+            ['NumberedList', 'BulletedList'],
             ['TextColor'],
             ['Link', 'Unlink'],
-            ['Source'],
+            ['Image', 'Source'],
         ],
         'extraPlugins': ','.join(['font', 'colorbutton']),
         'font_names': 'Arial;Comic Sans MS;Courier New;Georgia;Times New Roman;Verdana',

@@ -4,8 +4,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-
-
 class Story(models.Model):
     COLOR_CHOISE = [
     ('#00D1FF', 'Синий 🟦'),
@@ -13,20 +11,18 @@ class Story(models.Model):
     ('#fff', 'Белый ⬜')
 ]
 
-
-    avatar = models.ImageField(upload_to='story_avatars/')
-    title = models.CharField(max_length=255)
-    content = models.TextField()
-    video = models.FileField(upload_to='story_videos/',
-                             null=True, blank=True)
-    cover_image = models.ImageField(upload_to='story_covers/')
-    link_to_page = models.URLField(null=True, blank=True)
+    avatar = models.ImageField(upload_to='story_avatars/', verbose_name='Аватар *')
+    title = models.CharField(max_length=255, verbose_name='Заголовок *')
+    content = models.TextField(verbose_name='Контент *')
+    video = models.FileField(upload_to='story_videos/', verbose_name='Видео *')
+    cover_image = models.ImageField(upload_to='story_covers/', verbose_name='Обложка *')
+    link_to_page = models.URLField(null=True, blank=True, verbose_name='URL на страницу')
     specialties = models.ManyToManyField('pages.Specialty',
-                                         blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+                                         blank=True, null=True, verbose_name='Специальность')
+    is_active = models.BooleanField(default=True, verbose_name='Активность истории')
 
     color = models.CharField(max_length=255, choices=COLOR_CHOISE,
-                             verbose_name="Цвет", null=True, blank=True)
+                             verbose_name="Цвет *")
 
 
     avatar_desktop_120px = models.ImageField(null=True, blank=True)

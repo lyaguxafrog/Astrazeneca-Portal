@@ -12,19 +12,19 @@ class Articles(models.Model):
         ('инновация', 'Инновация'),
     ]
 
-    article_name = models.CharField(max_length=1024, verbose_name='Заголовок')
+    article_name = models.CharField(max_length=1024, verbose_name='Заголовок *')
     main_cover_desktop = models.ImageField(upload_to='article_cover/',
-                                   verbose_name='Главная картинка статьи(десктоп)', null=True, blank=True)
+                                   verbose_name='Главная картинка статьи(десктоп) *')
     main_cover_mobile = models.ImageField(upload_to='article_cover/',
-                            verbose_name='Главная картинка статьи(мобильная)', null=True, blank=True)
+                            verbose_name='Главная картинка статьи(мобильная) *')
     cover_desktop = models.ImageField(upload_to='article_covers/',
-                               verbose_name="Обложка(десктоп)")
-    cover_mobile = models.ImageField(verbose_name='Обложка(мобильная)',
+                               verbose_name="Обложка(десктоп) *")
+    cover_mobile = models.ImageField(verbose_name='Обложка(мобильная) *',
                                 upload_to='article_cover/')
-    first_abzac = RichTextField(verbose_name = "Первый абзац")
-    final_content = RichTextField(verbose_name = "Заключение")
+    first_abzac = RichTextField(verbose_name = "Первый абзац *")
+    final_content = RichTextField(verbose_name = "Заключение *")
     access_number = RichTextField(
-        verbose_name="Поле для добавления расшифровок и номеров одобрения")
+        verbose_name="Поле для добавления расшифровок и номеров одобрения *")
     speciality = models.ManyToManyField('pages.Specialty',
                             related_name='articles',
                             blank=True,
@@ -37,9 +37,9 @@ class Articles(models.Model):
     article_type = models.CharField(max_length=255,
                             choices=ARTICLE_TYPE_CHOICES,
                             blank=True,
-                            verbose_name='Тип статьи')
+                            verbose_name='Тип статьи *')
 
-    information = RichTextField(verbose_name='текстовый блок для ввода инфы о статьи на разводящей станице статей')
+    information = RichTextField(verbose_name='текстовый блок для ввода инфы о статьи на разводящей станице статей *')
 
     cover_desktop_1400px = models.ImageField(upload_to='article_cover/1400px/',
                                              null=True, blank=True)
@@ -77,7 +77,7 @@ class ContentBlock(models.Model):
     ]
 
     article = models.ForeignKey('Articles', on_delete=models.CASCADE, related_name='content_blocks')
-    content_type = models.CharField(max_length=16, choices=ARTICLE_CONTENT_TYPE_CHOICES, verbose_name='Тип контента')
+    content_type = models.CharField(max_length=16, choices=ARTICLE_CONTENT_TYPE_CHOICES, verbose_name='Тип контента *')
     text = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='content_block_images/', blank=True, null=True)
-    order = models.PositiveIntegerField()
+    order = models.PositiveIntegerField(verbose_name='Поорядковый номер *')
