@@ -25,13 +25,13 @@ class VideoLectures(models.Model):
 
     video_cover_desktop_1400px = models.ImageField(upload_to='video_covers/1400px/', null=True, blank=True)
     video_cover_desktop_2800px = models.ImageField(upload_to='video_covers/2800px/', null=True, blank=True)
-    recomendation_cover_desktop_430px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
-    recomendation_cover_desktop_860px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
+    recomendation_cover_desktop_500px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
+    recomendation_cover_desktop_1000px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
 
     video_cover_mobile_420px = models.ImageField(upload_to='video_covers/420px/', null=True, blank=True)
     video_cover_mobile_840px = models.ImageField(upload_to='video_covers/840px/', null=True, blank=True)
-    recomendation_cover_mobile_270px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
-    recomendation_cover_mobile_540px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
+    recomendation_cover_mobile_280px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
+    recomendation_cover_mobile_560px = models.ImageField(upload_to='video_covers/recomendation/', null=True, blank=True)
 
 
     class Meta:
