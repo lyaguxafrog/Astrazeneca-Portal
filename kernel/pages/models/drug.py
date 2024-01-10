@@ -28,6 +28,7 @@ class Drug(models.Model):
     image_mobile_540px = models.ImageField(upload_to='drugs/540px/', verbose_name="Изображение 540px", null=True, blank=True)
 
 
+
     def __str__(self):
         return self.name
 
@@ -41,6 +42,7 @@ class DrugFAQ(models.Model):
                              related_name="faq")
     title = models.CharField(verbose_name="Заголовок")
     text = RichTextField(verbose_name="Текст")
+    approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения", null=True, blank=True)
     order = models.PositiveBigIntegerField(verbose_name='Порядковый номер')
 
 class Icon(models.Model):

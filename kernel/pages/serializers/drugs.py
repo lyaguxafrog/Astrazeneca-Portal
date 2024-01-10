@@ -59,6 +59,7 @@ class FAQSerializer(serializers.ModelSerializer):
         model = DrugFAQ
         fields = ['title',
                   'text',
+                  'approvals_and_decodings',
                   'order']
 
 
@@ -135,12 +136,12 @@ class DrugSerializer(serializers.ModelSerializer):
                 'name': video.video_article,
                 'video_cover_desktop_1400px': video.video_cover_desktop_1400px.url if video.video_cover_desktop_1400px else None,
                 'video_cover_desktop_2800px': video.video_cover_desktop_2800px.url if video.video_cover_desktop_2800px else None,
-                'recomendation_cover_desktop_430px': video.recomendation_cover_desktop_430px.url if video.recomendation_cover_desktop_430px else None,
-                'recomendation_cover_desktop_860px': video.recomendation_cover_desktop_860px.url if video.recomendation_cover_desktop_860px else None,
+                'recomendation_cover_desktop_500px': video.recomendation_cover_desktop_500px.url if video.recomendation_cover_desktop_500px else None,
+                'recomendation_cover_desktop_1000px': video.recomendation_cover_desktop_1000px.url if video.recomendation_cover_desktop_1000px else None,
                 'video_cover_mobile_420px': video.video_cover_mobile_420px.url if video.video_cover_mobile_420px else None,
                 'video_cover_mobile_840px': video.video_cover_mobile_840px.url if video.video_cover_mobile_840px else None,
-                'recomendation_cover_mobile_270px': video.recomendation_cover_mobile_270px.url if video.recomendation_cover_mobile_270px else None,
-                'recomendation_cover_mobile_540px': video.recomendation_cover_mobile_540px.url if video.recomendation_cover_mobile_540px else None,
+                'recomendation_cover_mobile_280px': video.recomendation_cover_mobile_280px.url if video.recomendation_cover_mobile_280px else None,
+                'recomendation_cover_mobile_560px': video.recomendation_cover_mobile_560px.url if video.recomendation_cover_mobile_560px else None,
             })
 
         return combined_practices
