@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const bg = toRef(() =>
   !props.pale
-    ? `radial-gradient(50% 50% at 50% 50%, ${props.color} 0%, ${props.color}60 100%)`
+    ? `radial-gradient(50% 50% at 50% 50%, ${props.color} 0%, ${props.color}00 100%)`
     : `radial-gradient(50% 50% at 50% 50%, ${props.color}60 0%, ${props.color}00 100%)`
 );
 </script>
