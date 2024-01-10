@@ -4,7 +4,7 @@ from .story import StoryListAPIView, StoryDetailAPIView, SpecialityStoryListAPIV
 from .article import ArticleDetailAPIView, ArticlesBySpecialtyAPIView
 from .drugs import DrugDetailAPIView, DrugListAPIView
 from .events import EventsAPIView
-from .video import VideoLecturesDetail, VideoLecturesList
+from .video import VideoLecturesDetail, VideoLecturesList, VideoLecturesListBySpecialty
 from .speciality import SpecialtyListAPIView
 from .main_page import MainPageApproveNumberAPIView
 from .search import SearchAPIView

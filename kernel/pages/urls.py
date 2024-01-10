@@ -8,7 +8,7 @@ from .views import (StoryListAPIView, StoryDetailAPIView,
                SpecialityStoryListAPIView,
                DrugDetailAPIView, EventsAPIView, ArticlesBySpecialtyAPIView,
                VideoLecturesList, VideoLecturesDetail, SpecialtyListAPIView,
-               MainPageApproveNumberAPIView, SearchAPIView)
+               MainPageApproveNumberAPIView, SearchAPIView, VideoLecturesListBySpecialty)
 
 urlpatterns = [
 
@@ -35,8 +35,11 @@ urlpatterns = [
 
     path('events/', EventsAPIView.as_view(), name='events-list'),
 
-    path('video-lectures/speciality/<int:id>', VideoLecturesList.as_view(),
+    path('video-lectures/', VideoLecturesList.as_view(),
          name='video-lectures-list'),
+
+    path('video-lectures/speciality/<int:id>', VideoLecturesListBySpecialty.as_view(),
+         name='video-lectures-list-by-specialty'),
 
     path('video-lectures/<int:pk>/', VideoLecturesDetail.as_view(),
          name='video-lectures-detail'),
