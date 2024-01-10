@@ -33,11 +33,22 @@ const { $screen } = useScreen();
   transition: background-color $tr-dur;
 
   & > div {
+    max-width: 60%;
+
     transform: translateX(10%);
+
+    :deep(svg) {
+      max-width: 100%;
+    }
   }
 
   @include hover {
     background-color: rgba($white-color, 0.3);
+  }
+
+  @include lg-and-down {
+    width: 100px;
+    height: 100px;
   }
 
   @include md-and-down {

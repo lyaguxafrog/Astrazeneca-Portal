@@ -9,7 +9,10 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: SHARING_TITLE,
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon/favicon.ico' },
+        { rel: 'manifest', type: 'image/png', href: '/favicon/site.webmanifest' }
+      ],
 
       meta: [
         { charset: 'utf-8' },

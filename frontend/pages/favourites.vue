@@ -145,6 +145,10 @@ const showedFavourites = computed(() => {
 
     max-width: 1437px;
     margin-top: 71px;
+
+    @include lg-and-down {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
   }
 
   &__item {

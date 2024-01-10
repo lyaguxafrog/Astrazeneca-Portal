@@ -14,7 +14,19 @@
       <small>рака легкого</small>
     </div>
 
-    <div class="article-page__intro">{{ content.article_name }}</div>
+    <div class="article-page__intro">
+      <AppImage
+        class="article-page__intro-bg"
+        :url="content.main_cover_desktop_1600px"
+        :url-full="content.main_cover_desktop_1600px"
+        :url-full-x2="content.main_cover_desktop_3200px"
+        :url-thin-x2="content.main_cover_desktop_720px"
+        :url-thin="content.main_cover_desktop_360px"
+      />
+      <p>
+        {{ content.article_name }}
+      </p>
+    </div>
 
     <div class="article-page__bold" v-html="content.first_abzac" />
 
@@ -107,10 +119,13 @@ const content = await getArticle(articleId.value);
   }
 
   &__intro {
+    position: relative;
+
     min-height: 436px;
     margin-top: 31px;
     margin-bottom: 54px;
     padding: 70px 270px 0 89px;
+    overflow: hidden;
 
     font-family: $secondary-font-family;
     font-size: 60px;
@@ -119,6 +134,20 @@ const content = await getArticle(articleId.value);
 
     background: url('~/assets/img/article/bg.png') no-repeat center center / cover;
     border-radius: 40px;
+
+    &-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    p {
+      position: relative;
+      z-index: 2;
+    }
   }
 
   &__bold {
@@ -157,6 +186,7 @@ const content = await getArticle(articleId.value);
     align-items: flex-start;
 
     margin-top: 8px;
+    margin-bottom: 8px;
 
     &-text {
       position: relative;

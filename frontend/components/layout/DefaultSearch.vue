@@ -7,7 +7,10 @@
       </div>
 
       <div ref="scrollEl" class="search__results">
-        <template v-for="block in result">
+        <div v-if="isEmpty" class="search__results-empty">
+          По Вашему запросу ничего не&nbsp;найдено
+        </div>
+        <template v-if="result.length" v-for="block in result">
           <div v-if="block.items.length" :key="block.id" class="search__results-block">
             <div class="search__results-block-title">
               {{ block.name }}
@@ -62,6 +65,7 @@ const { $screen } = useScreen();
 const isOpen = ref();
 const inputEl = ref();
 const scrollEl = ref();
+const isEmpty = ref(false);
 
 const searchString = ref($route.query.s);
 
@@ -116,6 +120,8 @@ const result = ref<
 const clearResults = () => {
   result.value.forEach((x) => (x.items = []));
 
+  isEmpty.value = false;
+
   $router.replace({
     query: {
       ...$route.query,
@@ -143,6 +149,11 @@ const search = async () => {
 
   if (res.data) {
     clearResults();
+
+    if (!res.data.length) {
+      isEmpty.value = true;
+      return;
+    }
 
     res.data.forEach((r) => {
       const data = {
@@ -259,6 +270,12 @@ defineExpose({
     max-height: 50vh;
     @include scrollbar($body-scrollbar-width);
 
+    &-empty {
+      padding: 20px;
+
+      font-size: 20px;
+    }
+
     &-block {
       padding: 16px 29px 14px;
 
@@ -281,13 +298,17 @@ defineExpose({
       }
 
       &-item {
-        display: block;
+        display: flex;
 
         width: fit-content;
 
         font-size: 18px;
         line-height: 42px;
         letter-spacing: -0.18px;
+
+        span {
+          margin-left: 8px;
+        }
 
         @include hover {
           color: $accent-color;
@@ -340,9 +361,18 @@ defineExpose({
       grid-gap: 24px;
       grid-template-columns: repeat(3, calc((100% - 48px) / 3));
 
+      min-height: initial;
       max-height: initial;
       margin-top: 30px;
       overflow: initial;
+
+      &-empty {
+        width: calc(100vw - 56px);
+        padding: 0;
+
+        font-size: 16px;
+        color: $white-color;
+      }
 
       &-block {
         display: contents;

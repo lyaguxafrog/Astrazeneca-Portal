@@ -1,11 +1,12 @@
 <template>
+  <InsidePageHead class="histories__back" />
   <div v-if="histories.length" ref="historiesEl" class="histories">
     <Swiper
       class="histories__swiper"
       grab-cursor
       centered-slides
       slide-to-clicked-slide
-      :slides-per-view="$screen.mdAndDown ? 1 : 3"
+      :slides-per-view="1"
       :space-between="$screen.mdAndDown ? 0 : 0"
       :modules="[Pagination, Navigation]"
       :pagination="{ clickable: true }"
@@ -14,6 +15,14 @@
         prevEl: prevRef,
       }"
       :initial-slide="activeHistoryIndex"
+      :breakpoints="{
+        1200: {
+          slidesPerView: 3
+        },
+        992: {
+          slidesPerView: 2
+        }
+      }"
       @swiper="onSwiper"
       @slide-change="onSlideChange"
     >
@@ -26,7 +35,7 @@
           :style="{ backgroundImage: `url(${baseUrl}${history.cover_image})` }"
           @touchend="onVideoTouchEnd"
         />
-        <AppButton mode="icon" class="history__volume" petite @click="toggleVolume">
+        <AppButton v-if="!$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
           <AppIcon
             :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
             :size="$screen.mdAndDown ? 30 : 48"
@@ -40,6 +49,12 @@
         :content-type="ContentType.Stories"
         :content-id="activeHistory.id"
       />
+      <AppButton v-if="$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
+        <AppIcon
+          :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
+          :size="$screen.mdAndDown ? 30 : 48"
+        />
+      </AppButton>
       <AppButton
         v-if="activeHistory.link_to_page"
         primary
@@ -72,18 +87,21 @@ import { useHistoriesStore } from '~/utils/composables/store/histories';
 import { useBack } from '~/utils/composables/useHistory';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { ContentType } from '~/utils/types';
+import InsidePageHead from '~/components/common/InsidePageHead.vue';
 
 definePageMeta({
   hideFooter: true,
 });
 
-const { histories } = useHistoriesStore();
+const { histories, getHistories } = useHistoriesStore();
 const { baseUrl } = useRuntimeConfig().public;
 const $router = useRouter();
 const $route = useRoute();
 const { $screen } = useScreen();
 const swiper = ref<SwiperType>();
 const videosRef = ref<HTMLVideoElement[]>([]);
+
+await getHistories();
 
 const activeSlideId = ref(+($route.query.id || 0));
 
@@ -100,7 +118,7 @@ const historiesEl = ref();
 
 const { back } = useBack();
 
-/*const { direction } = useSwipe(historiesEl, {
+const { direction } = useSwipe(historiesEl, {
   passive: false,
   threshold: 150,
   onSwipe: () => {
@@ -108,7 +126,7 @@ const { back } = useBack();
       back();
     }
   },
-});*/
+});
 
 watch(
   () => $route.query.id,
@@ -182,6 +200,11 @@ onMounted(() => {
   max-width: 1330px;
   margin: 0 auto;
 
+  &__back {
+    height: 0;
+    min-height: 0;
+  }
+
   .history {
     position: relative;
 
@@ -232,12 +255,17 @@ onMounted(() => {
     display: block;
 
     width: 100%;
-    height: 754px;
-    max-height: 60vw;
+    height: 85vh;
     object-fit: cover;
 
     background-position: center;
     background-size: cover;
+
+    @include lg-and-down {
+      @media (orientation: portrait) {
+        height: 70vh;
+      }
+    }
   }
 
   .swiper-button {
@@ -251,6 +279,13 @@ onMounted(() => {
     &.next {
       right: 27%;
       left: auto;
+    }
+
+    @include lg-and-down {
+      left: 16%;
+      &.next {
+        right: 16%;
+      }
     }
   }
 
@@ -289,9 +324,12 @@ onMounted(() => {
   }
 
   @include md-and-down {
-    position: relative;
-
-    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    @include z-index(4);
 
     &__swiper {
       width: auto;
@@ -306,7 +344,6 @@ onMounted(() => {
 
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
 
         width: 100%;
         margin: 0;
@@ -315,12 +352,19 @@ onMounted(() => {
       &__link {
         width: 149px;
         margin-right: 0;
+        margin-left: 10px;
         padding: 0;
       }
 
       video {
         height: 100%;
         max-height: initial;
+      }
+
+      &__volume {
+        position: static;
+
+        margin-left: auto;
       }
     }
 
