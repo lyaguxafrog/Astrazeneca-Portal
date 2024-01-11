@@ -83,6 +83,7 @@ export async function useRequest<Res = unknown>(url: string, config: RequestConf
   const { data, pending, refresh, error } = await fetchMethod(url, () => $fetch(url, fetchConfig));
 
   if (!config.ignoreError && (error?.value?.statusCode === 404 || error?.value?.statusCode === 500)) {
+    console.log(url, config);
     setTimeout(() => {
       $router.replace('/error');
     }, 500);
