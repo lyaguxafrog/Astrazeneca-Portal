@@ -4,7 +4,7 @@
       <div class="default-guard__title"><span>PRO</span>Рак Легкого</div>
       <div class="default-guard__subtitle">
         инновационный<br />
-        портал для специалистов здравоохранения
+        портал для специалистов здравоохранения {{userId}}
       </div>
       <AppButton primary class="default-guard__button" @click="toLogin"> Войти </AppButton>
     </div>
