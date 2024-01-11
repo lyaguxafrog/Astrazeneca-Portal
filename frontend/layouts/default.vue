@@ -1,6 +1,5 @@
 <template>
   <div class="default-layout">
-
     <ClientOnly>
       <NuxtLoadingIndicator color="#00D1FF" :throttle="0" />
 

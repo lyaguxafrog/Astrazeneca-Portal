@@ -13,9 +13,11 @@ type Speciality = {
 };
 
 export function useSpecialityStore() {
+  const specialityCookie = useCookie(specialityCookieName);
+
   const state = useState('speciality', () => ({
     specialities: loadableEmpty<Speciality[]>([]),
-    specialityId: undefined as number | undefined,
+    specialityId: specialityCookie.value ? +specialityCookie.value : undefined,
     speciality: undefined as Speciality | undefined,
   }));
 
