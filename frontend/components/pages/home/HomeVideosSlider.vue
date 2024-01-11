@@ -186,6 +186,7 @@ const onSlideChange = (index: number) => {
 
     font-family: $secondary-font-family;
     font-size: 40px;
+    line-height: 1.05;
   }
 
   .items-slider__content {
