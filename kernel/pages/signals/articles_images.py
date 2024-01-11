@@ -24,7 +24,10 @@ target_height_400 = 400
 target_height_800 = 800
 target_height_280 = 280
 target_height_560 = 560
-
+target_height_300 = 300
+target_height_600 = 600
+target_height_250 = 250
+target_height_500 = 500
 
 class DisableSignals:
     def __init__(self, sender):
@@ -53,6 +56,8 @@ def process_articles_mobile_cover(sender, instance, **kwargs):
                 target_width_840 = int(original_width / original_height * target_height_840)
                 target_width_280 = int(original_width / original_height * target_height_280)
                 target_width_560 = int(original_width / original_height * target_height_560)
+                target_width_250 = int(original_width / original_height * target_height_250)
+                target_width_500 = int(original_width / original_height * target_height_500)
 
 
                 image_stream_420px = BytesIO()
@@ -70,6 +75,14 @@ def process_articles_mobile_cover(sender, instance, **kwargs):
                 image_stream_560px = BytesIO()
                 image.resize((target_width_560, target_height_560)).save(image_stream_560px, format='WEBP')
                 instance.practic_mobile_560px.save(f"{instance.cover_mobile.name}_560px.webp", File(image_stream_560px), save=False)
+
+                image_stream_500px = BytesIO()
+                image.resize((target_width_500, target_height_500)).save(image_stream_500px, format='WEBP')
+                instance.favorite_mobile_500px.save(f"{instance.cover_mobile.name}_500px.webp", File(image_stream_500px), save=False)
+
+                image_stream_250px = BytesIO()
+                image.resize((target_width_250, target_height_250)).save(image_stream_250px, format='WEBP')
+                instance.favorite_mobile_250px.save(f"{instance.cover_mobile.name}_250px.webp", File(image_stream_250px), save=False)
 
 
                 instance.save()
@@ -91,6 +104,8 @@ def process_articles_desktop_cover(sender, instance, **kwargs):
                 target_widht_1400 = int(original_width / original_height * target_height_1400)
                 target_widht_400 = int(original_width / original_height * target_height_400)
                 target_widht_800 = int(original_width / original_height * target_height_800)
+                target_widht_300 = int(original_width / original_height * target_height_300)
+                target_widht_600 = int(original_width / original_height * target_height_600)
 
                 image_stream_2800px = BytesIO()
                 image.resize((target_widht_2800, target_height_2800)).save(image_stream_2800px, format='WEBP')
@@ -107,6 +122,14 @@ def process_articles_desktop_cover(sender, instance, **kwargs):
                 image_stream_800px = BytesIO()
                 image.resize((target_widht_800, target_height_800)).save(image_stream_800px, format='WEBP')
                 instance.practic_desktop_800px.save(f"{instance.cover_desktop.name}_800px.webp", File(image_stream_800px), save=False)
+
+                image_stream_300px = BytesIO()
+                image.resize((target_widht_300, target_height_300)).save(image_stream_300px, format='WEBP')
+                instance.favorite_desktop_300px.save(f"{instance.cover_desktop.name}_300px.webp", File(image_stream_300px), save=False)
+
+                image_stream_600px = BytesIO()
+                image.resize((target_widht_600, target_height_600)).save(image_stream_600px, format='WEBP')
+                instance.favorite_desktop_600px.save(f"{instance.cover_desktop.name}_600px.webp", File(image_stream_600px), save=False)
 
 
                 instance.save()
