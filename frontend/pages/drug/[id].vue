@@ -89,11 +89,11 @@
                   >
                     <AppImage
                       class="drug-page__slider-item-bg"
-                      :url="item.recomendation_cover_desktop_500px || item.cover_desktop_1400px"
-                      :url-full-x2="item.recomendation_cover_desktop_1000px || item.cover_desktop_2800px"
-                      :url-full="item.recomendation_cover_desktop_430px || item.cover_desktop_1400px"
-                      :url-thin-x2="item.recomendation_cover_mobile_560px || item.cover_mobile_840px"
-                      :url-thin="item.recomendation_cover_mobile_280px || item.cover_mobile_420px"
+                      :url="item.practic_desktop_400px"
+                      :url-full-x2="item.practic_desktop_800px"
+                      :url-full="item.practic_desktop_400px"
+                      :url-thin-x2="item.practic_mobile_560px"
+                      :url-thin="item.practic_mobile_280px"
                     />
                     <p>{{ item.name }}</p>
                   </nuxt-link>
@@ -119,11 +119,11 @@
               >
                 <AppImage
                   class="drug-page__slider-item-bg"
-                  :url="item.recomendation_cover_desktop_500px || item.cover_desktop_1400px"
-                  :url-full-x2="item.recomendation_cover_desktop_1000px || item.cover_desktop_2800px"
-                  :url-full="item.recomendation_cover_desktop_430px || item.cover_desktop_1400px"
-                  :url-thin-x2="item.recomendation_cover_mobile_560px || item.cover_mobile_840px"
-                  :url-thin="item.recomendation_cover_mobile_280px || item.cover_mobile_420px"
+                  :url="item.practic_desktop_400px"
+                  :url-full-x2="item.practic_desktop_800px"
+                  :url-full="item.practic_desktop_400px"
+                  :url-thin-x2="item.practic_mobile_560px"
+                  :url-thin="item.practic_mobile_280px"
                 />
                 <p v-html="item.name" />
               </nuxt-link>

@@ -20,14 +20,14 @@
               :key="item.id"
               class="search__results-block-item"
               :to="item.link"
-              :style="{ backgroundColor: $screen.mdAndDown ? block.color : '' }"
+              :style="{ backgroundColor: $screen.mdAndDown ? block.color : '', order: item.order }"
               @click="close"
             >
               <p>
                 {{ item.name }}
               </p>
               <span v-if="!$screen.mdAndDown" :style="{ color: block.color }"
-                >| {{ block.postfix }}</span
+              >| {{ block.postfix }}</span
               >
               <AppIcon
                 v-if="$screen.mdAndDown"
@@ -47,7 +47,7 @@
 import { nextTick, ref } from 'vue';
 import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
-import { IconName, Video } from '~/components/app/AppIcon.utils';
+import {IconName, Star, Video} from '~/components/app/AppIcon.utils';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useScreen } from '~/utils/composables/useScreen';
@@ -56,7 +56,8 @@ type SearchResult = {
   id: number;
   title: string;
   url?: string;
-  model: 'video_lecture' | 'article' | 'event';
+  model?: 'video_lecture' | 'article' | 'event';
+  content_type?: 'video_lecture' | 'article' | 'event';
 };
 
 const $route = useRoute();
@@ -80,10 +81,11 @@ const result = ref<
       id: number;
       name: string;
       link?: string;
+      order?: number;
     }[];
     icon: IconName;
   }[]
->([
+  >([
   {
     id: '1',
     name: 'Статьи',
@@ -112,85 +114,19 @@ const result = ref<
     id: '4',
     name: 'Мероприятия',
     postfix: 'мероприятие',
-    color: '#a8a8a8',
+    color: '#f74848',
     items: [],
     icon: IconName.Megaphone,
   },
-]);
-
-const clearResults = () => {
-  result.value.forEach((x) => (x.items = []));
-
-  isEmpty.value = false;
-
-  $router.replace({
-    query: {
-      ...$route.query,
-      s: undefined,
-    },
-  });
-};
-
-const search = async () => {
-  clearResults();
-  if (!searchString.value) {
-    return;
-  }
-
-  await $router.replace({
-    query: {
-      ...$route.query,
-      s: searchString.value,
-    },
-  });
-
-  const res = await useRequest<SearchResult[]>(`/search/${searchString.value}`, {
-    method: 'GET',
-  });
-
-  if (res.data) {
-    if (!res.data.length) {
-      isEmpty.value = true;
-      return;
-    }
-
-    res.data.forEach((r) => {
-      const data = {
-        id: r.id,
-        name: r.title,
-        link:
-          r.model === 'event'
-            ? r.url
-            : r.model === 'video_lecture'
-            ? `/video/${r.id}`
-            : `/article/${r.id}`,
-      };
-
-      if (r.model === 'video_lecture') {
-        result.value[1].items.push(data);
-      }
-
-      if (r.model === 'article') {
-        result.value[0].items.push(data);
-      }
-
-      if (r.model === 'event') {
-        result.value[3].items.push(data);
-      }
-    });
-  }
-};
-
-watchDebounced(
-  searchString,
-  () => {
-    search();
-  },
   {
-    debounce: 500,
-    immediate: true,
-  }
-);
+    id: '5',
+    name: 'Препараты',
+    postfix: 'препарат',
+    color: '#00D1FF',
+    items: [],
+    icon: IconName.Star,
+  },
+]);
 
 const open = () => {
   disableScroll(scrollEl.value, $screen.value.mdAndDown);
@@ -211,6 +147,105 @@ const close = () => {
 defineExpose({
   open,
 });
+
+const processResults = (results?: SearchResult[]) => {
+  if (!results) {
+    return [];
+  }
+
+  results.forEach((r, index) => {
+    const model = r.model || r.content_type;
+
+    const data = {
+      id: r.id,
+      name: r.title,
+      order: index,
+      link:
+        r.model === 'event'
+          ? r.url
+          : model === 'video_lecture'
+            ? `/video/${r.id}`
+            : model === 'article' ? `/article/${r.id}` : `/drug/${r.id}`,
+    };
+
+    if (model === 'article') {
+      result.value[0].items.push(data);
+    }
+
+    if (model === 'video_lecture') {
+      result.value[1].items.push(data);
+    }
+
+    if (model === 'event') {
+      result.value[3].items.push(data);
+    }
+    if (model === 'drug') {
+      result.value[4].items.push(data);
+    }
+  });
+
+  return JSON.parse(JSON.stringify(result.value));
+};
+
+const defaultItems = await useRequest<SearchResult[]>('/search/page', {
+  method: 'GET',
+});
+
+const defaultResults = processResults(defaultItems.data);
+result.value = JSON.parse(JSON.stringify(defaultResults));
+
+const clearResults = () => {
+  result.value.forEach((x) => (x.items = []));
+
+  isEmpty.value = false;
+
+  $router.replace({
+    query: {
+      ...$route.query,
+      s: undefined,
+    },
+  });
+};
+
+const search = async () => {
+  clearResults();
+
+  if (!searchString.value) {
+    result.value = JSON.parse(JSON.stringify(defaultResults));
+    return;
+  }
+
+  await $router.replace({
+    query: {
+      ...$route.query,
+      s: searchString.value,
+    },
+  });
+
+  const res = await useRequest<SearchResult[]>(`/search/${searchString.value}`, {
+    method: 'GET',
+  });
+
+  if (res.data) {
+    if (!res.data.length) {
+      isEmpty.value = true;
+      return;
+    }
+
+    processResults(res.data);
+  }
+};
+
+watchDebounced(
+  searchString,
+  () => {
+    search();
+  },
+  {
+    debounce: 500,
+    immediate: true,
+  }
+);
 </script>
 
 <style scoped lang="scss">

@@ -76,7 +76,7 @@ $root: histories-slider;
 
   &.min {
     width: 100%;
-    max-width: 440px;
+    max-width: 460px;
     margin-left: 0;
 
     transition: max-width $tr-dur;
