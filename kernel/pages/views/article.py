@@ -31,3 +31,7 @@ class ArticlesBySpecialtyAPIView(generics.ListAPIView):
         specialty_id = self.kwargs['specialty_id']
         queryset = Articles.objects.filter(speciality__id=specialty_id)
         return queryset
+
+class ArticlesListAPIView(generics.ListAPIView):
+    queryset = Articles.objects.all()
+    serializer_class = ArticlesBySpecialitySerializer

@@ -36,5 +36,6 @@ class LastAddsSerializer(serializers.ModelSerializer):
         model = LastAdds
         fields = ['content_type',
                   'id',
-                  'title'
+                  'title',
+                  'speciality'
                   ]
