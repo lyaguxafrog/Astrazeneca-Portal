@@ -2,8 +2,8 @@ from django.db.models import Q, Value, CharField
 from rest_framework import generics
 from rest_framework.response import Response
 from pages.models import (Articles, ContentBlock, Drug,
-                        DrugFAQ, Events, VideoLectures)
-from pages.serializers import SearchSerializer
+                        DrugFAQ, Events, VideoLectures, LastAdds)
+from pages.serializers import SearchSerializer, LastAddsSerializer
 
 
 class SearchAPIView(generics.ListAPIView):
@@ -61,3 +61,11 @@ class SearchAPIView(generics.ListAPIView):
         )
 
         return queryset
+
+class LastAddsListAPIView(generics.ListAPIView):
+    queryset = LastAdds.objects.all()
+    serializer_class = LastAddsSerializer
+
+    def list(self, request, *args, **kwargs):
+        print(self.queryset)  # Вывод в консоль для отладки
+        return super().list(request, *args, **kwargs)
