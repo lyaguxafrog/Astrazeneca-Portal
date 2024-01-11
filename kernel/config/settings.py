@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 CKEDITOR_CONFIGS = {
     'default': {
         'height': 300,
-        'width': 800,
+        'width': 650,
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ['FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike'],
