@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isShowGuard" ref="scrollEl" class="default-guard">
+  <div v-if="isClient && isShowGuard" ref="scrollEl" class="default-guard">
     <div class="default-guard__content">
       <div class="default-guard__title"><span>PRO</span>Рак Легкого</div>
       <div class="default-guard__subtitle">
