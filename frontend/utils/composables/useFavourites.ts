@@ -27,6 +27,7 @@ export const useFavourites = () => {
       `/save-content/get/${userId.value}`,
       {
         method: 'GET',
+        ignoreError: true,
       }
     );
 
