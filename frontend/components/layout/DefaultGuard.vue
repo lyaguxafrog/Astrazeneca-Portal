@@ -4,7 +4,7 @@
       <div class="default-guard__title"><span>PRO</span>Рак Легкого</div>
       <div class="default-guard__subtitle">
         инновационный<br />
-        портал для специалистов здравоохранения {{userId}}
+        портал для специалистов здравоохранения
       </div>
       <AppButton primary class="default-guard__button" @click="toLogin"> Войти </AppButton>
     </div>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ref, toRef, watch } from 'vue';
-import {useCookie, useRoute} from '#app';
+import { useRoute } from '#app';
 import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
