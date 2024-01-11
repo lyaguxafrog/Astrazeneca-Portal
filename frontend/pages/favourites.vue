@@ -83,7 +83,6 @@
 import { useScreen } from '~/utils/composables/useScreen';
 import { VideoPlump } from '~/utils/composables/store/videos';
 import { ArticlePlump } from '~/utils/composables/store/articles';
-import { History } from '~/utils/composables/store/histories';
 import { useFavourites } from '~/utils/composables/useFavourites';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { ContentType } from '~/utils/types';
@@ -222,6 +221,10 @@ const showedFavourites = computed(() => {
     }
 
     &-story {
+      &:after {
+        display: none;
+      }
+
       .favourites__item-bg {
         top: 42%;
         left: 50%;

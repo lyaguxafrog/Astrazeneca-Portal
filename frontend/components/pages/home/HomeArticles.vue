@@ -183,7 +183,7 @@ const onSlideChange = (index: number | undefined) => {
     }
     &__slide {
       &-title {
-        min-height: auto;
+        min-height: 92px;
         padding: 0 27px 2px;
 
         font-size: 27px;
