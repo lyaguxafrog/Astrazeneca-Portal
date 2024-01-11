@@ -1,9 +1,11 @@
 <template>
   <div class="app">
-    <IEZaglushka />
-    <NuxtLayout v-if="inited">
-      <NuxtPage />
-    </NuxtLayout>
+    <ClientOnly>
+      <IEZaglushka />
+      <NuxtLayout v-if="inited">
+        <NuxtPage />
+      </NuxtLayout>
+    </ClientOnly>
   </div>
 </template>
 
