@@ -2,7 +2,6 @@
 
 from .sso_callback import SsoCallbackSerializer, UserProfileSerializer
 from .save_content import (ContentSaveSerializer, ArticleSerializer,
-                DrugSerializer, VideoLecturesSerializer, EventsSerializer,
-                GetSavedContentViewSerializer, ContentRemoveSerializer,
-                StorySerializer)
+                DrugSerializer, VideoLecturesSerializer,
+                GetSavedContentViewSerializer, ContentRemoveSerializer)
 from .user import UserProfileSerializer

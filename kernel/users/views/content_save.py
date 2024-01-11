@@ -7,8 +7,8 @@ from users.models import UserProfile
 from pages.models import Articles, Drug, Events, VideoLectures, Story
 from users.serializers import (ContentSaveSerializer, ArticleSerializer,
                                DrugSerializer, VideoLecturesSerializer,
-                               EventsSerializer, GetSavedContentViewSerializer,
-                               ContentRemoveSerializer, StorySerializer)
+                               GetSavedContentViewSerializer,
+                               ContentRemoveSerializer)
 from users.serializers.save_content import UserProfileSerializer
 from collections import OrderedDict
 
@@ -69,12 +69,6 @@ class GetSavedContentView(generics.RetrieveAPIView):
                 elif content_type == 'drug':
                     drug = Drug.objects.get(id=content_id)
                     content_type_serialized.append(DrugSerializer(drug).data)
-                elif content_type == 'event':
-                    event = Events.objects.get(id=content_id)
-                    content_type_serialized.append(EventsSerializer(event).data)
-                elif content_type == 'stories':
-                    story = Story.objects.get(id=content_id)
-                    content_type_serialized.append(StorySerializer(story).data)
 
             serialized_content[content_type] = content_type_serialized
 

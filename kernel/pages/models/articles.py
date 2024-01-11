@@ -59,6 +59,23 @@ class Articles(models.Model):
     main_cover_mobile_720px = models.ImageField(
         upload_to='article_cover/main_cover/', null=True, blank=True)
 
+    practic_desktop_400px = models.ImageField(null=True, blank=True,
+        upload_to='article_cover/practic/')
+    practic_desktop_800px = models.ImageField(null=True, blank=True,
+        upload_to='article_cover/practic/')
+    practic_mobile_280px = models.ImageField(null=True, blank=True,
+        upload_to='article_cover/practic/')
+    practic_mobile_560px = models.ImageField(null=True, blank=True,
+        upload_to='article_cover/practic/')
+
+    favorite_desktop_300px = models.ImageField(upload_to='article_cover/ffavorites',
+            null=True, blank=True)
+    favorite_desktop_600px = models.ImageField(upload_to='article_cover/ffavorites',
+            null=True, blank=True)
+    favorite_mobile_250px = models.ImageField(upload_to='article_cover/ffavorites',
+            null=True, blank=True)
+    favorite_mobile_500px = models.ImageField(upload_to='article_cover/ffavorites',
+            null=True, blank=True)
 
     class Meta:
         verbose_name = "Статья"

@@ -64,7 +64,8 @@ def process_video_cover(sender, instance, **kwargs):
         else:
             print(f"Файл не найден: {file_path}")
 
-
+@receiver(post_save, sender=VideoLectures)
+def process_video_mobile_cover(sender, instance, **kwargs):
     if instance.video_cover_mobile:
         file_path = instance.video_cover_mobile.path
 
@@ -78,11 +79,17 @@ def process_video_cover(sender, instance, **kwargs):
                 target_width_840 = 840
                 target_width_280 = 280
                 target_width_560 = 560
+                target_width_390 = 390
+                target_width_780 = 780
 
                 target_height_420= int(original_height / original_width * target_width_420)
                 target_height_840 = int(original_height / original_width * target_width_840)
                 target_height_280 = int(original_height / original_width * target_width_280)
                 target_height_560 = int(original_height / original_width * target_width_560)
+                target_width_390 = int(original_height / original_width * target_width_390)
+                target_height_780 = int(original_height / original_width * target_width_780)
+
+
 
                 image_stream_420px = BytesIO()
                 image.resize((target_width_420, target_height_420)).save(image_stream_420px, format='WEBP')
@@ -99,6 +106,14 @@ def process_video_cover(sender, instance, **kwargs):
                 image_stream_560px = BytesIO()
                 image.resize((target_width_560, target_height_560)).save(image_stream_560px, format='WEBP')
                 instance.recomendation_cover_mobile_560px.save(f"{instance.video_cover_mobile.name}_560px.webp", File(image_stream_560px), save=False)
+
+                image_stream_390px = BytesIO()
+                image.resize((target_width_390, target_width_390)).save(image_stream_390px, format='WEBP')
+                instance.video_cover_mobile_390px.save(f"{instance.video_cover_mobile.name}_390px.webp", File(image_stream_390px), save=False)
+
+                image_stream_780px = BytesIO()
+                image.resize((target_width_780, target_height_780)).save(image_stream_780px, format='WEBP')
+                instance.video_cover_mobile_780px.save(f"{instance.video_cover_mobile.name}_780px.webp", File(image_stream_780px), save=False)
 
                 instance.save()
 

@@ -6,14 +6,14 @@ from pages.models import Events
 
 class EventsSerializer(serializers.ModelSerializer):
 
-    image_desktop_1400px = serializers.SerializerMethodField()
+    image_desktop_1140px = serializers.SerializerMethodField()
     image_desktop_570px = serializers.SerializerMethodField()
     image_mobile_540px = serializers.SerializerMethodField()
     image_mobile_270px = serializers.SerializerMethodField()
 
 
-    def get_image_desktop_1400px(self, obj):
-        return self.get_relative_url(obj.image_desktop_1400px)
+    def get_image_desktop_1140px(self, obj):
+        return self.get_relative_url(obj.image_desktop_1140px)
 
     def get_image_desktop_570px(self, obj):
         return self.get_relative_url(obj.image_desktop_570px)

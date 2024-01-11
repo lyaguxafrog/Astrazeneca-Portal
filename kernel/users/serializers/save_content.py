@@ -21,16 +21,6 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
         model = VideoLectures
         fields = '__all__'
 
-class EventsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Events
-        fields = '__all__'
-
-class StorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Story
-        fields = '__all__'
-
 class GetSavedContentViewSerializer(serializers.Serializer):
     message = serializers.CharField()
     saved_content = serializers.DictField()

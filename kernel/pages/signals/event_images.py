@@ -32,14 +32,13 @@ def process_event_cover(sender, instance, **kwargs):
                 image = Image.open(file_path)
 
                 original_width, original_height = image.size
-# Список ивентов - десктоп: 570px, 1140px, мобилка: 270px, 540px
 
-                target_height_1400 = 1400
+                target_height_1140 = 1140
                 target_height_570 = 570
                 target_height_270 = 270
                 target_height_540 = 540
 
-                target_width_1400 = int(original_width / original_height * target_height_1400)
+                target_width_1140 = int(original_width / original_height * target_height_1140)
                 target_width_570 = int(original_width / original_height * target_height_570)
                 target_width_270 = int(original_width / original_height * target_height_270)
                 target_width_540 = int(original_width / original_height * target_height_540)
@@ -52,9 +51,9 @@ def process_event_cover(sender, instance, **kwargs):
                 image.resize((target_width_270, target_height_270)).save(image_stream_270px, format='WEBP')
                 instance.image_mobile_270px.save(f"{instance.cover.name}_270px.webp", File(image_stream_270px), save=False)
 
-                image_stream_1400px = BytesIO()
-                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='WEBP')
-                instance.image_desktop_1400px.save(f"{instance.cover.name}_1400px.webp", File(image_stream_1400px), save=False)
+                image_stream_1140px = BytesIO()
+                image.resize((target_width_1140, target_height_1140)).save(image_stream_1140px, format='WEBP')
+                instance.image_desktop_1140px.save(f"{instance.cover.name}_1140px.webp", File(image_stream_1140px), save=False)
 
                 image_stream_540px = BytesIO()
                 image.resize((target_width_540, target_height_540)).save(image_stream_540px, format='WEBP')
