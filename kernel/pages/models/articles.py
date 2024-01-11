@@ -11,7 +11,8 @@ class Articles(models.Model):
         ('инновация', 'Инновация'),
     ]
 
-    article_name = models.CharField(max_length=120, verbose_name='Заголовок *')
+    article_name = models.CharField(max_length=120, verbose_name='Заголовок *',
+                                    help_text='Ограничение в 120 символов')
     main_cover_desktop = models.ImageField(upload_to='article_cover/',
                                    verbose_name='Главная картинка статьи(десктоп) *')
     main_cover_mobile = models.ImageField(upload_to='article_cover/',
