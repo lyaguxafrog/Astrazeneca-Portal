@@ -52,12 +52,12 @@ def process_articles_mobile_cover(sender, instance, **kwargs):
 
                 original_width, original_height = image.size
 
-                target_height_420 = int(original_width / original_height * target_width_420)
-                target_height_840 = int(original_width / original_height * target_width_840)
-                target_height_280 = int(original_width / original_height * target_width_280)
-                target_height_560 = int(original_width / original_height * target_width_560)
-                target_height_250 = int(original_width / original_height * target_width_250)
-                target_height_500 = int(original_width / original_height * target_width_500)
+                target_height_420 = int(original_height / original_width * target_width_420)
+                target_height_840 = int(original_height / original_width * target_width_840)
+                target_height_280 = int(original_height / original_width * target_width_280)
+                target_height_560 = int(original_height / original_width * target_width_560)
+                target_height_250 = int(original_height / original_width * target_width_250)
+                target_height_500 = int(original_height / original_width * target_width_500)
 
 
                 image_stream_420px = BytesIO()
