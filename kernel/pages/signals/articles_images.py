@@ -100,12 +100,12 @@ def process_articles_desktop_cover(sender, instance, **kwargs):
 
                 original_width, original_height = image.size
 
-                target_height_2800 = int(original_width / original_height * target_width_2800)
-                target_height_1400 = int(original_width / original_height * target_width_1400)
-                target_height_400 = int(original_width / original_height * target_width_400)
-                target_height_800 = int(original_width / original_height * target_width_800)
-                target_height_300 = int(original_width / original_height * target_width_300)
-                target_height_600 = int(original_width / original_height * target_width_600)
+                target_height_2800 = int(original_height / original_width * target_width_2800)
+                target_height_1400 = int(original_height / original_width * target_width_1400)
+                target_height_400 = int(original_height / original_width * target_width_400)
+                target_height_800 = int(original_height / original_width * target_width_800)
+                target_height_300 = int(original_height / original_width * target_width_300)
+                target_height_600 = int(original_height / original_width * target_width_600)
 
                 image_stream_2800px = BytesIO()
                 image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='WEBP')
@@ -148,8 +148,8 @@ def process_article_main_cover_desktop(sender, instance, **kwargs):
                 image = Image.open(file_path)
 
                 original_width, ordinal_height = image.size
-                target_height_1600px = int(original_width / ordinal_height * target_width_1600)
-                target_height_3200px = int(original_width / ordinal_height * target_width_3200)
+                target_height_1600px = int(ordinal_height / original_width * target_width_1600)
+                target_height_3200px = int(ordinal_height / original_width * target_width_3200)
 
                 image_stream_1600px = BytesIO()
                 image.resize((target_width_1600, target_height_1600px)).save(image_stream_1600px, format='WEBP')
@@ -174,8 +174,8 @@ def process_article_main_cover_mobile(sender, instance, **kwargs):
                 image = Image.open(file_path)
 
                 original_width, ordinal_height = image.size
-                target_height_360px = int(original_width / ordinal_height * target_width_360)
-                target_height_720px = int(original_width / ordinal_height * target_width_720)
+                target_height_360px = int(ordinal_height / original_width * target_width_360)
+                target_height_720px = int(ordinal_height / original_width * target_width_720)
 
                 image_stream_360px = BytesIO()
                 image.resize((target_width_360, target_height_360px)).save(image_stream_360px, format='WEBP')
