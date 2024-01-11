@@ -59,11 +59,11 @@
         </nuxt-link>
         <nuxt-link
           v-else-if="fav.type === ContentType.Stories"
-          class="favourites__item"
+          class="favourites__item favourites__item-story"
           :to="`histories/?id=${fav.id}`"
         >
           <AppImage
-            class="favourites__item-bg favourites__item-bg-story"
+            class="favourites__item-bg"
             :url="fav.favorite_desktop_120px"
             :url-full-x2="fav.favorite_desktop_280px"
             :url-full="fav.favorite_desktop_120px"
@@ -210,9 +210,20 @@ const showedFavourites = computed(() => {
       object-fit: cover;
 
       transition: transform $tr-dur;
+    }
 
-      &-story {
-        top: 45%;
+    p {
+      position: relative;
+      z-index: 2;
+
+      margin-top: auto;
+
+      @include ellipsis(4);
+    }
+
+    &-story {
+      .favourites__item-bg {
+        top: 42%;
         left: 50%;
         @include z-index(3);
 
@@ -231,25 +242,16 @@ const showedFavourites = computed(() => {
           height: 70px;
         }
       }
-    }
 
-    @include hover {
-      .favourites__item-bg {
-        transform: scale(1.1);
+      p {
+        @include ellipsis(2);
+      }
 
-        &-story {
+      @include hover {
+        .favourites__item-bg {
           transform: translate(-50%, -50%) scale(1.1);
         }
       }
-    }
-
-    p {
-      position: relative;
-      z-index: 2;
-
-      margin-top: auto;
-
-      @include ellipsis(4);
     }
   }
 

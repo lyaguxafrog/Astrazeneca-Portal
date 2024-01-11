@@ -44,7 +44,7 @@ export const useArticlesStore = () => {
   }));
 
   const getArticles = async (force?: boolean) => {
-    const loadAll = sessionStorage.getItem('showAllVideos');
+    const loadAll = sessionStorage.getItem('showAllContent');
 
     let url = '/articles';
 
