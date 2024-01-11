@@ -20,7 +20,7 @@
 
           <div class="videos-slider__materials-buttons-wrapper">
             <AppButton
-              v-if="lectures.length"
+              v-if="lectures.length && cases.length"
               :primary="selectedType === 'видеолекция'"
               :selected="selectedType === 'видеолекция'"
               :petite="$screen.mdAndDown"
@@ -30,7 +30,7 @@
               <template v-else> Видеоматериалы </template>
             </AppButton>
             <AppButton
-              v-if="cases.length"
+              v-if="cases.length && lectures.length"
               :primary="selectedType === 'кейс'"
               :selected="selectedType === 'кейс'"
               :petite="$screen.mdAndDown"
