@@ -6,10 +6,15 @@ import { useAuth } from '~/utils/composables/useAuth';
 import { loadableEmpty } from '~/utils/functions/loadable';
 
 type FavImages = {
-  favorite_desktop_300px: string;
-  favorite_desktop_600px: string;
-  favorite_mobile_500px: string;
-  favorite_mobile_250px: string;
+  favorite_desktop_300px?: string;
+  favorite_desktop_600px?: string;
+  favorite_mobile_500px?: string;
+  favorite_mobile_250px?: string;
+
+  favorite_desktop_120px?: string;
+  favorite_desktop_280px?: string;
+  favorite_mobile_140px?: string;
+  favorite_mobile_70x?: string;
 }
 
 export type Favourites = {

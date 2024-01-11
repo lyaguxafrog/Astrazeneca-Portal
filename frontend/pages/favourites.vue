@@ -63,12 +63,12 @@
           :to="`histories/?id=${fav.id}`"
         >
           <AppImage
-            class="favourites__item-bg"
-            :url="fav.favorite_desktop_300px"
-            :url-full-x2="fav.favorite_desktop_600px"
-            :url-full="fav.favorite_desktop_300px"
-            :url-thin-x2="fav.favorite_mobile_500px"
-            :url-thin="fav.favorite_mobile_250px"
+            class="favourites__item-bg favourites__item-bg-story"
+            :url="fav.favorite_desktop_120px"
+            :url-full-x2="fav.favorite_desktop_280px"
+            :url-full="fav.favorite_desktop_120px"
+            :url-thin-x2="fav.favorite_mobile_140px"
+            :url-thin="fav.favorite_mobile_70x"
           />
           <p>
             {{ fav.title }}
@@ -175,12 +175,14 @@ const showedFavourites = computed(() => {
     overflow: hidden;
 
     font-size: 21px;
-    line-height: 19px;
+    line-height: 24px;
     letter-spacing: -0.21px;
 
+    background: url('~/assets/img/favs/bg.png') no-repeat center center / cover;
     border-radius: 40px;
 
     transition: background $tr-dur;
+
 
     &:after {
       content: '';
@@ -208,11 +210,36 @@ const showedFavourites = computed(() => {
       object-fit: cover;
 
       transition: transform $tr-dur;
+
+      &-story {
+        top: 45%;
+        left: 50%;
+        @include z-index(3);
+
+        width: 120px;
+        height: 120px;
+
+
+        transform: translate(-50%, -50%);
+
+        :deep(img) {
+          border-radius: 50%;
+        }
+
+        @include md-and-down {
+          width: 70px;
+          height: 70px;
+        }
+      }
     }
 
     @include hover {
       .favourites__item-bg {
         transform: scale(1.1);
+
+        &-story {
+          transform: translate(-50%, -50%) scale(1.1);
+        }
       }
     }
 
