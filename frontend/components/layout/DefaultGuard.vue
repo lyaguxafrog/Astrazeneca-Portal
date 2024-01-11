@@ -24,11 +24,7 @@ const $route = useRoute();
 
 const { toLogin, userId } = useAuth();
 
-const cookieUserId = await useCookie('user-id');
-
-console.log('dg', userId.value);
-
-const isShowGuard = toRef(() => !userId.value && !cookieUserId.value && !$route.query.access_token);
+const isShowGuard = toRef(() => !userId.value && !$route.query.access_token);
 const scrollEl = ref();
 
 watch(
