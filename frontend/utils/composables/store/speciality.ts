@@ -1,4 +1,4 @@
-import { toRef } from 'vue';
+import { toRef, computed } from 'vue';
 import { useCookie } from '#app';
 import { loadableEmpty } from '~/utils/functions/loadable';
 import { useRequest } from '~/utils/composables/useRequest';
@@ -14,7 +14,7 @@ type Speciality = {
 
 export function useSpecialityStore() {
   const state = useState('speciality', () => ({
-    specialities: loadableEmpty<Speciality[]>(),
+    specialities: loadableEmpty<Speciality[]>([]),
     specialityId: undefined as number | undefined,
     speciality: undefined as Speciality | undefined,
   }));
@@ -50,8 +50,10 @@ export function useSpecialityStore() {
   return {
     specialities: toRef(() => state.value.specialities),
     specialityId: toRef(() => state.value.specialityId),
-    speciality: computed(() =>
-      state.value.specialities.data?.find((s) => s.id === state.value.specialityId)
+    speciality: computed(() => {
+      console.log(state.value.specialities);
+      return state.value.specialities.data?.find((s) => s.id === state.value.specialityId);
+      }
     ),
 
     init,
