@@ -1,19 +1,21 @@
 <template>
-  <div class="error">
-    <template v-if="error.statusCode === 500">
-      <div class="error__code">Ошибка 500</div>
-      <div class="error__description">Что-то пошло не так</div>
-      <div class="error__message">{{ error.message }}</div>
-    </template>
-    <template v-else>
-      <div class="error__code">Ошибка 404</div>
-      <div class="error__description">Такой страницы не&nbsp;существует</div>
-    </template>
+  <NuxtLayout>
+    <div class="error">
+      <template v-if="error.statusCode === 500">
+        <div class="error__code">Ошибка 500</div>
+        <div class="error__description">Что-то пошло не так</div>
+        <div class="error__message">{{ error.message }}</div>
+      </template>
+      <template v-else>
+        <div class="error__code">Ошибка 404</div>
+        <div class="error__description">Такой страницы не&nbsp;существует</div>
+      </template>
 
-    <AppButton primary no-border-radius class="error__btn" @click="handleError">
-      <div class="h4">Перейти на главную</div>
-    </AppButton>
-  </div>
+      <AppButton primary no-border-radius class="error__btn" @click="handleError">
+        <div class="h4">Перейти на главную</div>
+      </AppButton>
+    </div>
+  </NuxtLayout>
 </template>
 
 <script lang="ts" setup>
