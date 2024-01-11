@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue';
+import {nextTick, onMounted, ref} from 'vue';
 import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
 import { IconName } from '~/components/app/AppIcon.utils';
@@ -134,6 +134,9 @@ const result = ref<
 const open = () => {
   disableScroll(scrollEl.value, $screen.value.mdAndDown);
   isOpen.value = true;
+
+  search();
+
   if (!$screen.value.mdAndDown) {
     nextTick(() => {
       inputEl.value.focus();
@@ -244,6 +247,10 @@ const search = async () => {
   }
 };
 
+onMounted(() => {
+  search();
+});
+
 watchDebounced(
   searchString,
   () => {
@@ -251,7 +258,6 @@ watchDebounced(
   },
   {
     debounce: 500,
-    immediate: true,
   }
 );
 </script>
