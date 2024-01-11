@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from pages.models import LastAdds
 from rest_framework import serializers
 
 class SearchSerializer(serializers.Serializer):
@@ -26,3 +27,14 @@ class SearchSerializer(serializers.Serializer):
 
     class Meta:
         fields = ['title', 'model', 'id', 'url']
+
+class LastAddsSerializer(serializers.ModelSerializer):
+    content_type = serializers.CharField(source='content_type_name')
+    id = serializers.IntegerField(source='object_id')
+    title = serializers.CharField(source='content')
+    class Meta:
+        model = LastAdds
+        fields = ['content_type',
+                  'id',
+                  'title'
+                  ]

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-
-from doctest import BLANKLINE_MARKER
 from django.db import models
 from ckeditor.fields import RichTextField
+
 
 
 class Articles(models.Model):
@@ -36,7 +35,6 @@ class Articles(models.Model):
 
     article_type = models.CharField(max_length=255,
                             choices=ARTICLE_TYPE_CHOICES,
-                            blank=True,
                             verbose_name='Тип статьи *')
 
     information = RichTextField(verbose_name='текстовый блок для ввода инфы о статьи на разводящей станице статей *')
@@ -76,6 +74,7 @@ class Articles(models.Model):
             null=True, blank=True)
     favorite_mobile_500px = models.ImageField(upload_to='article_cover/ffavorites',
             null=True, blank=True)
+
 
     class Meta:
         verbose_name = "Статья"

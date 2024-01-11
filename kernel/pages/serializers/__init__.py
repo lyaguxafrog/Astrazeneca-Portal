@@ -9,6 +9,6 @@ from .event import EventsSerializer
 from .video import VideoLecturesListSerializer, VideoLecturesSerializer
 from .speciality import SpecialtySerializer
 
-from .search import SearchSerializer
+from .search import SearchSerializer, LastAddsSerializer
 
 from .main_page import MainPageApproveNumberSerializer
