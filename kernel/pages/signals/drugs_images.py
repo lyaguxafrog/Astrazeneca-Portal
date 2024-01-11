@@ -14,10 +14,10 @@ target_width_700 = 700
 target_width_1400 = 1400
 target_width_270 = 270
 target_width_540 = 540
-target_height_300 = 300
-target_height_600 = 600
-target_height_250 = 250
-target_height_500 = 500
+target_width_300 = 300
+target_width_600 = 600
+target_width_250 = 250
+target_width_500 = 500
 
 
 # блять почему я этим на бекенде занимаюсь
@@ -46,8 +46,8 @@ def process_drug_cover(sender, instance, **kwargs):
 
                 target_height_700 = int(original_height / original_width * target_width_700)
                 target_height_1400 = int(original_height / original_width * target_width_1400)
-                target_widht_300 = int(original_width / original_height * target_height_300)
-                target_widht_600 = int(original_width / original_height * target_height_600)
+                target_height_300 = int(original_width / original_height * target_width_300)
+                target_height_600 = int(original_width / original_height * target_width_600)
 
                 image_stream_700px = BytesIO()
                 image.resize((target_width_700, target_height_700)).save(image_stream_700px, format='WEBP')
@@ -58,11 +58,11 @@ def process_drug_cover(sender, instance, **kwargs):
                 instance.image_desktop_1400px.save(f"{instance.image_desktop.name}_1400px.webp", File(image_stream_1400px), save=False)
 
                 image_stream_300px = BytesIO()
-                image.resize((target_widht_300, target_height_300)).save(image_stream_300px, format='WEBP')
+                image.resize((target_width_300, target_height_300)).save(image_stream_300px, format='WEBP')
                 instance.favorite_desktop_300px.save(f"{instance.image_desktop.name}_300px.webp", File(image_stream_300px), save=False)
 
                 image_stream_600px = BytesIO()
-                image.resize((target_widht_600, target_height_600)).save(image_stream_600px, format='WEBP')
+                image.resize((target_width_600, target_height_600)).save(image_stream_600px, format='WEBP')
                 instance.favorite_desktop_600px.save(f"{instance.image_desktop.name}_600px.webp", File(image_stream_600px), save=False)
 
                 instance.save()
@@ -81,8 +81,8 @@ def process_drug_cover(sender, instance, **kwargs):
 
                     target_height_270 = int(original_height / original_width * target_width_270)
                     target_height_540 = int(original_height / original_width * target_width_540)
-                    target_width_250 = int(original_width / original_height * target_height_250)
-                    target_width_500 = int(original_width / original_height * target_height_500)
+                    target_height_250 = int(original_width / original_height * target_width_250)
+                    target_height_500 = int(original_width / original_height * target_width_500)
 
 
                     image_stream_270px = BytesIO()
