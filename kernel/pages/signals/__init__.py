@@ -8,7 +8,7 @@ from .articles_images import (process_articles_desktop_cover,
                               process_article_main_cover_desktop,
                               process_article_main_cover_mobile)
 from .drugs_images import process_drug_cover
-from .search_signal import (create_last_adds_article,
+from .search_signal import (create_last_adds_articles,
                             create_last_adds_event,
                             create_last_adds_video,
                             create_last_adds_drug,
