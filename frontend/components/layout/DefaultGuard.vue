@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isClient && isShowGuard" ref="scrollEl" class="default-guard">
+  <div v-if="isShowGuard" ref="scrollEl" class="default-guard">
     <div class="default-guard__content">
       <div class="default-guard__title"><span>PRO</span>Рак Легкого</div>
       <div class="default-guard__subtitle">
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ref, toRef, watch } from 'vue';
-import { useRoute } from '#app';
+import {useCookie, useRoute} from '#app';
 import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
@@ -24,9 +24,11 @@ const $route = useRoute();
 
 const { toLogin, userId } = useAuth();
 
+const cookieUserId = await useCookie('user-id');
+
 console.log('dg', userId.value);
 
-const isShowGuard = toRef(() => !userId.value && !$route.query.access_token);
+const isShowGuard = toRef(() => !userId.value && !cookieUserId.value && !$route.query.access_token);
 const scrollEl = ref();
 
 watch(
