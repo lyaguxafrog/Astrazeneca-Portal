@@ -14,7 +14,6 @@
             <div class="histories-slider__item-content">
               <div class="histories-slider__item-content-img">
                 <AppImage
-                  class="article-page__intro-bg"
                   :url="history.avatar"
                   :url-full="history.avatar_desktop_120px"
                   :url-full-x2="history.avatar_desktop_280px"
@@ -132,6 +131,8 @@ $root: histories-slider;
 
       &-img {
         display: grid;
+
+        width: 100%;
 
         @include aspect(120, 120);
       }
