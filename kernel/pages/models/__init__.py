@@ -7,3 +7,4 @@ from .speciality import Specialty
 from .stories import Story
 from .video_lectures import VideoLectures
 from .main_page import MainPageApproveNumber
+from .last_adds import LastAdds

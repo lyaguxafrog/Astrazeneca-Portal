@@ -4,9 +4,6 @@ from django.db import models
 from ckeditor.fields import RichTextField
 
 
-
-
-
 class Drug(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название препарата *")
     brief_info = models.TextField(verbose_name="Краткое описание препарата *")
