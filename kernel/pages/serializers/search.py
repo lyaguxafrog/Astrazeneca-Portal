@@ -16,8 +16,8 @@ class SearchSerializer(serializers.Serializer):
         #     return instance.get('text', '')
         if model_name == 'drug':
             return instance.get('name', '')
-        elif model_name == 'drug_faq':
-            return instance.get('title', '')
+        # elif model_name == 'drug_faq':
+        #     return instance.get('title', '')
         elif model_name == 'event':
             return instance.get('name', '')
         elif model_name == 'video_lecture':
