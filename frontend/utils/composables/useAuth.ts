@@ -1,4 +1,4 @@
-import { useRoute, useRouter, useState } from '#app';
+import { useRoute, useRouter, useState, useCookie } from '#app';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
@@ -9,9 +9,6 @@ export const useAuth = () => {
   const historiesStore = useHistoriesStore();
 
   const { specialityId, setSpeciality } = useSpecialityStore();
-
-  const accessToken = useCookie('access-token');
-  const userId = useCookie('user-id');
 
   const state = useState('auth-state', () => ({
     userId: 0,
