@@ -16,6 +16,7 @@
     </div>
 
     <ItemsSlider
+      disable-loop
       :items="articles.data"
       :desktop-slides-per-view="1.7"
       @onSlideChange="onSlideChange"
@@ -50,10 +51,16 @@
 </template>
 
 <script lang="ts" setup>
+import { useRuntimeConfig } from '#app';
+import { ref, toRef } from 'vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useArticlesStore } from '~/utils/composables/store/articles';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+
+const emit = defineEmits<{
+  (event: 'showAll'): void;
+}>();
 
 const { $screen } = useScreen();
 const { getArticles, articles } = useArticlesStore();
@@ -66,6 +73,10 @@ const activeSlideContent = toRef(() => articles.value.data?.[activeSlide.value])
 const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
     activeSlide.value = index;
+  }
+
+  if (index === articles.value.data?.length - 1) {
+    emit('showAll');
   }
 };
 </script>
@@ -129,7 +140,6 @@ const onSlideChange = (index: number | undefined) => {
       font-family: $secondary-font-family;
       font-size: 40px;
       line-height: 38px;
-      @include ellipsis(2);
 
       transition: color $tr-dur;
     }
@@ -179,7 +189,6 @@ const onSlideChange = (index: number | undefined) => {
         font-size: 27px;
         line-height: 30px;
         font-weight: 900;
-        @include ellipsis(4);
       }
       &-image-wrapper {
         height: auto;

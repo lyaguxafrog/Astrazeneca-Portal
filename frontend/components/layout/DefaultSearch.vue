@@ -189,6 +189,7 @@ const processResults = (results?: SearchResult[]) => {
 
 const defaultItems = await useRequest<SearchResult[]>('/search/page', {
   method: 'GET',
+  ignoreError: true,
 });
 
 const defaultResults = processResults(defaultItems.data);

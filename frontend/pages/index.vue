@@ -14,22 +14,26 @@
       </div>
     </div>
 
-    <HomeVideosSlider />
+    <template v-if="specialityId">
+      <HomeVideosSlider @showAll="showAllModal" />
 
-    <HomeArticles />
+      <HomeArticles @showAll="showAllModal" />
 
-    <HomeEvents />
+      <HomeEvents />
 
-    <HomeDrugs />
+      <HomeDrugs />
+    </template>
 
     <Teleport to="#footerAccessInfo">
       <div v-html="accessInfo.data?.number" />
     </Teleport>
   </div>
   <SpecialitySlider v-if="showSpecialitySlider" class="home__specialitySlider" />
+  <HomeAddContentModal @load-all="loadAllContent" />
 </template>
 
 <script lang="ts" setup>
+import { toRef, watch } from 'vue';
 import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
@@ -41,10 +45,18 @@ import HomeDrugs from '~/components/pages/home/HomeDrugs.vue';
 import HomeEvents from '~/components/pages/home/HomeEvents.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
 import HomeArticles from '~/components/pages/home/HomeArticles.vue';
+import HomeAddContentModal from '~/components/pages/home/HomeAddContentModal.vue';
 import { useRequest } from '~/utils/composables/useRequest';
+import { useVideosStore } from '~/utils/composables/store/videos';
+import { useArticlesStore } from '~/utils/composables/store/articles';
+import {ModalsName, useModal} from "~/utils/composables/useModal";
+
+const { openModal, closeModal } = useModal();
 
 const { $screen } = useScreen();
 const { specialityId } = useSpecialityStore();
+const { getVideos } = useVideosStore();
+const { getArticles } = useArticlesStore();
 
 const accessInfo = await useRequest<{
   number: string;
@@ -71,6 +83,27 @@ watch(
     immediate: isClient,
   }
 );
+
+const showAllModal = () => {
+  if (sessionStorage.getItem('showAllVideos')) {
+    return;
+  }
+
+  openModal(ModalsName.VideosAddContent);
+}
+
+const loadAllContent = () => {
+  if (sessionStorage.getItem('showAllVideos')) {
+    return;
+  }
+
+  sessionStorage.setItem('showAllVideos', '1');
+
+  getVideos(true);
+  getArticles(true);
+
+  closeModal(ModalsName.VideosAddContent);
+};
 </script>
 
 <style lang="scss" scoped>
