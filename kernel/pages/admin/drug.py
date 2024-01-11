@@ -18,7 +18,7 @@ class Drug_FAQInline(admin.TabularInline):
     model = DrugFAQ
     extra = 1
     formfield_overrides = {
-        models.CharField: {'widget': Textarea(attrs={'rows': 2, 'cols': 80})},
+        models.CharField: {'widget': Textarea(attrs={'rows': 1, 'cols': 50})},
         models.TextField: {'widget': CKEditorWidget()},
     }
     verbose_name = "Инструкцию"

@@ -8,7 +8,7 @@ from ckeditor.fields import RichTextField
 class VideoLectures(models.Model):
     VIDEO_TYPE_CHOICES = [
         ('видеолекция', 'Видеолекция'),
-        ('кейс', 'Кейс'),
+        ('клинические случаи', 'Клинические случаи'),
     ]
 
     video_article = models.CharField(max_length=255, verbose_name="Заголовок *")

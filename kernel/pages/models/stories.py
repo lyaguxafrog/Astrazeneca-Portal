@@ -12,7 +12,7 @@ class Story(models.Model):
 ]
 
     avatar = models.ImageField(upload_to='story_avatars/', verbose_name='Аватар *')
-    title = models.CharField(max_length=255, verbose_name='Заголовок *')
+    title = models.CharField(max_length=255, verbose_name='Имя *')
     content = models.TextField(verbose_name='Контент *')
     video = models.FileField(upload_to='story_videos/', verbose_name='Видео *')
     cover_image = models.ImageField(upload_to='story_covers/', verbose_name='Обложка *')
