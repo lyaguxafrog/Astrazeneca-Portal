@@ -104,7 +104,7 @@ def process_video_mobile_cover(sender, instance, **kwargs):
                 target_height_390 = int(original_height / original_width * target_width_390)
                 target_height_780 = int(original_height / original_width * target_width_780)
                 target_height_250 = int(original_width / original_height * target_width_250)
-                target_height_500 = int(original_width / original_height * target_width_500)
+                target_height_500 = int(original_width / original_height * target_widthBackend_500)
 
 
 

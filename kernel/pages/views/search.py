@@ -29,10 +29,10 @@ class SearchAPIView(generics.ListAPIView):
             Q(approvals_and_decodings__icontains=search_param)
         ).annotate(model_type=Value('drug', output_field=CharField()))
 
-        drug_faqs_queryset = DrugFAQ.objects.filter(
-            Q(title__icontains=search_param) |
-            Q(text__icontains=search_param)
-        ).annotate(model_type=Value('drug_faq', output_field=CharField()))
+        # drug_faqs_queryset = DrugFAQ.objects.filter(
+        #     Q(title__icontains=search_param) |
+        #     Q(text__icontains=search_param)
+        # ).annotate(model_type=Value('drug_faq', output_field=CharField()))
 
         events_queryset = Events.objects.filter(
             Q(name__icontains=search_param) |
@@ -52,8 +52,8 @@ class SearchAPIView(generics.ListAPIView):
             # list(content_blocks_queryset.values('id', 'text', 'model_type', model=Value('content_block'))) +
             list(drugs_queryset.values('id', 'name',
                                        'model_type', model=Value('drug'))) +
-            list(drug_faqs_queryset.values('id', 'title',
-                                    'model_type', model=Value('drug_faq'))) +
+            # list(drug_faqs_queryset.values('id', 'title',
+            #                         'model_type', model=Value('drug_faq'))) +
             list(events_queryset.values('id', 'name', 'url',
                                     'model_type', model=Value('event'))) +
             list(video_lectures_queryset.values('id', 'video_article',

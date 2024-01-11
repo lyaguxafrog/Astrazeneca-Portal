@@ -95,6 +95,7 @@ class ContentBlock(models.Model):
 
     article = models.ForeignKey('Articles', on_delete=models.CASCADE, related_name='content_blocks')
     content_type = models.CharField(max_length=16, choices=ARTICLE_CONTENT_TYPE_CHOICES, verbose_name='Тип контента *')
-    text = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='content_block_images/', blank=True, null=True)
+    text = models.TextField(blank=True, null=True, verbose_name='Текст')
+    image = models.ImageField(upload_to='content_block_images/',
+                              blank=True, null=True, verbose_name='Изображение')
     order = models.PositiveIntegerField(verbose_name='Поорядковый номер *')
