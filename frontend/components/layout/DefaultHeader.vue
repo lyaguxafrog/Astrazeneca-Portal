@@ -44,6 +44,7 @@
 <script lang="ts" setup>
 import { isClient } from '@vueuse/core';
 import { useRoute } from '#app';
+import { ref, toRef, watch } from 'vue';
 import DefaultMenu from '~/components/layout/DefaultMenu.vue';
 import DefaultHistoriesSlider from '~/components/layout/DefaultHistoriesSlider.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
@@ -62,6 +63,7 @@ const searchEl = ref();
 const scrollHeaderEl = ref();
 
 const openSearch = () => {
+  console.log(searchEl.value.open);
   searchEl.value.open();
 };
 

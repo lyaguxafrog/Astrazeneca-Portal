@@ -5,9 +5,9 @@
     <BgEllipse size="984" color="#B32FC9" pale class="video-page__second-ellipse" />
 
     <div class="video-page__title">{{ content.video_article }}</div>
-    <div class="video-page__video" @click="startVideo">
+    <div class="video-page__video">
       <video ref="videoEl" :controls="isStarted" :src="`${baseUrl}${content.video_url}`" />
-      <template v-if="!isStarted">
+      <div v-if="!isStarted" @click="startVideo">
         <AppImage
           class="video-page__video-cover"
           :url="content.video_cover_desktop_1400px"
@@ -17,7 +17,7 @@
           :url-thin="content.video_cover_mobile_420px"
         />
         <PlayVideoButton class="video-page__video-play" />
-      </template>
+      </div>
     </div>
 
     <div class="video-page__subtitle">Конспект видео:</div>

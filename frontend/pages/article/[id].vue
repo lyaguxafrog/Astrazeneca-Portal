@@ -44,7 +44,7 @@
       </div>
 
       <div v-if="block.content_type === 'text_with_image'" class="article-page__image-and-text">
-        <img :src="`${baseUrl}${block.image}`" />
+        <img v-if="block.image" :src="`${baseUrl}${block.image}`" />
         <p v-html="block.text" />
       </div>
     </template>

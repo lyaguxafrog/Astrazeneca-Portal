@@ -1,11 +1,9 @@
 <template>
   <div class="app">
-    <ClientOnly>
-      <IEZaglushka />
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </ClientOnly>
+    <IEZaglushka />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 
@@ -29,10 +27,6 @@ await initSpecialityStore();
 
 await checkAccessToken();
 await getFavourites();
-/*
-onMounted(async () => {
-  await checkAccessToken();
-});*/
 
 const nuxtApp = useNuxtApp();
 
