@@ -33,6 +33,7 @@ class Story(models.Model):
     cover_450px = models.ImageField(null=True, blank=True)
     cover_900px = models.ImageField(null=True, blank=True)
 
+
     def __str__(self):
         return self.title
 

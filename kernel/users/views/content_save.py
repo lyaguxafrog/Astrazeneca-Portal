@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from users.models import UserProfile
 from pages.models import Articles, Drug, Events, VideoLectures, Story
 from users.serializers import (ContentSaveSerializer, ArticleSerializer,
-                               DrugSerializer, VideoLecturesSerializer,
+                               VideoLecturesSerializer, StorySerializer,
                                GetSavedContentViewSerializer,
                                ContentRemoveSerializer)
 from users.serializers.save_content import UserProfileSerializer
@@ -66,14 +66,17 @@ class GetSavedContentView(generics.RetrieveAPIView):
                 elif content_type == 'video':
                     video_lecture = VideoLectures.objects.get(id=content_id)
                     content_type_serialized.append(VideoLecturesSerializer(video_lecture).data)
-                elif content_type == 'drug':
-                    drug = Drug.objects.get(id=content_id)
-                    content_type_serialized.append(DrugSerializer(drug).data)
+                # elif content_type == 'drug':
+                #     drug = Drug.objects.get(id=content_id)
+                #     content_type_serialized.append(DrugSerializer(drug).data)
+                elif content_type == 'story':
+                    story = Story.objects.get(id=content_id)
+                    content_type_serialized.append(StorySerializer(story).data)
 
             serialized_content[content_type] = content_type_serialized
 
         return {
-            "message": "Успех",
+            "message": "Success",
             "saved_content": serialized_content,
         }
 
