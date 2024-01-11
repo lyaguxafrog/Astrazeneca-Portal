@@ -1,9 +1,10 @@
 <template>
   <div class="default-layout">
-    <ClientOnly>
-      <NuxtLoadingIndicator color="#00D1FF" :throttle="0" />
+    <NuxtLoadingIndicator color="#00D1FF" :throttle="0" />
 
-      <DefaultGuard />
+    <DefaultGuard />
+
+    <ClientOnly>
 
       <DefaultHeader v-if="!$screen.mdAndDown" />
       <template v-if="specialityId">
