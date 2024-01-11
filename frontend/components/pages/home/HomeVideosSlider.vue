@@ -71,7 +71,6 @@
         </template>
       </ItemsSlider>
     </div>
-    <HomeAddContentModal @load-all="loadAllVideos" />
   </div>
 </template>
 
@@ -81,15 +80,16 @@ import { useScreen } from '~/utils/composables/useScreen';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
-import HomeAddContentModal from '~/components/pages/home/HomeAddContentModal.vue';
 import { useVideosStore, VideoContentType } from '~/utils/composables/store/videos';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
-import { ModalsName, useModal } from '~/utils/composables/useModal';
+
+const emit = defineEmits<{
+  (event: 'showAll'): void;
+}>();
 
 const { $screen } = useScreen();
 const { getVideos, videos } = useVideosStore();
 const { speciality } = useSpecialityStore();
-const { openModal, closeModal } = useModal();
 const sliderEl = ref();
 
 await getVideos();
@@ -109,23 +109,9 @@ const setType = (type: VideoContentType) => {
 };
 
 const onSlideChange = (index: number) => {
-  if (sessionStorage.getItem('showAllVideos')) {
-    return;
-  }
-
   if (index === shownVideos.value.length - 1) {
-    openModal(ModalsName.VideosAddContent);
+    emit('showAll');
   }
-};
-
-const loadAllVideos = () => {
-  if (sessionStorage.getItem('showAllVideos')) {
-    return;
-  }
-
-  sessionStorage.setItem('showAllVideos', '1');
-  getVideos(true);
-  closeModal(ModalsName.VideosAddContent);
 };
 </script>
 

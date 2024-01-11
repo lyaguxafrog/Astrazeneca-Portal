@@ -192,7 +192,7 @@ const startActiveVideo = () => {
 const onSlideChange = () => {
   if (swiper.value) {
     activeSlideId.value = histories.value[swiper.value.realIndex].id;
-    $router.replace({ query: { id: activeHistory.value.id } });
+    $router.replace({ query: { id: activeHistory.value.id, access_token: $route.query.access_token } });
 
     startActiveVideo();
   }
