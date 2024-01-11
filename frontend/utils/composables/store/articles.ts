@@ -43,9 +43,17 @@ export const useArticlesStore = () => {
     articles: loadableEmpty<Article[]>([]),
   }));
 
-  const getArticles = async () => {
-    if (!state.value.articles.loaded && specialityId.value) {
-      const res = await useRequest<Article[]>(`/articles/specialty/${specialityId.value}`, {
+  const getArticles = async (force?: boolean) => {
+    const loadAll = sessionStorage.getItem('showAllContent');
+
+    let url = '/articles';
+
+    if (!loadAll) {
+      url += `/specialty/${specialityId.value}`;
+    }
+
+    if (force || (!state.value.articles.loaded && specialityId.value)) {
+      const res = await useRequest<Article[]>(url, {
         method: 'GET',
       });
 

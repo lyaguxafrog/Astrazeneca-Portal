@@ -54,7 +54,7 @@ export const useVideosStore = () => {
   const { specialityId } = useSpecialityStore();
 
   const getVideos = async (force?: boolean) => {
-    const loadAll = sessionStorage.getItem('showAllVideos');
+    const loadAll = sessionStorage.getItem('showAllContent');
 
     let url = '/video-lectures';
 

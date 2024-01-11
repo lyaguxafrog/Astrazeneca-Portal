@@ -19,6 +19,7 @@ target_width_2800 = 2800
 target_width_1400 = 1400
 target_width_500 = 500
 target_width_1000 = 1000
+
 target_width_300 = 300
 target_width_600 = 600
 target_width_250 = 250
@@ -51,8 +52,8 @@ def process_video_cover(sender, instance, **kwargs):
                 target_height_1400 = int(original_height / original_width * target_width_1400)
                 target_height_500 = int(original_height / original_width * target_width_500)
                 target_height_1000 = int(original_height / original_width * target_width_1000)
-                target_height_300 = int(original_width / original_height * target_width_300)
-                target_height_600 = int(original_width / original_height * target_width_600)
+                target_height_300 = int(original_height / original_width * target_width_300)
+                target_height_600 = int(original_height / original_width * target_width_600)
 
 
                 image_stream_2800px = BytesIO()
@@ -103,8 +104,8 @@ def process_video_mobile_cover(sender, instance, **kwargs):
                 target_height_560 = int(original_height / original_width * target_width_560)
                 target_height_390 = int(original_height / original_width * target_width_390)
                 target_height_780 = int(original_height / original_width * target_width_780)
-                target_height_250 = int(original_width / original_height * target_width_250)
-                target_height_500 = int(original_width / original_height * target_width_500)
+                target_height_250 = int(original_height / original_width * target_width_250)
+                target_height_500 = int(original_height / original_width * target_width_500)
 
 
 

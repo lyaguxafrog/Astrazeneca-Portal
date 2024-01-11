@@ -30,14 +30,14 @@
         >
           <AppImage
             class="favourites__item-bg"
-            :url="fav.video_cover_desktop_1400px"
-            :url-full-x2="fav.video_cover_desktop_2800px"
-            :url-full="fav.video_cover_desktop_1400px"
-            :url-thin-x2="fav.video_cover_mobile_840px"
-            :url-thin="fav.video_cover_mobile_420px"
+            :url="fav.favorite_desktop_300px"
+            :url-full-x2="fav.favorite_desktop_600px"
+            :url-full="fav.favorite_desktop_300px"
+            :url-thin-x2="fav.favorite_mobile_500px"
+            :url-thin="fav.favorite_mobile_250px"
           />
           <p>
-            {{ (fav as VideoPlump).video_article }}
+            {{ fav.video_article }}
           </p>
         </nuxt-link>
         <nuxt-link
@@ -47,24 +47,31 @@
         >
           <AppImage
             class="favourites__item-bg"
-            :url="fav.cover_desktop_1400px"
-            :url-full-x2="fav.cover_desktop_2800px"
-            :url-full="fav.cover_desktop_1400px"
-            :url-thin-x2="fav.cover_mobile_840px"
-            :url-thin="fav.cover_mobile_420px"
+            :url="fav.favorite_desktop_300px"
+            :url-full-x2="fav.favorite_desktop_600px"
+            :url-full="fav.favorite_desktop_300px"
+            :url-thin-x2="fav.favorite_mobile_500px"
+            :url-thin="fav.favorite_mobile_250px"
           />
           <p>
-            {{ (fav as ArticlePlump).article_name }}
+            {{ fav.article_name }}
           </p>
         </nuxt-link>
         <nuxt-link
           v-else-if="fav.type === ContentType.Stories"
-          class="favourites__item"
+          class="favourites__item favourites__item-story"
           :to="`histories/?id=${fav.id}`"
         >
-          <img :src="`${baseUrl}${(fav as History).cover_image}`" class="favourites__item-bg" />
+          <AppImage
+            class="favourites__item-bg"
+            :url="fav.favorite_desktop_120px"
+            :url-full-x2="fav.favorite_desktop_280px"
+            :url-full="fav.favorite_desktop_120px"
+            :url-thin-x2="fav.favorite_mobile_140px"
+            :url-thin="fav.favorite_mobile_70x"
+          />
           <p>
-            {{ (fav as History).title }}
+            {{ fav.title }}
           </p>
         </nuxt-link>
       </template>
@@ -168,12 +175,14 @@ const showedFavourites = computed(() => {
     overflow: hidden;
 
     font-size: 21px;
-    line-height: 19px;
+    line-height: 24px;
     letter-spacing: -0.21px;
 
+    background: url('~/assets/img/favs/bg.png') no-repeat center center / cover;
     border-radius: 40px;
 
     transition: background $tr-dur;
+
 
     &:after {
       content: '';
@@ -203,12 +212,6 @@ const showedFavourites = computed(() => {
       transition: transform $tr-dur;
     }
 
-    @include hover {
-      .favourites__item-bg {
-        transform: scale(1.1);
-      }
-    }
-
     p {
       position: relative;
       z-index: 2;
@@ -216,6 +219,39 @@ const showedFavourites = computed(() => {
       margin-top: auto;
 
       @include ellipsis(4);
+    }
+
+    &-story {
+      .favourites__item-bg {
+        top: 42%;
+        left: 50%;
+        @include z-index(3);
+
+        width: 120px;
+        height: 120px;
+
+
+        transform: translate(-50%, -50%);
+
+        :deep(img) {
+          border-radius: 50%;
+        }
+
+        @include md-and-down {
+          width: 70px;
+          height: 70px;
+        }
+      }
+
+      p {
+        @include ellipsis(2);
+      }
+
+      @include hover {
+        .favourites__item-bg {
+          transform: translate(-50%, -50%) scale(1.1);
+        }
+      }
     }
   }
 

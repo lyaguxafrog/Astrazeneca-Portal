@@ -63,7 +63,6 @@ const searchEl = ref();
 const scrollHeaderEl = ref();
 
 const openSearch = () => {
-  console.log(searchEl.value.open);
   searchEl.value.open();
 };
 

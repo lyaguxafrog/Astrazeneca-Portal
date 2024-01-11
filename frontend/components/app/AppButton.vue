@@ -98,7 +98,7 @@ defineProps<{
   }
 
   @include md-and-down {
-    min-height: 50px;
+    height: 50px;
     padding: 0 50px;
 
     font-size: 19px;
