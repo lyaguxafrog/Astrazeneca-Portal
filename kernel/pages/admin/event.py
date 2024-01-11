@@ -10,3 +10,10 @@ class EventsAdmin(admin.ModelAdmin):
         'name',
         'date'
     )
+    fields = (
+        'name',
+        'date',
+        'cover',
+        'text',
+        'url'
+    )

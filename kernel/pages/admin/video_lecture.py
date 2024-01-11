@@ -20,3 +20,16 @@ class VideoLecturesAdminForm(forms.ModelForm):
 class VideoLecturesAdmin(admin.ModelAdmin):
     list_display = ("video_article", "content_type")
     form = VideoLecturesAdminForm
+    fields = (
+        'video_article',
+        'short_description',
+        'content_type',
+        'video',
+        'video_cover_desktop',
+        'video_cover_mobile',
+        'conspect',
+        'video_recomendations',
+        'drug',
+        'speciality',
+        'access_number'
+    )

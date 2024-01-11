@@ -18,7 +18,8 @@ class VideoLectures(models.Model):
     video_cover_desktop = models.ImageField(upload_to='video_covers/', verbose_name="Обложка видео, десктоп *")
     video_cover_mobile = models.ImageField(upload_to='video_covers/', verbose_name="Обложка видео, мобильная *")
     drug = models.ManyToManyField("pages.Drug", blank=True, null=True, verbose_name='Препарат')
-    video_recomendations = models.ManyToManyField('VideoLectures', null=True, blank=True)
+    video_recomendations = models.ManyToManyField('VideoLectures', null=True, blank=True,
+                                            verbose_name='Видео-рекомендации')
     access_number = RichTextField(verbose_name="Поле для добавления расшифровок и номеров одобрения *")
     speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность *')
     content_type = models.CharField(max_length=255, choices=VIDEO_TYPE_CHOICES, verbose_name="Поле для выбора типа контента *  ")
