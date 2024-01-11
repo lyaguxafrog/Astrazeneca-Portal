@@ -23,6 +23,8 @@ const $route = useRoute();
 
 const { toLogin, userId } = useAuth();
 
+console.log('dg', userId.value);
+
 const isShowGuard = ref(!userId.value && !$route.query.access_token);
 const scrollEl = ref();
 

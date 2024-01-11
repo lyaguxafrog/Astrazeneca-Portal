@@ -17,6 +17,7 @@ export const useAuth = () => {
   const init = async () => {
     const userId = await useCookie('user-id');
 
+    console.log(userId.value);
     state.value.userId = userId.value ? +userId.value : 0;
   };
 
