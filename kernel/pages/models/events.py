@@ -16,7 +16,7 @@ class Events(models.Model):
 
 
     image_desktop_570px = models.ImageField(upload_to='events/570px/', null=True, blank=True)
-    image_desktop_1400px = models.ImageField(upload_to='events/1400px/', null=True, blank=True)
+    image_desktop_1140px = models.ImageField(upload_to='events/1140px/', null=True, blank=True)
     image_mobile_540px = models.ImageField(upload_to='events/270px/', null=True, blank=True)
     image_mobile_270px = models.ImageField(upload_to='events/540px/', null=True, blank=True)
 

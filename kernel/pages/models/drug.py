@@ -35,6 +35,14 @@ class Drug(models.Model):
     image_mobile_270px = models.ImageField(upload_to='drugs/270px/', verbose_name="Изображение 270px", null=True, blank=True)
     image_mobile_540px = models.ImageField(upload_to='drugs/540px/', verbose_name="Изображение 540px", null=True, blank=True)
 
+    favorite_desktop_300px = models.ImageField(upload_to='drugs/ffavorites',
+            null=True, blank=True)
+    favorite_desktop_600px = models.ImageField(upload_to='drugs/ffavorites',
+            null=True, blank=True)
+    favorite_mobile_250px = models.ImageField(upload_to='drugs/ffavorites',
+            null=True, blank=True)
+    favorite_mobile_500px = models.ImageField(upload_to='drugs/ffavorites',
+            null=True, blank=True)
 
 
     def __str__(self):

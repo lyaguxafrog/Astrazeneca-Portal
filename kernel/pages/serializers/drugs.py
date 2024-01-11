@@ -122,11 +122,12 @@ class DrugSerializer(serializers.ModelSerializer):
             combined_practices.append({
                 'id': article.id,
                 'type': 'article',
-                'cover_desktop_1400px': article.cover_desktop_1400px.url if article.cover_desktop_1400px else None,
-                'cover_desktop_2800px': article.cover_desktop_2800px.url if article.cover_desktop_2800px else None,
-                'cover_mobile_420px': article.cover_mobile_420px.url if article.cover_mobile_420px else None,
-                'cover_mobile_840px': article.cover_mobile_840px.url if article.cover_mobile_840px else None,
                 'name': article.article_name,
+                'practic_desktop_400px': article.practic_desktop_400px.url if article.practic_desktop_400px else None,
+                'practic_desktop_800px': article.practic_desktop_800px.url if article.practic_desktop_800px else None,
+                'practic_mobile_560px': article.practic_mobile_560px.url if article.practic_mobile_560px else None,
+                'practic_mobile_280px': article.practic_mobile_280px.url if article.practic_mobile_280px else None,
+
             })
 
         for video in videos:
@@ -134,14 +135,10 @@ class DrugSerializer(serializers.ModelSerializer):
                 'id': video.id,
                 'type': 'video',
                 'name': video.video_article,
-                'video_cover_desktop_1400px': video.video_cover_desktop_1400px.url if video.video_cover_desktop_1400px else None,
-                'video_cover_desktop_2800px': video.video_cover_desktop_2800px.url if video.video_cover_desktop_2800px else None,
-                'recomendation_cover_desktop_500px': video.recomendation_cover_desktop_500px.url if video.recomendation_cover_desktop_500px else None,
-                'recomendation_cover_desktop_1000px': video.recomendation_cover_desktop_1000px.url if video.recomendation_cover_desktop_1000px else None,
-                'video_cover_mobile_420px': video.video_cover_mobile_420px.url if video.video_cover_mobile_420px else None,
-                'video_cover_mobile_840px': video.video_cover_mobile_840px.url if video.video_cover_mobile_840px else None,
-                'recomendation_cover_mobile_280px': video.recomendation_cover_mobile_280px.url if video.recomendation_cover_mobile_280px else None,
-                'recomendation_cover_mobile_560px': video.recomendation_cover_mobile_560px.url if video.recomendation_cover_mobile_560px else None,
+                'practic_desktop_400px': article.practic_desktop_400px.url if article.practic_desktop_400px else None,
+                'practic_desktop_800px': article.practic_desktop_800px.url if article.practic_desktop_800px else None,
+                'practic_mobile_560px': article.practic_mobile_560px.url if article.practic_mobile_560px else None,
+                'practic_mobile_280px': article.practic_mobile_280px.url if article.practic_mobile_280px else None,
             })
 
         return combined_practices

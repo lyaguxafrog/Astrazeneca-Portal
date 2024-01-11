@@ -9,6 +9,20 @@ from pathlib import Path
 from io import BytesIO
 from django.core.files import File
 
+target_width_420 = 420
+target_width_840 = 840
+target_width_280 = 280
+target_width_560 = 560
+target_width_390 = 390
+target_width_780 = 780
+target_width_2800 = 2800
+target_width_1400 = 1400
+target_width_500 = 500
+target_width_1000 = 1000
+target_width_300 = 300
+target_width_600 = 600
+target_width_250 = 250
+target_width_500 = 500
 
 class DisableSignals:
     def __init__(self, sender):
@@ -33,15 +47,13 @@ def process_video_cover(sender, instance, **kwargs):
 
                 original_width, original_height = image.size
 
-                target_width_2800 = 2800
-                target_width_1400 = 1400
-                target_width_500 = 500
-                target_width_1000 = 1000
-
                 target_height_2800 = int(original_height / original_width * target_width_2800)
                 target_height_1400 = int(original_height / original_width * target_width_1400)
                 target_height_500 = int(original_height / original_width * target_width_500)
                 target_height_1000 = int(original_height / original_width * target_width_1000)
+                target_height_300 = int(original_width / original_height * target_width_300)
+                target_height_600 = int(original_width / original_height * target_width_600)
+
 
                 image_stream_2800px = BytesIO()
                 image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='WEBP')
@@ -59,12 +71,23 @@ def process_video_cover(sender, instance, **kwargs):
                 image.resize((target_width_1000, target_height_1000)).save(image_stream_1000px, format='WEBP')
                 instance.recomendation_cover_desktop_1000px.save(f"{instance.video_cover_desktop.name}_1000px.webp", File(image_stream_1000px), save=False)
 
+                image_stream_300px = BytesIO()
+                image.resize((target_width_300, target_height_300)).save(image_stream_300px, format='WEBP')
+                instance.favorite_desktop_300px.save(f"{instance.video_cover_desktop.name}_300px.webp", File(image_stream_300px), save=False)
+
+                image_stream_600px = BytesIO()
+                image.resize((target_width_600, target_height_600)).save(image_stream_600px, format='WEBP')
+                instance.favorite_desktop_600px.save(f"{instance.video_cover_desktop.name}_600px.webp", File(image_stream_600px), save=False)
+
+
+
                 instance.save()
 
         else:
             print(f"Файл не найден: {file_path}")
 
-
+@receiver(post_save, sender=VideoLectures)
+def process_video_mobile_cover(sender, instance, **kwargs):
     if instance.video_cover_mobile:
         file_path = instance.video_cover_mobile.path
 
@@ -74,15 +97,16 @@ def process_video_cover(sender, instance, **kwargs):
 
                 original_width, original_height = image.size
 
-                target_width_420 = 420
-                target_width_840 = 840
-                target_width_280 = 280
-                target_width_560 = 560
-
-                target_height_420= int(original_height / original_width * target_width_420)
+                target_height_420 = int(original_height / original_width * target_width_420)
                 target_height_840 = int(original_height / original_width * target_width_840)
                 target_height_280 = int(original_height / original_width * target_width_280)
                 target_height_560 = int(original_height / original_width * target_width_560)
+                target_height_390 = int(original_height / original_width * target_width_390)
+                target_height_780 = int(original_height / original_width * target_width_780)
+                target_height_250 = int(original_width / original_height * target_width_250)
+                target_height_500 = int(original_width / original_height * target_width_500)
+
+
 
                 image_stream_420px = BytesIO()
                 image.resize((target_width_420, target_height_420)).save(image_stream_420px, format='WEBP')
@@ -99,6 +123,23 @@ def process_video_cover(sender, instance, **kwargs):
                 image_stream_560px = BytesIO()
                 image.resize((target_width_560, target_height_560)).save(image_stream_560px, format='WEBP')
                 instance.recomendation_cover_mobile_560px.save(f"{instance.video_cover_mobile.name}_560px.webp", File(image_stream_560px), save=False)
+
+                image_stream_390px = BytesIO()
+                image.resize((target_width_390, target_height_390)).save(image_stream_390px, format='WEBP')
+                instance.video_cover_mobile_390px.save(f"{instance.video_cover_mobile.name}_390px.webp", File(image_stream_390px), save=False)
+
+                image_stream_780px = BytesIO()
+                image.resize((target_width_780, target_height_780)).save(image_stream_780px, format='WEBP')
+                instance.video_cover_mobile_780px.save(f"{instance.video_cover_mobile.name}_780px.webp", File(image_stream_780px), save=False)
+
+                image_stream_500px = BytesIO()
+                image.resize((target_width_500, target_height_500)).save(image_stream_500px, format='WEBP')
+                instance.favorite_mobile_500px.save(f"{instance.video_cover_mobile.name}_500px.webp", File(image_stream_500px), save=False)
+
+                image_stream_250px = BytesIO()
+                image.resize((target_width_250, target_height_250)).save(image_stream_250px, format='WEBP')
+                instance.favorite_mobile_250px.save(f"{instance.video_cover_mobile.name}_250px.webp", File(image_stream_250px), save=False)
+
 
                 instance.save()
 

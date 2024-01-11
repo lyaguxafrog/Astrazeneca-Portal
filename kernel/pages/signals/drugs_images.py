@@ -9,6 +9,17 @@ from PIL import Image
 
 from pages.models import Drug
 
+
+target_width_700 = 700
+target_width_1400 = 1400
+target_width_270 = 270
+target_width_540 = 540
+target_height_300 = 300
+target_height_600 = 600
+target_height_250 = 250
+target_height_500 = 500
+
+
 # блять почему я этим на бекенде занимаюсь
 class DisableSignals:
     def __init__(self, sender):
@@ -33,11 +44,10 @@ def process_drug_cover(sender, instance, **kwargs):
 
                 original_width, original_height = image.size
 
-                target_width_700 = 700
-                target_width_1400 = 1400
-
                 target_height_700 = int(original_height / original_width * target_width_700)
                 target_height_1400 = int(original_height / original_width * target_width_1400)
+                target_widht_300 = int(original_width / original_height * target_height_300)
+                target_widht_600 = int(original_width / original_height * target_height_600)
 
                 image_stream_700px = BytesIO()
                 image.resize((target_width_700, target_height_700)).save(image_stream_700px, format='WEBP')
@@ -46,6 +56,14 @@ def process_drug_cover(sender, instance, **kwargs):
                 image_stream_1400px = BytesIO()
                 image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='WEBP')
                 instance.image_desktop_1400px.save(f"{instance.image_desktop.name}_1400px.webp", File(image_stream_1400px), save=False)
+
+                image_stream_300px = BytesIO()
+                image.resize((target_widht_300, target_height_300)).save(image_stream_300px, format='WEBP')
+                instance.favorite_desktop_300px.save(f"{instance.image_desktop.name}_300px.webp", File(image_stream_300px), save=False)
+
+                image_stream_600px = BytesIO()
+                image.resize((target_widht_600, target_height_600)).save(image_stream_600px, format='WEBP')
+                instance.favorite_desktop_600px.save(f"{instance.image_desktop.name}_600px.webp", File(image_stream_600px), save=False)
 
                 instance.save()
         else:
@@ -61,11 +79,11 @@ def process_drug_cover(sender, instance, **kwargs):
 
                     original_width, original_height = image.size
 
-                    target_width_270 = 270
-                    target_width_540 = 540
-
                     target_height_270 = int(original_height / original_width * target_width_270)
                     target_height_540 = int(original_height / original_width * target_width_540)
+                    target_width_250 = int(original_width / original_height * target_height_250)
+                    target_width_500 = int(original_width / original_height * target_height_500)
+
 
                     image_stream_270px = BytesIO()
                     image.resize((target_width_270, target_height_270)).save(image_stream_270px, format='WEBP')
@@ -74,5 +92,14 @@ def process_drug_cover(sender, instance, **kwargs):
                     image_stream_540px = BytesIO()
                     image.resize((target_width_540, target_height_540)).save(image_stream_540px, format='WEBP')
                     instance.image_mobile_540px.save(f"{instance.image_mobile.name}_540px.webp", File(image_stream_540px), save=False)
+
+                    image_stream_500px = BytesIO()
+                    image.resize((target_width_500, target_height_500)).save(image_stream_500px, format='WEBP')
+                    instance.favorite_mobile_500px.save(f"{instance.image_mobile.name}_500px.webp", File(image_stream_500px), save=False)
+
+                    image_stream_250px = BytesIO()
+                    image.resize((target_width_250, target_height_250)).save(image_stream_250px, format='WEBP')
+                    instance.favorite_mobile_250px.save(f"{instance.image_mobile.name}_250px.webp", File(image_stream_250px), save=False)
+
 
                     instance.save()

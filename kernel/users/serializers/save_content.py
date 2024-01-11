@@ -1,35 +1,46 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework import serializers
-from pages.models import Articles, Drug, VideoLectures, Events, Story
+from pages.models import Articles, Drug, VideoLectures
 from users.models import UserProfile
-from collections import OrderedDict
 
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Articles
-        fields = '__all__'
+        fields = [
+            'id',
+            'article_name',
+            'favorite_desktop_300px',
+            'favorite_desktop_600px',
+            'favorite_mobile_250px',
+            'favorite_mobile_500px'
+        ]
 
 class DrugSerializer(serializers.ModelSerializer):
     class Meta:
         model = Drug
-        fields = '__all__'
+        fields = [
+            'id',
+            'name',
+            'favorite_desktop_300px',
+            'favorite_desktop_600px',
+            'favorite_mobile_250px',
+            'favorite_mobile_500px'
+        ]
 
 class VideoLecturesSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoLectures
-        fields = '__all__'
-
-class EventsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Events
-        fields = '__all__'
-
-class StorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Story
-        fields = '__all__'
+        fields = [
+            'id',
+            'video_article',
+            'content_type',
+            'favorite_desktop_300px',
+            'favorite_desktop_600px',
+            'favorite_mobile_250px',
+            'favorite_mobile_500px'
+        ]
 
 class GetSavedContentViewSerializer(serializers.Serializer):
     message = serializers.CharField()
