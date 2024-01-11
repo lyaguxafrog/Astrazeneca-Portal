@@ -26,8 +26,6 @@ if [[ $1 = 'update' ]]; then
 
 	git stash
 	git pull
-	docker stop portal-backend-nginx-1
-	docker rm portal-backend-nginx-1
 	docker-compose up -d --build
 
 	exit 0
