@@ -1,13 +1,14 @@
 <template>
   <div class="app">
     <IEZaglushka />
-    <NuxtLayout>
+    <NuxtLayout v-if="inited">
       <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { useAuth } from '~/utils/composables/useAuth';
@@ -19,13 +20,16 @@ const { getSpecialities, init: initSpecialityStore } = useSpecialityStore();
 const { checkAccessToken, init: initAuth } = useAuth();
 const { getFavourites } = useFavourites();
 
+const inited = ref(false);
+
 initBreakpoints();
 await initAuth();
 
 await getSpecialities();
 await initSpecialityStore();
-
 await checkAccessToken();
+
+inited.value = true;
 await getFavourites();
 
 const nuxtApp = useNuxtApp();
