@@ -30,14 +30,14 @@
         >
           <AppImage
             class="favourites__item-bg"
-            :url="fav.video_cover_desktop_1400px"
-            :url-full-x2="fav.video_cover_desktop_2800px"
-            :url-full="fav.video_cover_desktop_1400px"
-            :url-thin-x2="fav.video_cover_mobile_840px"
-            :url-thin="fav.video_cover_mobile_420px"
+            :url="fav.favorite_desktop_300px"
+            :url-full-x2="fav.favorite_desktop_600px"
+            :url-full="fav.favorite_desktop_300px"
+            :url-thin-x2="fav.favorite_mobile_500px"
+            :url-thin="fav.favorite_mobile_250px"
           />
           <p>
-            {{ (fav as VideoPlump).video_article }}
+            {{ fav.video_article }}
           </p>
         </nuxt-link>
         <nuxt-link
@@ -47,14 +47,14 @@
         >
           <AppImage
             class="favourites__item-bg"
-            :url="fav.cover_desktop_1400px"
-            :url-full-x2="fav.cover_desktop_2800px"
-            :url-full="fav.cover_desktop_1400px"
-            :url-thin-x2="fav.cover_mobile_840px"
-            :url-thin="fav.cover_mobile_420px"
+            :url="fav.favorite_desktop_300px"
+            :url-full-x2="fav.favorite_desktop_600px"
+            :url-full="fav.favorite_desktop_300px"
+            :url-thin-x2="fav.favorite_mobile_500px"
+            :url-thin="fav.favorite_mobile_250px"
           />
           <p>
-            {{ (fav as ArticlePlump).article_name }}
+            {{ fav.article_name }}
           </p>
         </nuxt-link>
         <nuxt-link
@@ -62,9 +62,16 @@
           class="favourites__item"
           :to="`histories/?id=${fav.id}`"
         >
-          <img :src="`${baseUrl}${(fav as History).cover_image}`" class="favourites__item-bg" />
+          <AppImage
+            class="favourites__item-bg"
+            :url="fav.favorite_desktop_300px"
+            :url-full-x2="fav.favorite_desktop_600px"
+            :url-full="fav.favorite_desktop_300px"
+            :url-thin-x2="fav.favorite_mobile_500px"
+            :url-thin="fav.favorite_mobile_250px"
+          />
           <p>
-            {{ (fav as History).title }}
+            {{ fav.title }}
           </p>
         </nuxt-link>
       </template>

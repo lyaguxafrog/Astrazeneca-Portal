@@ -5,10 +5,17 @@ import { VideoPlump } from '~/utils/composables/store/videos';
 import { useAuth } from '~/utils/composables/useAuth';
 import { loadableEmpty } from '~/utils/functions/loadable';
 
+type FavImages = {
+  favorite_desktop_300px: string;
+  favorite_desktop_600px: string;
+  favorite_mobile_500px: string;
+  favorite_mobile_250px: string;
+}
+
 export type Favourites = {
-  [ContentType.Video]?: VideoPlump[];
-  [ContentType.Article]?: VideoPlump[];
-  [ContentType.Stories]?: VideoPlump[];
+  [ContentType.Video]?: ({ content_type: string } & FavImages)[];
+  [ContentType.Article]?: ({ article_name: string } & FavImages)[];
+  [ContentType.Stories]?: ({ title: string } & FavImages)[];
 };
 
 export const useFavourites = () => {

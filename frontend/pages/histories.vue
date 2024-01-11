@@ -54,6 +54,7 @@
       </Swiper>
       <div v-if="activeHistory" class="history__controls">
         <AppFavouriteButton
+          v-if="userId"
           white
           :content-type="ContentType.Stories"
           :content-id="activeHistory.id"
@@ -65,7 +66,7 @@
           />
         </AppButton>
         <AppButton
-          v-if="activeHistory.link_to_page"
+          v-if="activeHistory.link_to_page && userId"
           primary
           :to="activeHistory.link_to_page"
           petite
@@ -98,6 +99,7 @@ import { useBack } from '~/utils/composables/useHistory';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { ContentType } from '~/utils/types';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
+import {useAuth} from "~/utils/composables/useAuth";
 
 definePageMeta({
   hideFooter: true,
@@ -110,6 +112,7 @@ const $route = useRoute();
 const { $screen } = useScreen();
 const swiper = ref<SwiperType>();
 const videosRef = ref<HTMLVideoElement[]>([]);
+const { userId } = useAuth();
 
 await getHistories();
 
