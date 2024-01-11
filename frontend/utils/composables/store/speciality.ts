@@ -31,6 +31,7 @@ export function useSpecialityStore() {
     if (!state.value.specialities.loaded) {
       const res = await useRequest<Speciality[]>('/specialty', {
         method: 'GET',
+        ignoreError: true,
       });
 
       if (res.data) {

@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <IEZaglushka />
-    <NuxtLayout v-if="inited">
+    <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
   </div>
@@ -20,8 +20,6 @@ const { getSpecialities, init: initSpecialityStore } = useSpecialityStore();
 const { checkAccessToken, init: initAuth } = useAuth();
 const { getFavourites } = useFavourites();
 
-const inited = ref(false);
-
 initBreakpoints();
 await initAuth();
 
@@ -29,7 +27,6 @@ await getSpecialities();
 await initSpecialityStore();
 await checkAccessToken();
 
-inited.value = true;
 await getFavourites();
 
 const nuxtApp = useNuxtApp();
