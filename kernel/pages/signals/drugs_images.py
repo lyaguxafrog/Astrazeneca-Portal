@@ -46,8 +46,8 @@ def process_drug_cover(sender, instance, **kwargs):
 
                 target_height_700 = int(original_height / original_width * target_width_700)
                 target_height_1400 = int(original_height / original_width * target_width_1400)
-                target_height_300 = int(original_width / original_height * target_width_300)
-                target_height_600 = int(original_width / original_height * target_width_600)
+                target_height_300 = int(original_height / original_width * target_width_300)
+                target_height_600 = int(original_height / original_width * target_width_600)
 
                 image_stream_700px = BytesIO()
                 image.resize((target_width_700, target_height_700)).save(image_stream_700px, format='WEBP')

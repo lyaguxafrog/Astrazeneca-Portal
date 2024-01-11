@@ -12,22 +12,22 @@ from inflection import ordinal
 from pages.models import Articles
 
 
-target_height_420 = 420
-target_height_840 = 840
-target_height_1400 = 1400
-target_height_2800 = 2800
-target_height_1600 = 1600
-target_height_3200 = 3200
-target_height_360 = 360
-target_height_720 = 720
-target_height_400 = 400
-target_height_800 = 800
-target_height_280 = 280
-target_height_560 = 560
-target_height_300 = 300
-target_height_600 = 600
-target_height_250 = 250
-target_height_500 = 500
+target_width_420 = 420
+target_width_840 = 840
+target_width_1400 = 1400
+target_width_2800 = 2800
+target_width_1600 = 1600
+target_width_3200 = 3200
+target_width_360 = 360
+target_width_720 = 720
+target_width_400 = 400
+target_width_800 = 800
+target_width_280 = 280
+target_width_560 = 560
+target_width_300 = 300
+target_width_600 = 600
+target_width_250 = 250
+target_width_500 = 500
 
 class DisableSignals:
     def __init__(self, sender):
@@ -52,12 +52,12 @@ def process_articles_mobile_cover(sender, instance, **kwargs):
 
                 original_width, original_height = image.size
 
-                target_width_420 = int(original_width / original_height * target_height_420)
-                target_width_840 = int(original_width / original_height * target_height_840)
-                target_width_280 = int(original_width / original_height * target_height_280)
-                target_width_560 = int(original_width / original_height * target_height_560)
-                target_width_250 = int(original_width / original_height * target_height_250)
-                target_width_500 = int(original_width / original_height * target_height_500)
+                target_height_420 = int(original_width / original_height * target_width_420)
+                target_height_840 = int(original_width / original_height * target_width_840)
+                target_height_280 = int(original_width / original_height * target_width_280)
+                target_height_560 = int(original_width / original_height * target_width_560)
+                target_height_250 = int(original_width / original_height * target_width_250)
+                target_height_500 = int(original_width / original_height * target_width_500)
 
 
                 image_stream_420px = BytesIO()
@@ -100,35 +100,35 @@ def process_articles_desktop_cover(sender, instance, **kwargs):
 
                 original_width, original_height = image.size
 
-                target_widht_2800 = int(original_width / original_height * target_height_2800)
-                target_widht_1400 = int(original_width / original_height * target_height_1400)
-                target_widht_400 = int(original_width / original_height * target_height_400)
-                target_widht_800 = int(original_width / original_height * target_height_800)
-                target_widht_300 = int(original_width / original_height * target_height_300)
-                target_widht_600 = int(original_width / original_height * target_height_600)
+                target_height_2800 = int(original_width / original_height * target_width_2800)
+                target_height_1400 = int(original_width / original_height * target_width_1400)
+                target_height_400 = int(original_width / original_height * target_width_400)
+                target_height_800 = int(original_width / original_height * target_width_800)
+                target_height_300 = int(original_width / original_height * target_width_300)
+                target_height_600 = int(original_width / original_height * target_width_600)
 
                 image_stream_2800px = BytesIO()
-                image.resize((target_widht_2800, target_height_2800)).save(image_stream_2800px, format='WEBP')
+                image.resize((target_width_2800, target_height_2800)).save(image_stream_2800px, format='WEBP')
                 instance.cover_desktop_2800px.save(f"{instance.cover_desktop.name}_2800px.webp", File(image_stream_2800px), save=False)
 
                 image_stream_1400px = BytesIO()
-                image.resize((target_widht_1400, target_height_1400)).save(image_stream_1400px, format='WEBP')
+                image.resize((target_width_1400, target_height_1400)).save(image_stream_1400px, format='WEBP')
                 instance.cover_desktop_1400px.save(f"{instance.cover_desktop.name}_1400px.webp", File(image_stream_1400px), save=False)
 
                 image_stream_400px = BytesIO()
-                image.resize((target_widht_400, target_height_400)).save(image_stream_400px, format='WEBP')
+                image.resize((target_width_400, target_height_400)).save(image_stream_400px, format='WEBP')
                 instance.practic_desktop_400px.save(f"{instance.cover_desktop.name}_400px.webp", File(image_stream_400px), save=False)
 
                 image_stream_800px = BytesIO()
-                image.resize((target_widht_800, target_height_800)).save(image_stream_800px, format='WEBP')
+                image.resize((target_width_800, target_height_800)).save(image_stream_800px, format='WEBP')
                 instance.practic_desktop_800px.save(f"{instance.cover_desktop.name}_800px.webp", File(image_stream_800px), save=False)
 
                 image_stream_300px = BytesIO()
-                image.resize((target_widht_300, target_height_300)).save(image_stream_300px, format='WEBP')
+                image.resize((target_width_300, target_height_300)).save(image_stream_300px, format='WEBP')
                 instance.favorite_desktop_300px.save(f"{instance.cover_desktop.name}_300px.webp", File(image_stream_300px), save=False)
 
                 image_stream_600px = BytesIO()
-                image.resize((target_widht_600, target_height_600)).save(image_stream_600px, format='WEBP')
+                image.resize((target_width_600, target_height_600)).save(image_stream_600px, format='WEBP')
                 instance.favorite_desktop_600px.save(f"{instance.cover_desktop.name}_600px.webp", File(image_stream_600px), save=False)
 
 
@@ -148,15 +148,15 @@ def process_article_main_cover_desktop(sender, instance, **kwargs):
                 image = Image.open(file_path)
 
                 original_width, ordinal_height = image.size
-                target_wight_1600px = int(original_width / ordinal_height * target_height_1600)
-                target_wight_3200px = int(original_width / ordinal_height * target_height_3200)
+                target_height_1600px = int(original_width / ordinal_height * target_width_1600)
+                target_height_3200px = int(original_width / ordinal_height * target_width_3200)
 
                 image_stream_1600px = BytesIO()
-                image.resize((target_wight_1600px, target_height_1600)).save(image_stream_1600px, format='WEBP')
+                image.resize((target_width_1600, target_height_1600px)).save(image_stream_1600px, format='WEBP')
                 instance.main_cover_desktop_1600px.save(f"{instance.main_cover_desktop.name}_1600px.webp", File(image_stream_1600px), save=False)
 
                 image_stream_3200px = BytesIO()
-                image.resize((target_wight_3200px, target_height_3200)).save(image_stream_3200px, format='WEBP')
+                image.resize((target_width_3200, target_height_3200px)).save(image_stream_3200px, format='WEBP')
                 instance.main_cover_desktop_3200px.save(f"{instance.main_cover_desktop.name}_3200px.webp", File(image_stream_3200px), save=False)
 
                 instance.save()
@@ -174,15 +174,15 @@ def process_article_main_cover_mobile(sender, instance, **kwargs):
                 image = Image.open(file_path)
 
                 original_width, ordinal_height = image.size
-                target_wight_360px = int(original_width / ordinal_height * target_height_360)
-                target_wight_720px = int(original_width / ordinal_height * target_height_720)
+                target_height_360px = int(original_width / ordinal_height * target_width_360)
+                target_height_720px = int(original_width / ordinal_height * target_width_720)
 
                 image_stream_360px = BytesIO()
-                image.resize((target_wight_360px, target_height_360)).save(image_stream_360px, format='WEBP')
+                image.resize((target_width_360, target_height_360px)).save(image_stream_360px, format='WEBP')
                 instance.main_cover_mobile_360px.save(f"{instance.main_cover_mobile.name}_360px", File(image_stream_360px), save=False)
 
                 image_stream_720px = BytesIO()
-                image.resize((target_wight_720px, target_height_720)).save(image_stream_720px, format='WEBP')
+                image.resize((target_width_720, target_height_720px)).save(image_stream_720px, format='WEBP')
                 instance.main_cover_mobile_720px.save(f"{instance.main_cover_mobile.name}_720px", File(image_stream_720px), save=False)
 
                 instance.save()
