@@ -141,7 +141,7 @@
         <div class="drug-page__modal-text" v-html="activeItem.text" />
         <div class="drug-page__modal-description">
           <p v-if="activeItem.approvals_and_decodings" v-html="activeItem.approvals_and_decodings" />
-          <AppButton v-if="nextItem" primary mini @click="openProps(nextItem)"> {{nextItem.title}} </AppButton>
+          <AppButton v-if="nextItem && content.faq.length > 1" class="drug-page__modal-description-btn" primary mini @click="openProps(nextItem)"> {{nextItem.title}} </AppButton>
         </div>
       </div>
     </AppModal>
@@ -448,6 +448,10 @@ const openProps = (item: DrugFaq) => {
         font-size: 14px;
         line-height: 18px;
         color: $primary-color;
+      }
+
+      &-btn {
+        margin-left: auto;
       }
     }
   }
