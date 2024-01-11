@@ -11,14 +11,15 @@ export const useAuth = () => {
 
   const { specialityId, setSpeciality } = useSpecialityStore();
 
+  const cookieUserId = useCookie('user-id');
+
   const state = useState('auth-state', () => ({
-    userId: 0,
+    userId: cookieUserId.value ? +cookieUserId.value : 0,
   }));
 
   const init = async () => {
     const userId = await useCookie('user-id');
 
-    console.log(2, userId.value ? +userId.value : 0);
     state.value.userId = userId.value ? +userId.value : 0;
   };
 
