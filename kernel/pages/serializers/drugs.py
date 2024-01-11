@@ -135,10 +135,10 @@ class DrugSerializer(serializers.ModelSerializer):
                 'id': video.id,
                 'type': 'video',
                 'name': video.video_article,
-                'practic_desktop_400px': article.practic_desktop_400px.url if article.practic_desktop_400px else None,
-                'practic_desktop_800px': article.practic_desktop_800px.url if article.practic_desktop_800px else None,
-                'practic_mobile_560px': article.practic_mobile_560px.url if article.practic_mobile_560px else None,
-                'practic_mobile_280px': article.practic_mobile_280px.url if article.practic_mobile_280px else None,
+                'practic_desktop_400px': video.practic_desktop_400px.url if video.practic_desktop_400px else None,
+                'practic_desktop_800px': video.practic_desktop_800px.url if video.practic_desktop_800px else None,
+                'practic_mobile_560px': video.practic_mobile_560px.url if video.practic_mobile_560px else None,
+                'practic_mobile_280px': video.practic_mobile_280px.url if video.practic_mobile_280px else None,
             })
 
         return combined_practices
