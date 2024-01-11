@@ -25,6 +25,10 @@ target_width_600 = 600
 target_width_250 = 250
 target_width_500 = 500
 
+target_width_400 = 400
+target_width_800 = 800
+
+
 class DisableSignals:
     def __init__(self, sender):
         self.sender = sender
@@ -54,6 +58,8 @@ def process_video_cover(sender, instance, **kwargs):
                 target_height_1000 = int(original_height / original_width * target_width_1000)
                 target_height_300 = int(original_height / original_width * target_width_300)
                 target_height_600 = int(original_height / original_width * target_width_600)
+                target_height_400 = int(original_height / original_width * target_width_400)
+                target_height_800 = int(original_height / original_width * target_width_800)
 
 
                 image_stream_2800px = BytesIO()
@@ -80,6 +86,13 @@ def process_video_cover(sender, instance, **kwargs):
                 image.resize((target_width_600, target_height_600)).save(image_stream_600px, format='WEBP')
                 instance.favorite_desktop_600px.save(f"{instance.video_cover_desktop.name}_600px.webp", File(image_stream_600px), save=False)
 
+                image_stream_400px = BytesIO()
+                image.resize((target_width_400, target_height_400)).save(image_stream_400px, format='WEBP')
+                instance.practic_desktop_400px.save(f"{instance.video_cover_desktop.name}_400px.webp", File(image_stream_400px), save=False)
+
+                image_stream_800px = BytesIO()
+                image.resize((target_width_800, target_height_800)).save(image_stream_800px, format='WEBP')
+                instance.practic_desktop_800px.save(f"{instance.video_cover_desktop.name}_800px.webp", File(image_stream_800px), save=False)
 
 
                 instance.save()
@@ -140,6 +153,12 @@ def process_video_mobile_cover(sender, instance, **kwargs):
                 image_stream_250px = BytesIO()
                 image.resize((target_width_250, target_height_250)).save(image_stream_250px, format='WEBP')
                 instance.favorite_mobile_250px.save(f"{instance.video_cover_mobile.name}_250px.webp", File(image_stream_250px), save=False)
+
+                image.resize((target_width_280, target_height_280)).save(image_stream_280x, format='WEBP')
+                instance.practic_mobile_280px.save(f"{instance.video_cover_mobile.name}_280px.webp", File(image_stream_280x), save=False)
+
+                image.resize((target_width_560, target_height_560)).save(image_stream_560px, format='WEBP')
+                instance.practic_mobile_560px.save(f"{instance.video_cover_mobile.name}_560px.webp", File(image_stream_560px), save=False)
 
 
                 instance.save()
