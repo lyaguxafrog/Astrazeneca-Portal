@@ -51,7 +51,6 @@ export function useSpecialityStore() {
     specialities: toRef(() => state.value.specialities),
     specialityId: toRef(() => state.value.specialityId),
     speciality: computed(() => {
-      console.log(state.value.specialities);
       return state.value.specialities.data?.find((s) => s.id === state.value.specialityId);
       }
     ),
