@@ -34,6 +34,7 @@ export function useSpecialityStore() {
         ignoreError: true,
       });
 
+
       if (res.data) {
         state.value.specialities.data = res.data;
         state.value.specialities.loaded = true;
