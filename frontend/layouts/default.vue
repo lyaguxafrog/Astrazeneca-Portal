@@ -17,6 +17,7 @@
 </template>
 
 <script lang="ts" setup>
+import { toRef } from 'vue';
 import { useRouter } from '#app';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
