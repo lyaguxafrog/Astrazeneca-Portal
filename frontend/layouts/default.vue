@@ -6,7 +6,9 @@
       <DefaultGuard />
 
       <DefaultHeader v-if="!$screen.mdAndDown" />
-      <slot />
+      <template v-if="specialityId">
+        <slot />
+      </template>
       <DefaultFooter v-if="!meta.hideFooter" class="default-layout__footer" />
       <DefaultMenu v-if="!meta.hideFooter && specialityId" class="for-mobile-or-tablet" />
     </ClientOnly>
@@ -14,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+import { toRef } from 'vue';
 import { useRouter } from '#app';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
@@ -37,6 +40,7 @@ const { $screen } = useScreen();
 
   width: 100vw;
   min-height: 100vh;
+  overflow: hidden;
 
   &__footer {
     margin-top: auto;

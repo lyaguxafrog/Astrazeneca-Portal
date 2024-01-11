@@ -19,10 +19,15 @@ export const useFavourites = () => {
   }));
 
   const getFavourites = async () => {
+    if (!userId.value) {
+      return;
+    }
+
     const res = await useRequest<{ saved_content: Favourites }>(
       `/save-content/get/${userId.value}`,
       {
         method: 'GET',
+        ignoreError: true,
       }
     );
 

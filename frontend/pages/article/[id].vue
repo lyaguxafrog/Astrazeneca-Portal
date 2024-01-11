@@ -14,7 +14,19 @@
       <small>рака легкого</small>
     </div>
 
-    <div class="article-page__intro">{{ content.article_name }}</div>
+    <div class="article-page__intro">
+      <AppImage
+        class="article-page__intro-bg"
+        :url="content.main_cover_desktop_1600px"
+        :url-full="content.main_cover_desktop_1600px"
+        :url-full-x2="content.main_cover_desktop_3200px"
+        :url-thin-x2="content.main_cover_desktop_720px"
+        :url-thin="content.main_cover_desktop_360px"
+      />
+      <p>
+        {{ content.article_name }}
+      </p>
+    </div>
 
     <div class="article-page__bold" v-html="content.first_abzac" />
 
@@ -32,8 +44,8 @@
       </div>
 
       <div v-if="block.content_type === 'text_with_image'" class="article-page__image-and-text">
-        <img :src="`${baseUrl}${block.image}`" />
-        <span v-html="block.text" />
+        <img v-if="block.image" :src="`${baseUrl}${block.image}`" />
+        <p v-html="block.text" />
       </div>
     </template>
     <div
@@ -64,6 +76,10 @@ const { baseUrl } = useRuntimeConfig().public;
 const articleId = toRef(() => +$route.params.id);
 
 const content = await getArticle(articleId.value);
+
+useHead({
+  title: content?.article_name ? content?.article_name : 'Статьи',
+});
 </script>
 
 <style scoped lang="scss">
@@ -107,10 +123,13 @@ const content = await getArticle(articleId.value);
   }
 
   &__intro {
+    position: relative;
+
     min-height: 436px;
     margin-top: 31px;
     margin-bottom: 54px;
     padding: 70px 270px 0 89px;
+    overflow: hidden;
 
     font-family: $secondary-font-family;
     font-size: 60px;
@@ -119,6 +138,32 @@ const content = await getArticle(articleId.value);
 
     background: url('~/assets/img/article/bg.png') no-repeat center center / cover;
     border-radius: 40px;
+
+    &-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    p {
+      position: relative;
+      z-index: 2;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+
+      background-color: rgba(#000, 0.3);
+    }
   }
 
   &__bold {
@@ -157,6 +202,7 @@ const content = await getArticle(articleId.value);
     align-items: flex-start;
 
     margin-top: 8px;
+    margin-bottom: 8px;
 
     &-text {
       position: relative;
@@ -203,6 +249,8 @@ const content = await getArticle(articleId.value);
   }
 
   &__image-and-text {
+    display: flex;
+
     margin-top: 5px;
 
     font-size: 24px;
@@ -210,10 +258,12 @@ const content = await getArticle(articleId.value);
     letter-spacing: -0.24px;
 
     img {
-      float: left;
-
       width: 245px;
       margin-right: 55px;
+    }
+
+    p {
+      padding-top: 17px;
     }
   }
 
@@ -224,6 +274,15 @@ const content = await getArticle(articleId.value);
     font-size: 18px;
     line-height: 19px;
     font-weight: 300;
+  }
+
+  :deep(table) {
+    font-size: 20px;
+
+    border-color: $gray-color;
+    td, th {
+      padding: 6px 12px;
+    }
   }
 
   @include lg-and-down {
@@ -337,6 +396,8 @@ const content = await getArticle(articleId.value);
     }
 
     &__image-and-text {
+      display: block;
+
       font-size: 12px;
       line-height: 14px;
       letter-spacing: -0.12px;
@@ -347,6 +408,11 @@ const content = await getArticle(articleId.value);
         width: 100px;
         margin-top: 0;
         margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      p {
+        padding-top: 0;
       }
     }
 

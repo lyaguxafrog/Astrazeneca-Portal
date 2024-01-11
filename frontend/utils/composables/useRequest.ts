@@ -1,4 +1,4 @@
-import { /* useLazyAsyncData, */ useAsyncData, useRuntimeConfig, createError } from '#app';
+import { /* useLazyAsyncData, */ useAsyncData, useRuntimeConfig, createError, useRouter } from '#app';
 import { useAuth } from '~/utils/composables/useAuth';
 
 export type Method = 'GET' | 'DELETE' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH';
@@ -32,6 +32,7 @@ type RequestConfig = {
   params?: Record<string, unknown>;
   headers?: Record<string, string>;
   noteIfError?: boolean;
+  ignoreError?: boolean;
 };
 
 export const getRequestKey = (
@@ -51,6 +52,8 @@ export async function useRequest<Res = unknown>(url: string, config: RequestConf
   const { apiUrl } = useRuntimeConfig().public;
 
   const { token } = useAuth();
+
+  const $router = useRouter();
 
   const headers = config.headers || {};
   headers['content-type'] = 'application/json';
@@ -79,11 +82,19 @@ export async function useRequest<Res = unknown>(url: string, config: RequestConf
 
   const { data, pending, refresh, error } = await fetchMethod(url, () => $fetch(url, fetchConfig));
 
-  if (error?.value?.statusCode === 404) {
+  console.log(url, config);
+
+  if (!config.ignoreError && (error?.value?.statusCode === 404 || error?.value?.statusCode === 500)) {
+    console.log(url, config);
+    setTimeout(() => {
+      $router.replace('/error');
+    }, 500);
+
     throw createError({
       statusCode: 404,
       statusMessage: 'Page Not Found',
     });
+
   }
 
   return {

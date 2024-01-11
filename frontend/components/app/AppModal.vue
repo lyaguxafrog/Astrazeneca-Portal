@@ -1,9 +1,10 @@
 <template>
   <transition name="modal">
-    <div v-if="isModalOpen" :key="name" class="modal__overlay">
+    <div v-if="isModalOpen" :key="name" class="modal modal__overlay" :class="{ fullPage }">
       <div ref="scrollEl" class="modal__scroll-content">
         <div class="modal__close-overlay" @mousedown.self="closeModal(name)" />
         <div class="modal__content">
+          <BackBtn v-if="fullPage" class="modal__back" @click="closeModal(name)"/>
           <AppIcon
             class="modal__close"
             :name="IconName.CloseIcon"
@@ -23,12 +24,14 @@ import { isClient } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { ModalsName, useModal } from '~/utils/composables/useModal';
+import BackBtn from '~/components/common/BackBtn.vue';
 
 const props = withDefaults(
   defineProps<{
     name: ModalsName;
     onClose?: () => void;
     onOpen?: () => void;
+    fullPage?: boolean;
   }>(),
   {
     mode: 'center',
@@ -149,6 +152,49 @@ $root: modal;
     background: $main-bg-color;
     border-radius: 40px;
     box-shadow: 0 0 250px 0 rgba(144, 77, 255, 0.7);
+  }
+
+  &.fullPage {
+    .#{$root} {
+
+      &__scroll-content {
+        background-color: $main-bg-color;
+        &:before, &:after {
+          display: none;
+        }
+      }
+
+      &__content {
+        display: block;
+
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      &__close {
+        display: none;
+      }
+
+      &__back {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        @include z-index(2);
+      }
+
+      @include md-and-down {
+
+        &__back {
+          top: 12px;
+          left: 15px;
+        }
+      }
+    }
   }
 
   @include md-and-down {

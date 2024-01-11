@@ -7,7 +7,10 @@
       </div>
 
       <div ref="scrollEl" class="search__results">
-        <template v-for="block in result">
+        <div v-if="isEmpty" class="search__results-empty">
+          По Вашему запросу ничего не&nbsp;найдено
+        </div>
+        <template v-if="result.length" v-for="block in result">
           <div v-if="block.items.length" :key="block.id" class="search__results-block">
             <div class="search__results-block-title">
               {{ block.name }}
@@ -17,20 +20,20 @@
               :key="item.id"
               class="search__results-block-item"
               :to="item.link"
-              :style="{ backgroundColor: $screen.mdAndDown ? block.color : '' }"
+              :style="{ backgroundColor: $screen.mdAndDown ? block.color : '', order: item.order }"
               @click="close"
             >
               <p>
                 {{ item.name }}
               </p>
               <span v-if="!$screen.mdAndDown" :style="{ color: block.color }"
-                >| {{ block.postfix }}</span
+              >| {{ block.postfix }}</span
               >
               <AppIcon
                 v-if="$screen.mdAndDown"
                 class="search__results-block-icon"
                 :name="block.icon"
-                :size="26"
+                :size="$screen.xs ? 21 : 36"
               />
             </nuxt-link>
           </div>
@@ -41,9 +44,10 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick, ref } from 'vue';
 import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
-import { IconName, Video } from '~/components/app/AppIcon.utils';
+import {IconName, Star, Video} from '~/components/app/AppIcon.utils';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useScreen } from '~/utils/composables/useScreen';
@@ -52,7 +56,8 @@ type SearchResult = {
   id: number;
   title: string;
   url?: string;
-  model: 'video_lecture' | 'article' | 'event';
+  model?: 'video_lecture' | 'article' | 'event';
+  content_type?: 'video_lecture' | 'article' | 'event';
 };
 
 const $route = useRoute();
@@ -62,6 +67,7 @@ const { $screen } = useScreen();
 const isOpen = ref();
 const inputEl = ref();
 const scrollEl = ref();
+const isEmpty = ref(false);
 
 const searchString = ref($route.query.s);
 
@@ -75,10 +81,11 @@ const result = ref<
       id: number;
       name: string;
       link?: string;
+      order?: number;
     }[];
     icon: IconName;
   }[]
->([
+  >([
   {
     id: '1',
     name: 'Статьи',
@@ -107,61 +114,19 @@ const result = ref<
     id: '4',
     name: 'Мероприятия',
     postfix: 'мероприятие',
-    color: '#a8a8a8',
+    color: '#f74848',
     items: [],
     icon: IconName.Megaphone,
   },
-]);
-const search = async () => {
-  await $router.replace({
-    query: {
-      ...$route.query,
-      s: searchString.value,
-    },
-  });
-
-  const res = await useRequest<SearchResult[]>(`/search/${searchString.value}`, {
-    method: 'GET',
-  });
-
-  if (res.data) {
-    res.data.forEach((r) => {
-      const data = {
-        id: r.id,
-        name: r.title,
-        link:
-          r.model === 'event'
-            ? r.url
-            : r.model === 'video_lecture'
-            ? `/video/${r.id}`
-            : `/article/${r.id}`,
-      };
-
-      if (r.model === 'video_lecture') {
-        result.value[1].items.push(data);
-      }
-
-      if (r.model === 'article') {
-        result.value[0].items.push(data);
-      }
-
-      if (r.model === 'event') {
-        result.value[3].items.push(data);
-      }
-    });
-  }
-};
-
-watchDebounced(
-  searchString,
-  () => {
-    search();
-  },
   {
-    debounce: 500,
-    immediate: true,
-  }
-);
+    id: '5',
+    name: 'Препараты',
+    postfix: 'препарат',
+    color: '#00D1FF',
+    items: [],
+    icon: IconName.Star,
+  },
+]);
 
 const open = () => {
   disableScroll(scrollEl.value, $screen.value.mdAndDown);
@@ -182,6 +147,105 @@ const close = () => {
 defineExpose({
   open,
 });
+
+const processResults = (results?: SearchResult[]) => {
+  if (!results) {
+    return [];
+  }
+
+  results.forEach((r, index) => {
+    const model = r.model || r.content_type;
+
+    const data = {
+      id: r.id,
+      name: r.title,
+      order: index,
+      link:
+        r.model === 'event'
+          ? r.url
+          : model === 'video_lecture'
+            ? `/video/${r.id}`
+            : model === 'article' ? `/article/${r.id}` : `/drug/${r.id}`,
+    };
+
+    if (model === 'article') {
+      result.value[0].items.push(data);
+    }
+
+    if (model === 'video_lecture') {
+      result.value[1].items.push(data);
+    }
+
+    if (model === 'event') {
+      result.value[3].items.push(data);
+    }
+    if (model === 'drug') {
+      result.value[4].items.push(data);
+    }
+  });
+
+  return JSON.parse(JSON.stringify(result.value));
+};
+
+const defaultItems = await useRequest<SearchResult[]>('/search/page', {
+  method: 'GET',
+});
+
+const defaultResults = processResults(defaultItems.data);
+result.value = JSON.parse(JSON.stringify(defaultResults));
+
+const clearResults = () => {
+  result.value.forEach((x) => (x.items = []));
+
+  isEmpty.value = false;
+
+  $router.replace({
+    query: {
+      ...$route.query,
+      s: undefined,
+    },
+  });
+};
+
+const search = async () => {
+  clearResults();
+
+  if (!searchString.value) {
+    result.value = JSON.parse(JSON.stringify(defaultResults));
+    return;
+  }
+
+  await $router.replace({
+    query: {
+      ...$route.query,
+      s: searchString.value,
+    },
+  });
+
+  const res = await useRequest<SearchResult[]>(`/search/${searchString.value}`, {
+    method: 'GET',
+  });
+
+  if (res.data) {
+    if (!res.data.length) {
+      isEmpty.value = true;
+      return;
+    }
+
+    processResults(res.data);
+  }
+};
+
+watchDebounced(
+  searchString,
+  () => {
+    search();
+  },
+  {
+    debounce: 500,
+    immediate: true,
+  }
+);
 </script>
 
 <style scoped lang="scss">
@@ -240,6 +304,12 @@ defineExpose({
     max-height: 50vh;
     @include scrollbar($body-scrollbar-width);
 
+    &-empty {
+      padding: 20px;
+
+      font-size: 20px;
+    }
+
     &-block {
       padding: 16px 29px 14px;
 
@@ -262,13 +332,17 @@ defineExpose({
       }
 
       &-item {
-        display: block;
+        display: flex;
 
         width: fit-content;
 
         font-size: 18px;
         line-height: 42px;
         letter-spacing: -0.18px;
+
+        span {
+          margin-left: 8px;
+        }
 
         @include hover {
           color: $accent-color;
@@ -318,12 +392,21 @@ defineExpose({
 
     &__results {
       display: grid;
-      grid-gap: 24px;
-      grid-template-columns: repeat(3, calc((100% - 48px) / 3));
+      grid-gap: 16px;
+      grid-template-columns: repeat(3, calc((100% - 32px) / 3));
 
+      min-height: initial;
       max-height: initial;
       margin-top: 30px;
       overflow: initial;
+
+      &-empty {
+        width: calc(100vw - 56px);
+        padding: 0;
+
+        font-size: 16px;
+        color: $white-color;
+      }
 
       &-block {
         display: contents;
@@ -357,7 +440,18 @@ defineExpose({
 
   @include xs {
     &__results {
-      grid-template-columns: repeat(2, calc((100% - 24px) / 2));
+      grid-template-columns: repeat(3, calc((100% - 32px) / 3));
+
+      &-block {
+        &-item {
+          padding: 10px;
+
+          p {
+            font-size: 9px;
+            line-height: 10px;
+          }
+        }
+      }
     }
   }
 

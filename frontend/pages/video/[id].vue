@@ -5,9 +5,9 @@
     <BgEllipse size="984" color="#B32FC9" pale class="video-page__second-ellipse" />
 
     <div class="video-page__title">{{ content.video_article }}</div>
-    <div class="video-page__video" @click="startVideo">
+    <div class="video-page__video">
       <video ref="videoEl" :controls="isStarted" :src="`${baseUrl}${content.video_url}`" />
-      <template v-if="!isStarted">
+      <div v-if="!isStarted" @click="startVideo">
         <AppImage
           class="video-page__video-cover"
           :url="content.video_cover_desktop_1400px"
@@ -17,7 +17,7 @@
           :url-thin="content.video_cover_mobile_420px"
         />
         <PlayVideoButton class="video-page__video-play" />
-      </template>
+      </div>
     </div>
 
     <div class="video-page__subtitle">Конспект видео:</div>
@@ -39,7 +39,13 @@
         <nuxt-link class="video-page__recommended-slide" :to="`/video/${item.id}`">
           <p v-html="item.title" />
           <div class="video-page__recommended-slide-img">
-            <img :src="`${baseUrl}${item.preview}`" alt="" />
+            <AppImage
+              :url="item.recomendation_cover_desktop_500px"
+              :url-full-x2="item.recomendation_cover_desktop_1000px"
+              :url-full="item.recomendation_cover_desktop_500px"
+              :url-thin-x2="item.recomendation_cover_mobile_560px"
+              :url-thin="item.recomendation_cover_mobile_280px"
+            />
             <PlayVideoButton class="video-page__recommended-slide-play" />
           </div>
         </nuxt-link>
@@ -60,6 +66,8 @@ import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import {toRef} from "vue";
+
 
 const $route = useRoute();
 const { getVideo } = useVideosStore();
@@ -68,6 +76,11 @@ const { baseUrl } = useRuntimeConfig().public;
 const videoId = toRef(() => $route.params.id);
 
 const content = await getVideo(+videoId.value);
+
+useHead({
+  title: content?.video_article ? content?.video_article : content?.content_type === ContentType.Video ? 'Видеолекции' : 'Клинические случаи',
+});
+
 const isStarted = ref(false);
 const videoEl = ref();
 const startVideo = () => {
@@ -81,6 +94,10 @@ const startVideo = () => {
   position: relative;
 
   padding: 0 92px;
+
+  @include lg-and-down {
+    padding: 0 40px;
+  }
 
   &__first-ellipse {
     top: -90px;
@@ -188,20 +205,20 @@ const startVideo = () => {
         border-radius: 40px;
 
         @include hover {
-          img {
+          :deep(img) {
             transform: scale(1.05);
           }
         }
+        :deep(img) {
+          display: block;
+
+          height: 100%;
+          object-fit: cover;
+
+          transition: transform $tr-dur;
+        }
       }
 
-      img {
-        display: block;
-
-        height: 100%;
-        object-fit: cover;
-
-        transition: transform $tr-dur;
-      }
       &-play {
         transform: translate(-50%, -50%) scale(0.7);
       }
@@ -258,8 +275,10 @@ const startVideo = () => {
         font-size: 16px;
       }
 
-      img {
-        border-radius: 16px;
+      &-slide {
+        &-img {
+          border-radius: 16px;
+        }
       }
     }
   }

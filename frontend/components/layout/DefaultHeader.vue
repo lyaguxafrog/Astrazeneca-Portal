@@ -19,7 +19,7 @@
         <div class="default-header__second-row">
           <DefaultHistoriesSlider :min="!isExtendsHeader" />
 
-          <div class="default-header__text">
+          <div class="default-header__text" :class="{ min: !isExtendsHeader }">
             <img src="~/assets/img/home/arrow-desktop.svg" alt="" />
             <p>
               информационный<br />
@@ -44,6 +44,7 @@
 <script lang="ts" setup>
 import { isClient } from '@vueuse/core';
 import { useRoute } from '#app';
+import { ref, toRef, watch } from 'vue';
 import DefaultMenu from '~/components/layout/DefaultMenu.vue';
 import DefaultHistoriesSlider from '~/components/layout/DefaultHistoriesSlider.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
@@ -62,6 +63,7 @@ const searchEl = ref();
 const scrollHeaderEl = ref();
 
 const openSearch = () => {
+  console.log(searchEl.value.open);
   searchEl.value.open();
 };
 
@@ -85,7 +87,7 @@ watch(
   position: relative;
   @include z-index(4);
 
-  height: 270px;
+  height: 280px;
 
   box-shadow: 0 4px 94px 0 rgba(0, 0, 0, 0.45);
 
@@ -107,7 +109,7 @@ watch(
 
   &__main {
     padding-bottom: 50px;
-    padding-left: 94px;
+    padding-left: 70px;
 
     background-color: $main-bg-color;
     box-shadow: 0 4px 94px 0 rgba(19, 37, 72, 0.45);
@@ -164,7 +166,7 @@ watch(
     &.min {
       height: auto;
       margin-top: 1px;
-      margin-left: -40px;
+      margin-left: -16px;
       padding-top: 0;
 
       font-size: 22px;
@@ -176,7 +178,7 @@ watch(
   &__second-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
     min-height: 135px;
   }
@@ -186,7 +188,7 @@ watch(
     align-items: center;
 
     max-width: 646px;
-    margin-top: -50px;
+    margin-top: 21px;
     margin-right: 9%;
     margin-left: 20px;
 
@@ -194,6 +196,10 @@ watch(
     font-size: 27px;
     line-height: 28px;
     text-transform: uppercase;
+
+    &.min {
+      margin-top: 4px;
+    }
 
     p {
       margin-left: 22px;

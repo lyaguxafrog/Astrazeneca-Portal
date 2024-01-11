@@ -1,15 +1,14 @@
 <template>
   <div class="app">
-    <ClientOnly>
-      <IEZaglushka />
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </ClientOnly>
+    <IEZaglushka />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { useAuth } from '~/utils/composables/useAuth';
@@ -26,13 +25,9 @@ await initAuth();
 
 await getSpecialities();
 await initSpecialityStore();
-
 await checkAccessToken();
+
 await getFavourites();
-/*
-onMounted(async () => {
-  await checkAccessToken();
-});*/
 
 const nuxtApp = useNuxtApp();
 

@@ -4,10 +4,14 @@ import { loadableEmpty } from '~/utils/functions/loadable';
 
 export type Event = {
   id: number;
-  cover: string;
   date: string;
   name: string;
   url: string;
+  cover: string;
+  image_desktop_1400px: string;
+  image_desktop_570px: string;
+  image_mobile_540px: string;
+  image_mobile_270px: string;
 };
 export const useEventsStore = () => {
   const state = useState('events-state', () => ({

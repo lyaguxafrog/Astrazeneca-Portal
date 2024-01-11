@@ -15,6 +15,7 @@ export type DrugFaq = {
   order: number;
   title: string;
   text: string;
+  approvals_and_decodings?: string;
 };
 
 export type DrugPlump = {
@@ -33,10 +34,10 @@ export type DrugPlump = {
   application_practices: {
     id: number;
     type: 'article' | 'video';
-    recomendation_cover_desktop_860px: string;
-    recomendation_cover_mobile_540px: string;
-    recomendation_cover_desktop_430px: string;
-    recomendation_cover_mobile_270px: string;
+    practic_desktop_400px?: string;
+    practic_desktop_800px?: string;
+    practic_mobile_280px?: string;
+    practic_mobile_560px?: string;
     name: string;
   }[];
   faq: DrugFaq[];

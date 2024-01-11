@@ -5,6 +5,7 @@ import { useScreen } from '~/utils/composables/useScreen';
 
 export enum ModalsName {
   DrugProps = 'drug-props',
+  VideosAddContent = 'videos-add-content',
 }
 
 type RegisteredModal = {

@@ -9,17 +9,16 @@
           prevEl: prevRef,
         }"
       >
-        <SwiperSlide
-          v-for="(history, index) in histories"
-          :key="history.id"
-          class="histories-slider__item"
-        >
+        <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
           <nuxt-link :to="`/histories?id=${history.id}`">
             <div class="histories-slider__item-content">
               <div class="histories-slider__item-content-img">
-                <img
-                  :src="`${baseUrl}/${history.avatar}`"
-                  alt=""
+                <AppImage
+                  :url="history.avatar"
+                  :url-full="history.avatar_desktop_120px"
+                  :url-full-x2="history.avatar_desktop_280px"
+                  :url-thin="history.avatar_desktop_70px"
+                  :url-thin-x2="history.avatar_desktop_140px"
                   :style="{ borderColor: history.color }"
                 />
               </div>
@@ -72,10 +71,12 @@ $root: histories-slider;
 
   width: 100%;
   max-width: 606px;
+  margin-left: -16px;
 
   &.min {
     width: 100%;
-    max-width: 440px;
+    max-width: 460px;
+    margin-left: 0;
 
     transition: max-width $tr-dur;
 
@@ -87,14 +88,18 @@ $root: histories-slider;
           transition: width $tr-dur;
         }
 
-        img {
+        &:deep(img) {
           height: 88px;
         }
 
         p {
-          margin-top: 14px;
+          width: calc(100% + 28px);
+          margin-top: 8px;
+          margin-left: -14px;
+          padding-bottom: 1px;
 
           font-size: 17px;
+          line-height: 1.1;
           word-break: break-word;
 
           transition: font-size $tr-dur, color $tr-dur;
@@ -103,12 +108,20 @@ $root: histories-slider;
     }
 
     .swiper-button {
+      top: 32px;
+
       transform: scale(0.8) translateY(-5px);
       transition: transform $tr-dur;
     }
   }
 
   &__item {
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     &-content {
       display: flex;
       flex-direction: column;
@@ -119,6 +132,8 @@ $root: histories-slider;
       &-img {
         display: grid;
 
+        width: 100%;
+
         @include aspect(120, 120);
       }
 
@@ -127,17 +142,17 @@ $root: histories-slider;
           color: $accent-color;
         }
       }
-    }
 
-    img {
-      display: block;
+      :deep(img) {
+        display: block;
 
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
 
-      border: 5px solid;
-      border-radius: 50%;
+        border: 5px solid;
+        border-radius: 50%;
+      }
     }
 
     p {
@@ -145,11 +160,11 @@ $root: histories-slider;
       margin-top: 17px;
 
       font-size: 20px;
-      line-height: 0.9;
+      line-height: 1;
       font-weight: 300;
       text-align: center;
       letter-spacing: -0.2px;
-      @include ellipsis(2);
+      @include ellipsis(3);
 
       transition: color $tr-dur;
     }
@@ -157,12 +172,12 @@ $root: histories-slider;
 
   .swiper-button {
     position: absolute;
-    top: 26%;
-    left: -43px;
+    top: 46px;
+    left: -30px;
     @include z-index(3);
 
     &.next {
-      right: -17px;
+      right: -30px;
       left: auto;
     }
   }
@@ -174,7 +189,7 @@ $root: histories-slider;
       &-content {
         width: 100px;
 
-        img {
+        :deep(img) {
           height: 100px;
         }
       }
@@ -183,6 +198,7 @@ $root: histories-slider;
 
   @include md-and-down {
     max-width: 100%;
+    margin-left: 0;
 
     &__item {
       display: flex;
@@ -196,9 +212,13 @@ $root: histories-slider;
 
       &-content {
         width: 100%;
+        &-img {
+          width: 100%;
+          height: 100%;
+        }
       }
 
-      img {
+      :deep(img) {
         height: 100%;
 
         border-width: 2px;
@@ -219,9 +239,15 @@ $root: histories-slider;
 
     p {
       margin-top: 8px;
+    }
+  }
 
-      font-size: 9px;
-      letter-spacing: -0.09px;
+  @include xs {
+    &__item {
+      p {
+        font-size: 9px;
+        letter-spacing: -0.09px;
+      }
     }
   }
 }

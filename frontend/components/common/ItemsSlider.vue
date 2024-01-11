@@ -1,13 +1,13 @@
 <template>
-  <div class="items-slider" :class="{ hidePagination }">
+  <div v-if="items.length" class="items-slider" :class="{ hidePagination }">
     <Swiper
       grab-cursor
-      loop
+      :loop="!disableLoop && loopSlides.length > slidesPerView + 1"
       :loop-additional-slides="2"
       :centered-slides="centeredSlides"
-      :space-between="$screen.mdAndDown ? 40 : 100"
-      :slides-per-view="$screen.mdAndDown ? mobileSlidesPerView : desktopSlidesPerView"
-      :initial-slide="items.length < 3 ? 0 : initialSlide"
+      :space-between="40"
+      :slides-per-view="slidesPerView"
+      :initial-slide="initialSlideIndex"
       :modules="[Pagination, Navigation]"
       :pagination="{ clickable: true }"
       :slides-offset-before="!centeredSlides && $screen.mdAndDown ? 22 : undefined"
@@ -15,6 +15,11 @@
       :navigation="{
         nextEl: nextRef,
         prevEl: prevRef,
+      }"
+      :breakpoints="{
+        1200: {
+          spaceBetween: 100,
+        }
       }"
       @swiper="onSwiper"
       @slide-change="onSlideChange"
@@ -39,7 +44,7 @@ import { Pagination, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
-import { ref } from 'vue';
+import {ref, toRef, computed} from 'vue';
 import { Swiper as SwiperType } from 'swiper/types';
 
 export type SliderProps = {
@@ -55,6 +60,7 @@ const props = withDefaults(
     withNavigation?: boolean;
     hidePagination?: boolean;
     centeredSlides?: boolean;
+    disableLoop?: boolean;
   }>(),
   {
     initialSlide: 1,
@@ -68,7 +74,7 @@ defineSlots<{
 }>();
 
 const emit = defineEmits<{
-  (event: 'onSlideChange', value: number | undefined): void;
+  (event: 'onSlideChange', value: number): void;
 }>();
 
 const { $screen } = useScreen();
@@ -81,6 +87,8 @@ const swiper = ref<SwiperType>();
 const onSwiper = (s: SwiperType) => {
   swiper.value = s;
 };
+
+const slidesPerView = toRef(() => $screen.value.mdAndDown ? props.mobileSlidesPerView : props.desktopSlidesPerView);
 
 const loopSlides = computed(() => {
   return props.items;
@@ -99,8 +107,20 @@ const loopSlides = computed(() => {
 });
 
 const onSlideChange = () => {
-  emit('onSlideChange', swiper.value?.realIndex);
+  if (swiper.value) {
+    emit('onSlideChange', swiper.value.realIndex);
+  }
 };
+
+const initialSlideIndex = toRef(() => props.items.length < 3 ? 0 : props.initialSlide);
+
+const resetPosition = () => {
+  swiper.value?.slideTo(initialSlideIndex.value);
+};
+
+defineExpose({
+  resetPosition,
+});
 </script>
 
 <style lang="scss" scoped>

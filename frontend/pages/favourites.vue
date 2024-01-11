@@ -81,6 +81,10 @@ import { useFavourites } from '~/utils/composables/useFavourites';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { ContentType } from '~/utils/types';
 
+useHead({
+  title: 'Избранное',
+});
+
 const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
 const { getFavourites, favourites } = useFavourites();
@@ -145,6 +149,10 @@ const showedFavourites = computed(() => {
 
     max-width: 1437px;
     margin-top: 71px;
+
+    @include lg-and-down {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
   }
 
   &__item {

@@ -2,23 +2,44 @@
   <div v-if="events.data?.length" class="home-events">
     <div class="home-events__title">Мероприятия</div>
 
-    <ItemsSlider :items="events.data" :desktop-slides-per-view="2.75" #default="{ item }">
+    <ItemsSlider :items="shownEvents" :initial-slide="initialSlide" :desktop-slides-per-view="2.75" #default="{ item }">
       <a :href="item.url" target="_blank">
-        <img :src="`${baseUrl}/${item.cover}`" alt="" />
+        <AppImage
+          :url="item.cover"
+          :url-full-x2="item.image_desktop_1400px"
+          :url-full="item.image_desktop_570px"
+          :url-thin-x2="item.image_mobile_540px"
+          :url-thin="item.image_mobile_270px"
+        />
       </a>
     </ItemsSlider>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useRuntimeConfig } from '#app';
+import { DateTime } from "luxon";
 import { useEventsStore } from '~/utils/composables/store/events';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
+import {computed} from "vue";
 
 const { getEvents } = useEventsStore();
 const { baseUrl } = useRuntimeConfig().public;
 const events = await getEvents();
 
-const initialSlide = computed(() => {});
+const shownEvents = computed(() => {
+  return events.data?.sort((e1, e2) => DateTime.fromISO(e1.date) - DateTime.fromISO(e2.date));
+});
+
+const initialSlide = computed(() => {
+  const today = DateTime.now();
+
+  return shownEvents.value?.findIndex((e) => {
+    const checkDate = DateTime.fromISO(e.date);
+
+    return checkDate > today;
+  });
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,10 +1,14 @@
 import { useState } from '#app';
+import { toRef } from 'vue';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { loadableEmpty } from '~/utils/functions/loadable';
 import { ArticlePlump } from '~/utils/composables/store/articles';
 
-export type VideoContentType = 'видеолекция' | 'кейс';
+export enum VideoContentType {
+  Video = 'видеолекция',
+  Case = 'кейс',
+}
 
 export type Video = {
   id: number;
@@ -34,8 +38,11 @@ export type VideoPlump = {
   content_type: VideoContentType;
   video_recomendations?: {
     id: number;
-    preview: string;
     title: string;
+    recomendation_cover_desktop_500px: string;
+    recomendation_cover_desktop_1000px: string;
+    recomendation_cover_mobile_280px: string;
+    recomendation_cover_mobile_560px: string;
   }[];
 };
 
@@ -46,9 +53,17 @@ export const useVideosStore = () => {
 
   const { specialityId } = useSpecialityStore();
 
-  const getVideos = async () => {
-    if (!state.value.videos.loaded && specialityId.value) {
-      const res = await useRequest<Video[]>(`/video-lectures/speciality/${specialityId.value}`, {
+  const getVideos = async (force?: boolean) => {
+    const loadAll = sessionStorage.getItem('showAllVideos');
+
+    let url = '/video-lectures';
+
+    if (!loadAll) {
+      url += `/speciality/${specialityId.value}`;
+    }
+
+    if ((!state.value.videos.loaded && specialityId.value) || force) {
+      const res = await useRequest<Video[]>(url, {
         method: 'GET',
       });
 
@@ -57,8 +72,6 @@ export const useVideosStore = () => {
         state.value.videos.loaded = true;
       }
     }
-
-    return state.value.videos.data;
   };
 
   const getVideo = async (id: number) => {
@@ -70,6 +83,8 @@ export const useVideosStore = () => {
   };
 
   return {
+    videos: toRef(() => state.value.videos.data),
+
     getVideos,
     getVideo,
   };

@@ -1,4 +1,4 @@
-import { toRef } from 'vue';
+import { toRef, computed } from 'vue';
 import { useCookie } from '#app';
 import { loadableEmpty } from '~/utils/functions/loadable';
 import { useRequest } from '~/utils/composables/useRequest';
@@ -13,9 +13,11 @@ type Speciality = {
 };
 
 export function useSpecialityStore() {
+  const specialityCookie = useCookie(specialityCookieName);
+
   const state = useState('speciality', () => ({
-    specialities: loadableEmpty<Speciality[]>(),
-    specialityId: undefined as number | undefined,
+    specialities: loadableEmpty<Speciality[]>([]),
+    specialityId: specialityCookie.value ? +specialityCookie.value : undefined,
     speciality: undefined as Speciality | undefined,
   }));
 
@@ -29,7 +31,9 @@ export function useSpecialityStore() {
     if (!state.value.specialities.loaded) {
       const res = await useRequest<Speciality[]>('/specialty', {
         method: 'GET',
+        ignoreError: true,
       });
+
 
       if (res.data) {
         state.value.specialities.data = res.data;
@@ -50,8 +54,9 @@ export function useSpecialityStore() {
   return {
     specialities: toRef(() => state.value.specialities),
     specialityId: toRef(() => state.value.specialityId),
-    speciality: computed(() =>
-      state.value.specialities.data?.find((s) => s.id === state.value.specialityId)
+    speciality: computed(() => {
+      return state.value.specialities.data?.find((s) => s.id === state.value.specialityId);
+      }
     ),
 
     init,

@@ -1,4 +1,5 @@
-import { useRoute, useRouter, useState } from '#app';
+import { toRef } from 'vue';
+import { useRoute, useRouter, useState, useCookie } from '#app';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
@@ -10,11 +11,10 @@ export const useAuth = () => {
 
   const { specialityId, setSpeciality } = useSpecialityStore();
 
-  const accessToken = useCookie('access-token');
-  const userId = useCookie('user-id');
+  const cookieUserId = useCookie('user-id');
 
   const state = useState('auth-state', () => ({
-    userId: 0,
+    userId: cookieUserId.value ? +cookieUserId.value : 0,
   }));
 
   const init = async () => {
@@ -50,9 +50,8 @@ export const useAuth = () => {
         specialty: number;
       }>(`/get_user/${token}`, {
         method: 'GET',
+        ignoreError: true,
       });
-
-      console.log(res.data?.user_id);
 
       if (res.data?.user_id) {
         userIdCookie.value = `${res.data.user_id}`;
@@ -64,6 +63,7 @@ export const useAuth = () => {
             ...$route.query,
             access_token: undefined,
             refresh: undefined,
+            status: undefined,
           },
         });
       } else {
@@ -103,6 +103,7 @@ export const useAuth = () => {
           ...$route.query,
           access_token: undefined,
           refresh: undefined,
+          status: undefined,
         },
       });
 

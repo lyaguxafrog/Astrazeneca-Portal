@@ -20,19 +20,21 @@
 
           <div class="videos-slider__materials-buttons-wrapper">
             <AppButton
+              v-if="lectures.length"
               :primary="selectedType === 'видеолекция'"
               :selected="selectedType === 'видеолекция'"
               :petite="$screen.mdAndDown"
-              @click="setType('видеолекция')"
+              @click="setType(VideoContentType.Video)"
             >
               <template v-if="!$screen.mdAndDown"> Видеолекции </template>
               <template v-else> Видеоматериалы </template>
             </AppButton>
             <AppButton
+              v-if="cases.length"
               :primary="selectedType === 'кейс'"
               :selected="selectedType === 'кейс'"
               :petite="$screen.mdAndDown"
-              @click="setType('кейс')"
+              @click="setType(VideoContentType.Case)"
             >
               Клинические случаи
             </AppButton>
@@ -40,7 +42,14 @@
         </div>
       </div>
 
-      <ItemsSlider v-if="shownVideos" :items="shownVideos" :desktop-slides-per-view="1.7">
+      <ItemsSlider
+        ref="sliderEl"
+        v-if="shownVideos"
+        disable-loop
+        :items="shownVideos"
+        :desktop-slides-per-view="1.7"
+        @on-slide-change="onSlideChange"
+      >
         <template #default="{ item }">
           <nuxt-link class="items-slider__content" :to="`video/${item.id}`">
             <div
@@ -62,30 +71,61 @@
         </template>
       </ItemsSlider>
     </div>
+    <HomeAddContentModal @load-all="loadAllVideos" />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { computed, ref } from 'vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import HomeAddContentModal from '~/components/pages/home/HomeAddContentModal.vue';
 import { useVideosStore, VideoContentType } from '~/utils/composables/store/videos';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
+import { ModalsName, useModal } from '~/utils/composables/useModal';
 
 const { $screen } = useScreen();
-const { getVideos } = useVideosStore();
+const { getVideos, videos } = useVideosStore();
 const { speciality } = useSpecialityStore();
-const { baseUrl } = useRuntimeConfig().public;
+const { openModal, closeModal } = useModal();
+const sliderEl = ref();
 
-const videos = await getVideos();
+await getVideos();
 
-const selectedType = ref<VideoContentType>('видеолекция');
+const selectedType = ref<VideoContentType>(VideoContentType.Video);
 
-const shownVideos = computed(() => videos?.filter((v) => v.content_type === selectedType.value));
+const lectures = computed(() => videos.value?.filter((v) => v.content_type === VideoContentType.Video));
+const cases = computed(() => videos.value?.filter((v) => v.content_type === VideoContentType.Case));
+
+const shownVideos = computed(() =>
+  selectedType.value === VideoContentType.Video ? lectures.value : cases.value
+);
 
 const setType = (type: VideoContentType) => {
   selectedType.value = type;
+  sliderEl.value.resetPosition();
+};
+
+const onSlideChange = (index: number) => {
+  if (sessionStorage.getItem('showAllVideos')) {
+    return;
+  }
+
+  if (index === shownVideos.value.length - 1) {
+    openModal(ModalsName.VideosAddContent);
+  }
+};
+
+const loadAllVideos = () => {
+  if (sessionStorage.getItem('showAllVideos')) {
+    return;
+  }
+
+  sessionStorage.setItem('showAllVideos', '1');
+  getVideos(true);
+  closeModal(ModalsName.VideosAddContent);
 };
 </script>
 
