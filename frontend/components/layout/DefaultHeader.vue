@@ -57,6 +57,8 @@ const $route = useRoute();
 const { $screen } = useScreen();
 const { specialityId } = useSpecialityStore();
 
+console.log('sp', specialityId.value);
+
 const isExtendsHeader = toRef(() => !specialityId.value && $route.name !== 'histories');
 
 const searchEl = ref();
