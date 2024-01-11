@@ -6,7 +6,9 @@
       <DefaultGuard />
 
       <DefaultHeader v-if="!$screen.mdAndDown" />
-      <slot />
+      <template v-if="specialityId">
+        <slot />
+      </template>
       <DefaultFooter v-if="!meta.hideFooter" class="default-layout__footer" />
       <DefaultMenu v-if="!meta.hideFooter && specialityId" class="for-mobile-or-tablet" />
     </ClientOnly>

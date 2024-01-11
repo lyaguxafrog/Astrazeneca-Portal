@@ -50,6 +50,7 @@ export const useAuth = () => {
         specialty: number;
       }>(`/get_user/${token}`, {
         method: 'GET',
+        ignoreError: true,
       });
 
       if (res.data?.user_id) {

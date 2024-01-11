@@ -14,15 +14,13 @@
       </div>
     </div>
 
-    <template v-if="specialityId">
-      <HomeVideosSlider />
+    <HomeVideosSlider />
 
-      <HomeArticles />
+    <HomeArticles />
 
-      <HomeEvents />
+    <HomeEvents />
 
-      <HomeDrugs />
-    </template>
+    <HomeDrugs />
 
     <Teleport to="#footerAccessInfo">
       <div v-html="accessInfo.data?.number" />
