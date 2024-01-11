@@ -85,7 +85,7 @@ watch(
 );
 
 const showAllModal = () => {
-  if (sessionStorage.getItem('showAllVideos')) {
+  if (sessionStorage.getItem('showAllContent')) {
     return;
   }
 
@@ -93,11 +93,11 @@ const showAllModal = () => {
 }
 
 const loadAllContent = () => {
-  if (sessionStorage.getItem('showAllVideos')) {
+  if (sessionStorage.getItem('showAllContent')) {
     return;
   }
 
-  sessionStorage.setItem('showAllVideos', '1');
+  sessionStorage.setItem('showAllContent', '1');
 
   getVideos(true);
   getArticles(true);

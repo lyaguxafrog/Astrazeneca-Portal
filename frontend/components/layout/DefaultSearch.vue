@@ -47,10 +47,11 @@
 import { nextTick, ref } from 'vue';
 import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
-import {IconName, Star, Video} from '~/components/app/AppIcon.utils';
+import { IconName } from '~/components/app/AppIcon.utils';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useScreen } from '~/utils/composables/useScreen';
+import { useSpecialityStore } from '~/utils/composables/store/speciality';
 
 type SearchResult = {
   id: number;
@@ -58,11 +59,13 @@ type SearchResult = {
   url?: string;
   model?: 'video_lecture' | 'article' | 'event';
   content_type?: 'video_lecture' | 'article' | 'event';
+  speciality?: number[];
 };
 
 const $route = useRoute();
 const $router = useRouter();
 const { $screen } = useScreen();
+const { specialityId } = useSpecialityStore();
 
 const isOpen = ref();
 const inputEl = ref();
@@ -154,6 +157,10 @@ const processResults = (results?: SearchResult[]) => {
   }
 
   results.forEach((r, index) => {
+    if (r.speciality && r.speciality.length && !r.speciality.includes(specialityId.value) && !sessionStorage.getItem('showAllContent')) {
+      return;
+    }
+
     const model = r.model || r.content_type;
 
     const data = {
