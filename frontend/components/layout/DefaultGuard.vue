@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRef } from 'vue';
+import { ref, toRef, watch } from 'vue';
 import { useRoute } from '#app';
 import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
