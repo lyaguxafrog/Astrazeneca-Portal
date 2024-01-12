@@ -1,0 +1,17 @@
+name: Деплой на dev-сервер
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Деплой на dev сервер
+        run: |
+          sshpass -p "${{ secrets.DEV_SSH_PASSWORD }}" ssh -t root@${{ secrets.DEV_SERVER_IP }}
+          cd portal-backend
+          ./helper.sh update
+        env:
+          SSHPASS: ${{ secrets.DEV_SSH_PASSWORD }}
