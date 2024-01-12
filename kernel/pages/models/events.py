@@ -22,8 +22,8 @@ class Events(models.Model):
 
 
     class Meta:
-        verbose_name = 'Мероприятие'
-        verbose_name_plural = "Мероприятия"
+        verbose_name = 'мероприятие'
+        verbose_name_plural = "мероприятия"
 
 
     def __str__(self):

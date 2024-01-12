@@ -13,5 +13,5 @@ class Specialty(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Специальность'
-        verbose_name_plural = 'Специальности'
+        verbose_name = 'специальность'
+        verbose_name_plural = 'специальности'

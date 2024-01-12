@@ -12,8 +12,8 @@ class Articles(models.Model):
         ('инновация', 'Инновация'),
     ]
 
-    article_name = models.CharField(max_length=120, verbose_name='Заголовок *',
-                                    help_text='Ограничение в 120 символов')
+    article_name = models.CharField(max_length=50, verbose_name='Заголовок *',
+                                    help_text='Ограничение в 50 символов')
     main_cover_desktop = models.ImageField(upload_to='article_cover/',
                                    verbose_name='Главная картинка статьи(десктоп) *')
     main_cover_mobile = models.ImageField(upload_to='article_cover/',
@@ -79,8 +79,8 @@ class Articles(models.Model):
 
 
     class Meta:
-        verbose_name = "Статья"
-        verbose_name_plural = "Статьи"
+        verbose_name = "статью"
+        verbose_name_plural = "статьи"
 
     def __str__(self):
         return self.article_name

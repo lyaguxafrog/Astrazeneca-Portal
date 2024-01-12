@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from tkinter import Widget
 from django import forms
 from django.contrib import admin
 from pages.models import VideoLectures
@@ -8,6 +9,9 @@ class VideoLecturesAdminForm(forms.ModelForm):
     class Meta:
         model = VideoLectures
         exclude = []
+        widgets = {
+            'video_article': forms.Textarea(attrs={'rows': 2, 'cols': 52}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

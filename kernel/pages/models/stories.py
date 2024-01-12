@@ -38,5 +38,5 @@ class Story(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Истории'
-        verbose_name_plural = 'Истории'
+        verbose_name = 'историю'
+        verbose_name_plural = 'истории'
