@@ -25,5 +25,5 @@ class MainPageApproveNumber(SingletonModel):
         return "Номер одобрения на главной странице"
 
     class Meta:
-        verbose_name = 'Футер'
-        verbose_name_plural = 'Футер'
+        verbose_name = 'футер'
+        verbose_name_plural = 'футер'

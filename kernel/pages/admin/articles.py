@@ -28,7 +28,7 @@ class ArticlesAdminForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'final_content': CKEditorWidget(),
-            'article_name': forms.Textarea(attrs={'rows': 2, 'cols': 125}),
+            'article_name': forms.Textarea(attrs={'rows': 2, 'cols': 52}),
         }
 
 class ArticlesAdmin(admin.ModelAdmin):
