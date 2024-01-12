@@ -59,6 +59,12 @@ const initialSlide = computed(() => {
   }
 
   a {
+    display: block;
+
+    overflow: hidden;
+
+    border-radius: 40px;
+
     transition: filter $tr-dur;
 
     @include hover {
@@ -74,6 +80,10 @@ const initialSlide = computed(() => {
 
       font-size: 27px;
       line-height: 28px;
+    }
+
+    a {
+      border-radius: 20px;
     }
   }
 }
