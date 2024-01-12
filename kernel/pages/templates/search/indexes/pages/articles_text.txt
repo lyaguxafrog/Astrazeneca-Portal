@@ -1,5 +1,0 @@
-{{ object.article_name }}
-{{ object.short_description }}
-{{ object.final_content }}
-{{ object.access_number }}
-{{ object.information }}
