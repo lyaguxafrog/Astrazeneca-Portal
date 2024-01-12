@@ -250,6 +250,7 @@ useHead({
 
   &__image-and-text {
     display: flex;
+    align-items: flex-start;
 
     margin-top: 5px;
 
@@ -259,6 +260,7 @@ useHead({
 
     img {
       width: 245px;
+      min-width: 245px;
       margin-right: 55px;
     }
 
@@ -277,7 +279,11 @@ useHead({
   }
 
   :deep(table) {
+    max-width: 100%;
+
     font-size: 20px;
+    overflow-wrap: break-word;
+    table-layout: fixed;
 
     border-color: $gray-color;
     td, th {
@@ -406,6 +412,7 @@ useHead({
         float: right;
 
         width: 100px;
+        min-width: 100px;
         margin-top: 0;
         margin-right: 0;
         margin-bottom: 10px;
