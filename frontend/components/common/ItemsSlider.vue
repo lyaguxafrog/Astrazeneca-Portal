@@ -183,6 +183,19 @@ defineExpose({
           }
         }
       }
+
+      &-slide {
+        .items-slier__visible-on-active {
+          opacity: 0;
+          transition: opacity $tr-dur;
+        }
+
+        &-active {
+          .items-slier__visible-on-active {
+            opacity: 1;
+          }
+        }
+      }
     }
   }
 
@@ -208,18 +221,8 @@ defineExpose({
         &-slide {
           filter: grayscale(0.7);
           transition: filter $tr-dur;
-
-          .items-slier__visible-on-active {
-            opacity: 0;
-            transition: opacity $tr-dur;
-          }
-
           &-active {
             filter: grayscale(0);
-
-            .items-slier__visible-on-active {
-              opacity: 1;
-            }
           }
         }
 

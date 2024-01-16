@@ -174,6 +174,14 @@ const onSlideChange = (index: number | undefined) => {
     }
   }
 
+  @include lg-and-down {
+    &__slide {
+      &-title {
+        min-height: 114px;
+      }
+    }
+  }
+
   @include md-and-down {
     &__title {
       margin-bottom: 30px;
@@ -183,7 +191,7 @@ const onSlideChange = (index: number | undefined) => {
     }
     &__slide {
       &-title {
-        min-height: auto;
+        min-height: 92px;
         padding: 0 27px 2px;
 
         font-size: 27px;
@@ -192,6 +200,8 @@ const onSlideChange = (index: number | undefined) => {
       }
       &-image-wrapper {
         height: auto;
+
+        border-radius: 20px;
 
         @include aspect(1,1);
       }

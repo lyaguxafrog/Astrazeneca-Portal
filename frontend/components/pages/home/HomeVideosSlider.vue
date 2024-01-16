@@ -186,6 +186,7 @@ const onSlideChange = (index: number) => {
 
     font-family: $secondary-font-family;
     font-size: 40px;
+    line-height: 1.05;
   }
 
   .items-slider__content {
@@ -207,7 +208,7 @@ const onSlideChange = (index: number) => {
     margin-top: auto;
     overflow: hidden;
 
-    border-radius: 34px;
+    border-radius: 40px;
 
     .videos-slider__image {
       display: block;
@@ -215,7 +216,7 @@ const onSlideChange = (index: number) => {
       width: 100%;
       object-fit: cover;
 
-      border-radius: 34px;
+      border-radius: 40px;
 
       transition: transform $tr-dur;
     }
@@ -271,6 +272,11 @@ const onSlideChange = (index: number) => {
     &__image {
       height: 100%;
     }
+
+    .videos-slider__img {
+      border-radius: 20px;
+    }
+
     &__materials {
       padding: 3px 0 5px;
 
