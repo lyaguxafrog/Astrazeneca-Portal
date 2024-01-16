@@ -1,5 +1,5 @@
 <template>
-  <div :class="{stop: stopSwipe}">
+  <div :class="{stop: stopSwipe}" class="histories__wrapper">
     <InsidePageHead v-if="!$screen.mdAndDown" class="histories__back" />
     <div v-if="histories.length" class="histories" >
       <Swiper
@@ -28,7 +28,7 @@
         @swiper="onSwiper"
         @slide-change="onSlideChange"
       >
-        <SwiperSlide v-for="history in histories" :key="history.id" class="history">
+        <SwiperSlide v-for="history in histories" :key="history.id" class="history" :class="{isMounted}">
           <AppImage
             class="history__bg"
             :url="history.cover_image"
@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, toRef } from 'vue';
+import { onMounted, ref, toRef, watch } from 'vue';
 import { useRoute, useRouter } from '#app';
 import { onLongPress, useSwipe } from '@vueuse/core';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -99,11 +99,7 @@ import { useBack } from '~/utils/composables/useHistory';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { ContentType } from '~/utils/types';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
-import {useAuth} from "~/utils/composables/useAuth";
-
-definePageMeta({
-  hideFooter: true,
-});
+import { useAuth } from "~/utils/composables/useAuth";
 
 const { histories, getHistories } = useHistoriesStore();
 const { baseUrl } = useRuntimeConfig().public;
@@ -116,7 +112,7 @@ const { userId } = useAuth();
 
 await getHistories();
 
-const activeSlideId = ref(+($route.query.id || 0));
+const activeSlideId = toRef(() => +($route.query.historyId || 0));
 
 const activeHistoryIndex = toRef(() =>
   histories.value.findIndex((h) => h.id === activeSlideId.value)
@@ -132,8 +128,11 @@ const historiesEl = ref();
 const { back } = useBack();
 const stopSwipe = ref(false);
 
+const isMounted = ref(false);
+
 const { direction } = useSwipe(historiesEl, {
   threshold: 150,
+  passive: false,
   onSwipeEnd: async () => {
     if (!$screen.value.mdAndDown || stopSwipe.value) {
       return;
@@ -151,10 +150,9 @@ const { direction } = useSwipe(historiesEl, {
 });
 
 watch(
-  () => $route.query.id,
+  () => $route.query.historyId,
   (newValue) => {
     if (newValue) {
-      activeSlideId.value = +newValue;
       swiper.value?.slideTo(activeHistoryIndex.value);
     }
   }
@@ -191,8 +189,8 @@ const startActiveVideo = () => {
 
 const onSlideChange = () => {
   if (swiper.value) {
-    activeSlideId.value = histories.value[swiper.value.realIndex].id;
-    $router.replace({ query: { id: activeHistory.value.id, access_token: $route.query.access_token } });
+    const id = histories.value[swiper.value?.realIndex].id;
+    $router.replace({ query: { historyId: id, access_token: $route.query.access_token } });
 
     startActiveVideo();
   }
@@ -211,7 +209,8 @@ onLongPress(activeVideo, pause, {
 onMounted(() => {
   setTimeout(() => {
     startActiveVideo();
-  }, 500);
+    isMounted.value = true;
+  }, 600);
 });
 </script>
 
@@ -222,18 +221,22 @@ onMounted(() => {
 
 .histories {
   position: relative;
+  @include z-index(2);
 
   width: 100%;
   max-width: 1330px;
   margin: 0 auto;
 
+  &__wrapper {
+    background: $main-bg-color;
+  }
+
   &__back {
     height: 0;
     min-height: 0;
-    margin-top: 20px;
-    margin-bottom: -8px;
+    margin-bottom: -19px;
     margin-left: 20px;
-    padding: 0;
+    padding: 20px 0 0;
   }
 
   .history {
@@ -242,7 +245,6 @@ onMounted(() => {
     height: 100%;
 
     @include md-and-up {
-      transition: transform $tr-dur;
       &:not(.swiper-slide-active) {
         transform: scale(0.48);
 
@@ -250,6 +252,12 @@ onMounted(() => {
           opacity: 0;
           transition: none;
         }
+      }
+    }
+
+    &.isMounted {
+      @include md-and-up {
+        transition: transform $tr-dur;
       }
     }
 
@@ -268,7 +276,8 @@ onMounted(() => {
       align-items: center;
 
       width: 440px;
-      margin: 16px auto;
+      margin: 16px auto 0;
+      padding-bottom: 16px;
     }
 
     &__volume {

@@ -10,7 +10,7 @@
         }"
       >
         <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
-          <nuxt-link :to="link(history.id)" :replace="replaceMode">
+          <div @click="link(history.id)">
             <div class="histories-slider__item-content">
               <div class="histories-slider__item-content-img">
                 <AppImage
@@ -26,7 +26,7 @@
                 {{ history.title }}
               </p>
             </div>
-          </nuxt-link>
+          </div>
         </SwiperSlide>
       </Swiper>
       <div ref="nextRef" class="swiper-button next">
@@ -40,8 +40,8 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, toRef} from 'vue';
-import { useRoute } from "#app";
+import { ref, toRef, onMounted } from 'vue';
+import { useRoute, useRouter } from "#app";
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
@@ -56,17 +56,26 @@ const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
 const { histories, getHistories } = useHistoriesStore();
 const $route = useRoute();
+const $router = useRouter();
 
-const replaceMode = toRef(() => $route.name === 'histories');
+const replaceMode = toRef(() => !!$route.query.historyId);
 
 const link = (id) => {
-  let url = `/histories?id=${id}`;
+  const query = {
+    ...$route.query,
+    historyId: id,
+  };
 
-  if ($route.query.access_token) {
-    url += `&access_token=${$route.query.access_token}`;
+  if (replaceMode.value) {
+    $router.replace({
+      query,
+    });
+  } else {
+    $router.push({
+      query,
+    });
   }
-  return url;
-}
+};
 
 const nextRef = ref(null);
 const prevRef = ref(null);
@@ -129,10 +138,12 @@ $root: histories-slider;
   }
 
   &__item {
-    a {
+    & > div {
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      cursor: pointer;;
     }
 
     &-content {
@@ -217,7 +228,7 @@ $root: histories-slider;
       display: flex;
       justify-content: center;
 
-      a {
+      & > div {
         display: block;
 
         width: 80%;

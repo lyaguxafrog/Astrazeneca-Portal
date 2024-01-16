@@ -90,6 +90,10 @@ useHead({
 
   word-break: break-word;
 
+  :deep(img) {
+    max-width: 100%;
+  }
+
   &__first-ellipse {
     top: -150px;
     left: -840px;
@@ -162,7 +166,7 @@ useHead({
       left: 0;
       z-index: 1;
 
-      background-color: rgba(#000, 0.3);
+      background-color: rgba(#000, 0.4);
     }
   }
 
