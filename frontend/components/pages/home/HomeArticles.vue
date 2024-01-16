@@ -12,7 +12,9 @@
     />
 
     <div v-if="activeSlideContent" class="articles__slide-title for-mobile-or-tablet">
-      {{ activeSlideContent.article_name }}
+      <div v-if="!activeSlideContent.center_title">
+        {{ activeSlideContent.article_name }}
+      </div>
     </div>
 
     <ItemsSlider
@@ -25,9 +27,14 @@
         <nuxt-link class="articles__slide" :to="`/article/${item.id}`">
           <div
             class="articles__slide-title for-desktop items-slier__visible-on-active"
-            v-html="item.article_name"
+            v-html="!item.center_title ? item.article_name : ''"
           />
-          <div class="articles__slide-image-wrapper">
+          <div class="articles__slide-image-wrapper" :class="{withBefore: item.center_title}">
+            <div
+              v-if="item.center_title"
+              class="articles__slide-title items-slier__visible-on-active"
+              v-html="item.article_name"
+            />
             <AppImage
               class="articles__slide-image"
               :url="item.cover_desktop_1400px"
@@ -153,12 +160,39 @@ const onSlideChange = (index: number | undefined) => {
       }
 
       &-wrapper {
+        position: relative;
+
         width: 100%;
         height: 530px;
         // margin-top: auto;
         overflow: hidden;
 
         border-radius: 40px;
+
+        .articles__slide-title {
+          position: absolute;
+          top: 50%;
+          @include z-index(2);
+
+          min-height: initial;
+          padding-left: 40px;
+
+          transform: translateY(-50%);
+        }
+
+        &.withBefore {
+          &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+
+            background-color: rgba(#000, 0.4);
+          }
+        }
       }
     }
 
@@ -171,6 +205,15 @@ const onSlideChange = (index: number | undefined) => {
       @include ellipsis(5);
 
       transition: opacity $tr-dur;
+    }
+
+    &.centerTitle {
+      position: relative;
+
+      .articles__slide-title {
+        position: absolute;
+        top: 10px;
+      }
     }
   }
 
@@ -204,6 +247,15 @@ const onSlideChange = (index: number | undefined) => {
         border-radius: 20px;
 
         @include aspect(1,1);
+
+        .articles__slide-title {
+          padding-left: 14px;
+
+          font-size: 16px;
+          line-height: 1.1;
+          font-weight: 400;
+          word-break: break-word;
+        }
       }
     }
     p {

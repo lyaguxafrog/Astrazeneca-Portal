@@ -1,5 +1,5 @@
 <template>
-  <div class="default-header" :class="{ extends: isExtendsHeader }">
+  <div class="default-header" :class="{ extends: isExtendsHeader || activeSlideId }">
     <div ref="scrollHeaderEl" class="default-header__content">
       <div class="default-header__main" :class="{ min: !isExtendsHeader }">
         <div class="default-header__first-row">
@@ -29,8 +29,10 @@
         </div>
       </div>
 
-      <transition>
-        <div v-if="isExtendsHeader" class="default-header__modal">
+      <transition mode="out-in">
+        <DefaultHistories v-if="activeSlideId" key="2" />
+
+        <div v-else-if="isExtendsHeader" key="1" class="default-header__modal">
           <div class="default-header__specialities">
             <SpecialitySlider />
           </div>
@@ -47,6 +49,7 @@ import { useRoute } from '#app';
 import { ref, toRef, watch } from 'vue';
 import DefaultMenu from '~/components/layout/DefaultMenu.vue';
 import DefaultHistoriesSlider from '~/components/layout/DefaultHistoriesSlider.vue';
+import DefaultHistories from '~/components/layout/DefaultHistories.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
 import DefaultSearch from '~/components/layout/DefaultSearch.vue';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
@@ -57,7 +60,9 @@ const $route = useRoute();
 const { $screen } = useScreen();
 const { specialityId } = useSpecialityStore();
 
-const isExtendsHeader = toRef(() => !specialityId.value && $route.name !== 'histories');
+const isExtendsHeader = toRef(() => !specialityId.value && !$route.query.historyId);
+
+const activeSlideId = toRef(() => +($route.query.historyId || 0));
 
 const searchEl = ref();
 const scrollHeaderEl = ref();
@@ -67,9 +72,9 @@ const openSearch = () => {
 };
 
 watch(
-  isExtendsHeader,
+  [isExtendsHeader, activeSlideId],
   (newValue) => {
-    if (newValue) {
+    if (newValue.find((v) => !!v)) {
       disableScroll(scrollHeaderEl.value, $screen.value.mdAndDown);
     } else {
       enableScroll(scrollHeaderEl.value, $screen.value.mdAndDown);
@@ -88,10 +93,8 @@ watch(
 
   height: 280px;
 
-  box-shadow: 0 4px 94px 0 rgba(0, 0, 0, 0.45);
-
   &.extends {
-    margin-bottom: 100vh;
+    margin-bottom: 150vh;
   }
 
   &__content {
@@ -107,11 +110,14 @@ watch(
   }
 
   &__main {
+    position: relative;
+    @include z-index(3);
+
     padding-bottom: 50px;
     padding-left: 70px;
 
     background-color: $main-bg-color;
-    box-shadow: 0 4px 94px 0 rgba(19, 37, 72, 0.45);
+    box-shadow: 0 4px 94px 0 rgba(0,0,0, 0.45);
 
     &.min {
       padding-bottom: 20px;

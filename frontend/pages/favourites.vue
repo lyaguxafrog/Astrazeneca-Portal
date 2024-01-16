@@ -192,7 +192,7 @@ const showedFavourites = computed(() => {
       left: 0;
       z-index: 1;
 
-      background-color: rgba(#000, 0.3);
+      background-color: rgba(#000, 0.4);
     }
 
     &-bg {
