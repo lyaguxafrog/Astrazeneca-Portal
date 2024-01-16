@@ -35,6 +35,7 @@ class ArticlesSerializer(serializers.ModelSerializer):
             'first_abzac',
             'content_blocks',
             'speciality',
+            'article_type',
             'drug',
             'cover_desktop_1400px',
             'cover_desktop_2800px',
@@ -92,9 +93,18 @@ class ArticlesBySpecialitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Articles
-        fields = ['id', 'article_name', 'cover_desktop_1400px',
-                  'cover_desktop_2800px', 'cover_mobile_840px', 'cover_mobile_420px',
-                  'information', 'first_abzac', 'priority', 'center_title']
+        fields = ['id',
+                  'article_name',
+                  'article_type',
+                  'information',
+                  'first_abzac',
+                  'priority',
+                  'center_title',
+                  'cover_desktop_1400px',
+                  'cover_desktop_2800px',
+                  'cover_mobile_840px',
+                  'cover_mobile_420px',
+                  ]
 
 
 

@@ -8,8 +8,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Articles(models.Model):
     ARTICLE_TYPE_CHOICES = [
-        ('статья', 'Статья'),
-        ('инновация', 'Инновация'),
+        ('article', 'Статья'),
+        ('innovation', 'Инновация'),
     ]
 
     article_name = models.CharField(max_length=90, verbose_name='Заголовок *',
@@ -107,6 +107,6 @@ class ContentBlock(models.Model):
     article = models.ForeignKey('Articles', on_delete=models.CASCADE, related_name='content_blocks')
     content_type = models.CharField(max_length=16, choices=ARTICLE_CONTENT_TYPE_CHOICES, verbose_name='Тип контента *')
     text = models.TextField(blank=True, null=True, verbose_name='Текст')
-    # image = models.ImageField(upload_to='content_block_images/',
-    #                           blank=True, null=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to='content_block_images/',
+                              blank=True, null=True, verbose_name='Изображение')
     order = models.PositiveIntegerField(verbose_name='Поорядковый номер *')

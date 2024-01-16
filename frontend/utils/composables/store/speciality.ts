@@ -44,6 +44,8 @@ export function useSpecialityStore() {
     return state.value.specialities.data;
   };
 
+  const activeSpeciality = computed(() => state.value.specialities.data?.find((s) => s.id === state.value.specialityId));
+
   const setSpeciality = async (id: number) => {
     const specialityCookie = await useCookie(specialityCookieName);
 
@@ -54,10 +56,7 @@ export function useSpecialityStore() {
   return {
     specialities: toRef(() => state.value.specialities),
     specialityId: toRef(() => state.value.specialityId),
-    speciality: computed(() => {
-      return state.value.specialities.data?.find((s) => s.id === state.value.specialityId);
-      }
-    ),
+    speciality: activeSpeciality,
 
     init,
     setSpeciality,
