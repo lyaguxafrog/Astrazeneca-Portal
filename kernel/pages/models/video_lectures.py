@@ -11,8 +11,8 @@ class VideoLectures(models.Model):
         ('клинические случаи', 'Клинические случаи'),
     ]
 
-    video_article = models.CharField(max_length=50, verbose_name="Заголовок *",
-                                     help_text='Ограничение в 50 символов')
+    video_article = models.CharField(max_length=90, verbose_name="Заголовок *",
+                                     help_text='Ограничение в 90 символов')
     short_description = models.TextField(verbose_name='Краткое описание *')
     conspect = RichTextField(verbose_name="Конспект видео *")
     video = models.FileField(upload_to='video_lectures/', verbose_name='Видео *')

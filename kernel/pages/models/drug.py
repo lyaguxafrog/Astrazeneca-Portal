@@ -5,8 +5,8 @@ from ckeditor.fields import RichTextField
 
 
 class Drug(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Название препарата *",
-                            help_text='Ограничение в 50 символов')
+    name = models.CharField(max_length=90, verbose_name="Название препарата *",
+                            help_text='Ограничение в 90 символов')
     brief_info = models.TextField(verbose_name="Краткое описание препарата *")
 
     image_desktop = models.ImageField(upload_to='drug_images/',
