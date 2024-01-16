@@ -22,7 +22,7 @@
         }
       }"
       @swiper="onSwiper"
-      @slide-next-transition-end="onSlideChange"
+      @slide-change="onSlideChange"
     >
       <SwiperSlide v-for="item in loopSlides" :key="item.id" class="items-slider__slide">
         <slot name="default" :item="item"></slot>
