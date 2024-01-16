@@ -19,6 +19,10 @@ class StoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = '__all__'
+        ordering = ['id']
+
+    def get_queryset(self):
+        return Story.objects.all().order_by('id')
 
     def get_video(self, obj):
         return self.get_relative_url(obj.video)
@@ -67,6 +71,7 @@ class StorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = '__all__'
+        ordering = ['id']
 
 
     def get_queryset(self):
