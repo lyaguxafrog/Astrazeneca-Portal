@@ -8,8 +8,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Articles(models.Model):
     ARTICLE_TYPE_CHOICES = [
-        ('статья', 'Статья'),
-        ('инновация', 'Инновация'),
+        ('article', 'Статья'),
+        ('innovation', 'Инновация'),
     ]
 
     article_name = models.CharField(max_length=90, verbose_name='Заголовок *',
