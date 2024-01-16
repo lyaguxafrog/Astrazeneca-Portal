@@ -10,7 +10,7 @@
         }"
       >
         <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
-          <nuxt-link :to="link(history.id)">
+          <nuxt-link :to="link(history.id)" :replace="replaceMode">
             <div class="histories-slider__item-content">
               <div class="histories-slider__item-content-img">
                 <AppImage
@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import {ref, toRef} from 'vue';
 import { useRoute } from "#app";
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -56,6 +56,8 @@ const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
 const { histories, getHistories } = useHistoriesStore();
 const $route = useRoute();
+
+const replaceMode = toRef(() => $route.name === 'histories');
 
 const link = (id) => {
   let url = `/histories?id=${id}`;

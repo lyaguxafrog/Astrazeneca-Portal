@@ -47,8 +47,8 @@ class Drug(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'репарат'
-        verbose_name_plural = 'Препараты'
+        verbose_name = 'препарат'
+        verbose_name_plural = 'препараты'
 
 class DrugFAQ(models.Model):
 

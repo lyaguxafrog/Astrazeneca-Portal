@@ -1,8 +1,8 @@
 <template>
-  <div v-if="events.data?.length" class="home-events">
+  <div v-if="shownEvents?.length" class="home-events">
     <div class="home-events__title">Мероприятия</div>
 
-    <ItemsSlider :items="shownEvents" :initial-slide="initialSlide" :desktop-slides-per-view="2.75" #default="{ item }">
+    <ItemsSlider :items="shownEvents" :desktop-slides-per-view="2.75" #default="{ item }">
       <a :href="item.url" target="_blank">
         <AppImage
           :url="item.cover"
@@ -17,28 +17,36 @@
 </template>
 
 <script setup lang="ts">
+import {computed} from "vue";
 import { useRuntimeConfig } from '#app';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 import { useEventsStore } from '~/utils/composables/store/events';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
-import {computed} from "vue";
 
 const { getEvents } = useEventsStore();
 const { baseUrl } = useRuntimeConfig().public;
 const events = await getEvents();
 
 const shownEvents = computed(() => {
-  return events.data?.sort((e1, e2) => DateTime.fromISO(e1.date) - DateTime.fromISO(e2.date));
-});
+  const sortedEvents = events.data?.sort((e1, e2) => DateTime.fromISO(e1.date) - DateTime.fromISO(e2.date));
 
-const initialSlide = computed(() => {
-  const today = DateTime.now();
+  const today = DateTime.fromISO(DateTime.now().toFormat('yyyy-MM-dd'));
 
-  return shownEvents.value?.findIndex((e) => {
+  const activeSlideFind = sortedEvents.findIndex((e) => {
     const checkDate = DateTime.fromISO(e.date);
 
-    return checkDate > today;
+    return checkDate >= today;
   });
+
+  const moveIndex = activeSlideFind >= 0 ? activeSlideFind : sortedEvents?.length - 1;
+
+  if (moveIndex >= 0) {
+    const spliced = sortedEvents?.splice(0, moveIndex ? moveIndex - 1 : sortedEvents?.length - 1);
+
+    return [...sortedEvents, ...spliced];
+  }
+
+  return [...sortedEvents];
 });
 </script>
 
@@ -59,6 +67,12 @@ const initialSlide = computed(() => {
   }
 
   a {
+    display: block;
+
+    overflow: hidden;
+
+    border-radius: 40px;
+
     transition: filter $tr-dur;
 
     @include hover {
@@ -74,6 +88,10 @@ const initialSlide = computed(() => {
 
       font-size: 27px;
       line-height: 28px;
+    }
+
+    a {
+      border-radius: 20px;
     }
   }
 }
