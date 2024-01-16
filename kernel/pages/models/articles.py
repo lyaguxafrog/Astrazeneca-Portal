@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from email.policy import default
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -29,6 +30,9 @@ class Articles(models.Model):
                             related_name='articles',
                             blank=True,
                             verbose_name="Специальности")
+
+    center_title = models.BooleanField(default=False, verbose_name='Заголовок по центру',
+                                       help_text='Поставьте галочку, чтобы заголовок отображался по центру обложки')
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],
