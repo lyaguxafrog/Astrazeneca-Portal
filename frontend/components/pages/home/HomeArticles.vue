@@ -11,9 +11,9 @@
       class="articles__second-ellipse"
     />
 
-    <div v-if="activeSlideContent" class="articles__slide-title for-mobile-or-tablet">
-      <div v-if="!activeSlideContent.center_title">
-        {{ activeSlideContent.article_name }}
+    <div v-for="(slide, index) in articles.data" v-show="activeSlide === index" class="articles__slide-title for-mobile-or-tablet">
+      <div v-if="!slide.center_title">
+        {{ slide.article_name }}
       </div>
     </div>
 
@@ -50,9 +50,9 @@
     </ItemsSlider>
 
     <p
-      v-if="activeSlideContent"
+      v-for="(slide, index) in articles.data" v-show="activeSlide === index"
       class="for-mobile-or-tablet"
-      v-html="activeSlideContent.information"
+      v-html="slide.information"
     />
   </div>
 </template>
