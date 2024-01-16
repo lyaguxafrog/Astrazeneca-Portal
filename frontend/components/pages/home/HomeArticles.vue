@@ -206,15 +206,6 @@ const onSlideChange = (index: number | undefined) => {
 
       transition: opacity $tr-dur;
     }
-
-    &.centerTitle {
-      position: relative;
-
-      .articles__slide-title {
-        position: absolute;
-        top: 10px;
-      }
-    }
   }
 
   @include lg-and-down {
@@ -249,11 +240,12 @@ const onSlideChange = (index: number | undefined) => {
         @include aspect(1,1);
 
         .articles__slide-title {
-          padding-left: 14px;
+          padding: 4px;
 
-          font-size: 16px;
-          line-height: 1.1;
+          font-size: 22px;
+          line-height: 24px;
           font-weight: 400;
+          text-align: center;
           word-break: break-word;
         }
       }
