@@ -23,18 +23,13 @@ const { getFavourites } = useFavourites();
 initBreakpoints();
 await initAuth();
 
-// await getSpecialities();
+await getSpecialities();
 await initSpecialityStore();
 await checkAccessToken();
 
 await getFavourites();
 
 const nuxtApp = useNuxtApp();
-
-onMounted(async () => {
-  await getSpecialities();
-});
-
 nuxtApp.hook('page:finish', () => {
   window.scrollTo(0, 0);
 });
