@@ -96,6 +96,15 @@ useHead({
     max-width: 100%;
   }
 
+  &>* {
+    &:after {
+      content: '';
+
+      display: block;
+      clear: both;
+    }
+  }
+
   &__first-ellipse {
     top: -150px;
     left: -840px;
