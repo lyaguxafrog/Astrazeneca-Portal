@@ -9,8 +9,8 @@
       class="article-page__second-ellipse"
     />
 
-    <div class="article-page__title">
-      <span>PRO</span>терапию
+    <div  v-if="speciality" class="article-page__title">
+      <span>PRO</span>{{ speciality.pro }}
       <small>рака легкого</small>
     </div>
 
@@ -67,11 +67,13 @@ import { useScreen } from '~/utils/composables/useScreen';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { ContentType } from '~/utils/types';
+import {useSpecialityStore} from "~/utils/composables/store/speciality";
 
 const $route = useRoute();
 const { $screen } = useScreen();
 const { getArticle } = useArticlesStore();
 const { baseUrl } = useRuntimeConfig().public;
+const { speciality } = useSpecialityStore();
 
 const articleId = toRef(() => +$route.params.id);
 

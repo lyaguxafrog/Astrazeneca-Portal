@@ -7,7 +7,6 @@
           :size="$screen.mdAndDown ? 386 : 1066"
           color="#00C2FF"
         />
-        {{speciality}}
         <div v-if="speciality" class="videos-slider__materials-title">
           <span>PRO</span>{{ speciality.pro }}
           <small>рака легкого</small>
