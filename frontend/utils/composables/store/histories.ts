@@ -40,7 +40,7 @@ export const useHistoriesStore = () => {
       });
 
       if (res.data) {
-        state.value.histories.data = res.data;
+        state.value.histories.data = res.data.reverse();
         state.value.histories.loaded = true;
       }
     }
