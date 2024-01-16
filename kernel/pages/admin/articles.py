@@ -1,9 +1,10 @@
-from dataclasses import field
+# -*- coding: utf-8 -*-
+
+
 from django.contrib import admin
 from pages.models import ContentBlock, Articles
 from ckeditor.widgets import CKEditorWidget
 from django import forms
-from django.db import models
 
 
 class ContentBlockInlineForm(forms.ModelForm):
@@ -13,7 +14,6 @@ class ContentBlockInlineForm(forms.ModelForm):
         widgets = {
             'text': CKEditorWidget(),
         }
-
 
 class ContentBlockInline(admin.StackedInline):
     model = ContentBlock
@@ -33,6 +33,7 @@ class ArticlesAdminForm(forms.ModelForm):
 
 class ArticlesAdmin(admin.ModelAdmin):
     form = ArticlesAdminForm
+    list_display = ('article_name', 'article_type')
     inlines = [ContentBlockInline]
 
     fieldsets = [
@@ -43,7 +44,8 @@ class ArticlesAdmin(admin.ModelAdmin):
         ('Дополнительная информация', {'fields': ['final_content',
                                                   'access_number',
                                                   'speciality', 'drug',
-                                                  'article_type']}),
+                                                  'article_type','center_title',
+                                                  'priority']}),
     ]
 
 

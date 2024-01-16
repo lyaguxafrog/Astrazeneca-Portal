@@ -23,10 +23,16 @@ class SpecialityStoryListAPIView(generics.ListAPIView):
         specialty_id = self.kwargs.get('id')
 
         if specialty_id:
-            return Story.objects.filter(Q(specialties__id=specialty_id) | Q(specialties__isnull=True), is_active=True)
+            queryset = Story.objects.filter(
+                Q(specialties__id=specialty_id) | Q(specialties__isnull=True),
+                is_active=True
+            )
         else:
-            return Story.objects.filter(is_active=True)
+            queryset = Story.objects.filter(is_active=True)
 
+        queryset = queryset.order_by('id')
+
+        return queryset
 
 class StoryDetailAPIView(generics.RetrieveAPIView):
     queryset = Story.objects.all()

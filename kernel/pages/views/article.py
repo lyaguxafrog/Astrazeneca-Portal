@@ -23,15 +23,20 @@ class ArticleDetailAPIView(generics.RetrieveAPIView):
         return response.Response(data)
 
 
-
 class ArticlesBySpecialtyAPIView(generics.ListAPIView):
     serializer_class = ArticlesBySpecialitySerializer
 
     def get_queryset(self):
         specialty_id = self.kwargs['specialty_id']
         queryset = Articles.objects.filter(speciality__id=specialty_id)
+
+        queryset = queryset.order_by('priority')
+
         return queryset
 
+
 class ArticlesListAPIView(generics.ListAPIView):
-    queryset = Articles.objects.all()
     serializer_class = ArticlesBySpecialitySerializer
+
+    def get_queryset(self):
+        return Articles.objects.all().order_by('priority')

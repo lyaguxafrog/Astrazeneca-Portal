@@ -19,11 +19,13 @@ class DrugListSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'brief_info',
+            'priority',
             'image_desktop_1400px',
             'image_desktop_700px',
             'image_mobile_270px',
             'image_mobile_540px',
                   ]
+
 
     def get_image_desktop_1400px(self, obj):
         return self.get_relative_url(obj.image_desktop_1400px)

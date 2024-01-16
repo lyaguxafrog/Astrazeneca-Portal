@@ -113,6 +113,7 @@ class VideoLecturesListSerializer(serializers.ModelSerializer):
                   'video_article_url',
                   'content_type',
                   'speciality',
+                  'priority',
                     'video_cover_desktop_1400px',
                     'video_cover_desktop_2800px',
                     'video_cover_mobile_420px',

@@ -2,11 +2,12 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Drug(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Название препарата *",
-                            help_text='Ограничение в 50 символов')
+    name = models.CharField(max_length=90, verbose_name="Название препарата *",
+                            help_text='Ограничение в 90 символов')
     brief_info = models.TextField(verbose_name="Краткое описание препарата *")
 
     image_desktop = models.ImageField(upload_to='drug_images/',
@@ -26,6 +27,13 @@ class Drug(models.Model):
     speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность *')
     url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True, blank=True)
     file_field = models.FileField(verbose_name="Инструкция в формате PDF", null=True, blank=True, upload_to='pdf_files/')
+
+    priority = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(50)],
+        verbose_name="Приоритет",
+        default=50,
+        help_text='Целое число от 1 до 50 включительно.'
+    )
 
 
     image_desktop_1400px = models.ImageField(upload_to='drugs/1400px/', verbose_name="Изображение 1400px", null=True, blank=True)

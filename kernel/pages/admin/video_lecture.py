@@ -35,5 +35,6 @@ class VideoLecturesAdmin(admin.ModelAdmin):
         'video_recomendations',
         'drug',
         'speciality',
-        'access_number'
+        'access_number',
+        'priority'
     )

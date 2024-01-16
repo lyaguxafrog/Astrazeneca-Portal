@@ -27,7 +27,28 @@ class ArticlesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Articles
-        fields = '__all__'
+        fields = [
+            'id',
+            'article_name',
+            'center_title',
+            'information',
+            'first_abzac',
+            'content_blocks',
+            'speciality',
+            'drug',
+            'cover_desktop_1400px',
+            'cover_desktop_2800px',
+            'cover_mobile_840px',
+            'cover_mobile_420px',
+            'main_cover_desktop_1600px',
+            'main_cover_desktop_3200px',
+            'main_cover_mobile_360px',
+            'main_cover_mobile_720px',
+            'final_content',
+            'access_number'
+            ]
+
+        ordering = ['priority']
 
 
     def get_cover_desktop_1400px(self, obj):
@@ -73,7 +94,7 @@ class ArticlesBySpecialitySerializer(serializers.ModelSerializer):
         model = Articles
         fields = ['id', 'article_name', 'cover_desktop_1400px',
                   'cover_desktop_2800px', 'cover_mobile_840px', 'cover_mobile_420px',
-                  'information', 'first_abzac']
+                  'information', 'first_abzac', 'priority', 'center_title']
 
 
 

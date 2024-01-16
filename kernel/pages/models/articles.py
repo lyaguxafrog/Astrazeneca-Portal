@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from email.policy import default
 from django.db import models
 from ckeditor.fields import RichTextField
-from django import forms
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Articles(models.Model):
@@ -12,8 +12,8 @@ class Articles(models.Model):
         ('инновация', 'Инновация'),
     ]
 
-    article_name = models.CharField(max_length=50, verbose_name='Заголовок *',
-                                    help_text='Ограничение в 50 символов')
+    article_name = models.CharField(max_length=90, verbose_name='Заголовок *',
+                                    help_text='Ограничение в 90 символов')
     main_cover_desktop = models.ImageField(upload_to='article_cover/',
                                    verbose_name='Главная картинка статьи(десктоп) *')
     main_cover_mobile = models.ImageField(upload_to='article_cover/',
@@ -30,6 +30,16 @@ class Articles(models.Model):
                             related_name='articles',
                             blank=True,
                             verbose_name="Специальности")
+
+    center_title = models.BooleanField(default=False, verbose_name='Заголовок по центру',
+                                       help_text='Поставьте галочку, чтобы заголовок отображался по центру обложки')
+
+    priority = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(50)],
+        verbose_name="Приоритет",
+        default=50,
+        help_text='Целое число от 1 до 50 включительно.'
+    )
 
     drug = models.ManyToManyField('pages.Drug',
                                   blank=True,
@@ -90,13 +100,13 @@ class ContentBlock(models.Model):
     ARTICLE_CONTENT_TYPE_CHOICES = [
         ('text', 'Текст'),
         ('quote', 'Цитата'),
-        ('image', 'Изображение'),
-        ('text_with_image', 'Текст с изображением'),
+        # ('image', 'Изображение'),
+        # ('text_with_image', 'Текст с изображением'),
     ]
 
     article = models.ForeignKey('Articles', on_delete=models.CASCADE, related_name='content_blocks')
     content_type = models.CharField(max_length=16, choices=ARTICLE_CONTENT_TYPE_CHOICES, verbose_name='Тип контента *')
     text = models.TextField(blank=True, null=True, verbose_name='Текст')
-    image = models.ImageField(upload_to='content_block_images/',
-                              blank=True, null=True, verbose_name='Изображение')
+    # image = models.ImageField(upload_to='content_block_images/',
+    #                           blank=True, null=True, verbose_name='Изображение')
     order = models.PositiveIntegerField(verbose_name='Поорядковый номер *')
