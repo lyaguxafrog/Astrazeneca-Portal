@@ -81,7 +81,7 @@ const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
     setTimeout(() => {
       activeSlide.value = index;
-    }, 300);
+    }, 200);
   }
 
   if (index === articles.value.data?.length - 1) {
