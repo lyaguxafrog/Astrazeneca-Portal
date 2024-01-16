@@ -11,11 +11,11 @@
       class="articles__second-ellipse"
     />
 
-<!--    <div v-if="activeSlideContent" class="articles__slide-title for-mobile-or-tablet">
+    <div v-if="activeSlideContent" class="articles__slide-title for-mobile-or-tablet">
       <div v-if="!activeSlideContent.center_title">
         {{ activeSlideContent.article_name }}
       </div>
-    </div>-->
+    </div>
 
     <ItemsSlider
       disable-loop
@@ -49,11 +49,11 @@
       </template>
     </ItemsSlider>
 
-<!--    <p
+    <p
       v-if="activeSlideContent"
       class="for-mobile-or-tablet"
       v-html="activeSlideContent.information"
-    />-->
+    />
   </div>
 </template>
 
