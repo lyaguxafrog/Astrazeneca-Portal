@@ -258,6 +258,8 @@ useHead({
 
     img {
       width: 302px;
+      object-fit: cover;
+      @include aspect(1,1);
 
       border-radius: 50%;
     }
