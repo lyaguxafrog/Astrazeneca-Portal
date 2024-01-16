@@ -151,6 +151,7 @@ const onSlideChange = (index: number | undefined) => {
       line-height: 38px;
 
       transition: color $tr-dur;
+      will-change: display;
     }
     &-image {
       &:deep(img) {
@@ -207,6 +208,7 @@ const onSlideChange = (index: number | undefined) => {
       @include ellipsis(5);
 
       transition: opacity $tr-dur;
+      will-change: display;
     }
   }
 
