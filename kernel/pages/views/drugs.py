@@ -6,8 +6,10 @@ from pages.serializers import (DrugListSerializer, DrugSerializer,
                                IconSerializer, FAQSerializer)
 
 class DrugListAPIView(generics.ListAPIView):
-    queryset = Drug.objects.all()
     serializer_class = DrugListSerializer
+
+    def get_queryset(self):
+        return Drug.objects.all().order_by('priority')
 
 class DrugDetailAPIView(generics.RetrieveAPIView):
     queryset = Drug.objects.all()

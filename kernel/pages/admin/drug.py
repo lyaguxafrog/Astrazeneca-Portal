@@ -12,7 +12,7 @@ from django.db import models
 class IconInline(admin.TabularInline):
     model = Icon
     extra = 1
-    verbose_name = 'Иконка'
+    verbose_name = 'блок иконки'
     verbose_name_plural = 'Иконки'
 
 class DrugAdminForm(forms.ModelForm):
@@ -30,7 +30,7 @@ class Drug_FAQInline(admin.TabularInline):
         models.CharField: {'widget': Textarea(attrs={'rows': 1, 'cols': 50})},
         models.TextField: {'widget': CKEditorWidget()},
     }
-    verbose_name = "Инструкцию"
+    verbose_name = "блок поле инструкции"
     verbose_name_plural = "пункт"
 
 class DrugAdmin(admin.ModelAdmin):
@@ -38,7 +38,7 @@ class DrugAdmin(admin.ModelAdmin):
     list_display = ('name', 'display_articles', 'display_videos')
     fields = ('name', 'brief_info', 'application_practice_articles',
               'application_practice_videos', 'image_desktop', 'image_mobile','approvals_and_decodings',
-              'url_field', 'file_field', 'speciality')
+              'url_field', 'file_field', 'speciality', 'priority')
     inlines = [Drug_FAQInline, IconInline]
 
     def display_articles(self, obj):

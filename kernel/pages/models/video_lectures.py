@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 def validate_video_file_size(value):
@@ -41,6 +42,13 @@ class VideoLectures(models.Model):
     access_number = RichTextField(verbose_name="Поле для добавления расшифровок и номеров одобрения *")
     speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность *')
     content_type = models.CharField(max_length=255, choices=VIDEO_TYPE_CHOICES, verbose_name="Поле для выбора типа контента *  ")
+
+    priority = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(50)],
+        verbose_name="Приоритет",
+        default=50,
+        help_text='Целое число от 1 до 50 включительно.'
+    )
 
     video_cover_desktop_1400px = models.ImageField(upload_to='video_covers/1400px/', null=True, blank=True)
     video_cover_desktop_2800px = models.ImageField(upload_to='video_covers/2800px/', null=True, blank=True)

@@ -44,7 +44,7 @@ class ArticlesAdmin(admin.ModelAdmin):
         ('Дополнительная информация', {'fields': ['final_content',
                                                   'access_number',
                                                   'speciality', 'drug',
-                                                  'article_type']}),
+                                                  'article_type', 'priority']}),
     ]
 
 

@@ -28,6 +28,7 @@ class ArticlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Articles
         fields = '__all__'
+        ordering = ['priority']
 
 
     def get_cover_desktop_1400px(self, obj):
@@ -73,7 +74,7 @@ class ArticlesBySpecialitySerializer(serializers.ModelSerializer):
         model = Articles
         fields = ['id', 'article_name', 'cover_desktop_1400px',
                   'cover_desktop_2800px', 'cover_mobile_840px', 'cover_mobile_420px',
-                  'information', 'first_abzac']
+                  'information', 'first_abzac', 'priority']
 
 
 

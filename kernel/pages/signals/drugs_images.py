@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from pathlib import Path
 from io import BytesIO
@@ -27,13 +27,13 @@ class DisableSignals:
         self._receivers = None
 
     def __enter__(self):
-        self._receivers = pre_save.receivers
-        pre_save.receivers = []
+        self._receivers = post_save.receivers
+        post_save.receivers = []
 
     def __exit__(self, exc_type, exc_value, traceback):
-        pre_save.receivers = self._receivers
+        post_save.receivers = self._receivers
 
-@receiver(pre_save, sender=Drug)
+@receiver(post_save, sender=Drug)
 def process_drug_cover(sender, instance, **kwargs):
     if instance.image_desktop:
         file_path = instance.image_desktop.path

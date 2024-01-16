@@ -2,8 +2,7 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
-from django import forms
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Articles(models.Model):
@@ -30,6 +29,13 @@ class Articles(models.Model):
                             related_name='articles',
                             blank=True,
                             verbose_name="Специальности")
+
+    priority = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(50)],
+        verbose_name="Приоритет",
+        default=50,
+        help_text='Целое число от 1 до 50 включительно.'
+    )
 
     drug = models.ManyToManyField('pages.Drug',
                                   blank=True,

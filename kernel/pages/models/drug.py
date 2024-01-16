@@ -2,6 +2,7 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Drug(models.Model):
@@ -27,6 +28,13 @@ class Drug(models.Model):
     url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True, blank=True)
     file_field = models.FileField(verbose_name="Инструкция в формате PDF", null=True, blank=True, upload_to='pdf_files/')
 
+    priority = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(50)],
+        verbose_name="Приоритет",
+        default=50,
+        help_text='Целое число от 1 до 50 включительно.'
+    )
+
 
     image_desktop_1400px = models.ImageField(upload_to='drugs/1400px/', verbose_name="Изображение 1400px", null=True, blank=True)
     image_desktop_700px = models.ImageField(upload_to='drugs/700px/', verbose_name="Изображение 700px", null=True, blank=True)
@@ -47,8 +55,8 @@ class Drug(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'репарат'
-        verbose_name_plural = 'Препараты'
+        verbose_name = 'препарат'
+        verbose_name_plural = 'препараты'
 
 class DrugFAQ(models.Model):
 
