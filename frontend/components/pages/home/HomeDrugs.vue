@@ -135,6 +135,10 @@ const drugs = await getDrugs();
         font-size: 14px;
         letter-spacing: initial;
       }
+
+      :deep(img) {
+        min-height: 218px;
+      }
     }
   }
 }

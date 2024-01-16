@@ -79,7 +79,9 @@ const activeSlide = ref(1);
 const activeSlideContent = toRef(() => articles.value.data?.[activeSlide.value]);
 const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
-    activeSlide.value = index;
+    setTimeout(() => {
+      activeSlide.value = index;
+    });
   }
 
   if (index === articles.value.data?.length - 1) {
