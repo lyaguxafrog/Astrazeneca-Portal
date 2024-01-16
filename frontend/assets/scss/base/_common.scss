@@ -7,6 +7,8 @@ body {
 
   background-color: $main-bg-color;
 
+  overscroll-behavior: contain;
+
   @include scrollbar($body-scrollbar-width);
 
   ::selection {
