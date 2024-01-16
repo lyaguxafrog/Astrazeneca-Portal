@@ -113,6 +113,7 @@ watch(
     position: relative;
     @include z-index(3);
 
+    width: 100vw;
     padding-bottom: 50px;
     padding-left: 70px;
 
