@@ -14,7 +14,7 @@
 
         <div v-if="videos?.length" class="videos-slider__materials-buttons">
           <div v-if="!$screen.mdAndDown" class="videos-slider__materials-selected">
-            <template v-if="selectedType === 'видеолекция'"> Видеоматериалы </template>
+            <template v-if="selectedType === VideoContentType.Video"> Видеоматериалы </template>
             <template v-else> Клинические случаи </template>
           </div>
 
