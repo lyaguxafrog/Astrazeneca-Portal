@@ -12,14 +12,13 @@
         <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
           <div @click="link(history.id)">
             <div class="histories-slider__item-content">
-              <div class="histories-slider__item-content-img">
+              <div class="histories-slider__item-content-img" :style="{ borderColor: history.color }">
                 <AppImage
                   :url="history.avatar"
                   :url-full="history.avatar_desktop_120px"
                   :url-full-x2="history.avatar_desktop_280px"
                   :url-thin="history.avatar_desktop_70px"
                   :url-thin-x2="history.avatar_desktop_140px"
-                  :style="{ borderColor: history.color }"
                 />
               </div>
               <p>
@@ -157,8 +156,11 @@ $root: histories-slider;
         display: grid;
 
         width: 100%;
-
         @include aspect(120, 120);
+        overflow: hidden;
+
+        border: 5px solid;
+        border-radius: 50%;
       }
 
       @include hover {
@@ -173,9 +175,6 @@ $root: histories-slider;
         width: 100%;
         height: 120px;
         object-fit: cover;
-
-        border: 5px solid;
-        border-radius: 50%;
       }
     }
 
@@ -239,13 +238,13 @@ $root: histories-slider;
         &-img {
           width: 100%;
           height: 100%;
+
+          border-width: 2px;
         }
       }
 
       :deep(img) {
         height: 100%;
-
-        border-width: 2px;
       }
     }
 
