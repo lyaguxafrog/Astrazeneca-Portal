@@ -21,8 +21,8 @@
           <div class="videos-slider__materials-buttons-wrapper">
             <AppButton
               v-if="lectures.length && cases.length"
-              :primary="selectedType === 'видеолекция'"
-              :selected="selectedType === 'видеолекция'"
+              :primary="selectedType === VideoContentType.Video"
+              :selected="selectedType === VideoContentType.Video"
               :petite="$screen.mdAndDown"
               @click="setType(VideoContentType.Video)"
             >
@@ -31,8 +31,8 @@
             </AppButton>
             <AppButton
               v-if="cases.length && lectures.length"
-              :primary="selectedType === 'кейс'"
-              :selected="selectedType === 'кейс'"
+              :primary="selectedType === VideoContentType.Case"
+              :selected="selectedType === VideoContentType.Case"
               :petite="$screen.mdAndDown"
               @click="setType(VideoContentType.Case)"
             >
