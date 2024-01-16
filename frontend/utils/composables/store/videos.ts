@@ -6,8 +6,8 @@ import { loadableEmpty } from '~/utils/functions/loadable';
 import { ArticlePlump } from '~/utils/composables/store/articles';
 
 export enum VideoContentType {
-  Video = 'видеолекция',
-  Case = 'кейс',
+  Video = 'lecture',
+  Case = 'case',
 }
 
 export type Video = {
