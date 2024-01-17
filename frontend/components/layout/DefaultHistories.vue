@@ -187,10 +187,10 @@ const startActiveVideo = () => {
   start();
 };
 
-const onSlideChange = () => {
+const onSlideChange = async () => {
   if (swiper.value) {
     const id = histories.value[swiper.value?.realIndex].id;
-    $router.replace({ query: { historyId: id, access_token: $route.query.access_token } });
+    await $router.replace({ query: { historyId: id, access_token: $route.query.access_token } });
 
     startActiveVideo();
   }

@@ -42,8 +42,6 @@ export function useSpecialityStore() {
   };
 
   const activeSpeciality = computed(() => {
-    console.log(state.value.specialities);
-    console.log(state.value.specialityId);
     return state.value.specialities.data?.find((s) => s.id === state.value.specialityId);
   });
 

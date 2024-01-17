@@ -1,3 +1,4 @@
+import { toRef } from 'vue';
 import { loadableEmpty } from '~/utils/functions/loadable';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
@@ -34,15 +35,13 @@ export const useHistoriesStore = () => {
       url += `/${specialityId.value}`;
     }
 
-    if (!state.value.histories.loaded || force) {
-      const res = await useRequest<History[]>(url, {
-        method: 'GET',
-      });
+    const res = await useRequest<History[]>(url, {
+      method: 'GET',
+    });
 
-      if (res.data) {
-        state.value.histories.data = res.data.reverse();
-        state.value.histories.loaded = true;
-      }
+    if (res.data) {
+      state.value.histories.data = JSON.parse(JSON.stringify(res.data)).reverse();
+      state.value.histories.loaded = true;
     }
   };
 
