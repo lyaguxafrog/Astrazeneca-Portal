@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'haystack',
     'drf_haystack',
 
-
     'pages',
     'users',
 ]
@@ -57,8 +56,10 @@ CKEDITOR_CONFIGS = {
         'font_names': 'Arial;Comic Sans MS;Courier New;Georgia;Times New Roman;Verdana',
         'fontSize_sizes': '8/8px;10/10px;12/12px;14/14px;16/16px;18/18px;24/24px;36/36px',
         'colorButton_colors': 'e50914,3f3f3f,00bcd4,2196f3,4caf50,ffeb3b,ff9800,ff5722',
+        'image_previewText': '',
     },
 }
+
 
 
 HAYSTACK_CONNECTIONS = {
@@ -79,6 +80,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "pages.services.range_response.RangeHeaderMiddleware"
 ]
 
 ROOT_URLCONF = "config.urls"
