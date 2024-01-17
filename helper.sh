@@ -15,7 +15,8 @@ if [[ $1 = 'deploy' ]]; then
     rm -rf README.md
     rm -rf kernel/.devcontainer/
     rm -rf kernel/.vscode/
-
+    
+    mkdir kernel/logs
     echo "Frontend: Timofey Moshkara @TimofeyMoshkara | Backend: Adrian Makridenko @lyaguxafrog" > .author
 
     docker-compose up -d --build 
