@@ -3,6 +3,10 @@
 
 from rest_framework import serializers
 from pages.models import VideoLectures
+from ranged_fileresponse import RangedFileResponse
+from django.http import Http404, StreamingHttpResponse
+import os
+
 
 class VideoLecturesSerializer(serializers.ModelSerializer):
     video_article_url = serializers.SerializerMethodField()
@@ -15,8 +19,6 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
     video_cover_mobile_840px = serializers.SerializerMethodField()
     video_cover_mobile_390px = serializers.SerializerMethodField()
     video_cover_mobile_780px = serializers.SerializerMethodField()
-
-
 
     class Meta:
         model = VideoLectures
@@ -97,6 +99,16 @@ class VideoLecturesSerializer(serializers.ModelSerializer):
         elif isinstance(file_field_or_url, str) and file_field_or_url.startswith('http'):
             return file_field_or_url
         return None
+
+    def get_video_file_response(self, file_path, request):
+        try:
+            video_file = open(file_path, 'rb')
+        except FileNotFoundError:
+            raise Http404()
+
+        response = RangedFileResponse(request, video_file, content_type='video/mp4')
+        response['Content-Length'] = os.path.getsize(file_path)
+        return response
 
 
 class VideoLecturesListSerializer(serializers.ModelSerializer):
