@@ -9,7 +9,7 @@ workers = multiprocessing.cpu_count() * 2 + 1
 max_requests = 1000
 max_requests_jitter = 50
 
-timeout = 30
+timeout = 300
 
 accesslog = "logs/access.log"
 errorlog = "logs/error.log"
