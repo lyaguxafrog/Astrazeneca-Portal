@@ -101,7 +101,7 @@ import { ContentType } from '~/utils/types';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import { useAuth } from "~/utils/composables/useAuth";
 
-const { histories, getHistories } = useHistoriesStore();
+const { histories, getHistories, viewStory } = useHistoriesStore();
 const { baseUrl } = useRuntimeConfig().public;
 const $router = useRouter();
 const $route = useRoute();
@@ -172,6 +172,7 @@ const stopAll = () => {
 
 const start = () => {
   activeVideo.value?.play();
+  viewStory(activeHistory.value.id);
 };
 
 const pause = () => {
