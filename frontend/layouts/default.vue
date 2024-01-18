@@ -10,7 +10,7 @@
 
       <slot />
 
-      <DefaultFooter v-if="!meta.hideFooter && !activeSlideId" class="default-layout__footer" />
+      <DefaultFooter v-show="!meta.hideFooter && !activeSlideId" class="default-layout__footer" />
       <DefaultMenu v-if="!meta.hideFooter && specialityId && !activeSlideId" class="for-mobile-or-tablet" />
     </ClientOnly>
   </div>
