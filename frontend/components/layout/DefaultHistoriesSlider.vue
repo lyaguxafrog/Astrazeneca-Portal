@@ -12,7 +12,7 @@
         <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
           <div @click="link(history.id)">
             <div class="histories-slider__item-content">
-              <div class="histories-slider__item-content-img" :style="{ borderColor: history.color }">
+              <div class="histories-slider__item-content-img" :style="{ borderColor: !viewedStories.includes(history.id) ? '#00D1FF': activeSlideId === history.id ? '#E130FF' : '' }">
                 <AppImage
                   :url="history.avatar"
                   :url-full="history.avatar_desktop_120px"
@@ -51,9 +51,10 @@ defineProps<{
   min?: boolean;
 }>();
 
+const activeSlideId = toRef(() => +($route.query.historyId || 0));
 const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
-const { histories, getHistories } = useHistoriesStore();
+const { histories, getHistories, viewedStories } = useHistoriesStore();
 const $route = useRoute();
 const $router = useRouter();
 
@@ -142,7 +143,7 @@ $root: histories-slider;
       flex-direction: column;
       align-items: center;
 
-      cursor: pointer;;
+      cursor: pointer;
     }
 
     &-content {
@@ -159,8 +160,10 @@ $root: histories-slider;
         @include aspect(120, 120);
         overflow: hidden;
 
-        border: 5px solid;
+        border: 5px solid transparent;
         border-radius: 50%;
+
+        transition: border-color $tr-dur;
       }
 
       @include hover {
