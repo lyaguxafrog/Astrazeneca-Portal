@@ -21,8 +21,8 @@ class Story(models.Model):
                                          blank=True, null=True, verbose_name='Специальность')
     is_active = models.BooleanField(default=True, verbose_name='Активность истории')
 
-    color = models.CharField(max_length=255, choices=COLOR_CHOISE,
-                             verbose_name="Цвет *")
+    # color = models.CharField(max_length=255, choices=COLOR_CHOISE,
+    #                          verbose_name="Цвет *")
 
 
     avatar_desktop_120px = models.ImageField(null=True, blank=True)

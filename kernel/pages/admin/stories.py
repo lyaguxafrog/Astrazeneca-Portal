@@ -16,7 +16,7 @@ class StoryAdmin(admin.ModelAdmin):
         'avatar',
         'cover_image',
         'video',
-        'color',
+        # 'color',
         'link_to_page',
         'specialties',
         'is_active'

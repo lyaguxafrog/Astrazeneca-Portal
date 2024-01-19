@@ -37,4 +37,9 @@ if [[ $1 = 'def-admin' ]]; then
     exit 0
 fi
 
+if [[ $1 = 'clean' ]]; then
+    ./dmanage.py cleanup_unused_media -e media --noinput --remove-empty-dirs
+    exit 0
+fi
+
 ./dmanage.py $@

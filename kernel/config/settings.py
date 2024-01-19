@@ -10,15 +10,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = os.getenv('DEBUG', False) == 'True'
+DEBUG = (os.getenv('DEBUG_FLAG') == 'True')
 
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = [os.getenv("OUR_DOMAIN")]
+    ALLOWED_HOSTS = ['astraportal.dev-demo.online',
+                     'astraportal.dev-demo.online:8000']
 
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'multiupload',
     'haystack',
     'drf_haystack',
+    'django_cleanup.apps.CleanupConfig',
+    'django_unused_media',
 
     'pages',
     'users',
@@ -56,9 +58,11 @@ CKEDITOR_CONFIGS = {
         'font_names': 'Arial;Comic Sans MS;Courier New;Georgia;Times New Roman;Verdana',
         'fontSize_sizes': '8/8px;10/10px;12/12px;14/14px;16/16px;18/18px;24/24px;36/36px',
         'colorButton_colors': 'e50914,3f3f3f,00bcd4,2196f3,4caf50,ffeb3b,ff9800,ff5722',
-        'image_previewText': '',
+        'startupFocus': 'Ваш собственный текст здесь.',
+        'ImageAltRequired': False,
     },
 }
+
 
 
 
