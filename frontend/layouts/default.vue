@@ -8,7 +8,9 @@
 
       <DefaultHeader v-if="!$screen.mdAndDown" />
 
-      <slot />
+      <div class="default-layout__content">
+        <slot />
+      </div>
 
       <DefaultFooter v-show="!meta.hideFooter && !activeSlideId" class="default-layout__footer" />
       <DefaultMenu v-if="!meta.hideFooter && specialityId && !activeSlideId" class="for-mobile-or-tablet" />
@@ -46,6 +48,10 @@ const { $screen } = useScreen();
   width: 100vw;
   min-height: 100vh;
   overflow: hidden;
+
+  &__content {
+    min-height: 100vh;
+  }
 
   &__footer {
     margin-top: auto;

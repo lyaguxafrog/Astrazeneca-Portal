@@ -24,8 +24,8 @@
       <HomeDrugs />
     </template>
 
-    <Teleport to="#footerAccessInfo">
-      <div v-html="accessInfo.data?.number" />
+    <Teleport v-if="accessInfo?.number" to="#footerAccessInfo">
+      <div v-html="accessInfo?.number" />
     </Teleport>
   </div>
   <SpecialitySlider v-if="showSpecialitySlider" class="home__specialitySlider" />
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toRef, watch } from 'vue';
+import { onMounted, toRef, watch, ref } from 'vue';
 import { isClient } from '@vueuse/core';
 import { useScreen } from '~/utils/composables/useScreen';
 import { disableScroll, enableScroll } from '~/utils/functions/scroll-lock';
@@ -58,10 +58,20 @@ const { specialityId } = useSpecialityStore();
 const { getVideos } = useVideosStore();
 const { getArticles } = useArticlesStore();
 
-const accessInfo = await useRequest<{
-  number: string;
-}>('/main_page', {
-  method: 'GET',
+const accessInfo = ref({
+  number: '',
+});
+
+onMounted(async () => {
+  const res = await useRequest<{
+    number: string;
+  }>('/main_page', {
+    method: 'GET',
+  });
+
+  if (res.data) {
+    accessInfo.value = res.data;
+  }
 });
 
 const showSpecialitySlider = toRef(() => $screen.value.mdAndDown && !specialityId.value);
@@ -108,6 +118,8 @@ const loadAllContent = () => {
 
 <style lang="scss" scoped>
 .home {
+  min-height: 100vh;
+
   background: url('~/assets/img/home/bg.png') no-repeat top -340px left 0;
 
   &__intro {
@@ -181,6 +193,8 @@ const loadAllContent = () => {
   }
 
   @include md-and-down {
+    min-height: 50vh;
+
     background: none;
 
     &__specialitySlider {
