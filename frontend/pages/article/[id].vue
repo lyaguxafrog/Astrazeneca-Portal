@@ -38,9 +38,9 @@
         v-html="block.text"
       />
 
-      <div v-if="block.content_type === 'quote'" :key="block.id" class="article-page__quote">
+      <div v-if="block.content_type === 'quote'" :key="block.id" class="article-page__quote" :class="{full: !block.image}">
         <div class="article-page__quote-text" v-html="block.text" />
-        <img :src="`${baseUrl}${block.image}`" alt="" />
+        <img v-if="block.image" :src="`${baseUrl}${block.image}`" alt="" />
       </div>
 
       <div v-if="block.content_type === 'text_with_image'" class="article-page__image-and-text">
@@ -253,6 +253,24 @@ useHead({
         left: auto;
 
         background-image: url('~/assets/img/article/quota-2.svg');
+      }
+    }
+
+    &.full {
+      .article-page__quote-text {
+        width: 100%;
+        margin-right: 92px;
+        margin-left: 122px;
+
+        @include lg-and-down {
+          margin-right: 64px;
+          margin-left: 80px;
+        }
+        @include md-and-down {
+          margin-right: 0;
+          margin-bottom: 20px;
+          margin-left: 30px;
+        }
       }
     }
 
