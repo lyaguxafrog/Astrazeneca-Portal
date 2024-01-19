@@ -97,7 +97,7 @@ $root: histories-slider;
 
   &.min {
     width: 100%;
-    max-width: 460px;
+    max-width: 520px;
     margin-left: 0;
 
     transition: max-width $tr-dur;
@@ -115,9 +115,9 @@ $root: histories-slider;
         }
 
         p {
-          width: calc(100% + 28px);
+          width: calc(100% + 40px);
           margin-top: 8px;
-          margin-left: -14px;
+          margin-left: -20px;
           padding-bottom: 1px;
 
           font-size: 17px;

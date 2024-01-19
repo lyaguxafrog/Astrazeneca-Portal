@@ -99,7 +99,7 @@ watch(
 
   &__content {
     height: 100vh;
-    overflow: auto;
+    overflow-x: hidden !important;
 
     pointer-events: none;
     @include scrollbar($body-scrollbar-width);
