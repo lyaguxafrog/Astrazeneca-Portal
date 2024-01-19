@@ -24,8 +24,8 @@
       <HomeDrugs />
     </template>
 
-    <Teleport to="#footerAccessInfo">
-      <div v-html="accessInfo.data?.number" />
+    <Teleport v-if="accessInfo?.number" to="#footerAccessInfo">
+      <div v-html="accessInfo?.number" />
     </Teleport>
   </div>
   <SpecialitySlider v-if="showSpecialitySlider" class="home__specialitySlider" />
