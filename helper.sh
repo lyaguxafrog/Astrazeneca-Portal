@@ -20,7 +20,8 @@ if [[ $1 = 'deploy' ]]; then
     echo "Frontend: Timofey Moshkara @TimofeyMoshkara | Backend: Adrian Makridenko @lyaguxafrog" > .author
 
     docker-compose up -d --build 
-
+    docker system prune -af
+    clear
 fi
 
 if [[ $1 = 'update' ]]; then
