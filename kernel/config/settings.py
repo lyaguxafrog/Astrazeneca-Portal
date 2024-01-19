@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'multiupload',
     'haystack',
     'drf_haystack',
+    'django_cleanup.apps.CleanupConfig',
+    'django_unused_media',
 
     'pages',
     'users',
