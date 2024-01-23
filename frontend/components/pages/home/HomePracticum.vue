@@ -9,7 +9,7 @@
     <BgEllipse
       class="home-practicum__second-ellipse"
       color="#B32FC9"
-      :size="$screen.mdAndDown ? 306 : 1546"
+      :size="$screen.mdAndDown ? 306 : 1000"
     />
 
     <div class="home-practicum__title">практикум</div>
@@ -26,7 +26,9 @@
         <SwiperSlide v-for="practicum in content" :key="practicum.id" class="home-practicum__item">
           <img :src="practicum.img" alt="" />
           <p v-html="practicum.text" />
-          <AppButton primary class="home-practicum__item-button"> Начать </AppButton>
+          <AppButton primary class="home-practicum__item-button" :to="`/practicum/${practicum.id}`">
+            Начать
+          </AppButton>
         </SwiperSlide>
       </Swiper>
       <div ref="nextRef" class="swiper-button next">
@@ -84,8 +86,8 @@ const content = [
     left: -1130px;
   }
   &__second-ellipse {
-    top: -500px;
-    right: -1350px;
+    top: -250px;
+    right: -700px;
   }
 
   &__title {
@@ -118,7 +120,7 @@ const content = [
 
       width: 818px;
       max-width: 60%;
-      margin: -46px auto 0;
+      margin: 0 auto;
       object-fit: contain;
     }
 
