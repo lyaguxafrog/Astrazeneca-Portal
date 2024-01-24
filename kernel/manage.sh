@@ -42,4 +42,9 @@ if [[ $1 = 'clean' ]]; then
     exit 0
 fi
 
+if [[ $1 = 'apischema' ]]; then
+    ./dmanage.py generateschema --file schema.json
+    exit 0
+fi
+
 ./dmanage.py $@
