@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'django_unused_media',
     'adminsortable2',
+    'nested_admin',
 
     'pages',
     'users',

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from email.policy import default
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
