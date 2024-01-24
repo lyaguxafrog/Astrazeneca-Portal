@@ -16,12 +16,10 @@
         <AppIcon class="practicum__info-ico" :name="IconName.Info" @click="openInfoModal" />
         <img src="/img/anyaaffect_woman.png" alt="" />
         <div class="practicum__subtitle">Определите тактику лечения</div>
-        <AppButton primary class="practicum__btn">
+        <ConfirmButton>
           Направить на консилиум для оценки объема оперативного вмешательства
-        </AppButton>
-        <AppButton primary class="practicum__btn">
-          Направить на предоперационную верификацию опухоли
-        </AppButton>
+        </ConfirmButton>
+        <ConfirmButton> Направить на предоперационную верификацию опухоли </ConfirmButton>
         <div class="practicum__description">*Гипотетический клинический случай</div>
       </div>
 
@@ -55,6 +53,7 @@ import BgEllipse from '~/components/common/BgEllipse.vue';
 import InfoModal from '~/components/pages/practicum/InfoModal.vue';
 import Accordion from '~/components/common/Accordion.vue';
 import DiscoverModal from '~/components/pages/practicum/DiscoverModal.vue';
+import ConfirmButton from '~/components/pages/practicum/ConfirmButton.vue';
 
 const { $screen } = useScreen();
 
@@ -267,15 +266,6 @@ const openDiscoverModal = () => {
     font-size: 34px;
     font-weight: 300;
     text-align: center;
-  }
-
-  &__btn {
-    height: 76px;
-    margin-bottom: 30px;
-
-    font-size: 24px;
-    line-height: 24px;
-    letter-spacing: -0.48px;
   }
 
   &__description {
