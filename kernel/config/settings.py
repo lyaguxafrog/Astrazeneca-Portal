@@ -36,9 +36,11 @@ INSTALLED_APPS = [
     'drf_haystack',
     'django_cleanup.apps.CleanupConfig',
     'django_unused_media',
+    'adminsortable2',
 
     'pages',
     'users',
+    'practics',
 ]
 
 CKEDITOR_CONFIGS = {

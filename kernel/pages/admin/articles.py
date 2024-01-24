@@ -5,6 +5,7 @@ from django.contrib import admin
 from pages.models import ContentBlock, Articles
 from ckeditor.widgets import CKEditorWidget
 from django import forms
+from adminsortable2.admin import SortableInlineAdminMixin
 
 
 class ContentBlockInlineForm(forms.ModelForm):
@@ -15,7 +16,7 @@ class ContentBlockInlineForm(forms.ModelForm):
             'text': CKEditorWidget(),
         }
 
-class ContentBlockInline(admin.StackedInline):
+class ContentBlockInline(admin.TabularInline, SortableInlineAdminMixin):
     model = ContentBlock
     extra = 0
     form = ContentBlockInlineForm

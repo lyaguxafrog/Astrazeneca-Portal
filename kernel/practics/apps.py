@@ -2,7 +2,9 @@
 
 from django.apps import AppConfig
 
+class PracticsConfig(AppConfig):
+    name = 'practics'
+    label = 'practics'
+    verbose_name = 'practics'
 
-# class YourAppNameConfig(AppConfig):
-#     name = 'your_app_name'
-#     label = 'your_app_label'
+    default_auto_field = 'django.db.models.BigAutoField'
