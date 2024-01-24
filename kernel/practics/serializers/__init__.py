@@ -1,3 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from .prtest import PrTestListSerializer
+from .prtest import (PrTestListSerializer,
+                     PrTestDetailSerializer, AnswerButtonsSerializer
+)

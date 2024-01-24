@@ -1,3 +1,3 @@
 # -*- coding: utf -*-
 
-from .prtest import PrTestListAPIView
+from .prtest import PrTestListAPIView, PrTestDetailAPIView

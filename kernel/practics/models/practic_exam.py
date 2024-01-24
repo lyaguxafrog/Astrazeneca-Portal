@@ -30,7 +30,8 @@ class PrTest(models.Model):
 
 
 class AnswerButtons(models.Model):
-    prtest = models.ForeignKey('PrTest', on_delete=models.CASCADE)
+    prtest = models.ForeignKey('PrTest', on_delete=models.CASCADE,
+                                related_name='buttons')
 
     title = models.CharField()
-    teext = RichTextField()
+    text = RichTextField()
