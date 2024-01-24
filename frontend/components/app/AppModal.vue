@@ -4,7 +4,7 @@
       <div ref="scrollEl" class="modal__scroll-content">
         <div class="modal__close-overlay" @mousedown.self="closeModal(name)" />
         <div class="modal__content">
-          <BackBtn v-if="fullPage" class="modal__back" @click="closeModal(name)"/>
+          <BackBtn v-if="fullPage" class="modal__back" @click="closeModal(name)" />
           <AppIcon
             class="modal__close"
             :name="IconName.CloseIcon"
@@ -96,7 +96,7 @@ $root: modal;
     transition: color $tr-dur;
 
     @include hover {
-      color: $accent-color;
+      color: $white-color;
     }
   }
 
@@ -156,10 +156,10 @@ $root: modal;
 
   &.fullPage {
     .#{$root} {
-
       &__scroll-content {
         background-color: $main-bg-color;
-        &:before, &:after {
+        &:before,
+        &:after {
           display: none;
         }
       }
@@ -188,7 +188,6 @@ $root: modal;
       }
 
       @include md-and-down {
-
         &__back {
           top: 12px;
           left: 15px;
