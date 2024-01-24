@@ -8,3 +8,6 @@ class PracticsConfig(AppConfig):
     # verbose_name = 'Парктикумы'
 
     default_auto_field = 'django.db.models.BigAutoField'
+
+    def ready(self):
+        import practics.signals

@@ -3,21 +3,27 @@
 from django.contrib import admin
 from practics.models import (Practicum, Screens,
                              ScreenTextBlock, ScreenImageBlock,
-                             ScreenPopupBlock)
-from nested_admin import (NestedModelAdmin, NestedInlineModelAdmin,
-                          NestedStackedInline, NestedTabularInline)
+                             ScreenPopupBlock, ScreenButton)
+from nested_admin import (NestedModelAdmin, NestedStackedInline)
 
-class ScreenTextBlockInline(NestedTabularInline):
+
+
+class ScreenButtonInline(NestedStackedInline):
+    model = ScreenButton
+    extra = 0
+
+
+class ScreenTextBlockInline(NestedStackedInline):
     model = ScreenTextBlock
     extra = 0
 
 
-class ScreenImageBlockInline(NestedTabularInline):
+class ScreenImageBlockInline(NestedStackedInline):
     model = ScreenImageBlock
     extra = 0
 
 
-class ScreenPopupBlockInline(NestedTabularInline):
+class ScreenPopupBlockInline(NestedStackedInline):
     model = ScreenPopupBlock
     extra = 0
 
@@ -25,7 +31,8 @@ class ScreensInline(NestedStackedInline):
     model = Screens
     inlines = [ScreenTextBlockInline,
                ScreenImageBlockInline,
-               ScreenPopupBlockInline]
+               ScreenPopupBlockInline,
+               ScreenButtonInline]
     extra = 1
 
 @admin.register(Practicum)
