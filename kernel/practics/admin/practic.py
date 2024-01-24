@@ -35,6 +35,6 @@ class ScreensInline(NestedStackedInline):
                ScreenButtonInline]
     extra = 1
 
-@admin.register(Practicum)
+# @admin.register(Practicum)
 class PracticumAdmin(NestedModelAdmin):
     inlines = [ScreensInline]
