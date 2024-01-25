@@ -35,7 +35,7 @@ defineProps<{
   padding: 0 35px;
 
   font-size: 30px;
-  line-height: 0.9;
+  line-height: 1;
   color: $primary-color;
 
   border: 1px solid $primary-color;
