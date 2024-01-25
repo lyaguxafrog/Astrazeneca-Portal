@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
+from django import forms
+
 from practics.models import (Practicum, Screens,
                              ScreenTextBlock, ScreenImageBlock,
                              ScreenPopupBlock, ScreenButton)
-from nested_admin import (NestedModelAdmin, NestedStackedInline)
-
+from nested_admin import (NestedModelAdmin,
+                          NestedStackedInline,
+                          NestedTabularInline)
 
 
 class ScreenButtonInline(NestedStackedInline):
@@ -27,6 +30,7 @@ class ScreenPopupBlockInline(NestedStackedInline):
     model = ScreenPopupBlock
     extra = 0
 
+
 class ScreensInline(NestedStackedInline):
     model = Screens
     inlines = [ScreenTextBlockInline,
@@ -35,6 +39,7 @@ class ScreensInline(NestedStackedInline):
                ScreenButtonInline]
     extra = 1
 
-# @admin.register(Practicum)
+
+@admin.register(Practicum)
 class PracticumAdmin(NestedModelAdmin):
     inlines = [ScreensInline]

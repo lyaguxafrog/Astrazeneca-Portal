@@ -13,18 +13,19 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = (os.getenv('DEBUG_FLAG') == 'True')
 
 
+
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = ['astraportal.dev-demo.online',
-                     'astraportal.dev-demo.online:8000']
+    ALLOWED_HOSTS = [os.getenv("OUR_DOMAIN"),
+                     f'{os.getenv("OUR_DOMAIN")}:8000']
 
 print(ALLOWED_HOSTS)
 
 CSRF_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True
-CSRF_COOKIE_DOMAIN = 'astraportal.dev-demo.online'
-CSRF_TRUSTED_ORIGINS = ['https://astraportal.dev-demo.online']
+CSRF_COOKIE_DOMAIN = os.getenv("OUR_DOMAIN")
+CSRF_TRUSTED_ORIGINS = [f'https://{os.getenv("OUR_DOMAIN")}']
 
 INSTALLED_APPS = [
     "django.contrib.admin",

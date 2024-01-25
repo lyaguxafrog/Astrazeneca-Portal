@@ -11,6 +11,8 @@ class Screens(models.Model):
 
     literature = RichTextField(null=True, blank=True)
 
+    come_to_start = models.BooleanField(default=False)
+
 
 # Блоки контента
 class ScreenTextBlock(models.Model):
