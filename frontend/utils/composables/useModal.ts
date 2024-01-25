@@ -6,6 +6,8 @@ import { useScreen } from '~/utils/composables/useScreen';
 export enum ModalsName {
   DrugProps = 'drug-props',
   VideosAddContent = 'videos-add-content',
+  PracticumInfoModal = 'practicum-info-modal',
+  PracticumDiscoverModal = 'practicum-discover-modal',
 }
 
 type RegisteredModal = {
@@ -31,7 +33,13 @@ export function useModal() {
   };
 
   const getRegisteredModal = (modalName: ModalsName) =>
-    computed(() => modalState.value.registeredModals[modalName]);
+    modalState.value.registeredModals[modalName];
+
+  const getModalPayload = (modalName: ModalsName) => getRegisteredModal(modalName).payload;
+
+  const setModalPayload = (modalName: ModalsName, payload?: Record<string, any>) => {
+    getRegisteredModal(modalName).payload = payload;
+  };
 
   const openModal = async (modalName: ModalsName, payload?: Record<string, any>) => {
     if (openedModals.value.includes(modalName)) {
@@ -81,8 +89,10 @@ export function useModal() {
   return {
     openedModals,
     getRegisteredModal,
+    getModalPayload,
     registerModal,
     openModal,
     closeModal,
+    setModalPayload,
   };
 }

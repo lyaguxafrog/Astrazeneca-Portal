@@ -12,7 +12,16 @@
         <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
           <div @click="link(history.id)">
             <div class="histories-slider__item-content">
-              <div class="histories-slider__item-content-img" :style="{ borderColor: !viewedStories.includes(history.id) ? '#00D1FF': activeSlideId === history.id ? '#E130FF' : '' }">
+              <div
+                class="histories-slider__item-content-img"
+                :style="{
+                  borderColor: !viewedStories.includes(history.id)
+                    ? '#00D1FF'
+                    : activeSlideId === history.id
+                    ? '#E130FF'
+                    : '',
+                }"
+              >
                 <AppImage
                   :url="history.avatar"
                   :url-full="history.avatar_desktop_120px"
@@ -40,7 +49,7 @@
 
 <script lang="ts" setup>
 import { ref, toRef, onMounted } from 'vue';
-import { useRoute, useRouter } from "#app";
+import { useRoute, useRouter } from '#app';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
@@ -97,7 +106,7 @@ $root: histories-slider;
 
   &.min {
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
     margin-left: 0;
 
     transition: max-width $tr-dur;
@@ -120,7 +129,7 @@ $root: histories-slider;
           margin-left: -20px;
           padding-bottom: 1px;
 
-          font-size: 17px;
+          font-size: 15px;
           line-height: 1.1;
           word-break: break-word;
 
