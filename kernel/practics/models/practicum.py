@@ -16,7 +16,7 @@ class Practicum(models.Model):
         help_text='Целое число от 1 до 50 включительно.'
     )
 
-    literature = RichTextField(null=True, blank=False)
+    literature = RichTextField(null=True, blank=True)
 
     # десктоп - 810px, 1620px, мобилка 400px, 800px
     image_desktop_810px = models.ImageField(upload_to='practicum/810px/',
