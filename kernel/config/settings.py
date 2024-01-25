@@ -14,11 +14,12 @@ DEBUG = (os.getenv('DEBUG_FLAG') == 'True')
 
 
 if DEBUG:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['astraportal.dev-demo.online']
 else:
     ALLOWED_HOSTS = ['astraportal.dev-demo.online',
                      'astraportal.dev-demo.online:8000']
 
+CSRF_COOKIE_DOMAIN = 'astraportal.dev-demo.online'
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -83,7 +84,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
