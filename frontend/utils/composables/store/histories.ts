@@ -1,6 +1,8 @@
+import { toRef } from 'vue';
 import { loadableEmpty } from '~/utils/functions/loadable';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
+import {useCookie, useState} from "#app";
 
 export type History = {
   id: number;
@@ -23,8 +25,13 @@ export type History = {
 export const useHistoriesStore = () => {
   const { specialityId } = useSpecialityStore();
 
+  const viewedStoriesId = useCookie('viewed-stories', {
+    default: () => [],
+  });
+
   const state = useState('histories-state', () => ({
     histories: loadableEmpty<History[]>([]),
+    viewedStories: viewedStoriesId.value as number[],
   }));
 
   const getHistories = async (force?: boolean) => {
@@ -34,21 +41,30 @@ export const useHistoriesStore = () => {
       url += `/${specialityId.value}`;
     }
 
-    if (!state.value.histories.loaded || force) {
-      const res = await useRequest<History[]>(url, {
-        method: 'GET',
-      });
+    const res = await useRequest<History[]>(url, {
+      method: 'GET',
+    });
 
-      if (res.data) {
-        state.value.histories.data = res.data;
-        state.value.histories.loaded = true;
-      }
+    if (res.data) {
+      state.value.histories.data = JSON.parse(JSON.stringify(res.data)).reverse();
+      state.value.histories.loaded = true;
     }
   };
 
+  const viewStory = (id: number) => {
+    const viewedStoriesId = useCookie('viewed-stories');
+    if (!state.value.viewedStories.includes(id)) {
+      state.value.viewedStories.push(id);
+
+      viewedStoriesId.value = state.value.viewedStories;
+    }
+  }
+
   return {
     histories: toRef(() => state.value.histories.data),
+    viewedStories: toRef(() => state.value.viewedStories),
 
     getHistories,
+    viewStory,
   };
 };

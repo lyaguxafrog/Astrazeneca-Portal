@@ -11,8 +11,10 @@
       class="articles__second-ellipse"
     />
 
-    <div v-if="activeSlideContent" class="articles__slide-title for-mobile-or-tablet">
-      {{ activeSlideContent.article_name }}
+    <div v-for="(slide, index) in articles.data" v-show="activeSlide === index" class="articles__slide-title for-mobile-or-tablet">
+      <div v-if="!slide.center_title">
+        {{ slide.article_name }}
+      </div>
     </div>
 
     <ItemsSlider
@@ -25,9 +27,14 @@
         <nuxt-link class="articles__slide" :to="`/article/${item.id}`">
           <div
             class="articles__slide-title for-desktop items-slier__visible-on-active"
-            v-html="item.article_name"
+            v-html="!item.center_title ? item.article_name : ''"
           />
-          <div class="articles__slide-image-wrapper">
+          <div class="articles__slide-image-wrapper" :class="{withBefore: item.center_title}">
+            <div
+              v-if="item.center_title"
+              class="articles__slide-title items-slier__visible-on-active"
+              v-html="item.article_name"
+            />
             <AppImage
               class="articles__slide-image"
               :url="item.cover_desktop_1400px"
@@ -43,9 +50,9 @@
     </ItemsSlider>
 
     <p
-      v-if="activeSlideContent"
+      v-for="(slide, index) in articles.data" v-show="activeSlide === index"
       class="for-mobile-or-tablet"
-      v-html="activeSlideContent.information"
+      v-html="slide.information"
     />
   </div>
 </template>
@@ -72,7 +79,9 @@ const activeSlide = ref(1);
 const activeSlideContent = toRef(() => articles.value.data?.[activeSlide.value]);
 const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
-    activeSlide.value = index;
+    setTimeout(() => {
+      activeSlide.value = index;
+    }, 100);
   }
 
   if (index === articles.value.data?.length - 1) {
@@ -153,12 +162,39 @@ const onSlideChange = (index: number | undefined) => {
       }
 
       &-wrapper {
+        position: relative;
+
         width: 100%;
         height: 530px;
         // margin-top: auto;
         overflow: hidden;
 
         border-radius: 40px;
+
+        .articles__slide-title {
+          position: absolute;
+          top: 50%;
+          @include z-index(2);
+
+          min-height: initial;
+          padding-left: 40px;
+
+          transform: translateY(-50%);
+        }
+
+        &.withBefore {
+          &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+
+            background-color: rgba(#000, 0.4);
+          }
+        }
       }
     }
 
@@ -204,6 +240,16 @@ const onSlideChange = (index: number | undefined) => {
         border-radius: 20px;
 
         @include aspect(1,1);
+
+        .articles__slide-title {
+          padding: 4px;
+
+          font-size: 22px;
+          line-height: 24px;
+          font-weight: 400;
+          text-align: center;
+          word-break: break-word;
+        }
       }
     }
     p {

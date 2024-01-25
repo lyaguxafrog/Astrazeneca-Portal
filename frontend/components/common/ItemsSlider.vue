@@ -9,7 +9,7 @@
       :slides-per-view="slidesPerView"
       :initial-slide="initialSlideIndex"
       :modules="[Pagination, Navigation]"
-      :pagination="{ clickable: true }"
+      :pagination="{ clickable: true, dynamicBullets: true }"
       :slides-offset-before="!centeredSlides && $screen.mdAndDown ? 22 : undefined"
       :slides-offset-after="!centeredSlides && $screen.mdAndDown ? 22 : undefined"
       :navigation="{
@@ -167,7 +167,9 @@ defineExpose({
       &-pagination {
         position: static;
 
-        margin-top: 50px;
+        margin: 50px auto 0;
+
+        transform: none;
 
         &-bullet {
           width: 16px;

@@ -11,6 +11,7 @@ export type Article = {
   cover_mobile_420px: string;
   cover_mobile_840px: string;
   information: string;
+  center_title: boolean;
 };
 
 export type ArticlePlump = {
@@ -19,6 +20,7 @@ export type ArticlePlump = {
   cover: string;
   access_number: string;
   first_abzac: string;
+  center_title: boolean;
   article_type: 'статья';
   content_blocks: [
     {

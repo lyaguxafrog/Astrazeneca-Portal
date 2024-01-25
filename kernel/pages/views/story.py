@@ -12,9 +12,14 @@ class StoryListAPIView(generics.ListAPIView):
         specialty_id = self.kwargs.get('id')
 
         if specialty_id:
-            return Story.objects.filter(specialties__id=specialty_id, is_active=True).exclude(specialties__isnull=False)
+            queryset = Story.objects.filter(specialties__id=specialty_id, is_active=True).exclude(specialties__isnull=False)
         else:
-            return Story.objects.filter(is_active=True).exclude(specialties__isnull=False)
+            queryset = Story.objects.filter(is_active=True).exclude(specialties__isnull=False)
+
+        # Add sorting by id
+        queryset = queryset.order_by('id')
+
+        return queryset
 
 class SpecialityStoryListAPIView(generics.ListAPIView):
     serializer_class = StoryListSerializer

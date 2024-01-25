@@ -1,8 +1,13 @@
+html {
+  overscroll-behavior: contain;
+}
 body {
   font-family: $main-font-family;
   color: $main-text-color;
 
   background-color: $main-bg-color;
+
+  overscroll-behavior: contain;
 
   @include scrollbar($body-scrollbar-width);
 

@@ -10,23 +10,22 @@
         }"
       >
         <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
-          <nuxt-link :to="link(history.id)" :replace="replaceMode">
+          <div @click="link(history.id)">
             <div class="histories-slider__item-content">
-              <div class="histories-slider__item-content-img">
+              <div class="histories-slider__item-content-img" :style="{ borderColor: !viewedStories.includes(history.id) ? '#00D1FF': activeSlideId === history.id ? '#E130FF' : '' }">
                 <AppImage
                   :url="history.avatar"
                   :url-full="history.avatar_desktop_120px"
                   :url-full-x2="history.avatar_desktop_280px"
                   :url-thin="history.avatar_desktop_70px"
                   :url-thin-x2="history.avatar_desktop_140px"
-                  :style="{ borderColor: history.color }"
                 />
               </div>
               <p>
                 {{ history.title }}
               </p>
             </div>
-          </nuxt-link>
+          </div>
         </SwiperSlide>
       </Swiper>
       <div ref="nextRef" class="swiper-button next">
@@ -40,8 +39,8 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, toRef} from 'vue';
-import { useRoute } from "#app";
+import { ref, toRef, onMounted } from 'vue';
+import { useRoute, useRouter } from "#app";
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
@@ -52,21 +51,31 @@ defineProps<{
   min?: boolean;
 }>();
 
+const activeSlideId = toRef(() => +($route.query.historyId || 0));
 const { baseUrl } = useRuntimeConfig().public;
 const { $screen } = useScreen();
-const { histories, getHistories } = useHistoriesStore();
+const { histories, getHistories, viewedStories } = useHistoriesStore();
 const $route = useRoute();
+const $router = useRouter();
 
-const replaceMode = toRef(() => $route.name === 'histories');
+const replaceMode = toRef(() => !!$route.query.historyId);
 
 const link = (id) => {
-  let url = `/histories?id=${id}`;
+  const query = {
+    ...$route.query,
+    historyId: id,
+  };
 
-  if ($route.query.access_token) {
-    url += `&access_token=${$route.query.access_token}`;
+  if (replaceMode.value) {
+    $router.replace({
+      query,
+    });
+  } else {
+    $router.push({
+      query,
+    });
   }
-  return url;
-}
+};
 
 const nextRef = ref(null);
 const prevRef = ref(null);
@@ -88,7 +97,7 @@ $root: histories-slider;
 
   &.min {
     width: 100%;
-    max-width: 460px;
+    max-width: 520px;
     margin-left: 0;
 
     transition: max-width $tr-dur;
@@ -106,9 +115,9 @@ $root: histories-slider;
         }
 
         p {
-          width: calc(100% + 28px);
+          width: calc(100% + 40px);
           margin-top: 8px;
-          margin-left: -14px;
+          margin-left: -20px;
           padding-bottom: 1px;
 
           font-size: 17px;
@@ -129,10 +138,12 @@ $root: histories-slider;
   }
 
   &__item {
-    a {
+    & > div {
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      cursor: pointer;
     }
 
     &-content {
@@ -146,8 +157,13 @@ $root: histories-slider;
         display: grid;
 
         width: 100%;
-
         @include aspect(120, 120);
+        overflow: hidden;
+
+        border: 5px solid transparent;
+        border-radius: 50%;
+
+        transition: border-color $tr-dur;
       }
 
       @include hover {
@@ -162,9 +178,6 @@ $root: histories-slider;
         width: 100%;
         height: 120px;
         object-fit: cover;
-
-        border: 5px solid;
-        border-radius: 50%;
       }
     }
 
@@ -217,7 +230,7 @@ $root: histories-slider;
       display: flex;
       justify-content: center;
 
-      a {
+      & > div {
         display: block;
 
         width: 80%;
@@ -228,13 +241,13 @@ $root: histories-slider;
         &-img {
           width: 100%;
           height: 100%;
+
+          border-width: 2px;
         }
       }
 
       :deep(img) {
         height: 100%;
-
-        border-width: 2px;
       }
     }
 

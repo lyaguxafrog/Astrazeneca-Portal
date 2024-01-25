@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted } from 'vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { useAuth } from '~/utils/composables/useAuth';
@@ -30,6 +30,10 @@ await checkAccessToken();
 await getFavourites();
 
 const nuxtApp = useNuxtApp();
+
+onMounted(async () => {
+  await getSpecialities();
+});
 
 nuxtApp.hook('page:finish', () => {
   window.scrollTo(0, 0);

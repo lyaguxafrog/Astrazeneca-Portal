@@ -19,6 +19,12 @@ else:
     ALLOWED_HOSTS = ['astraportal.dev-demo.online',
                      'astraportal.dev-demo.online:8000']
 
+print(ALLOWED_HOSTS)
+
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+CSRF_COOKIE_DOMAIN = 'astraportal.dev-demo.online'
+CSRF_TRUSTED_ORIGINS = ['https://astraportal.dev-demo.online']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -83,7 +89,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -100,6 +106,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8000",
     "http://astraportal.dev-demo.online",
+    "https://astraportal.dev-demo.online",
 ]
 
 TEMPLATES = [

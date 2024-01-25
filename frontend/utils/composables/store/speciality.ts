@@ -18,7 +18,6 @@ export function useSpecialityStore() {
   const state = useState('speciality', () => ({
     specialities: loadableEmpty<Speciality[]>([]),
     specialityId: specialityCookie.value ? +specialityCookie.value : undefined,
-    speciality: undefined as Speciality | undefined,
   }));
 
   const init = async () => {
@@ -28,23 +27,23 @@ export function useSpecialityStore() {
   };
 
   const getSpecialities = async () => {
-    if (!state.value.specialities.loaded) {
-      const res = await useRequest<Speciality[]>('/specialty', {
-        method: 'GET',
-        ignoreError: true,
-      });
+    const res = await useRequest<Speciality[]>('/specialty', {
+      method: 'GET',
+      ignoreError: true,
+    });
 
 
-      if (res.data) {
-        state.value.specialities.data = res.data;
-        state.value.specialities.loaded = true;
-      }
+    if (res.data) {
+      state.value.specialities.data = res.data;
+      state.value.specialities.loaded = true;
     }
 
     return state.value.specialities.data;
   };
 
-  const activeSpeciality = computed(() => state.value.specialities.data?.find((s) => s.id === state.value.specialityId));
+  const activeSpeciality = computed(() => {
+    return state.value.specialities.data?.find((s) => s.id === state.value.specialityId);
+  });
 
   const setSpeciality = async (id: number) => {
     const specialityCookie = await useCookie(specialityCookieName);

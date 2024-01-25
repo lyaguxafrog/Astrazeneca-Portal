@@ -155,6 +155,7 @@ const prevRef = ref(null);
   @include md-and-down {
     padding-top: 66px;
     overflow: auto;
+    overflow-x: hidden;
 
     background-color: $main-bg-color;
 

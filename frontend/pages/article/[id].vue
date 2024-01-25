@@ -9,8 +9,8 @@
       class="article-page__second-ellipse"
     />
 
-    <div class="article-page__title">
-      <span>PRO</span>терапию
+    <div  v-if="speciality" class="article-page__title">
+      <span>PRO</span>{{ speciality.pro }}
       <small>рака легкого</small>
     </div>
 
@@ -38,9 +38,9 @@
         v-html="block.text"
       />
 
-      <div v-if="block.content_type === 'quote'" :key="block.id" class="article-page__quote">
+      <div v-if="block.content_type === 'quote'" :key="block.id" class="article-page__quote" :class="{full: !block.image}">
         <div class="article-page__quote-text" v-html="block.text" />
-        <img :src="`${baseUrl}${block.image}`" alt="" />
+        <img v-if="block.image" :src="`${baseUrl}${block.image}`" alt="" />
       </div>
 
       <div v-if="block.content_type === 'text_with_image'" class="article-page__image-and-text">
@@ -67,11 +67,13 @@ import { useScreen } from '~/utils/composables/useScreen';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { ContentType } from '~/utils/types';
+import {useSpecialityStore} from "~/utils/composables/store/speciality";
 
 const $route = useRoute();
 const { $screen } = useScreen();
 const { getArticle } = useArticlesStore();
 const { baseUrl } = useRuntimeConfig().public;
+const { speciality } = useSpecialityStore();
 
 const articleId = toRef(() => +$route.params.id);
 
@@ -89,6 +91,19 @@ useHead({
   padding: 9px 92px 100px;
 
   word-break: break-word;
+
+  :deep(img) {
+    max-width: 100%;
+  }
+
+  &>* {
+    &:after {
+      content: '';
+
+      display: block;
+      clear: both;
+    }
+  }
 
   &__first-ellipse {
     top: -150px;
@@ -162,7 +177,7 @@ useHead({
       left: 0;
       z-index: 1;
 
-      background-color: rgba(#000, 0.3);
+      background-color: rgba(#000, 0.4);
     }
   }
 
@@ -241,8 +256,28 @@ useHead({
       }
     }
 
+    &.full {
+      .article-page__quote-text {
+        width: 100%;
+        margin-right: 92px;
+        margin-left: 122px;
+
+        @include lg-and-down {
+          margin-right: 64px;
+          margin-left: 80px;
+        }
+        @include md-and-down {
+          margin-right: 0;
+          margin-bottom: 20px;
+          margin-left: 30px;
+        }
+      }
+    }
+
     img {
       width: 302px;
+      object-fit: cover;
+      @include aspect(1,1);
 
       border-radius: 50%;
     }
