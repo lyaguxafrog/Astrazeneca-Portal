@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 if [[ $1 = 'app' ]]; then
     ./dmanage.py startapp --template app_template $2
     exit 0
