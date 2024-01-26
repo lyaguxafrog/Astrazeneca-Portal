@@ -23,10 +23,17 @@ class ScreenTextBlock(models.Model):
     order = models.IntegerField(default=0)
 
 class ScreenImageBlock(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE)
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+                               related_name='screen_image_block')
 
     image = models.ImageField(upload_to='practicums/blocks/')
     order = models.IntegerField(default=0)
+
+    image_desktop_810px = models.ImageField(null=True, blank=False)
+    image_desktop_1620px = models.ImageField(null=True, blank=False)
+    image_mobile_400px = models.ImageField(null=True, blank=False)
+    image_mobile_800px = models.ImageField(null=True, blank=False)
+
 
 class ScreenPopupBlock(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,

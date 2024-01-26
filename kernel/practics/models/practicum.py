@@ -18,6 +18,12 @@ class Practicum(models.Model):
 
     literature = RichTextField(null=True, blank=True)
 
+
+    approvals_and_decodings = RichTextField(null=True, blank=True)
+
+    speciality = models.ManyToManyField('pages.Specialty',
+                                   related_name='practicum_speciality', blank=True)
+
     # десктоп - 810px, 1620px, мобилка 400px, 800px
     image_desktop_810px = models.ImageField(upload_to='practicum/810px/',
                                             null=True, blank=True)

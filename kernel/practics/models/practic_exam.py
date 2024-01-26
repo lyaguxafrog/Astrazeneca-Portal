@@ -13,7 +13,7 @@ class PrTest(models.Model):
 
     speciality = models.ManyToManyField('pages.Specialty',
                                    related_name='prtest_speciality',
-                                   blank=True, null=True)
+                                   blank=True)
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],
