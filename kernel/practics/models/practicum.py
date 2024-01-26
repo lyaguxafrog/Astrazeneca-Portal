@@ -9,14 +9,14 @@ from ckeditor.fields import RichTextField
 class Practicum(models.Model):
     title = models.CharField(verbose_name="Название практикума *",
                              max_length=90)
-    image = models.ImageField(upload_to='practicum/', null=True, blank=True,
+    image = models.ImageField(upload_to='practicum/',
                               verbose_name='Изображение *')
 
     desription = RichTextField(verbose_name='Описание *',
-                                  null=True, blank=True, max_length=200,
+                                  max_length=200,
                                   help_text='Ограничение в 200 символов.')
 
-    pacient_description = RichTextField(null=True, blank=True,
+    pacient_description = RichTextField(
                         verbose_name='Краткая информация о пациенте *')
 
     priority = models.IntegerField(
