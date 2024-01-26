@@ -50,9 +50,9 @@ class ScreenButton(models.Model):
         # Получаем экземпляр Practicum, к которому привязан Screens
         practicum = self.screen.practicum
 
-        # Получаем экземпляр Screens по порядковому номеру
+        # Получаем экземпляр Screens по порядковому номеру (первый экран имеет номер 1)
         try:
-            screen_redirect = practicum.screens.all()[self.screen_number]
+            screen_redirect = practicum.screens.all()[self.screen_number - 1]
         except IndexError:
             screen_redirect = None
 
