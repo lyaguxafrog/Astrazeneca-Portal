@@ -7,7 +7,8 @@ from pathlib import Path
 from io import BytesIO
 from django.core.files import File
 
-from practics.models import Practicum
+from practics.models import ScreenImageBlock
+
 
 class DisableSignals:
     def __init__(self, sender):
@@ -27,13 +28,13 @@ target_width_1620 = 1620
 target_width_400 = 400
 target_width_800 = 800
 
-@receiver(post_save, sender=Practicum)
-def process_practicum(sender, instance, **kwargs):
+@receiver(post_save, sender=ScreenImageBlock)
+def process_imageeblock(sender, instance, **kwargs):
     if instance.image:
         file_path = instance.image.path
 
         if Path(file_path).exists():
-            with DisableSignals(sender=Practicum):
+            with DisableSignals(sender=ScreenImageBlock):
                 image = Image.open(file_path)
 
                 original_width, original_height = image.size
