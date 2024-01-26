@@ -39,5 +39,25 @@ class ScreenPopupBlock(models.Model):
 class ScreenButton(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_button_block')
-
     button_title = models.CharField(null=True, blank=True)
+
+    screen_number = models.IntegerField(default=None)
+    screen_redirect = models.ForeignKey('Screens', on_delete=models.SET_NULL,
+                null=True, blank=True, related_name='redirected_by_button')
+
+
+    def save(self, *args, **kwargs):
+        # Получаем экземпляр Practicum, к которому привязан Screens
+        practicum = self.screen.practicum
+
+        # Получаем экземпляр Screens по порядковому номеру
+        try:
+            screen_redirect = practicum.screens.all()[self.screen_number]
+        except IndexError:
+            screen_redirect = None
+
+        # Устанавливаем связь
+        self.screen_redirect = screen_redirect
+
+        # Сохраняем изменения
+        super(ScreenButton, self).save(*args, **kwargs)

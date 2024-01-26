@@ -13,8 +13,9 @@ from nested_admin import (NestedModelAdmin,
 
 class ScreenButtonInline(NestedStackedInline):
     model = ScreenButton
-    fields= ['button_title', 'screen_number']
-    extra = 0
+    fields = ['button_title', 'screen_number', 'screen_redirect']
+    extra = 1
+    fk_name = 'screen'
 
 
 class ScreenTextBlockInline(NestedStackedInline):
