@@ -23,10 +23,17 @@ class ScreenTextBlock(models.Model):
     order = models.IntegerField(default=0)
 
 class ScreenImageBlock(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE)
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+                               related_name='screen_image_block')
 
     image = models.ImageField(upload_to='practicums/blocks/')
     order = models.IntegerField(default=0)
+
+    image_desktop_810px = models.ImageField(null=True, blank=False)
+    image_desktop_1620px = models.ImageField(null=True, blank=False)
+    image_mobile_400px = models.ImageField(null=True, blank=False)
+    image_mobile_800px = models.ImageField(null=True, blank=False)
+
 
 class ScreenPopupBlock(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
@@ -39,5 +46,25 @@ class ScreenPopupBlock(models.Model):
 class ScreenButton(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_button_block')
+    button_title = models.CharField(null=True, blank=True)
 
-    button_title = models.CharField(null=True, blank=True, default='Test')
+    screen_number = models.IntegerField(default=None)
+    screen_redirect = models.ForeignKey('Screens', on_delete=models.SET_NULL,
+                null=True, blank=True, related_name='redirected_by_button')
+
+
+    def save(self, *args, **kwargs):
+        # Получаем экземпляр Practicum, к которому привязан Screens
+        practicum = self.screen.practicum
+
+        # Получаем экземпляр Screens по порядковому номеру (первый экран имеет номер 1)
+        try:
+            screen_redirect = practicum.screens.all()[self.screen_number - 1]
+        except IndexError:
+            screen_redirect = None
+
+        # Устанавливаем связь
+        self.screen_redirect = screen_redirect
+
+        # Сохраняем изменения
+        super(ScreenButton, self).save(*args, **kwargs)

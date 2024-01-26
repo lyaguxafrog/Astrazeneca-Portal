@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from django import forms
 
 from practics.models import (Practicum, Screens,
                              ScreenTextBlock, ScreenImageBlock,
@@ -13,7 +12,9 @@ from nested_admin import (NestedModelAdmin,
 
 class ScreenButtonInline(NestedStackedInline):
     model = ScreenButton
+    fields = ['button_title', 'screen_number']
     extra = 0
+    fk_name = 'screen'
 
 
 class ScreenTextBlockInline(NestedStackedInline):

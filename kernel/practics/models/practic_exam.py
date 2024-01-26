@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -8,8 +9,11 @@ class PrTest(models.Model):
     title = models.CharField()
 
     question = RichTextField()
-
     image = models.ImageField(upload_to='practics/test/')
+
+    speciality = models.ManyToManyField('pages.Specialty',
+                                   related_name='prtest_speciality',
+                                   blank=True)
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],
@@ -17,6 +21,8 @@ class PrTest(models.Model):
         default=50,
         help_text='Целое число от 1 до 50 включительно.'
     )
+
+    approvals_and_decodings = RichTextField(null=True, blank=True)
 
     # десктоп - 810px, 1620px, мобилка 400px, 800px
     image_desktop_810px = models.ImageField(upload_to='practics/test/810px',
