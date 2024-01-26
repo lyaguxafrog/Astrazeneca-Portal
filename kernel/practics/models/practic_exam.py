@@ -5,9 +5,10 @@ from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class PrTest(models.Model):
-    title = models.CharField(verbose_name='Заголовок *')
+    title = models.CharField(verbose_name="Название практикума *",
+                             max_length=90)
 
-    question = RichTextField(verbose_name='Вопрос *')
+    question = RichTextField(verbose_name='Описание задания *')
     image = models.ImageField(upload_to='practics/test/',
                               verbose_name='Изображение *')
 
@@ -47,3 +48,7 @@ class AnswerButtons(models.Model):
 
     title = models.CharField(verbose_name='Заголовок кнопки *')
     text = RichTextField(verbose_name='Текст *')
+
+    class Meta:
+        verbose_name = 'вариант ответа'
+        verbose_name_plural = 'варианты ответа'
