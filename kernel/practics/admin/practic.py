@@ -24,6 +24,7 @@ class ScreenTextBlockInline(NestedStackedInline):
 
 class ScreenImageBlockInline(NestedStackedInline):
     model = ScreenImageBlock
+    fields = ['image', 'order']
     extra = 0
 
 
@@ -44,3 +45,10 @@ class ScreensInline(NestedStackedInline):
 @admin.register(Practicum)
 class PracticumAdmin(NestedModelAdmin):
     inlines = [ScreensInline]
+    exclude = [
+        'image_desktop_810px',
+        'image_desktop_1620px',
+        'image_mobile_400px',
+        'image_mobile_800px']
+
+    search_fields = ['title', 'desription', 'pacient_description']

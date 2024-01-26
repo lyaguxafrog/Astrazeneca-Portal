@@ -12,4 +12,16 @@ class ButtonsInline(NestedStackedInline):
 @admin.register(PrTest)
 class PrTestAdmin(NestedModelAdmin):
     model = PrTest
+    list_display = [
+        'title',
+    ]
+    fields = [
+        'title',
+        'question',
+        'image',
+        'approvals_and_decodings',
+        'speciality',
+        'priority',
+    ]
     inlines = [ButtonsInline]
+    search_fields = ['title','question']

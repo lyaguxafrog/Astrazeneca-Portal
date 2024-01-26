@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 
-
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class PrTest(models.Model):
-    title = models.CharField()
+    title = models.CharField(verbose_name="Название практикума *",
+                             max_length=90)
 
-    question = RichTextField()
-    image = models.ImageField(upload_to='practics/test/')
+    question = RichTextField(verbose_name='Описание задания *')
+    image = models.ImageField(upload_to='practics/test/',
+                              verbose_name='Изображение *')
 
     speciality = models.ManyToManyField('pages.Specialty',
                                    related_name='prtest_speciality',
-                                   blank=True)
+                                   blank=True, verbose_name='Специальность')
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],
@@ -22,7 +23,8 @@ class PrTest(models.Model):
         help_text='Целое число от 1 до 50 включительно.'
     )
 
-    approvals_and_decodings = RichTextField(null=True, blank=True)
+    approvals_and_decodings = RichTextField(null=True, blank=True,
+                                verbose_name='Номер одобрения и расшифровка')
 
     # десктоп - 810px, 1620px, мобилка 400px, 800px
     image_desktop_810px = models.ImageField(upload_to='practics/test/810px',
@@ -33,11 +35,20 @@ class PrTest(models.Model):
                                            null=True, blank=True)
     image_mobile_800px = models.ImageField(upload_to='practics/test/800px',
                                            null=True, blank=True)
+    class Meta:
+        verbose_name = "тест"
+        verbose_name_plural = "тесты"
 
+    def __str__(self):
+        return self.title
 
 class AnswerButtons(models.Model):
     prtest = models.ForeignKey('PrTest', on_delete=models.CASCADE,
                                 related_name='buttons')
 
-    title = models.CharField()
-    text = RichTextField()
+    title = models.CharField(verbose_name='Заголовок кнопки *')
+    text = RichTextField(verbose_name='Текст *')
+
+    class Meta:
+        verbose_name = 'вариант ответа'
+        verbose_name_plural = 'варианты ответа'
