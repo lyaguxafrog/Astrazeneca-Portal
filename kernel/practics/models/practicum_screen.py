@@ -40,4 +40,4 @@ class ScreenButton(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_button_block')
 
-    button_title = models.CharField(null=True, blank=True, default='Test')
+    button_title = models.CharField(null=True, blank=True)

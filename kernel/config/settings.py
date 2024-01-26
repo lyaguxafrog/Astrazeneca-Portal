@@ -20,8 +20,6 @@ else:
     ALLOWED_HOSTS = [os.getenv("OUR_DOMAIN"),
                      f'{os.getenv("OUR_DOMAIN")}:8000']
 
-print(ALLOWED_HOSTS)
-
 CSRF_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True
 CSRF_COOKIE_DOMAIN = os.getenv("OUR_DOMAIN")
