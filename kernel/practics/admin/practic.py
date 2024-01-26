@@ -13,7 +13,7 @@ from nested_admin import (NestedModelAdmin,
 
 class ScreenButtonInline(NestedStackedInline):
     model = ScreenButton
-    fields= ['screen', 'button_title']
+    fields= ['button_title', 'screen_number']
     extra = 0
 
 

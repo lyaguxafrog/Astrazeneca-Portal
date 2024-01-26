@@ -13,7 +13,6 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = (os.getenv('DEBUG_FLAG') == 'True')
 
 
-
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
