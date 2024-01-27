@@ -2,8 +2,10 @@
 
 from rest_framework import generics, response
 from drf_yasg.utils import swagger_auto_schema
+from django.shortcuts import get_object_or_404
 
 from practics.models import PrTest
+from pages.models import Specialty
 from practics.serializers import (PrTestListSerializer, PrTestDetailSerializer,
                                   AnswerButtonsSerializer)
 
@@ -42,3 +44,14 @@ class PrTestDetailAPIView(generics.RetrieveAPIView):
         data['buttons'] = buttons_serializer.data
 
         return response.Response(data)
+
+
+class PrTestListBySpecialty(generics.ListAPIView):
+    serializer_class = PrTestListSerializer
+
+    def get_queryset(self):
+        specialty_id = self.kwargs['speciality']
+        specialty = get_object_or_404(Specialty, id=specialty_id)
+        queryset = PrTest.objects.filter(speciality=specialty)
+        queryset = queryset.order_by('priority')
+        return queryset

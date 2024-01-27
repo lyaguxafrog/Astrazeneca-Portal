@@ -33,7 +33,7 @@ class PracticumListBySpecialty(generics.ListAPIView):
     serializer_class = PracticumListSerializer
 
     def get_queryset(self):
-        specialty_id = self.kwargs['speciality']  # Use 'speciality' instead of 'specialty'
+        specialty_id = self.kwargs['speciality']
         specialty = get_object_or_404(Specialty, id=specialty_id)
         queryset = Practicum.objects.filter(speciality=specialty)
         queryset = queryset.order_by('priority')
