@@ -4,6 +4,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
+from pages.models import Specialty
 
 from practics.models import Practicum
 from practics.serializers.practics import (PracticumSerializer,
@@ -25,3 +27,14 @@ class PracticumListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Practicum.objects.all().order_by('priority')
+
+
+class PracticumListBySpecialty(generics.ListAPIView):
+    serializer_class = PracticumListSerializer
+
+    def get_queryset(self):
+        specialty_id = self.kwargs['speciality']  # Use 'speciality' instead of 'specialty'
+        specialty = get_object_or_404(Specialty, id=specialty_id)
+        queryset = Practicum.objects.filter(speciality=specialty)
+        queryset = queryset.order_by('priority')
+        return queryset
