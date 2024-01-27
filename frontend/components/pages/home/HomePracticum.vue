@@ -1,5 +1,5 @@
 <template>
-  <div class="home-practicum">
+  <div v-if="content.data.length" class="home-practicum">
     <BgEllipse
       class="home-practicum__first-ellipse"
       color="#00C2FF"
@@ -23,12 +23,23 @@
           prevEl: prevRef,
         }"
       >
-        <SwiperSlide v-for="practicum in content" :key="practicum.id" class="home-practicum__item">
-          <img :src="practicum.img" alt="" />
-          <p v-html="practicum.text" />
+        <SwiperSlide
+          v-for="practicum in content.data"
+          :key="practicum.id"
+          class="home-practicum__item"
+        >
+          <AppImage
+            :url="practicum.image"
+            :url-full="practicum.image_desktop_810px"
+            :url-full-x2="practicum.image_desktop_1620px"
+            :url-thin="practicum.image_mobile_400px"
+            :url-thin-x2="practicum.image_mobile_800px"
+          />
+          <p v-html="practicum.desription" />
           <AppButton primary class="home-practicum__item-button" :to="`/practicum/${practicum.id}`">
             Начать
           </AppButton>
+          <div class="swiper-lazy-preloader" />
         </SwiperSlide>
       </Swiper>
       <div ref="nextRef" class="swiper-button next">
@@ -50,29 +61,27 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import { useRequest } from '~/utils/composables/useRequest';
 
 const { $screen } = useScreen();
 
 const nextRef = ref(null);
 const prevRef = ref(null);
 
-const content = [
-  {
-    id: '1',
-    img: '/img/p1.png',
-    text: 'Пациент, 52 года, обратился с жалобой <b>на кашель, одышку, боли в груди и кровохарканье</b>. Ознакомьтесь с данными исследований и определите верный диагноз.',
-  },
-  {
-    id: '2',
-    img: '/img/p2.png',
-    text: 'Пациент, 52 года, обратился с жалобой <b>на кашель, одышку, боли в груди и кровохарканье</b>. Ознакомьтесь с данными исследований и определите верный диагноз.',
-  },
-  {
-    id: '3',
-    img: '/img/p3.png',
-    text: 'Пациент, 52 года, обратился с жалобой <b>на кашель, одышку, боли в груди и кровохарканье</b>. Ознакомьтесь с данными исследований и определите верный диагноз.',
-  },
-];
+type Practicum = {
+  id: number;
+  title: string;
+  desription: string;
+  image: string;
+  image_desktop_810px: string;
+  image_desktop_1620px: string;
+  image_mobile_400px: string;
+  image_mobile_800px: string;
+};
+
+const content = await useRequest<Practicum[]>('/practicum', {
+  method: 'GET',
+});
 </script>
 
 <style scoped lang="scss">

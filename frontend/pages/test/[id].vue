@@ -68,11 +68,7 @@ import BackBtn from '~/components/common/BackBtn.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import TestAnswerModal from '~/components/pages/practicum/TestAnswerModal.vue';
 
-const $route = useRoute();
-const { $screen } = useScreen();
-const { openModal } = useModal();
-
-const content = await useRequest<{
+export type TestPracticum = {
   title: string;
   question: string;
   image: string;
@@ -84,7 +80,13 @@ const content = await useRequest<{
     text: string;
     title: string;
   }[];
-}>(`/practicum_tests/${$route.params.id}`, {
+};
+
+const $route = useRoute();
+const { $screen } = useScreen();
+const { openModal } = useModal();
+
+const content = await useRequest<TestPracticum>(`/practicum_tests/${$route.params.id}`, {
   method: 'GET',
 });
 
