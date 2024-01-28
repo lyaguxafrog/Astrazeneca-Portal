@@ -89,9 +89,12 @@ class ScreenButton(models.Model):
     def save(self, *args, **kwargs):
         practicum = self.screen.practicum
 
-        try:
-            screen_redirect = practicum.screens.all()[self.screen_number - 1]
-        except IndexError:
+        if self.screen_number is not None:
+            try:
+                screen_redirect = practicum.screens.all()[self.screen_number - 1]
+            except IndexError:
+                screen_redirect = None
+        else:
             screen_redirect = None
 
         self.screen_redirect = screen_redirect
