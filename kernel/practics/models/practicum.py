@@ -53,3 +53,15 @@ class Practicum(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+class Screens(models.Model):
+    practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
+                                  related_name='screens')
+
+    literature = RichTextField(null=True, blank=True,
+                               verbose_name='список литературы')
+    class Meta:
+        verbose_name = 'экран'
+        verbose_name_plural = 'экраны'
