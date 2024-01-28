@@ -109,3 +109,7 @@ class ContentBlock(models.Model):
     image = models.ImageField(upload_to='content_block_images/',
                               blank=True, null=True, verbose_name='Изображение')
     order = models.PositiveIntegerField(verbose_name='Поорядковый номер *')
+
+    class Meta:
+        verbose_name = 'блоки контента'
+        verbose_name_plural = 'блоки контента'
