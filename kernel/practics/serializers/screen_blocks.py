@@ -2,44 +2,27 @@
 
 from rest_framework import serializers
 
-from practics.models import (Practicum, Screens)
-from .screen_blocks import (LeftButtonSerializer, LeftImagesSerializer,
-                                  LeftPopUpSerializer, LeftTextSerializer,
-                                  RightTextSerializer, RightButtonSerializer,
-                                  RightImagesSerializer, RightPopUpSerializer)
+from practics.models import (ScreenPopupBlock_left,
+                             ScreenButton_left, ScreenImageBlock_left,
+                             ScreenTextBlock_left, ScreenButton_right,
+                             ScreenImageBlock_right, ScreenPopupBlock_right,
+                             ScreenTextBlock_right)
 
-
-# Экраны
-class ScreenSerializer(serializers.ModelSerializer):
-    # лево
-    screen_text_block_left = LeftTextSerializer(many=True, read_only=True)
-    screen_image_block_left = LeftImagesSerializer(many=True, read_only=True)
-    screen_popup_block_leeft = LeftPopUpSerializer(many=True, read_only=True)
-    screen_button_block_left = LeftButtonSerializer(many=True, read_only=True)
-
-    screen_text_block_right = RightTextSerializer(many=True, read_only=True)
-    screen_image_block_right = RightImagesSerializer(many=True, read_only=True)
-    screen_popup_block_right = RightPopUpSerializer(many=True, read_only=True)
-    screen_button_block_right = RightButtonSerializer(many=True, read_only=True)
-
+# лево
+class LeftTextSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Screens
+        model = ScreenTextBlock_left
         fields = '__all__'
 
-
-# Практикум
-
-
-class PracticumSerializer(serializers.ModelSerializer):
-    screens = ScreenSerializer(many=True, read_only=True)
-
+class LeftImagesSerializer(serializers.ModelSerializer):
     image_desktop_810px = serializers.SerializerMethodField()
     image_desktop_1620px = serializers.SerializerMethodField()
     image_mobile_400px = serializers.SerializerMethodField()
     image_mobile_800px = serializers.SerializerMethodField()
 
+
     class Meta:
-        model = Practicum
+        model = ScreenImageBlock_left
         fields = '__all__'
 
     def get_image_desktop_810px(self, obj):
@@ -63,17 +46,33 @@ class PracticumSerializer(serializers.ModelSerializer):
         return None
 
 
-class PracticumListSerializer(serializers.ModelSerializer):
-    screens = ScreenSerializer(many=True, read_only=True)
-
+class LeftPopUpSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Practicum
+        model = ScreenPopupBlock_left
         fields = '__all__'
 
+class LeftButtonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenButton_left
+        fields = '__all__'
+
+
+# право
+class RightTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenTextBlock_right
+        fields = '__all__'
+
+class RightImagesSerializer(serializers.ModelSerializer):
     image_desktop_810px = serializers.SerializerMethodField()
     image_desktop_1620px = serializers.SerializerMethodField()
     image_mobile_400px = serializers.SerializerMethodField()
     image_mobile_800px = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = ScreenImageBlock_right
+        fields = '__all__'
 
     def get_image_desktop_810px(self, obj):
         return self.get_relative_url(obj.image_desktop_810px)
@@ -94,3 +93,14 @@ class PracticumListSerializer(serializers.ModelSerializer):
         str) and file_field_or_url.startswith('http'):
             return file_field_or_url
         return None
+
+
+class RightPopUpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenPopupBlock_right
+        fields = '__all__'
+
+class RightButtonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenButton_right
+        fields = '__all__'
