@@ -3,13 +3,13 @@
 from rest_framework import serializers
 from urllib.parse import urlparse
 
-from practics.models import (Practicum, Screens, ScreenPopupBlock,
-                             ScreenButton, ScreenImageBlock, ScreenTextBlock)
+from practics.models import (Practicum, Screens, ScreenPopupBlock_left,
+                             ScreenButton_left, ScreenImageBlock_left, ScreenTextBlock_left)
 
-# Блоки
+# Блоки слева
 class TextSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ScreenTextBlock
+        model = ScreenTextBlock_left
         fields = '__all__'
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
     class Meta:
-        model = ScreenImageBlock
+        model = ScreenImageBlock_left
         fields = '__all__'
 
     def get_image_desktop_810px(self, obj):
@@ -46,12 +46,12 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 class PopUpSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ScreenPopupBlock
+        model = ScreenPopupBlock_left
         fields = '__all__'
 
 class ButtonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ScreenButton
+        model = ScreenButton_left
         fields = '__all__'
 
 # Экраны
