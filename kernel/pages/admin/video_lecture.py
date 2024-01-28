@@ -4,6 +4,10 @@ from tkinter import Widget
 from django import forms
 from django.contrib import admin
 from pages.models import VideoLectures
+from config.admin import custom_admin_site
+
+admin.site = custom_admin_site
+
 
 class VideoLecturesAdminForm(forms.ModelForm):
     class Meta:
@@ -20,7 +24,7 @@ class VideoLecturesAdminForm(forms.ModelForm):
             # Exclude the currently edited video from video_recomendations
             self.fields['video_recomendations'].queryset = VideoLectures.objects.exclude(id=instance.id)
 
-@admin.register(VideoLectures)
+
 class VideoLecturesAdmin(admin.ModelAdmin):
     list_display = ("video_article", "content_type")
     form = VideoLecturesAdminForm
@@ -38,3 +42,6 @@ class VideoLecturesAdmin(admin.ModelAdmin):
         'access_number',
         'priority'
     )
+
+
+admin.site.register(VideoLectures, VideoLecturesAdmin)

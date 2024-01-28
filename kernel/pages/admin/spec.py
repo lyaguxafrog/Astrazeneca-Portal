@@ -2,13 +2,16 @@
 
 from django.contrib import admin
 from pages.models import Specialty
+from config.admin import custom_admin_site
+
+admin.site = custom_admin_site
 
 
-
-
-@admin.register(Specialty)
 class SpecAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'image',
     )
+
+
+admin.site.register(Specialty, SpecAdmin)

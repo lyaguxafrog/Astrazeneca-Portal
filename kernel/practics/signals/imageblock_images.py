@@ -7,7 +7,7 @@ from pathlib import Path
 from io import BytesIO
 from django.core.files import File
 
-from practics.models import ScreenImageBlock_left
+from practics.models import ScreenImageBlock_left, ScreenImageBlock_right
 
 
 class DisableSignals:
@@ -29,12 +29,50 @@ target_width_400 = 400
 target_width_800 = 800
 
 @receiver(post_save, sender=ScreenImageBlock_left)
-def process_imageeblock(sender, instance, **kwargs):
+def process_imageeblock_left(sender, instance, **kwargs):
     if instance.image:
         file_path = instance.image.path
 
         if Path(file_path).exists():
             with DisableSignals(sender=ScreenImageBlock_left):
+                image = Image.open(file_path)
+
+                original_width, original_height = image.size
+
+                target_height_810 = int(original_height / original_width * target_width_810)
+                target_height_1620 = int(original_height / original_width * target_width_1620)
+                target_height_400 = int(original_height / original_width * target_width_400)
+                target_height_800 = int(original_height / original_width * target_width_800)
+
+                image_stream_810px = BytesIO()
+                image.resize((target_width_810, target_height_810)).save(image_stream_810px, format='WEBP')
+                instance.image_desktop_810px.save(f"{instance.image.name}_810px.webp", File(image_stream_810px), save=False)
+
+                image_stream_1620px = BytesIO()
+                image.resize((target_width_1620, target_height_1620)).save(image_stream_1620px, format='WEBP')
+                instance.image_desktop_1620px.save(f"{instance.image.name}_1620px.webp", File(image_stream_1620px), save=False)
+
+                image_stream_400px = BytesIO()
+                image.resize((target_width_400, target_height_400)).save(image_stream_400px, format='WEBP')
+                instance.image_mobile_400px.save(f"{instance.image.name}_400px.webp", File(image_stream_400px), save=False)
+
+                image_stream_800px = BytesIO()
+                image.resize((target_width_800, target_height_800)).save(image_stream_800px, format='WEBP')
+                instance.image_mobile_800px.save(f"{instance.image.name}_800px.webp", File(image_stream_800px), save=False)
+
+                instance.save()
+
+        else:
+            print(f"Файл не найден: {file_path}")
+
+
+@receiver(post_save, sender=ScreenImageBlock_right)
+def process_imageeblock_right(sender, instance, **kwargs):
+    if instance.image:
+        file_path = instance.image.path
+
+        if Path(file_path).exists():
+            with DisableSignals(sender=ScreenImageBlock_right):
                 image = Image.open(file_path)
 
                 original_width, original_height = image.size
