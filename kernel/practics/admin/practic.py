@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
+from config.admin import custom_admin_site
+
+admin.site = custom_admin_site
 
 from practics.models import (Practicum, Screens,
                              ScreenTextBlock_left, ScreenImageBlock_left,
@@ -70,7 +73,6 @@ class ScreensInline(NestedStackedInline):
     extra = 0
 
 
-@admin.register(Practicum)
 class PracticumAdmin(NestedModelAdmin):
     inlines = [ScreensInline]
     exclude = [
@@ -80,3 +82,6 @@ class PracticumAdmin(NestedModelAdmin):
         'image_mobile_800px']
 
     search_fields = ['title', 'desription', 'pacient_description']
+
+
+admin.site.register(Practicum, PracticumAdmin)

@@ -2,8 +2,11 @@
 
 from django.contrib import admin
 from pages.models import Story
+from config.admin import custom_admin_site
 
-@admin.register(Story)
+admin.site = custom_admin_site
+
+
 class StoryAdmin(admin.ModelAdmin):
     list_display = (
         'title',
@@ -21,3 +24,6 @@ class StoryAdmin(admin.ModelAdmin):
         'specialties',
         'is_active'
     )
+
+
+admin.site.register(Story, StoryAdmin)
