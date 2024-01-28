@@ -12,10 +12,9 @@ from nested_admin import (NestedModelAdmin,
 
 class ScreenButtonInline(NestedStackedInline):
     model = ScreenButton
-    fields = ['button_title', 'screen_number']
     extra = 0
+    exclude = ['screen_redirect',]
     fk_name = 'screen'
-
 
 class ScreenTextBlockInline(NestedStackedInline):
     model = ScreenTextBlock
@@ -39,7 +38,7 @@ class ScreensInline(NestedStackedInline):
                ScreenImageBlockInline,
                ScreenPopupBlockInline,
                ScreenButtonInline]
-    extra = 1
+    extra = 0
 
 
 @admin.register(Practicum)
