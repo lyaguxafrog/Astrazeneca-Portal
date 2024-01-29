@@ -10,10 +10,12 @@ if [[ $1 = 'config' ]]; then
     rm -rf kernel/.vscode/
     rm -rf kernel/README.md
 
+    mkdir kernel/logs
+    mkdir frontend/dist
+    
     cat .env.example >> kernel/.env
     echo ".env создан"
     echo "Обязательно смените SECRET_KEY и ADMIN_PASSWORD"   
-    mkdir kernel/logs
     
 fi
 

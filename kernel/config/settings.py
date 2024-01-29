@@ -114,7 +114,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         'DIRS': [
-            os.path.join('webclient'),
+            os.path.join(BASE_DIR, "frontend/dist"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {

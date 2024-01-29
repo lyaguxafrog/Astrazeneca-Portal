@@ -30,7 +30,8 @@ urlpatterns = [
     path('api/', include('users.urls')),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('author', RedirectView.as_view(url='https://github.com/lyaguxafrog'), name='github-redirect'),
-    path('', TemplateView.as_view(template_name='frontend.html'), name='frontend'),
+    path('', TemplateView.as_view(template_name='index.html'), name='frontend'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
