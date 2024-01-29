@@ -1,5 +1,5 @@
 <template>
-  <div v-if="content.data.length" class="home-practicum">
+  <div v-if="content.data?.length" class="home-practicum">
     <BgEllipse
       class="home-practicum__first-ellipse"
       color="#00C2FF"
@@ -12,8 +12,8 @@
       :size="$screen.mdAndDown ? 306 : 1000"
     />
 
-    <div class="home-practicum__title">практикум</div>
-    <div class="home-practicum__subtitle">Интерактивный клинический случай</div>
+    <div class="home-practicum__title h2">практикум</div>
+    <div class="home-practicum__subtitle">{{ content.data[activeSlideIndex].title }}</div>
 
     <div class="home-practicum__slider">
       <Swiper
@@ -22,6 +22,8 @@
           nextEl: nextRef,
           prevEl: prevRef,
         }"
+        @swiper="onSwiper"
+        @slide-change="onSlideChange"
       >
         <SwiperSlide
           v-for="practicum in content.data"
@@ -62,6 +64,7 @@ import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { useRequest } from '~/utils/composables/useRequest';
+import { Swiper as SwiperType } from 'swiper/types';
 
 const { $screen } = useScreen();
 
@@ -82,6 +85,19 @@ type Practicum = {
 const content = await useRequest<Practicum[]>('/practicum', {
   method: 'GET',
 });
+
+const activeSlideIndex = ref(0);
+const swiper = ref<SwiperType>();
+
+const onSwiper = (s: SwiperType) => {
+  swiper.value = s;
+};
+
+const onSlideChange = () => {
+  if (swiper.value) {
+    activeSlideIndex.value = swiper.value.realIndex;
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -101,16 +117,9 @@ const content = await useRequest<Practicum[]>('/practicum', {
 
   &__title {
     padding: 0 95px;
-
-    font-family: $secondary-font-family;
-    font-size: 50px;
-    line-height: 28px;
-    font-weight: 900;
-    text-transform: uppercase;
   }
 
   &__subtitle {
-    width: 70%;
     margin-top: 13px;
     padding: 0 95px;
 
@@ -124,7 +133,7 @@ const content = await useRequest<Practicum[]>('/practicum', {
   }
 
   &__item {
-    img {
+    :deep(img) {
       display: block;
 
       width: 818px;
@@ -140,10 +149,6 @@ const content = await useRequest<Practicum[]>('/practicum', {
       font-size: 36px;
       line-height: 42px;
       font-weight: 300;
-
-      :deep(b) {
-        font-weight: 700;
-      }
     }
 
     &-button {
@@ -190,9 +195,6 @@ const content = await useRequest<Practicum[]>('/practicum', {
 
     &__title {
       padding: 0 27px;
-
-      font-size: 22px;
-      line-height: 28px;
     }
 
     &__subtitle {
@@ -218,7 +220,7 @@ const content = await useRequest<Practicum[]>('/practicum', {
       }
 
       &-button {
-        width: auto;
+        width: fit-content;
         margin: 34px auto;
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="content.data.length" class="home-test">
+  <div v-if="content.data?.length" class="home-test">
     <BgEllipse
       class="home-test__first-ellipse"
       color="#00C2FF"
@@ -18,13 +18,16 @@
       :withNavigation="!$screen.mdAndDown"
       :items="content.data"
       :desktop-slides-per-view="1"
-      :mobile-slides-per-view="3"
       :initial-slide="0"
       :hide-pagination="!$screen.mdAndDown"
       #default="{ item }"
     >
       <nuxt-link class="home-test__item link" :to="`/test/${item.id}`">
-        <div class="home-test__item-text h3" v-html="item.question" />
+        <div
+          v-if="!$screen.mdAndDown"
+          class="home-test__item-text caption-m"
+          v-html="item.question"
+        />
         <AppImage
           class="home-test__item-img"
           :url="item.image_desktop_810px"
@@ -32,6 +35,11 @@
           :url-full-x2="item.image_desktop_1620px"
           :url-thin-x2="item.image_mobile_400px"
           :url-thin="item.image_mobile_800px"
+        />
+        <div
+          v-if="$screen.mdAndDown"
+          class="home-test__item-text caption-m"
+          v-html="item.question"
         />
         <AppButton primary class="home-test__item-btn"> Начать </AppButton>
       </nuxt-link>
@@ -48,7 +56,7 @@ import ItemsSlider from '~/components/common/ItemsSlider.vue';
 
 const { $screen } = useScreen();
 
-const content = await useRequest<TestPracticum>('/practicum_tests', {
+const content = await useRequest<TestPracticum[]>('/practicum_tests', {
   method: 'GET',
 });
 </script>
@@ -74,9 +82,11 @@ const content = await useRequest<TestPracticum>('/practicum_tests', {
   }
 
   &__item {
-    display: block;
+    display: flex;
+    flex-direction: column;
 
     max-width: 625px;
+    height: 100%;
     margin: 0 auto;
 
     &-text {
@@ -88,13 +98,37 @@ const content = await useRequest<TestPracticum>('/practicum_tests', {
       margin: 60px auto 0;
     }
 
+    &-img {
+      margin-top: auto;
+    }
+
     :deep(img) {
+      @include aspect(1, 1);
+
       border: 1px solid $primary-color;
       border-radius: 40px;
     }
   }
 
+  :deep(.swiper-button) {
+    top: auto;
+    bottom: 410px;
+  }
+
+  @include lg-and-down {
+    &__item {
+      max-width: 460px;
+    }
+
+    :deep(.swiper-button) {
+      top: auto;
+      bottom: 320px;
+    }
+  }
+
   @include md-and-down {
+    margin-bottom: 60px;
+
     &__first-ellipse {
       top: -10px;
       right: -270px;
@@ -107,7 +141,19 @@ const content = await useRequest<TestPracticum>('/practicum_tests', {
     }
 
     &__title {
+      margin-bottom: 50px;
       padding: 0 27px;
+    }
+
+    &__item {
+      &-text {
+        margin: 26px 0 0;
+      }
+
+      &-btn {
+        width: fit-content;
+        margin-top: 36px;
+      }
     }
   }
 }

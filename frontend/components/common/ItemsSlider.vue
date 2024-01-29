@@ -2,7 +2,7 @@
   <div v-if="items.length" class="items-slider" :class="{ hidePagination }">
     <Swiper
       grab-cursor
-      :loop="!disableLoop && loopSlides.length > slidesPerView + 1"
+      :loop="!disableLoop && loopSlides.length > slidesPerView + 2"
       :loop-additional-slides="2"
       :centered-slides="centeredSlides"
       :space-between="40"

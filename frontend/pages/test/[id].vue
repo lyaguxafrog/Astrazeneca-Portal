@@ -1,5 +1,5 @@
 <template>
-  <BackBtn class="test__back" />
+  <InsidePageHead class="test__back" />
 
   <div class="test">
     <BgEllipse
@@ -64,11 +64,12 @@ import { useRoute } from '#app';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useRequest } from '~/utils/composables/useRequest';
 import { ModalsName, useModal } from '~/utils/composables/useModal';
-import BackBtn from '~/components/common/BackBtn.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import TestAnswerModal from '~/components/pages/practicum/TestAnswerModal.vue';
 
 export type TestPracticum = {
+  id: number;
   title: string;
   question: string;
   image: string;
@@ -139,10 +140,6 @@ const showAnswer = (index: number) => {
   &__second-ellipse {
     top: 90px;
     right: -640px;
-  }
-
-  &__back {
-    margin: 23px 20px 20px;
   }
 
   &__title {
@@ -246,10 +243,6 @@ const showAnswer = (index: number) => {
 
   @include md-and-down {
     padding: 0 27px;
-
-    &__back {
-      margin: 16px 15px 24px;
-    }
 
     &__title {
       margin-bottom: 25px;
