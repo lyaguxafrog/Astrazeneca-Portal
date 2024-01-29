@@ -113,7 +113,9 @@ CORS_ALLOWED_ORIGINS = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [
+            os.path.join('webclient'),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
