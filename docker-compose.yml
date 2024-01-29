@@ -54,6 +54,7 @@ services:
 
 
 volumes:
+  static:
   letsencrypt:
   www-html:
 
