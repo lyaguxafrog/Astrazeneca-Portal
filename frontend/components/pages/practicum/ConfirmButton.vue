@@ -9,8 +9,8 @@
         <div class="confirm-button__message">
           <p>Вы подтверждаете свой выбор?</p>
           <div class="confirm-button__message-btn-container">
-            <div class="confirm-button__message-btn active">Да</div>
-            <div class="confirm-button__message-btn">НЕТ</div>
+            <div class="confirm-button__message-btn active" @click="apply">Да</div>
+            <div class="confirm-button__message-btn" @click="hideConfirm">НЕТ</div>
           </div>
         </div>
       </div>
@@ -22,12 +22,21 @@
 import { ref } from 'vue';
 import { OnClickOutside } from '@vueuse/components';
 
+const props = defineProps<{
+  action: () => void | Promise<void>;
+}>();
+
 const isConfirmShown = ref(false);
 const showConfirm = () => {
   isConfirmShown.value = true;
 };
 const hideConfirm = () => {
   isConfirmShown.value = false;
+};
+
+const apply = () => {
+  props.action();
+  hideConfirm();
 };
 </script>
 
@@ -36,7 +45,7 @@ const hideConfirm = () => {
   position: relative;
 
   &__btn {
-    height: 76px;
+    min-height: 76px;
     margin-bottom: 30px;
 
     font-size: 24px;
@@ -143,6 +152,95 @@ const hideConfirm = () => {
           border-radius: 42px;
 
           pointer-events: none;
+        }
+      }
+    }
+  }
+
+  @include lg-and-down {
+    &__btn {
+      min-height: 60px;
+
+      font-size: 18px;
+      line-height: 1;
+    }
+  }
+
+  @include md-and-down {
+    max-width: 400px;
+    margin: 0 auto;
+
+    &__btn {
+      height: auto;
+      margin-bottom: 22px;
+      padding: 7px 10px;
+
+      font-size: 15px;
+      line-height: 16px;
+      letter-spacing: -0.15px;
+    }
+
+    &__message {
+      flex-direction: column;
+
+      min-width: auto;
+      padding: 20px 0 73px 0;
+
+      font-size: 15px;
+      line-height: 16px;
+      text-align: center;
+      letter-spacing: -0.15px;
+
+      border-radius: 20px 20px 0 0;
+
+      p {
+        width: 100%;
+        margin-right: 0;
+      }
+
+      &-wrapper {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        @include z-index(10);
+
+        width: 100%;
+        height: auto;
+
+        transform: translateY(110%);
+        transition: transform $tr-dur;
+
+        &.shown {
+          width: 100%;
+
+          transform: translateY(0);
+        }
+      }
+
+      &-btn {
+        width: 83px;
+        height: 49px;
+        margin: 16px 7px 0;
+
+        font-size: 19px;
+        color: $secondary-text-color;
+
+        background-color: transparent;
+        border: 1px solid $secondary-text-color;
+        border-radius: 72px !important;
+
+        &-container {
+          border: none;
+
+          &:before {
+            display: none;
+          }
+        }
+
+        &.active {
+          color: $white-color;
+
+          background-color: $secondary-text-color;
         }
       }
     }

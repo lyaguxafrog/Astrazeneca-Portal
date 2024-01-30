@@ -6,6 +6,7 @@ const SHARING_DESCRIPTION = 'Description';
 const SHARING_IMAGE = '/';
 
 export default defineNuxtConfig({
+  ssr: false,
   app: {
     head: {
       title: SHARING_TITLE,

@@ -21,6 +21,8 @@
 
       <HomePracticum />
 
+      <HomeTest />
+
       <HomeEvents />
 
       <HomeDrugs />
@@ -49,6 +51,7 @@ import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
 import HomeArticles from '~/components/pages/home/HomeArticles.vue';
 import HomeAddContentModal from '~/components/pages/home/HomeAddContentModal.vue';
 import HomePracticum from '~/components/pages/home/HomePracticum.vue';
+import HomeTest from '~/components/pages/home/HomeTest.vue';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useVideosStore } from '~/utils/composables/store/videos';
 import { useArticlesStore } from '~/utils/composables/store/articles';
