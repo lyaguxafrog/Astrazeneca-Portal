@@ -10,8 +10,8 @@ export type History = {
   avatar: string;
   avatar_desktop_120px: string;
   avatar_desktop_280px: string;
-  avatar_desktop_70px: string;
-  avatar_desktop_140px: string;
+  avatar_mobile_70px: string;
+  avatar_mobile_140px: string;
   cover_image: string;
   cover_450px: string;
   cover_900px: string;
