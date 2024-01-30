@@ -3,7 +3,6 @@
     <BgEllipse
       class="home-drugs__first-ellipse"
       color="#00C2FF"
-      pale
       :size="$screen.mdAndDown ? 230 : 684"
     />
     <BgEllipse

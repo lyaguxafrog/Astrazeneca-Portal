@@ -1,5 +1,5 @@
 <template>
-  <div class="home-practicum">
+  <div v-if="content.data?.length" class="home-practicum">
     <BgEllipse
       class="home-practicum__first-ellipse"
       color="#00C2FF"
@@ -12,8 +12,8 @@
       :size="$screen.mdAndDown ? 306 : 1000"
     />
 
-    <div class="home-practicum__title">практикум</div>
-    <div class="home-practicum__subtitle">Интерактивный клинический случай</div>
+    <div class="home-practicum__title h2">практикум</div>
+    <div class="home-practicum__subtitle">{{ content.data[activeSlideIndex].title }}</div>
 
     <div class="home-practicum__slider">
       <Swiper
@@ -22,13 +22,26 @@
           nextEl: nextRef,
           prevEl: prevRef,
         }"
+        @swiper="onSwiper"
+        @slide-change="onSlideChange"
       >
-        <SwiperSlide v-for="practicum in content" :key="practicum.id" class="home-practicum__item">
-          <img :src="practicum.img" alt="" />
-          <p v-html="practicum.text" />
+        <SwiperSlide
+          v-for="practicum in content.data"
+          :key="practicum.id"
+          class="home-practicum__item"
+        >
+          <AppImage
+            :url="practicum.image"
+            :url-full="practicum.image_desktop_810px"
+            :url-full-x2="practicum.image_desktop_1620px"
+            :url-thin="practicum.image_mobile_400px"
+            :url-thin-x2="practicum.image_mobile_800px"
+          />
+          <p v-html="practicum.desription" />
           <AppButton primary class="home-practicum__item-button" :to="`/practicum/${practicum.id}`">
             Начать
           </AppButton>
+          <div class="swiper-lazy-preloader" />
         </SwiperSlide>
       </Swiper>
       <div ref="nextRef" class="swiper-button next">
@@ -50,29 +63,41 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import { useRequest } from '~/utils/composables/useRequest';
+import { Swiper as SwiperType } from 'swiper/types';
 
 const { $screen } = useScreen();
 
 const nextRef = ref(null);
 const prevRef = ref(null);
 
-const content = [
-  {
-    id: '1',
-    img: '/img/p1.png',
-    text: 'Пациент, 52 года, обратился с жалобой <b>на кашель, одышку, боли в груди и кровохарканье</b>. Ознакомьтесь с данными исследований и определите верный диагноз.',
-  },
-  {
-    id: '2',
-    img: '/img/p2.png',
-    text: 'Пациент, 52 года, обратился с жалобой <b>на кашель, одышку, боли в груди и кровохарканье</b>. Ознакомьтесь с данными исследований и определите верный диагноз.',
-  },
-  {
-    id: '3',
-    img: '/img/p3.png',
-    text: 'Пациент, 52 года, обратился с жалобой <b>на кашель, одышку, боли в груди и кровохарканье</b>. Ознакомьтесь с данными исследований и определите верный диагноз.',
-  },
-];
+type Practicum = {
+  id: number;
+  title: string;
+  desription: string;
+  image: string;
+  image_desktop_810px: string;
+  image_desktop_1620px: string;
+  image_mobile_400px: string;
+  image_mobile_800px: string;
+};
+
+const content = await useRequest<Practicum[]>('/practicum', {
+  method: 'GET',
+});
+
+const activeSlideIndex = ref(0);
+const swiper = ref<SwiperType>();
+
+const onSwiper = (s: SwiperType) => {
+  swiper.value = s;
+};
+
+const onSlideChange = () => {
+  if (swiper.value) {
+    activeSlideIndex.value = swiper.value.realIndex;
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -92,16 +117,9 @@ const content = [
 
   &__title {
     padding: 0 95px;
-
-    font-family: $secondary-font-family;
-    font-size: 50px;
-    line-height: 28px;
-    font-weight: 900;
-    text-transform: uppercase;
   }
 
   &__subtitle {
-    width: 70%;
     margin-top: 13px;
     padding: 0 95px;
 
@@ -115,7 +133,7 @@ const content = [
   }
 
   &__item {
-    img {
+    :deep(img) {
       display: block;
 
       width: 818px;
@@ -131,10 +149,6 @@ const content = [
       font-size: 36px;
       line-height: 42px;
       font-weight: 300;
-
-      :deep(b) {
-        font-weight: 700;
-      }
     }
 
     &-button {
@@ -181,9 +195,6 @@ const content = [
 
     &__title {
       padding: 0 27px;
-
-      font-size: 22px;
-      line-height: 28px;
     }
 
     &__subtitle {
@@ -209,7 +220,7 @@ const content = [
       }
 
       &-button {
-        width: auto;
+        width: fit-content;
         margin: 34px auto;
       }
     }

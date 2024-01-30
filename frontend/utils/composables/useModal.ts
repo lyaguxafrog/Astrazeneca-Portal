@@ -8,6 +8,7 @@ export enum ModalsName {
   VideosAddContent = 'videos-add-content',
   PracticumInfoModal = 'practicum-info-modal',
   PracticumDiscoverModal = 'practicum-discover-modal',
+  TestAnswerModal = 'test-answer-modal',
 }
 
 type RegisteredModal = {

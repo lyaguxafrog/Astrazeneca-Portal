@@ -13,7 +13,10 @@
       </div>
 
       <DefaultFooter v-show="!meta.hideFooter && !activeSlideId" class="default-layout__footer" />
-      <DefaultMenu v-if="!meta.hideFooter && specialityId && !activeSlideId" class="for-mobile-or-tablet" />
+      <DefaultMenu
+        v-if="!meta.hideFooter && specialityId && !activeSlideId"
+        class="for-mobile-or-tablet"
+      />
     </ClientOnly>
   </div>
 </template>
@@ -55,6 +58,12 @@ const { $screen } = useScreen();
 
   &__footer {
     margin-top: auto;
+  }
+
+  @include md-and-down {
+    &__content {
+      min-height: 80vh;
+    }
   }
 }
 </style>

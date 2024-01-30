@@ -62,3 +62,31 @@ a {
     display: none !important;
   }
 }
+
+b, strong {
+  font-weight: 700;
+}
+
+.h2 {
+  font-family: $secondary-font-family;
+  font-size: 50px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+  @include md-and-down {
+    font-size: 27px;
+    line-height: 28px;
+  }
+}
+
+.caption-m {
+  font-family: $secondary-font-family;
+  font-size: 40px;
+  line-height: 42px;
+  color: $white-color;
+
+  @include md-and-down {
+    font-size: 20px;
+    line-height: 21px;
+  }
+}

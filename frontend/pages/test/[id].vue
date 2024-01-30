@@ -1,37 +1,130 @@
 <template>
-  <BackBtn class="test__back" />
+  <InsidePageHead class="test__back" />
 
   <div class="test">
-    <BgEllipse class="test__first-ellipse" color="#4DDFFF" :size="$screen.mdAndDown ? 330 : 1138" />
-    <BgEllipse class="test__second-ellipse" color="#B32FC9" :size="$screen.mdAndDown ? 330 : 984" />
+    <BgEllipse
+      class="test__first-ellipse"
+      :color="$screen.mdAndDown ? '#904DFF' : '#4DDFFF'"
+      :size="$screen.mdAndDown ? 305 : 1138"
+    />
+    <BgEllipse
+      class="test__second-ellipse"
+      :color="$screen.mdAndDown ? '#4DDFFF' : '#B32FC9'"
+      :size="$screen.mdAndDown ? 330 : 984"
+    />
 
-    <div class="test__title">ПРАКТИКУМ ПО ВЫЯВЛЕНИЮ АДЕНОКАРЦИНОМЫ</div>
+    <div class="test__title">{{ content.data?.title }}</div>
 
-    <div class="test__subtitle">Изучите изображение материала и выберите вариант ответа:</div>
+    <div class="test__subtitle" v-html="content.data?.question" />
 
     <div class="test__container">
       <div class="test__container-left">
-        <img src="/img/petri.png" alt="" />
+        <AppImage
+          :url="content.data?.image"
+          :url-full="content.data?.image_desktop_810px"
+          :url-full-x2="content.data?.image_desktop_1620px"
+          :url-thin="content.data?.image_mobile_400px"
+          :url-thin-x2="content.data?.image_mobile_800px"
+        />
       </div>
       <div class="test__container-right">
         <div class="test__container-answers">
-          <AppButton class="test__container-answer"> Вариант ответа </AppButton>
-          <AppButton class="test__container-answer"> Вариант ответа </AppButton>
-          <AppButton class="test__container-answer"> Вариант ответа </AppButton>
-          <AppButton class="test__container-answer"> Вариант ответа </AppButton>
+          <div
+            v-for="(answer, index) in content.data?.buttons"
+            ref="itemsEls"
+            class="test__container-answer-wrapper"
+          >
+            <AppButton
+              class="test__container-answer"
+              :petite="$screen.mdAndDown"
+              @click="showAnswer(index)"
+            >
+              {{ answer.title }}
+            </AppButton>
+            <div class="test__container-answer-text">
+              <br />
+              <p v-html="answer.text" />
+            </div>
+          </div>
         </div>
-        <AppButton primary class="test__container-next"> Следующий тест </AppButton>
+        <AppButton primary class="test__container-next" :petite="$screen.mdAndDown">
+          Следующий тест
+        </AppButton>
       </div>
     </div>
+
+    <div class="test__description">Номера одобрения: ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ, ХХХХХХХХ</div>
   </div>
+  <TestAnswerModal :content="activeAnswer" />
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" async>
+import { ref, toRef } from 'vue';
+import { useRoute } from '#app';
 import { useScreen } from '~/utils/composables/useScreen';
-import BackBtn from '~/components/common/BackBtn.vue';
+import { useRequest } from '~/utils/composables/useRequest';
+import { ModalsName, useModal } from '~/utils/composables/useModal';
 import BgEllipse from '~/components/common/BgEllipse.vue';
+import InsidePageHead from '~/components/common/InsidePageHead.vue';
+import TestAnswerModal from '~/components/pages/practicum/TestAnswerModal.vue';
 
+export type TestPracticum = {
+  id: number;
+  title: string;
+  question: string;
+  image: string;
+  image_desktop_810px: string;
+  image_desktop_1620px: string;
+  image_mobile_400px: string;
+  image_mobile_800px: string;
+  buttons: {
+    text: string;
+    title: string;
+  }[];
+};
+
+const $route = useRoute();
 const { $screen } = useScreen();
+const { openModal } = useModal();
+
+const content = await useRequest<TestPracticum>(`/practicum_tests/${$route.params.id}`, {
+  method: 'GET',
+});
+
+const shownAnswerIndex = ref(-1);
+
+const activeAnswer = toRef(() => content.data?.buttons[shownAnswerIndex.value]);
+
+const itemsEls = ref();
+
+const showAnswer = (index: number) => {
+  shownAnswerIndex.value = index;
+
+  if ($screen.value.mdAndDown) {
+    itemsEls.value.forEach((el: HTMLElement) => {
+      const content = el.querySelector('.test__container-answer-text') as HTMLElement;
+      if (content) {
+        content.style.height = `0`;
+      }
+    });
+
+    if (
+      (shownAnswerIndex.value || shownAnswerIndex.value === 0) &&
+      shownAnswerIndex.value >= 0 &&
+      itemsEls.value[shownAnswerIndex.value]
+    ) {
+      const content = itemsEls.value[shownAnswerIndex.value].querySelector(
+        '.test__container-answer-text'
+      );
+
+      const height = content.scrollHeight;
+
+      content.style.height = `${height}px`;
+    }
+  } else {
+    openModal(ModalsName.TestAnswerModal);
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -47,10 +140,6 @@ const { $screen } = useScreen();
   &__second-ellipse {
     top: 90px;
     right: -640px;
-  }
-
-  &__back {
-    margin: 23px 20px 20px;
   }
 
   &__title {
@@ -106,10 +195,121 @@ const { $screen } = useScreen();
     &-answer {
       width: 47.3%;
       margin-bottom: 40px;
+
+      &-text {
+        display: none;
+      }
+
+      &-wrapper {
+        display: contents;
+      }
     }
 
     &-next {
       width: 100%;
+    }
+  }
+
+  &__description {
+    margin-top: 56px;
+
+    font-size: 18px;
+    line-height: 22px;
+    color: $primary-color;
+  }
+
+  @include lg-and-down {
+    padding: 0 40px;
+
+    &__first-ellipse {
+      top: -10px;
+      left: -180px;
+    }
+    &__second-ellipse {
+      top: 220px;
+      right: -250px;
+    }
+
+    &__container {
+      &-left {
+        margin-right: 4%;
+      }
+
+      &-right {
+        width: 60%;
+      }
+    }
+  }
+
+  @include md-and-down {
+    padding: 0 27px;
+
+    &__title {
+      margin-bottom: 25px;
+
+      font-size: 26px;
+      line-height: 28px;
+    }
+
+    &__subtitle {
+      font-size: 22px;
+      line-height: 21px;
+    }
+
+    &__container {
+      display: block;
+
+      margin-top: 27px;
+
+      &-left {
+        width: 100%;
+        margin: 0;
+
+        border-radius: 20px;
+      }
+
+      &-right {
+        width: 100%;
+        margin-top: 30px;
+      }
+
+      &-answers {
+        display: block;
+      }
+
+      &-answer {
+        width: 66%;
+        margin-bottom: 0;
+        padding: 0;
+
+        &-text {
+          display: block;
+
+          height: 0;
+          overflow: hidden;
+
+          font-size: 14px;
+          line-height: 17px;
+          font-weight: 300;
+
+          transition: height $tr-dur;
+        }
+
+        &-wrapper {
+          display: block;
+
+          width: 100%;
+          margin-top: 10px;
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    &__description {
+      margin-top: 30px;
+
+      font-size: 8px;
+      line-height: 9px;
     }
   }
 }

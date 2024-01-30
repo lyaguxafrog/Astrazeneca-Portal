@@ -98,6 +98,13 @@ const openProps = (item: AccordionItem, index: number) => {
     }
   }
 
+  @include lg-and-down {
+    &__item {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+  }
+
   @include md-and-down {
     &__item {
       padding: 12px 0;

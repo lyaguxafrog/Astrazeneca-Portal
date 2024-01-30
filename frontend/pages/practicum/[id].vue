@@ -12,15 +12,28 @@
     />
     <div class="practicum__container">
       <div class="practicum__left">
-        <div class="practicum__title">практикум</div>
-        <AppIcon class="practicum__info-ico" :name="IconName.Info" @click="openInfoModal" />
+        <div class="practicum__title h2">практикум</div>
+        <AppIcon
+          class="practicum__info-ico"
+          :name="IconName.Info"
+          @click="openInfoModal"
+          :size="$screen.mdAndDown ? 24 : 32"
+        />
         <img src="/img/anyaaffect_woman.png" alt="" />
-        <div class="practicum__subtitle">Определите тактику лечения</div>
-        <ConfirmButton>
-          Направить на консилиум для оценки объема оперативного вмешательства
-        </ConfirmButton>
-        <ConfirmButton> Направить на предоперационную верификацию опухоли </ConfirmButton>
-        <div class="practicum__description">*Гипотетический клинический случай</div>
+        <template v-if="!$screen.mdAndDown">
+          <div class="practicum__subtitle">Определите тактику лечения</div>
+          <ConfirmButton
+            :action="
+              () => {
+                console.log(123);
+              }
+            "
+          >
+            Направить на консилиум для оценки объема оперативного вмешательства
+          </ConfirmButton>
+          <ConfirmButton> Направить на предоперационную верификацию опухоли </ConfirmButton>
+          <div class="practicum__description">*Гипотетический клинический случай</div>
+        </template>
       </div>
 
       <div class="practicum__right">
@@ -39,6 +52,21 @@
 
         <Accordion :items="items" :modal-name="ModalsName.PracticumDiscoverModal" />
       </div>
+
+      <template v-if="$screen.mdAndDown">
+        <div class="practicum__subtitle">Определите тактику лечения</div>
+        <ConfirmButton
+          :action="
+            () => {
+              console.log(123);
+            }
+          "
+        >
+          Направить на консилиум для оценки объема оперативного вмешательства
+        </ConfirmButton>
+        <ConfirmButton> Направить на предоперационную верификацию опухоли </ConfirmButton>
+        <div class="practicum__description">*Гипотетический клинический случай</div>
+      </template>
     </div>
   </div>
   <InfoModal />
@@ -46,6 +74,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useRoute } from '#app';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { ModalsName, useModal } from '~/utils/composables/useModal';
@@ -54,10 +83,16 @@ import InfoModal from '~/components/pages/practicum/InfoModal.vue';
 import Accordion from '~/components/common/Accordion.vue';
 import DiscoverModal from '~/components/pages/practicum/DiscoverModal.vue';
 import ConfirmButton from '~/components/pages/practicum/ConfirmButton.vue';
+import { useRequest } from '~/utils/composables/useRequest';
 
+const $route = useRoute();
 const { $screen } = useScreen();
 
 const { openModal } = useModal();
+
+const content = await useRequest(`/practicum/${$route.params.id}`, {
+  method: 'GET',
+});
 
 const items = [
   {
@@ -223,8 +258,9 @@ const openDiscoverModal = () => {
 
   &__info-ico {
     position: absolute;
-    top: 50%;
+    top: 600px;
     right: 0;
+    @include z-index(3);
 
     color: $primary-color;
 
@@ -234,13 +270,6 @@ const openDiscoverModal = () => {
     @include hover {
       color: $white-color;
     }
-  }
-
-  &__title {
-    font-family: $secondary-font-family;
-    font-size: 50px;
-    font-weight: 900;
-    text-transform: uppercase;
   }
 
   &__left {
@@ -264,6 +293,7 @@ const openDiscoverModal = () => {
 
     font-family: $secondary-font-family;
     font-size: 34px;
+    line-height: 1;
     font-weight: 300;
     text-align: center;
   }
@@ -310,7 +340,90 @@ const openDiscoverModal = () => {
 
       font-family: $secondary-font-family;
       font-size: 34px;
+      line-height: 1;
       font-weight: 900;
+    }
+  }
+
+  @include lg-and-down {
+    &__info-ico {
+      top: 400px;
+    }
+
+    &__container {
+      padding: 0 40px;
+    }
+
+    &__left {
+      width: 45%;
+      margin-right: 4%;
+    }
+
+    &__info {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+  }
+
+  @include md-and-down {
+    &__container {
+      display: block;
+
+      padding: 35px 27px 0;
+    }
+
+    &__info-ico {
+      top: 300px;
+    }
+
+    &__left {
+      width: 100%;
+
+      :deep(img) {
+        display: block;
+
+        width: 77%;
+        max-height: 270px;
+        margin: 46px auto 0;
+        object-fit: contain;
+      }
+    }
+
+    &__right {
+      width: 100%;
+    }
+
+    &__info {
+      margin: 0;
+
+      font-size: 14px;
+      line-height: 18px;
+    }
+
+    &__subtitle {
+      margin-top: 24px;
+      margin-bottom: 15px;
+
+      font-family: $secondary-font-family;
+      font-size: 15px;
+      line-height: 20px;
+      font-weight: 300;
+    }
+
+    &__discover {
+      &-title {
+        margin-top: 23px;
+
+        font-size: 22px;
+        line-height: 21px;
+      }
+    }
+
+    &__description {
+      margin-top: 26px;
+
+      font-size: 9px;
+      line-height: 10px;
     }
   }
 }

@@ -2,7 +2,7 @@
   <div v-if="items.length" class="items-slider" :class="{ hidePagination }">
     <Swiper
       grab-cursor
-      :loop="!disableLoop && loopSlides.length > slidesPerView + 1"
+      :loop="!disableLoop && loopSlides.length > slidesPerView + 2"
       :loop-additional-slides="2"
       :centered-slides="centeredSlides"
       :space-between="40"
@@ -19,13 +19,15 @@
       :breakpoints="{
         1200: {
           spaceBetween: 100,
-        }
+        },
       }"
       @swiper="onSwiper"
       @slide-change="onSlideChange"
     >
       <SwiperSlide v-for="item in loopSlides" :key="item.id" class="items-slider__slide">
         <slot name="default" :item="item"></slot>
+
+        <div class="swiper-lazy-preloader" />
       </SwiperSlide>
     </Swiper>
     <div v-if="withNavigation" ref="nextRef" class="swiper-button next">
@@ -44,7 +46,7 @@ import { Pagination, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
-import {ref, toRef, computed} from 'vue';
+import { ref, toRef, computed } from 'vue';
 import { Swiper as SwiperType } from 'swiper/types';
 
 export type SliderProps = {
@@ -88,7 +90,9 @@ const onSwiper = (s: SwiperType) => {
   swiper.value = s;
 };
 
-const slidesPerView = toRef(() => $screen.value.mdAndDown ? props.mobileSlidesPerView : props.desktopSlidesPerView);
+const slidesPerView = toRef(() =>
+  $screen.value.mdAndDown ? props.mobileSlidesPerView : props.desktopSlidesPerView
+);
 
 const loopSlides = computed(() => {
   return props.items;
@@ -112,7 +116,7 @@ const onSlideChange = () => {
   }
 };
 
-const initialSlideIndex = toRef(() => props.items.length < 3 ? 0 : props.initialSlide);
+const initialSlideIndex = toRef(() => (props.items.length < 3 ? 0 : props.initialSlide));
 
 const resetPosition = () => {
   swiper.value?.slideTo(initialSlideIndex.value);
