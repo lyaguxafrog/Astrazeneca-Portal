@@ -53,8 +53,7 @@ class ScreenButton_left(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_button_block_left')
 
-    button_title = models.CharField(null=True, blank=True,
-                                    verbose_name='Заголовк кнопки *')
+    button_title = models.CharField(verbose_name='Заголовк кнопки *')
 
     screen_number = models.IntegerField(default=None,
                                         verbose_name='Номер экрана',
@@ -148,8 +147,7 @@ class ScreenButton_right(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_button_block_right')
 
-    button_title = models.CharField(null=True, blank=True,
-                                    verbose_name='Заголовк кнопки *')
+    button_title = models.CharField(verbose_name='Заголовк кнопки *')
 
     screen_number = models.IntegerField(default=None,
                                         verbose_name='Номер экрана',
