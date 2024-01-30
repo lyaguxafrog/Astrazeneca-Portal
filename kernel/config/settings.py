@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = (os.getenv('DEBUG_FLAG') == 'True')
-
+DOCS = (os.getenv('DOCS_FLAG') == 'True')
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
@@ -113,7 +113,9 @@ CORS_ALLOWED_ORIGINS = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [
+            os.path.join(BASE_DIR, "frontend/dist"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
