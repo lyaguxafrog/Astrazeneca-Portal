@@ -54,15 +54,15 @@ CKEDITOR_CONFIGS = {
     'default': {
         'height': 300,
         'width': 650,
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike'],
+        'toolbar': [
+            ['Format', 'Heading', 'FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
             ['NumberedList', 'BulletedList'],
             ['TextColor', 'Table'],
             ['Link', 'Unlink'],
             ['Image', 'Source'],
         ],
+        'language': 'ru',
         'extraPlugins': ','.join(['font', 'colorbutton']),
         'font_names': 'Arial;Comic Sans MS;Courier New;Georgia;Times New Roman;Verdana',
         'fontSize_sizes': '8/8px;10/10px;12/12px;14/14px;16/16px;18/18px;24/24px;36/36px',
@@ -71,6 +71,7 @@ CKEDITOR_CONFIGS = {
         'ImageAltRequired': False,
     },
 }
+
 
 
 
