@@ -39,10 +39,10 @@ services:
       - kernel
     volumes:
       - ./kernel/static:/var/www/html/static
-      - ./kernel/media:/var/www/html/media
+      - ./kernel/media:/media
       - ./frontend/.nuxt:/var/www/html/static
       - ./frontend/.output:/var/www/html/static
-      - ./nginx:/etc/nginx/user.conf.d
+      - ./nginx:/etc/nginx/user.conf.d:ro
       - letsencrypt:/etc/letsencrypt
       - www-html:/var/www/html
     environment:
