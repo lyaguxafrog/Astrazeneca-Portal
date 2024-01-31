@@ -34,6 +34,17 @@ a {
   width: fit-content !important;
 }
 
+.swiper-lazy-preloader {
+  width: 60px !important;
+  height: 60px !important;
+  margin-top: -40px !important;
+  margin-left: -30px !important;
+
+  border-width: 6px !important;
+  border-color: $white-color !important;
+  border-top-color: transparent !important;
+}
+
 .swiper-button {
   color: $primary-color;
 
