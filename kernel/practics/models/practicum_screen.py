@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+from email.policy import default
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import FileExtensionValidator
@@ -70,6 +71,12 @@ class ScreenButton_left(models.Model):
 
     screen_redirect = models.ForeignKey('Screens', on_delete=models.SET_NULL,
                 null=True, blank=True, related_name='redirected_by_button_left')
+
+    fill_flag = models.BooleanField(default=False,
+                                    verbose_name='Заливка кнопки.')
+
+    confirmation = models.BooleanField(default=False,
+                                    verbose_name='Подтверждение действия.')
 
     order = models.IntegerField(default=0, verbose_name='Порядковый номер *')
 
@@ -164,6 +171,13 @@ class ScreenButton_right(models.Model):
 
     screen_redirect = models.ForeignKey('Screens', on_delete=models.SET_NULL,
                 null=True, blank=True, related_name='redirected_by_button_right')
+
+
+    fill_flag = models.BooleanField(default=False,
+                                    verbose_name='Заливка кнопки.')
+
+    confirmation = models.BooleanField(default=False,
+                                    verbose_name='Подтверждение действия.')
 
     order = models.IntegerField(default=0, verbose_name='Порядковый номер *')
 
