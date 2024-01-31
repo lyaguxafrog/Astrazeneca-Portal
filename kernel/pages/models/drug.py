@@ -3,6 +3,8 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import FileExtensionValidator
+
 
 
 class Drug(models.Model):
@@ -26,7 +28,13 @@ class Drug(models.Model):
     approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения *")
     speciality = models.ManyToManyField("pages.Specialty", verbose_name='Специальность *')
     url_field = models.URLField(verbose_name="Ссылка на интрукцию в PDF", null=True, blank=True)
-    file_field = models.FileField(verbose_name="Инструкция в формате PDF", null=True, blank=True, upload_to='pdf_files/')
+    file_field = models.FileField(verbose_name="Инструкция в формате PDF",
+                        null=True, blank=True,
+                        upload_to='pdf_files/',
+                        validators= [
+                        FileExtensionValidator(allowed_extensions=['pdf'])
+                            ],
+                        )
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],

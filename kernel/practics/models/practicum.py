@@ -26,13 +26,6 @@ class Practicum(models.Model):
         help_text='Целое число от 1 до 50 включительно.'
     )
 
-    literature = RichTextField(null=True, blank=True,
-                               verbose_name='Список литературы')
-
-
-    approvals_and_decodings = RichTextField(null=True, blank=True,
-                                            verbose_name='Номер одобрения и расшифровка')
-
     speciality = models.ManyToManyField('pages.Specialty',
                                    related_name='practicum_speciality',
                                    blank=True, verbose_name='Специальность')
@@ -62,6 +55,16 @@ class Screens(models.Model):
 
     literature = RichTextField(null=True, blank=True,
                                verbose_name='список литературы')
+
+    leterature_approvals_and_decodings = RichTextField(null=True, blank=True,
+            verbose_name='Номер одобрения и расшифровка для списка литературы')
+
+    approvals_and_decodings = RichTextField(null=True, blank=True,
+                            verbose_name='Номер одобрения и расшифровка')
+
+
+
+
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
