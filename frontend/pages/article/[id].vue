@@ -20,8 +20,8 @@
         :url="content.main_cover_desktop_1600px"
         :url-full="content.main_cover_desktop_1600px"
         :url-full-x2="content.main_cover_desktop_3200px"
-        :url-thin-x2="content.main_cover_desktop_720px"
-        :url-thin="content.main_cover_desktop_360px"
+        :url-thin="content.main_cover_mobile_360px"
+        :url-thin-x2="content.main_cover_mobile_720px"
       />
       <p>
         {{ content.article_name }}

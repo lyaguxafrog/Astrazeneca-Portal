@@ -1,5 +1,5 @@
 <template>
-  <div class="practicum">
+  <div v-if="content.data" ref="wrapperEl" class="practicum">
     <BgEllipse
       class="practicum__first-ellipse"
       color="#4DDFFF"
@@ -19,61 +19,91 @@
           @click="openInfoModal"
           :size="$screen.mdAndDown ? 24 : 32"
         />
-        <img src="/img/anyaaffect_woman.png" alt="" />
+        <AppImage
+          :url="content.data.image"
+          :url-full="content.data.image_desktop_810px"
+          :url-full-x2="content.data.image_desktop_1620px"
+          :url-thin="content.data.image_mobile_400px"
+          :url-thin-x2="content.data.image_mobile_800px"
+        />
         <template v-if="!$screen.mdAndDown">
-          <div class="practicum__subtitle">Определите тактику лечения</div>
-          <ConfirmButton
-            :action="
-              () => {
-                console.log(123);
-              }
-            "
-          >
-            Направить на консилиум для оценки объема оперативного вмешательства
-          </ConfirmButton>
-          <ConfirmButton> Направить на предоперационную верификацию опухоли </ConfirmButton>
-          <div class="practicum__description">*Гипотетический клинический случай</div>
+          <template v-for="item in leftContent">
+            <div v-if="item.type === 'text'" class="practicum__text" v-html="item.text"></div>
+            <ConfirmButton
+              v-if="item.type === 'button'"
+              :action="() => onBtnClick(item)"
+            >
+              {{ item.button_title }}
+            </ConfirmButton>
+          </template>
+          <div class="practicum__description" v-html="activeScreen.approvals_and_decodings"></div>
         </template>
       </div>
 
       <div class="practicum__right">
-        <div class="practicum__info">
-          <b>Имя</b>: Татьяна<br />
-          <b>Возраст</b>: 44 года<br />
-          <b>Пол</b>: женский<br />
-          <b>Образ жизни</b>: финансовый менеджер, занимается спортом 3 раза в неделю, не курит<br />
-          Семейный анамнез: не отягощен<br />
-          Перенесенные заболевания: месяц назад был диагностирован COVID-19<br />
-          Оценка состояния: ECOG 0 – остаточные явления после перенесенного COVID-19 отсутствуют,
-          жалоб нет<br />
-          Диагноз: рак нижней доли левого легкого cТ2bNxM0
+        <div v-if="activeScreenIndex === 0" class="practicum__info" v-html="content.data.pacient_description">
         </div>
-        <div class="practicum__discover-title">Результаты исследований:</div>
+        <template v-for="item in rightContent">
+          <div v-if="item.type === 'text'" class="practicum__text" v-html="item.text"></div>
 
-        <Accordion :items="items" :modal-name="ModalsName.PracticumDiscoverModal" />
+          <Accordion
+            v-if="item.type === 'drop'"
+            :items="item.items"
+            :modal-name="ModalsName.PracticumDiscoverModal"
+          />
+          <DiscoverModal v-if="item.type === 'drop'" :items="item.items" />
+
+          <template v-if="item.type === 'button'">
+            <AppButton
+              v-if="item.screen_number"
+              primary
+              class="practicum__btn"
+              @click="onBtnClick(item)"
+            >
+              {{ item.button_title }}
+            </AppButton>
+            <AppButton
+              v-else-if="item.url"
+              primary
+              class="practicum__btn"
+              target="_blank"
+              :to="item.url"
+            >
+              {{ item.button_title }}
+            </AppButton>
+            <AppButton
+              v-else-if="item.pdf_file"
+              primary
+              class="practicum__btn"
+              target="_blank"
+              :to="`${baseUrl}${item.pdf_file}`"
+            >
+              {{ item.button_title }}
+            </AppButton>
+          </template>
+
+        </template>
       </div>
 
       <template v-if="$screen.mdAndDown">
-        <div class="practicum__subtitle">Определите тактику лечения</div>
-        <ConfirmButton
-          :action="
-            () => {
-              console.log(123);
-            }
-          "
-        >
-          Направить на консилиум для оценки объема оперативного вмешательства
-        </ConfirmButton>
-        <ConfirmButton> Направить на предоперационную верификацию опухоли </ConfirmButton>
-        <div class="practicum__description">*Гипотетический клинический случай</div>
+        <template v-for="item in leftContent">
+          <div v-if="item.type === 'text'" class="practicum__text" v-html="item.text"></div>
+          <ConfirmButton
+            v-if="item.type === 'button'"
+            :action="() => onBtnClick(item)"
+          >
+            {{ item.button_title }}
+          </ConfirmButton>
+        </template>
+        <div class="practicum__description" v-html="activeScreen.approvals_and_decodings"></div>
       </template>
     </div>
   </div>
-  <InfoModal />
-  <DiscoverModal :items="items" />
+  <InfoModal :literature="activeScreen.literature" :description="activeScreen.leterature_approvals_and_decodings" />
 </template>
 
 <script lang="ts" setup>
+import {computed, toRef, ref} from 'vue';
 import { useRoute } from '#app';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
@@ -87,153 +117,135 @@ import { useRequest } from '~/utils/composables/useRequest';
 
 const $route = useRoute();
 const { $screen } = useScreen();
+const { baseUrl } = useRuntimeConfig().public;
 
 const { openModal } = useModal();
 
-const content = await useRequest(`/practicum/${$route.params.id}`, {
+const content = await useRequest<Practicum>(`/practicum/${$route.params.id}`, {
   method: 'GET',
 });
 
-const items = [
-  {
-    id: 1,
-    title: 'КТ ОГК с внутривенным контрастированием',
-    text: `Солидное образование в нижней доле левого легкого S8 — конгломерат с четкими неровными
-        контурами до 4.5 × 3.8 см.
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-  {
-    id: 2,
-    title: 'ПЭТ-КТ2',
-    text: `ПЭТ-КТ
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-  {
-    id: 3,
-    title: 'КТ ОГК с внутривенным контрастированием',
-    text: `Солидное образование в нижней доле левого легкого S8 — конгломерат с четкими неровными
-        контурами до 4.5 × 3.8 см.
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-  {
-    id: 4,
-    title: 'ПЭТ-КТ',
-    text: `ПЭТ-КТ
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-  {
-    id: 5,
-    title: 'КТ ОГК с внутривенным контрастированием',
-    text: `Солидное образование в нижней доле левого легкого S8 — конгломерат с четкими неровными
-        контурами до 4.5 × 3.8 см.
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-  {
-    id: 6,
-    title: 'ПЭТ-КТ',
-    text: `ПЭТ-КТ3
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-  {
-    id: 7,
-    title: 'КТ ОГК с внутривенным контрастированием',
-    text: `Солидное образование в нижней доле левого легкого S8 — конгломерат с четкими неровными
-        контурами до 4.5 × 3.8 см.
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-  {
-    id: 8,
-    title: 'ПЭТ-КТ',
-    text: `ПЭТ-КТ5
-        <ul>
-          <li>Плевральные синусы свободны</li>
-          <li>Крупные бронхи правильной формы, не деформированы, проходимость их не нарушена </li>
-          <li>Сердце и крупные сосуды нормальных размеров, обычно расположены</li>
-        </ul>
-        <p>
-          <b>Перибронхиальные лимфатические узлы увеличены до 2,7 см</b> без структурных изменений.
-          В паренхиме легких перифиссуральные узелки не определяются, лимфаденопатия
-          медиастинальных, бронхопульмональных, бифуркационных и надключичных лимфатических узлов не
-          обнаружена.
-        </p>`,
-  },
-];
+const activeScreenIndex = ref(0);
+const activeScreen = toRef(() => {
+  const s = {...content.data?.screens[activeScreenIndex.value]} as Screen;
+
+  if (!s) {
+    return undefined;
+  }
+
+  s.screen_button_block_left = s.screen_button_block_left.map((i) => ({...i, type: 'button'}));
+  s.screen_text_block_left = s.screen_text_block_left.map((i) => ({...i, type: 'text'}));
+
+  s.screen_button_block_right = s.screen_button_block_right.map((i) => ({...i, type: 'button'}));
+  s.screen_text_block_right = s.screen_text_block_right.map((i) => ({...i, type: 'text'}));
+  s.screen_popup_block_right = s.screen_popup_block_right.map((i) => ({...i, type: 'drop', items: [{
+    title: i.menu_title,
+      text: i.text,
+    }]}));
+
+  return s;
+});
+
+const leftContent = computed(() => {
+  if (!activeScreen.value) {
+    return;
+  }
+
+  const screen = activeScreen.value;
+
+  const content = [...screen.screen_button_block_left, ...screen.screen_text_block_left];
+
+  return content.sort((c1, c2) => c1.order - c2.order);
+});
+
+const rightContent = computed(() => {
+  if (!activeScreen.value) {
+    return;
+  }
+
+  const screen = activeScreen.value;
+
+  const content = [...screen.screen_text_block_right, ...screen.screen_popup_block_right, ...screen.screen_button_block_right];
+
+  return content.sort((c1, c2) => c1.order - c2.order);
+});
+
+const wrapperEl = ref<HTMLElement>();
+
+const onBtnClick = (btn: Btn) => {
+  if (btn.screen_number) {
+    activeScreenIndex.value = btn.screen_number - 1;
+
+    const top = wrapperEl.value?.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({
+      top: top,
+      behavior: 'smooth',
+    })
+    return;
+  }
+
+  if (btn.url) {
+    window.location.href = btn.url;
+    return;
+  }
+};
 
 const openInfoModal = () => {
   openModal(ModalsName.PracticumInfoModal);
 };
 const openDiscoverModal = () => {
   openModal(ModalsName.PracticumDiscoverModal);
+};
+
+type Btn = {
+  id: number;
+  button_title: string;
+  order: number;
+  pdf_file: string | null;
+  screen: number;
+  screen_number: number;
+  screen_redirect: null;
+  url: string | null;
+};
+
+type TextBlock = {
+  id: number;
+  order: number;
+  screen: number;
+  text: string;
+};
+
+type DropBlock = {
+  id: number;
+  menu_title: string;
+  order: number;
+  screen: number;
+  text: string;
+};
+
+type Screen = {
+  id: number,
+  approvals_and_decodings: string,
+  leterature_approvals_and_decodings: string,
+  literature: string,
+
+  screen_button_block_left: Btn[];
+  screen_text_block_left: TextBlock[];
+
+  screen_text_block_right: TextBlock[];
+  screen_popup_block_right: DropBlock[];
+  screen_button_block_right: Btn[];
+};
+
+type Practicum = {
+  id: number;
+  image: string;
+  image_desktop_810px: string;
+  image_desktop_1620px: string;
+  image_mobile_400px: string;
+  image_mobile_800px: string;
+  pacient_description: string;
+  screens: Screen[];
 };
 </script>
 
@@ -252,6 +264,7 @@ const openDiscoverModal = () => {
 
   &__container {
     display: flex;
+    align-items: flex-start;
 
     padding: 26px 90px;
   }
@@ -278,7 +291,7 @@ const openDiscoverModal = () => {
     width: 37%;
     margin-right: 7%;
 
-    img {
+    :deep(img) {
       width: 100%;
       margin: 33px auto 9px;
     }
@@ -288,18 +301,43 @@ const openDiscoverModal = () => {
     width: 50%;
   }
 
-  &__subtitle {
+  &__text {
+    max-width: 730px;
+    margin-top: 43px;
     margin-bottom: 43px;
 
-    font-family: $secondary-font-family;
-    font-size: 34px;
-    line-height: 1;
+    font-size: 26px;
+    line-height: 32px;
     font-weight: 300;
-    text-align: center;
+    letter-spacing: -0.26px;
+
+    &::v-deep {
+      h3 {
+        font-family: $secondary-font-family;
+        font-size: 34px;
+        line-height: 1;
+        font-weight: 300;
+      }
+
+      h4 {
+        margin-bottom: 28px;
+
+        font-size: 34px;
+        line-height: 1;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__btn {
+    width: fit-content;
+    margin-top: 43px;
+    margin-bottom: 43px;
   }
 
   &__description {
     margin-top: 34px;
+    margin-bottom: 46px;
 
     font-size: 12px;
     color: $primary-color;
@@ -312,7 +350,7 @@ const openDiscoverModal = () => {
     line-height: 34px;
     font-weight: 300;
 
-    :deep(b) {
+    :deep(b), :deep(strong){
       font-weight: 700;
       color: $primary-color;
     }
@@ -332,16 +370,6 @@ const openDiscoverModal = () => {
 
     @include hover {
       color: $white-color;
-    }
-
-    &-title {
-      margin-top: 50px;
-      margin-bottom: 20px;
-
-      font-family: $secondary-font-family;
-      font-size: 34px;
-      line-height: 1;
-      font-weight: 900;
     }
   }
 
@@ -370,6 +398,33 @@ const openDiscoverModal = () => {
       display: block;
 
       padding: 35px 27px 0;
+    }
+
+    &__text {
+      margin-top: 18px;
+      margin-bottom: 18px;
+
+      font-size: 15px;
+      line-height: 18px;
+
+      &::v-deep {
+        h3 {
+          font-size: 15px;
+          line-height: 20px;
+        }
+
+        h4 {
+          margin-bottom: 19px;
+
+          font-size: 19px;
+          line-height: 17px;
+        }
+      }
+    }
+
+    &__btn {
+      margin-top: 33px;
+      margin-bottom: 33px;
     }
 
     &__info-ico {
@@ -410,17 +465,9 @@ const openDiscoverModal = () => {
       font-weight: 300;
     }
 
-    &__discover {
-      &-title {
-        margin-top: 23px;
-
-        font-size: 22px;
-        line-height: 21px;
-      }
-    }
-
     &__description {
       margin-top: 26px;
+      margin-bottom: 10px;
 
       font-size: 9px;
       line-height: 10px;

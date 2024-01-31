@@ -45,6 +45,7 @@ const apply = () => {
   position: relative;
 
   &__btn {
+    width: 100%;
     min-height: 76px;
     margin-bottom: 30px;
 
