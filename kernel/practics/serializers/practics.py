@@ -14,7 +14,7 @@ class ScreenSerializer(serializers.ModelSerializer):
     # лево
     screen_text_block_left = LeftTextSerializer(many=True, read_only=True)
     screen_image_block_left = LeftImagesSerializer(many=True, read_only=True)
-    screen_popup_block_leeft = LeftPopUpSerializer(many=True, read_only=True)
+    screen_popup_block_left = LeftPopUpSerializer(many=True, read_only=True)
     screen_button_block_left = LeftButtonSerializer(many=True, read_only=True)
 
     screen_text_block_right = RightTextSerializer(many=True, read_only=True)

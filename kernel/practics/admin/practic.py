@@ -14,7 +14,6 @@ from nested_admin import (NestedModelAdmin,
                           NestedStackedInline,
                           NestedTabularInline)
 
-
 # лево
 class ScreenButtonInline_left(NestedStackedInline):
     model = ScreenButton_left
