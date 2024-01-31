@@ -140,6 +140,7 @@ const onSlideChange = () => {
       max-width: 60%;
       margin: 0 auto;
       object-fit: contain;
+      @include aspect(818, 754);
     }
 
     p {

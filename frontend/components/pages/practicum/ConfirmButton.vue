@@ -1,6 +1,18 @@
 <template>
   <div class="confirm-button">
-    <AppButton primary class="confirm-button__btn" @click="showConfirm">
+    <template v-if="!props.active">
+      <AppButton v-if="props.to" :primary="primary" class="confirm-button__btn" :to="props.to" :target="isAbsoluteUrl(props.to) ? '_blank' : undefined">
+        <slot />
+      </AppButton>
+      <AppButton v-else-if="props.file" :primary="primary" target="_blank" class="confirm-button__btn" :to="`${baseUrl}${props.file}`">
+        <slot />
+      </AppButton>
+      <AppButton v-else :primary="primary" class="confirm-button__btn" @click="action">
+        <slot />
+      </AppButton>
+    </template>
+
+    <AppButton v-else :primary="primary" class="confirm-button__btn" @click="showConfirm">
       <slot />
     </AppButton>
 
@@ -21,12 +33,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { OnClickOutside } from '@vueuse/components';
+import { isAbsoluteUrl } from '~/utils/url';
 
 const props = defineProps<{
   action: () => void | Promise<void>;
+  active: boolean;
+  primary?: boolean;
+  to?: string;
+  file?: string;
 }>();
 
 const isConfirmShown = ref(false);
+const { baseUrl } = useRuntimeConfig().public;
+
 const showConfirm = () => {
   isConfirmShown.value = true;
 };

@@ -1,5 +1,5 @@
 <template>
-  <InsidePageHead class="test__back" />
+  <InsidePageHead />
 
   <div class="test">
     <BgEllipse

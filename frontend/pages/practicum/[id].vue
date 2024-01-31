@@ -1,13 +1,15 @@
 <template>
   <div v-if="content.data" ref="wrapperEl" class="practicum">
+    <BackBtn class="practicum__back" @click="backHelper" />
+
     <BgEllipse
       class="practicum__first-ellipse"
-      color="#4DDFFF"
-      :size="$screen.mdAndDown ? 330 : 1138"
+      :color="$screen.mdAndDown ? '#906DFF' : '#4DDFFF'"
+      :size="$screen.mdAndDown ? 306 : 1138"
     />
     <BgEllipse
       class="practicum__second-ellipse"
-      color="#B32FC9"
+      :color="$screen.mdAndDown ? '#4DDFFF' : '#B32FC9'"
       :size="$screen.mdAndDown ? 330 : 984"
     />
     <div class="practicum__container">
@@ -31,7 +33,11 @@
             <div v-if="item.type === 'text'" class="practicum__text" v-html="item.text"></div>
             <ConfirmButton
               v-if="item.type === 'button'"
+              :active="item.confirmation"
+              :primary="item.fill_flag"
               :action="() => onBtnClick(item)"
+              :to="item.url"
+              :file="item.pdf_file"
             >
               {{ item.button_title }}
             </ConfirmButton>
@@ -53,35 +59,17 @@
           />
           <DiscoverModal v-if="item.type === 'drop'" :items="item.items" />
 
-          <template v-if="item.type === 'button'">
-            <AppButton
-              v-if="item.screen_number"
-              primary
-              class="practicum__btn"
-              @click="onBtnClick(item)"
-            >
-              {{ item.button_title }}
-            </AppButton>
-            <AppButton
-              v-else-if="item.url"
-              primary
-              class="practicum__btn"
-              target="_blank"
-              :to="item.url"
-            >
-              {{ item.button_title }}
-            </AppButton>
-            <AppButton
-              v-else-if="item.pdf_file"
-              primary
-              class="practicum__btn"
-              target="_blank"
-              :to="`${baseUrl}${item.pdf_file}`"
-            >
-              {{ item.button_title }}
-            </AppButton>
-          </template>
-
+          <ConfirmButton
+            v-if="item.type === 'button'"
+            class="practicum__btn"
+            :active="item.confirmation"
+            :primary="item.fill_flag"
+            :action="() => onBtnClick(item)"
+            :to="item.url"
+            :file="item.pdf_file"
+          >
+            {{ item.button_title }}
+          </ConfirmButton>
         </template>
       </div>
 
@@ -90,7 +78,11 @@
           <div v-if="item.type === 'text'" class="practicum__text" v-html="item.text"></div>
           <ConfirmButton
             v-if="item.type === 'button'"
+            :active="item.confirmation"
+            :primary="item.fill_flag"
             :action="() => onBtnClick(item)"
+            :to="item.url"
+            :file="item.pdf_file"
           >
             {{ item.button_title }}
           </ConfirmButton>
@@ -113,11 +105,14 @@ import InfoModal from '~/components/pages/practicum/InfoModal.vue';
 import Accordion from '~/components/common/Accordion.vue';
 import DiscoverModal from '~/components/pages/practicum/DiscoverModal.vue';
 import ConfirmButton from '~/components/pages/practicum/ConfirmButton.vue';
+import BackBtn from '~/components/common/BackBtn.vue';
 import { useRequest } from '~/utils/composables/useRequest';
+import { useBack } from '~/utils/composables/useHistory';
 
 const $route = useRoute();
 const { $screen } = useScreen();
 const { baseUrl } = useRuntimeConfig().public;
+const { back } = useBack();
 
 const { openModal } = useModal();
 
@@ -125,6 +120,7 @@ const content = await useRequest<Practicum>(`/practicum/${$route.params.id}`, {
   method: 'GET',
 });
 
+const prevScreenIndexes = ref<number[]>([]);
 const activeScreenIndex = ref(0);
 const activeScreen = toRef(() => {
   const s = {...content.data?.screens[activeScreenIndex.value]} as Screen;
@@ -172,8 +168,18 @@ const rightContent = computed(() => {
 
 const wrapperEl = ref<HTMLElement>();
 
+const backHelper = () => {
+  const index = prevScreenIndexes.value.pop();
+  if (index || index === 0) {
+    activeScreenIndex.value = index;
+  } else {
+    back();
+  }
+};
+
 const onBtnClick = (btn: Btn) => {
   if (btn.screen_number) {
+    prevScreenIndexes.value.push(activeScreenIndex.value);
     activeScreenIndex.value = btn.screen_number - 1;
 
     const top = wrapperEl.value?.getBoundingClientRect().top + window.pageYOffset;
@@ -206,6 +212,8 @@ type Btn = {
   screen_number: number;
   screen_redirect: null;
   url: string | null;
+  fill_flag: boolean;
+  confirmation: boolean;
 };
 
 type TextBlock = {
@@ -253,6 +261,10 @@ type Practicum = {
 .practicum {
   position: relative;
 
+  &__back {
+    margin: 20px 20px 0;
+  }
+
   &__first-ellipse {
     top: -310px;
     left: -800px;
@@ -294,6 +306,7 @@ type Practicum = {
     :deep(img) {
       width: 100%;
       margin: 33px auto 9px;
+      @include aspect(643, 690)
     }
   }
 
@@ -394,6 +407,15 @@ type Practicum = {
   }
 
   @include md-and-down {
+    &__first-ellipse {
+      top: 20px;
+      left: -190px;
+    }
+    &__second-ellipse {
+      top: 230px;
+      right: -230px;
+    }
+
     &__container {
       display: block;
 
@@ -428,7 +450,7 @@ type Practicum = {
     }
 
     &__info-ico {
-      top: 300px;
+      top: 276px;
     }
 
     &__left {
@@ -439,7 +461,7 @@ type Practicum = {
 
         width: 77%;
         max-height: 270px;
-        margin: 46px auto 0;
+        margin: 26px auto 0;
         object-fit: contain;
       }
     }

@@ -4,7 +4,7 @@
       <div class="info-modal__title">Список литературы:</div>
       <div class="info-modal__text" v-html="literature">
       </div>
-      <div class="info-modal__description" v-html="description">
+      <div v-if="description" class="info-modal__description" v-html="description">
       </div>
     </div>
   </AppModal>
@@ -15,7 +15,7 @@ import { ModalsName } from '~/utils/composables/useModal';
 
 defineProps<{
   literature: string;
-  description: string;
+  description: string | null;
 }>();
 </script>
 

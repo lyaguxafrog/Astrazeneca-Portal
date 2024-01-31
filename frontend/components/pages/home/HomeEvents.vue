@@ -3,7 +3,7 @@
     <div class="home-events__title">Мероприятия</div>
 
     <ItemsSlider :items="shownEvents" :desktop-slides-per-view="2.75" #default="{ item }">
-      <a :href="item.url" target="_blank">
+      <a :href="item.url" target="_blank" class="home-events__item">
         <AppImage
           :url="item.cover"
           :url-full-x2="item.image_desktop_1400px"
@@ -77,6 +77,12 @@ const shownEvents = computed(() => {
 
     @include hover {
       filter: hue-rotate(45deg);
+    }
+  }
+
+  &__item {
+    :deep(img) {
+      @include aspect(1,1);
     }
   }
 

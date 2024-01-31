@@ -87,10 +87,11 @@ const drugs = await getDrugs();
     max-width: 690px;
     margin: 13px auto;
 
-    img {
+    :deep(img) {
       width: 100%;
       max-height: 550px;
       object-fit: contain;
+      @include aspect(690, 550);
     }
 
     &-link {
