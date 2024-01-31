@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-
-from email.policy import default
 from django.db import models
 from ckeditor.fields import RichTextField
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, URLValidator
 from django.core.exceptions import ValidationError
-
+from practics.services.url_valid import validate_relative_or_absolute_url
 
 # Блоки контента слева
 class ScreenTextBlock_left(models.Model):
@@ -61,7 +59,10 @@ class ScreenButton_left(models.Model):
                                         help_text='Укажите номер экрана, на который будет перенаправлять эта кнопка',
                                         null=True, blank=True)
 
-    url = models.URLField(verbose_name='Ссылка', null=True, blank=True)
+    url = models.CharField(max_length=255, verbose_name='Ссылка',
+                    null=True, blank=True,
+                    validators=[validate_relative_or_absolute_url])
+
     pdf_file = models.FileField(
         verbose_name='PDF-файл',
         validators=[
@@ -161,7 +162,10 @@ class ScreenButton_right(models.Model):
                                         help_text='Укажите номер экрана, на который будет перенаправлять эта кнопка',
                                         null=True, blank=True)
 
-    url = models.URLField(verbose_name='Ссылка', null=True, blank=True)
+    url = models.CharField(max_length=255, verbose_name='Ссылка',
+                    null=True, blank=True,
+                    validators=[validate_relative_or_absolute_url])
+
     pdf_file = models.FileField(
         verbose_name='PDF-файл',
         validators=[
