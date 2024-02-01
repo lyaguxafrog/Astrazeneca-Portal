@@ -23,6 +23,7 @@ class PrTestAdmin(NestedModelAdmin):
         'question',
         'image',
         'approvals_and_decodings',
+        'next_test',
         'speciality',
         'priority',
     ]

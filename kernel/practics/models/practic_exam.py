@@ -26,6 +26,10 @@ class PrTest(models.Model):
     approvals_and_decodings = RichTextField(null=True, blank=True,
                                 verbose_name='Номер одобрения и расшифровка')
 
+    next_test = models.OneToOneField('PrTest', null=True, blank=True,
+                                       verbose_name='Следующий тест',
+                                       on_delete=models.SET_NULL)
+
     # десктоп - 810px, 1620px, мобилка 400px, 800px
     image_desktop_810px = models.ImageField(upload_to='practics/test/810px',
                                             null=True, blank=True)
