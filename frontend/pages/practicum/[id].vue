@@ -41,6 +41,12 @@
             >
               {{ item.button_title }}
             </ConfirmButton>
+
+            <Accordion
+              v-if="item.type === 'drop'"
+              :items="item.items"
+              :modal-name="ModalsName.PracticumDiscoverModal"
+            />
           </template>
           <div class="practicum__description" v-html="activeScreen.approvals_and_decodings"></div>
         </template>
@@ -131,6 +137,10 @@ const activeScreen = toRef(() => {
 
   s.screen_button_block_left = s.screen_button_block_left.map((i) => ({...i, type: 'button'}));
   s.screen_text_block_left = s.screen_text_block_left.map((i) => ({...i, type: 'text'}));
+  s.screen_popup_block_left = s.screen_popup_block_left.map((i) => ({...i, type: 'drop', items: [{
+      title: i.menu_title,
+      text: i.text,
+    }]}));
 
   s.screen_button_block_right = s.screen_button_block_right.map((i) => ({...i, type: 'button'}));
   s.screen_text_block_right = s.screen_text_block_right.map((i) => ({...i, type: 'text'}));
@@ -149,7 +159,7 @@ const leftContent = computed(() => {
 
   const screen = activeScreen.value;
 
-  const content = [...screen.screen_button_block_left, ...screen.screen_text_block_left];
+  const content = [...screen.screen_button_block_left, ...screen.screen_text_block_left, ...screen.screen_popup_block_left];
 
   return content.sort((c1, c2) => c1.order - c2.order);
 });
@@ -239,6 +249,7 @@ type Screen = {
 
   screen_button_block_left: Btn[];
   screen_text_block_left: TextBlock[];
+  screen_popup_block_left: DropBlock[];
 
   screen_text_block_right: TextBlock[];
   screen_popup_block_right: DropBlock[];
@@ -310,6 +321,10 @@ type Practicum = {
     }
   }
 
+  :deep(img) {
+    max-width: 100%;
+  }
+
   &__right {
     width: 50%;
   }
@@ -365,7 +380,6 @@ type Practicum = {
 
     :deep(b), :deep(strong){
       font-weight: 700;
-      color: $primary-color;
     }
   }
 
@@ -427,7 +441,7 @@ type Practicum = {
       margin-bottom: 18px;
 
       font-size: 15px;
-      line-height: 18px;
+      line-height: 1;
 
       &::v-deep {
         h3 {
@@ -445,6 +459,7 @@ type Practicum = {
     }
 
     &__btn {
+      min-width: 100px;
       margin-top: 33px;
       margin-bottom: 33px;
     }

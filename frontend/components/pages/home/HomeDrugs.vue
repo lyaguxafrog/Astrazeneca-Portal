@@ -56,6 +56,12 @@ const drugs = await getDrugs();
 
   margin-top: 72px;
 
+  :deep {
+    .swiper-lazy-preloader {
+      top: 45%;
+    }
+  }
+
   &__first-ellipse {
     top: 50px;
     left: 50%;

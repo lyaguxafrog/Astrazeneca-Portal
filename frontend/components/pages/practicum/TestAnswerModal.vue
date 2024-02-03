@@ -1,6 +1,6 @@
 <template>
   <AppModal :name="ModalsName.TestAnswerModal">
-    <div class="test-answer">
+    <div v-if="content" class="test-answer">
       <div class="test-answer__title">{{ content.title }}</div>
       <div class="test-answer__text" v-html="content.text" />
 
@@ -13,7 +13,7 @@
 import { ModalsName } from '~/utils/composables/useModal';
 
 defineProps<{
-  content: {
+  content?: {
     text: string;
     title: string;
   };

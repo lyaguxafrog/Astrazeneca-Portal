@@ -243,10 +243,11 @@ const openProps = (item: DrugFaq) => {
     width: 38.7%;
     margin-top: 79px;
 
-    img {
+    :deep(img) {
       width: 100%;
       max-height: 500px;
       object-fit: contain;
+      @include aspect(673, 628);
     }
 
     &-icons {
