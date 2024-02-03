@@ -21,7 +21,7 @@
         <div class="confirm-button__message">
           <p>Вы подтверждаете свой выбор?</p>
           <div class="confirm-button__message-btn-container">
-            <div class="confirm-button__message-btn active" @click="apply">Да</div>
+            <div class="confirm-button__message-btn active" @click="apply">ДА</div>
             <div class="confirm-button__message-btn" @click="hideConfirm">НЕТ</div>
           </div>
         </div>
@@ -193,7 +193,7 @@ const apply = () => {
     &__btn {
       height: auto;
       margin-bottom: 22px;
-      padding: 7px 10px;
+      padding: 7px 20px;
 
       font-size: 15px;
       line-height: 16px;

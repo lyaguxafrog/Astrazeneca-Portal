@@ -95,6 +95,13 @@ const startVideo = () => {
 
   padding: 0 92px;
 
+  :deep {
+    .swiper-lazy-preloader {
+      top: auto;
+      bottom: 35%;
+    }
+  }
+
   @include lg-and-down {
     padding: 0 40px;
   }
@@ -229,6 +236,13 @@ const startVideo = () => {
     $mobile-page-pudding: 27px;
 
     padding: 0;
+
+    :deep {
+      .swiper-lazy-preloader {
+        top: auto;
+        bottom: 30%;
+      }
+    }
 
     &__title {
       width: 80%;

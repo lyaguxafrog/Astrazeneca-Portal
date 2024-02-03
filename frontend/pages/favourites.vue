@@ -182,6 +182,11 @@ const showedFavourites = computed(() => {
 
     transition: background $tr-dur;
 
+    @include hover {
+      .favourites__item-bg {
+        transform: scale(1.1);
+      }
+    }
 
     &:after {
       content: '';
@@ -193,6 +198,8 @@ const showedFavourites = computed(() => {
       z-index: 1;
 
       background-color: rgba(#000, 0.4);
+
+      pointer-events: none;
     }
 
     &-bg {
