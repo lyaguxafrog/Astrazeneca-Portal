@@ -209,7 +209,9 @@ $root: modal;
 
     &__content {
       width: 100%;
+      max-width: 86%;
       margin: 0;
+      padding: 22px 24px;
     }
 
     &__close {

@@ -45,11 +45,15 @@ defineProps<{
 
   &.icon {
     width: 72px;
+    min-width: 72px;
     height: 72px;
+    min-height: 72px;
     padding: 0;
     &.petite {
       width: 62px;
+      min-width: 62px;
       height: 62px;
+      min-height: 62px;
     }
   }
 
@@ -110,9 +114,12 @@ defineProps<{
 
     &.icon {
       width: 42px;
+      min-width: 42px;
       &.petite {
         width: 42px;
+        min-width: 42px;
         height: 42px;
+        min-height: 42px;
       }
     }
   }

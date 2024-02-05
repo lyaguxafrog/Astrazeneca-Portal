@@ -1,6 +1,18 @@
 <template>
   <div class="confirm-button">
-    <AppButton primary class="confirm-button__btn" @click="showConfirm">
+    <template v-if="!props.active">
+      <AppButton v-if="props.to" :primary="primary" class="confirm-button__btn" :to="props.to" :target="isAbsoluteUrl(props.to) ? '_blank' : undefined">
+        <slot />
+      </AppButton>
+      <AppButton v-else-if="props.file" :primary="primary" target="_blank" class="confirm-button__btn" :to="`${baseUrl}${props.file}`">
+        <slot />
+      </AppButton>
+      <AppButton v-else :primary="primary" class="confirm-button__btn" @click="action">
+        <slot />
+      </AppButton>
+    </template>
+
+    <AppButton v-else :primary="primary" class="confirm-button__btn" @click="showConfirm">
       <slot />
     </AppButton>
 
@@ -9,7 +21,7 @@
         <div class="confirm-button__message">
           <p>Вы подтверждаете свой выбор?</p>
           <div class="confirm-button__message-btn-container">
-            <div class="confirm-button__message-btn active" @click="apply">Да</div>
+            <div class="confirm-button__message-btn active" @click="apply">ДА</div>
             <div class="confirm-button__message-btn" @click="hideConfirm">НЕТ</div>
           </div>
         </div>
@@ -21,12 +33,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { OnClickOutside } from '@vueuse/components';
+import { isAbsoluteUrl } from '~/utils/url';
 
 const props = defineProps<{
   action: () => void | Promise<void>;
+  active: boolean;
+  primary?: boolean;
+  to?: string;
+  file?: string;
 }>();
 
 const isConfirmShown = ref(false);
+const { baseUrl } = useRuntimeConfig().public;
+
 const showConfirm = () => {
   isConfirmShown.value = true;
 };
@@ -45,6 +64,7 @@ const apply = () => {
   position: relative;
 
   &__btn {
+    width: 100%;
     min-height: 76px;
     margin-bottom: 30px;
 
@@ -173,7 +193,7 @@ const apply = () => {
     &__btn {
       height: auto;
       margin-bottom: 22px;
-      padding: 7px 10px;
+      padding: 7px 20px;
 
       font-size: 15px;
       line-height: 16px;

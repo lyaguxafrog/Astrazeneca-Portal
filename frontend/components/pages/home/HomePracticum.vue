@@ -57,16 +57,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import { useRequest } from '~/utils/composables/useRequest';
+import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { Swiper as SwiperType } from 'swiper/types';
 
 const { $screen } = useScreen();
+const { specialityId } = useSpecialityStore();
 
 const nextRef = ref(null);
 const prevRef = ref(null);
@@ -80,10 +82,23 @@ type Practicum = {
   image_desktop_1620px: string;
   image_mobile_400px: string;
   image_mobile_800px: string;
+  speciality: number[];
 };
 
-const content = await useRequest<Practicum[]>('/practicum', {
+const res = await useRequest<Practicum[]>('/practicum', {
   method: 'GET',
+});
+
+const content = computed(() => {
+  if (res.data) {
+    return {
+      data: res.data.filter((p) => p.speciality.includes(specialityId.value))
+    }
+  }
+
+  return {
+    data: res.data,
+  };
 });
 
 const activeSlideIndex = ref(0);
@@ -105,6 +120,10 @@ const onSlideChange = () => {
   position: relative;
 
   margin-top: 30px;
+
+  .swiper-lazy-preloader {
+    top: 38%;
+  }
 
   &__first-ellipse {
     top: 10px;
@@ -140,6 +159,7 @@ const onSlideChange = () => {
       max-width: 60%;
       margin: 0 auto;
       object-fit: contain;
+      @include aspect(818, 754);
     }
 
     p {
@@ -182,6 +202,11 @@ const onSlideChange = () => {
   }
 
   @include md-and-down {
+
+    .swiper-lazy-preloader {
+      top: 30%;
+    }
+
     &__first-ellipse {
       top: -10px;
       right: -270px;

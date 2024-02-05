@@ -50,6 +50,7 @@
               :size="$screen.mdAndDown ? 30 : 48"
             />
           </AppButton>
+          <div class="swiper-lazy-preloader" />
         </SwiperSlide>
       </Swiper>
       <div v-if="activeHistory" class="history__controls">

@@ -98,6 +98,10 @@ const openProps = (item: AccordionItem, index: number) => {
     }
   }
 
+  :deep(img) {
+    max-width: 100%;
+  }
+
   @include lg-and-down {
     &__item {
       font-size: 20px;

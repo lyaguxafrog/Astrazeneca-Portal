@@ -26,8 +26,8 @@
                   :url="history.avatar"
                   :url-full="history.avatar_desktop_120px"
                   :url-full-x2="history.avatar_desktop_280px"
-                  :url-thin="history.avatar_desktop_70px"
-                  :url-thin-x2="history.avatar_desktop_140px"
+                  :url-thin="history.avatar_mobile_70px"
+                  :url-thin-x2="history.avatar_mobile_140px"
                 />
               </div>
               <p>

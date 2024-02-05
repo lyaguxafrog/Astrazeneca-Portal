@@ -56,6 +56,12 @@ const drugs = await getDrugs();
 
   margin-top: 72px;
 
+  :deep {
+    .swiper-lazy-preloader {
+      top: 45%;
+    }
+  }
+
   &__first-ellipse {
     top: 50px;
     left: 50%;
@@ -87,10 +93,11 @@ const drugs = await getDrugs();
     max-width: 690px;
     margin: 13px auto;
 
-    img {
+    :deep(img) {
       width: 100%;
       max-height: 550px;
       object-fit: contain;
+      @include aspect(690, 550);
     }
 
     &-link {
