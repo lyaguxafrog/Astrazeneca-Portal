@@ -48,6 +48,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useSpecialityStore } from "~/utils/composables/store/speciality";
 import { useScreen } from '~/utils/composables/useScreen';
 import { useRequest } from '~/utils/composables/useRequest';
 import { TestPracticum } from '~/pages/test/[id].vue';
@@ -55,9 +57,22 @@ import BgEllipse from '~/components/common/BgEllipse.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 
 const { $screen } = useScreen();
+const { specialityId } = useSpecialityStore();
 
-const content = await useRequest<TestPracticum[]>('/practicum_tests', {
+const res = await useRequest<TestPracticum[]>('/practicum_tests', {
   method: 'GET',
+});
+
+const content = computed(() => {
+  if (res.data) {
+    return {
+      data: res.data.filter((p) => p.speciality.includes(specialityId.value))
+    }
+  }
+
+  return {
+    data: res.data,
+  };
 });
 </script>
 
@@ -129,6 +144,12 @@ const content = await useRequest<TestPracticum[]>('/practicum_tests', {
   @include md-and-down {
     margin-bottom: 60px;
 
+    :deep {
+      .swiper-lazy-preloader {
+        top: 30%;
+      }
+    }
+
     &__first-ellipse {
       top: -10px;
       right: -270px;
@@ -146,8 +167,13 @@ const content = await useRequest<TestPracticum[]>('/practicum_tests', {
     }
 
     &__item {
+
+      &-img {
+        margin-top: 0;
+      }
+
       &-text {
-        margin: 26px 0 0;
+        margin: 26px 0 auto;
       }
 
       &-btn {

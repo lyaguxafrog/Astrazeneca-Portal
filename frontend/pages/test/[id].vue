@@ -1,5 +1,5 @@
 <template>
-  <InsidePageHead class="test__back" />
+  <InsidePageHead />
 
   <div class="test">
     <BgEllipse
@@ -20,7 +20,7 @@
     <div class="test__container">
       <div class="test__container-left">
         <AppImage
-          :url="content.data?.image"
+          :url="content.data?.image_desktop_810px"
           :url-full="content.data?.image_desktop_810px"
           :url-full-x2="content.data?.image_desktop_1620px"
           :url-thin="content.data?.image_mobile_400px"
@@ -47,7 +47,7 @@
             </div>
           </div>
         </div>
-        <AppButton primary class="test__container-next" :petite="$screen.mdAndDown">
+        <AppButton v-if="content.data?.next_test" primary class="test__container-next" :petite="$screen.mdAndDown" :to="`/test/${content.data.next_test}`">
           Следующий тест
         </AppButton>
       </div>
@@ -72,11 +72,12 @@ export type TestPracticum = {
   id: number;
   title: string;
   question: string;
-  image: string;
+  speciality: number[];
   image_desktop_810px: string;
   image_desktop_1620px: string;
   image_mobile_400px: string;
   image_mobile_800px: string;
+  next_test: number;
   buttons: {
     text: string;
     title: string;

@@ -34,8 +34,8 @@ export type ArticlePlump = {
   final_content?: string;
   main_cover_desktop_3200px?: string;
   main_cover_desktop_1600px?: string;
-  main_cover_desktop_720px?: string;
-  main_cover_desktop_360px?: string;
+  main_cover_mobile_720px?: string;
+  main_cover_mobile_360px?: string;
 };
 
 export const useArticlesStore = () => {

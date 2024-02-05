@@ -3,7 +3,7 @@
     <div class="discover">
       <div class="discover__title">{{ data.title }}</div>
       <div class="discover__text" v-html="data.text" />
-      <AppButton class="discover__btn" primary mini @click="openNext">
+      <AppButton v-if="items.length > 1" class="discover__btn" primary mini @click="openNext">
         {{ nextItem.title }}
       </AppButton>
     </div>
