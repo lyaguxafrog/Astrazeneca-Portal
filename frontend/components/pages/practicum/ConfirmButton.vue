@@ -214,6 +214,22 @@ const apply = () => {
       font-size: 18px;
       line-height: 1;
     }
+
+
+    &__message {
+      font-size: 20px;
+
+      &-btn {
+        width: 96px;
+
+        font-size: 20px;
+      }
+    }
+
+    p {
+      width: 218px;
+      margin-right: 10px;
+    }
   }
 
   @include md-and-down {
@@ -242,7 +258,7 @@ const apply = () => {
       letter-spacing: -0.15px;
 
       border-radius: 20px 20px 0 0;
-      box-shadow: 0 0 16px 4px rgba($main-bg-color, 0.2);
+      box-shadow: 0 0 16px 5px rgba($main-bg-color, 0.3);
 
       p {
         width: 100%;
