@@ -17,7 +17,8 @@ class Practicum(models.Model):
                                   help_text='Ограничение в 200 символов.')
 
     pacient_description = RichTextField(
-                        verbose_name='Краткая информация о пациенте *')
+                        verbose_name='Краткая информация о пациенте *',
+                        help_text='Внутри практикума.')
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],
