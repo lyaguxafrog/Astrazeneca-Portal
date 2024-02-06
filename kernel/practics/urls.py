@@ -4,9 +4,7 @@
 from django.urls import path
 from rest_framework import views
 
-from practics.views import (PrTestListAPIView, PrTestDetailAPIView,
-                            PracticumDetailView, PracticumListView,
-                            PracticumListBySpecialty)
+from practics.views import (PrTestListAPIView, PrTestDetailAPIView,)
 from practics.views.prtest import PrTestListBySpecialty
 
 urlpatterns = [
@@ -20,13 +18,13 @@ urlpatterns = [
           PrTestListBySpecialty.as_view(),
           name='practicum-tests-list-by-speciality-id'),
 
-     path('practicum/<int:pk>/', PracticumDetailView.as_view(),
-          name='practicum-detail'),
+#      path('practicum/<int:pk>/', PracticumDetailView.as_view(),
+#           name='practicum-detail'),
 
-     path('practicum/speciality/<int:speciality>/',
-          PracticumListBySpecialty.as_view(),
-          name='practicum-list-by-speciality-id' ),
+#      path('practicum/speciality/<int:speciality>/',
+#           PracticumListBySpecialty.as_view(),
+#           name='practicum-list-by-speciality-id' ),
 
-     path('practicum/', PracticumListView.as_view(),
-          name='practicum-list')
-]
+#      path('practicum/', PracticumListView.as_view(),
+#           name='practicum-list')
+ ]
