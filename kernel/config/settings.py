@@ -22,6 +22,7 @@ else:
 
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
+    #FIXME: исправить что тут происходит
     # CSRF_COOKIE_DOMAIN = f'https://{os.getenv("OUR_DOMAIN")}'
     CSRF_TRUSTED_ORIGINS = [f'https://{os.getenv("OUR_DOMAIN")}']
 
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     'django_unused_media',
     'adminsortable2',
     'nested_admin',
+    'dynamicadmin',
+    'polymorphic',
 
     'pages',
     'users',
