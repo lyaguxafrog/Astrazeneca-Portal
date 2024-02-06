@@ -25,5 +25,4 @@ django_cleanup == 8.0.0
 django-sortedm2m == 3.1.1
 django-admin-sortable2 == 2.1.10
 django-nested-admin == 4.0.2
-django-dynamic-admin == 0.3.0
 django-polymorphic == 3.1.0

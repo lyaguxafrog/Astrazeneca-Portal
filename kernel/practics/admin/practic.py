@@ -5,7 +5,7 @@ from config.admin import custom_admin_site
 
 admin.site = custom_admin_site
 
-from practics.models import (Practicum, Screens, Block, BlockEntity)
+from practics.models import (Practicum, Screens)
 from nested_admin import (NestedModelAdmin,
                           NestedStackedInline,
                           NestedTabularInline)
@@ -30,4 +30,3 @@ class PracticumAdmin(NestedModelAdmin):
 
 
 admin.site.register(Practicum, PracticumAdmin)
-
