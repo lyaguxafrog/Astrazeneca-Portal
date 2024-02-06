@@ -5,27 +5,65 @@ from config.admin import custom_admin_site
 
 admin.site = custom_admin_site
 
-from practics.models import (Practicum, Screens, RBlock1, RBlock2)
+from practics.models import (Practicum, Screens, ScreenTextBlock_right,
+                             ScreenButton_left, ScreenButton_right,
+                             ScreenImageBlock_left, ScreenImageBlock_right,
+                             ScreenPopupBlock_left, ScreenPopupBlock_right,
+                             ScreenTextBlock_left, PopUpPoint_left, PopUpPoint_right)
+
 from nested_admin import (NestedModelAdmin,
                           NestedStackedInline,
                           NestedTabularInline)
+
 from polymorphic.admin import PolymorphicInlineSupportMixin, StackedPolymorphicInline
 
 
+class PopUpPointleftInline(admin.StackedInline):
+    model = PopUpPoint_left
+
+class PopUpPointrightInline(admin.StackedInline):
+    model = PopUpPoint_right
 
 class ScreensInline(StackedPolymorphicInline):
+
+    class ScreenTextBlockleftInline(StackedPolymorphicInline.Child):
+        model = ScreenTextBlock_left
+
+    class ScreenImageBlockleftInline(StackedPolymorphicInline.Child):
+        model = ScreenImageBlock_left
+
+    class ScreenPopupBlockleftInline(StackedPolymorphicInline.Child):
+        model = ScreenPopupBlock_left
+        inlines = (PopUpPointleftInline,)
+
+    class ScreenButtonleftInline(StackedPolymorphicInline.Child):
+        model = ScreenButton_left
+
+
+    # право
+    class ScreenTextBlockrightInline(StackedPolymorphicInline.Child):
+        model = ScreenTextBlock_right
+
+    class ScreenImageBlockrightInline(StackedPolymorphicInline.Child):
+        model = ScreenImageBlock_right
+
+    class ScreenPopupBlockrightInline(StackedPolymorphicInline.Child):
+        model = ScreenPopupBlock_right
+        inlines = (PopUpPointrightInline,)
+
+    class ScreenButtonrightInline(StackedPolymorphicInline.Child):
+        model = ScreenButton_right
+
     model = Screens
-    extra = 0
-
-    class RBloc1kInline(StackedPolymorphicInline.Child):
-        model = RBlock1
-
-    class RBlock2Inline(StackedPolymorphicInline.Child):
-        model = RBlock2
-
     child_inlines = (
-        RBloc1kInline,
-        RBlock2Inline
+        ScreenTextBlockleftInline,
+        ScreenImageBlockleftInline,
+        ScreenPopupBlockleftInline,
+        ScreenButtonleftInline,
+        ScreenTextBlockrightInline,
+        ScreenImageBlockrightInline,
+        ScreenPopupBlockrightInline,
+        ScreenButtonrightInline,
     )
 
 

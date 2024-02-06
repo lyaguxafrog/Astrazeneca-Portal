@@ -75,16 +75,3 @@ class Screens(models.Model):
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
-
-
-class RBlock1(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='rblock_one')
-
-    test_1 = models.CharField()
-
-class RBlock2(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='rblock_two')
-
-    test_2 = models.CharField()

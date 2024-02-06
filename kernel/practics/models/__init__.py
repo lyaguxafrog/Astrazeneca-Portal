@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from .practicum import Practicum, Screens, RBlock1, RBlock2
+from .practicum import Practicum, Screens
 from .practic_exam import PrTest, AnswerButtons
+
+from .screen_blocks import (ScreenTextBlock_left, ScreenButton_left,
+                            ScreenButton_right, ScreenImageBlock_left,
+                            ScreenImageBlock_right, ScreenPopupBlock_left,
+                            ScreenPopupBlock_right, ScreenTextBlock_right,
+                            PopUpPoint_left, PopUpPoint_right)
