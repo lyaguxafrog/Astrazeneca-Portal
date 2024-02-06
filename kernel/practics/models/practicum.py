@@ -20,13 +20,13 @@ class Practicum(models.Model):
                         verbose_name='Краткая информация о пациенте *',
                         help_text='Внутри практикума.',
                         default='''
-                        <p><strong>Имя:</strong></p>
-                        <p><strong>Возраст:</strong></p>
-                        <p><strong>Образ жизни:</strong></p>
-                        <p><strong>Семейный анамнез:</strong></p>
-                        <p><strong>Перенесенные заболевания:</strong></p>
-                        <p><strong>Оценка состояния:</strong></p>
-                        <p><strong>Диагноз:</strong></p>
+                <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
                             ''')
 
     priority = models.IntegerField(
