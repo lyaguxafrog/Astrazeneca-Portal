@@ -8,11 +8,9 @@ from practics.services.url_valid import validate_relative_or_absolute_url
 from polymorphic.models import PolymorphicModel
 
 
-
 class Blocks(PolymorphicModel):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='block')
-
 # Блоки контента слева
 class ScreenTextBlock_left(PolymorphicModel):
     screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
@@ -44,7 +42,7 @@ class ScreenImageBlock_left(PolymorphicModel):
 
 
 class ScreenPopupBlock_left(PolymorphicModel):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_popup_block_left')
 
     menu_title = models.CharField(verbose_name='Заголовок пункта *')
@@ -179,7 +177,7 @@ class ScreenButton_right(PolymorphicModel):
         ],  null=True, blank=True
     )
 
-    screen_redirect = models.ForeignKey('Blocks', on_delete=models.SET_NULL,
+    screen_redirect = models.ForeignKey('Screens', on_delete=models.SET_NULL,
                 null=True, blank=True, related_name='redirected_by_button_right')
 
 
