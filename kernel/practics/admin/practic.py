@@ -1,22 +1,15 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import admin
 from config.admin import custom_admin_site
-
-admin.site = custom_admin_site
-
 from practics.models import (Practicum, Screens, ScreenTextBlock_right,
                              ScreenButton_left, ScreenButton_right,
                              ScreenImageBlock_left, ScreenImageBlock_right,
                              ScreenPopupBlock_left, ScreenPopupBlock_right,
-                             ScreenTextBlock_left, PopUpPoint_left, PopUpPoint_right)
+                             ScreenTextBlock_left, PopUpPoint_left, PopUpPoint_right,
+                             Blocks)
+from nested_admin import NestedStackedInline
+from polymorphic.admin import PolymorphicInlineSupportMixin, StackedPolymorphicInline, PolymorphicParentModelAdmin, PolymorphicInlineModelAdmin
 
-from nested_admin import (NestedModelAdmin,
-                          NestedStackedInline,
-                          NestedTabularInline)
-
-from polymorphic.admin import PolymorphicInlineSupportMixin, StackedPolymorphicInline
-
+admin.site = custom_admin_site
 
 class PopUpPointleftInline(admin.StackedInline):
     model = PopUpPoint_left
@@ -24,7 +17,7 @@ class PopUpPointleftInline(admin.StackedInline):
 class PopUpPointrightInline(admin.StackedInline):
     model = PopUpPoint_right
 
-class ScreensInline(StackedPolymorphicInline):
+class BlockInline(StackedPolymorphicInline):
 
     class ScreenTextBlockleftInline(StackedPolymorphicInline.Child):
         model = ScreenTextBlock_left
@@ -54,7 +47,7 @@ class ScreensInline(StackedPolymorphicInline):
     class ScreenButtonrightInline(StackedPolymorphicInline.Child):
         model = ScreenButton_right
 
-    model = Screens
+    model = Blocks
     child_inlines = (
         ScreenTextBlockleftInline,
         ScreenImageBlockleftInline,
@@ -66,9 +59,19 @@ class ScreensInline(StackedPolymorphicInline):
         ScreenButtonrightInline,
     )
 
+class ScreenInline(PolymorphicInlineSupportMixin, NestedStackedInline):
+    model = Screens
+    fields = [
+        'literature',
+        'leterature_approvals_and_decodings',
+        'approvals_and_decodings',
 
-class PracticumAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
-    inlines = (ScreensInline,)
+    ]
+    inlines = (BlockInline,)
+    extra = 0
+
+class PracticumAdmin(admin.ModelAdmin):
+    inlines = (ScreenInline,)
     exclude = [
         'image_desktop_810px',
         'image_desktop_1620px',
@@ -76,6 +79,5 @@ class PracticumAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
         'image_mobile_800px']
 
     search_fields = ['title', 'desription', 'pacient_description']
-
 
 admin.site.register(Practicum, PracticumAdmin)
