@@ -22,6 +22,7 @@ else:
 
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
+    #FIXME: исправить что тут происходит
     # CSRF_COOKIE_DOMAIN = f'https://{os.getenv("OUR_DOMAIN")}'
     CSRF_TRUSTED_ORIGINS = [f'https://{os.getenv("OUR_DOMAIN")}']
 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django_unused_media',
     'adminsortable2',
     'nested_admin',
+    'polymorphic',
 
     'pages',
     'users',
@@ -72,8 +74,6 @@ CKEDITOR_CONFIGS = {
         'ImageAltRequired': False,
     },
 }
-
-
 
 
 
@@ -116,6 +116,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         'DIRS': [
             os.path.join(BASE_DIR, "frontend/dist"),
+            os.path.join(BASE_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -133,9 +134,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -147,8 +145,6 @@ DATABASES = {
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

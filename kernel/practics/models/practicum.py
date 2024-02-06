@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from tabnanny import verbose
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+
 from ckeditor.fields import RichTextField
+from polymorphic.models import PolymorphicModel
 
 
-class Practicum(models.Model):
+
+class Practicum(PolymorphicModel):
     title = models.CharField(verbose_name="Название практикума *",
                              max_length=90)
     image = models.ImageField(upload_to='practicum/',
@@ -20,13 +22,13 @@ class Practicum(models.Model):
                         verbose_name='Краткая информация о пациенте *',
                         help_text='Внутри практикума.',
                         default='''
-                        <p><strong>Имя:</strong></p>
-                        <p><strong>Возраст:</strong></p>
-                        <p><strong>Образ жизни:</strong></p>
-                        <p><strong>Семейный анамнез:</strong></p>
-                        <p><strong>Перенесенные заболевания:</strong></p>
-                        <p><strong>Оценка состояния:</strong></p>
-                        <p><strong>Диагноз:</strong></p>
+                <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
+                <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
                             ''')
 
     priority = models.IntegerField(
@@ -58,8 +60,7 @@ class Practicum(models.Model):
         return self.title
 
 
-
-class Screens(models.Model):
+class Screens(PolymorphicModel):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
 
@@ -71,8 +72,6 @@ class Screens(models.Model):
 
     approvals_and_decodings = RichTextField(null=True, blank=True,
                             verbose_name='Номер одобрения и расшифровка')
-
-
 
 
     class Meta:

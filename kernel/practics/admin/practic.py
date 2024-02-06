@@ -1,86 +1,86 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import admin
 from config.admin import custom_admin_site
+from practics.models import (Practicum, Screens, ScreenTextBlock_left,
+                             ScreenTextBlock_right, ScreenImageBlock_left,
+                             ScreenImageBlock_right, ScreenPopupBlock_left,
+                             ScreenPopupBlock_right, ScreenButton_left,
+                             ScreenButton_right, PopUpPoint_left,
+                             PopUpPoint_right, Blocks)
+
+from nested_admin import NestedStackedInline
+from polymorphic.admin import PolymorphicInlineSupportMixin, PolymorphicParentModelAdmin, PolymorphicInlineModelAdmin, StackedPolymorphicInline
 
 admin.site = custom_admin_site
 
-from practics.models import (Practicum, Screens,
-                             ScreenTextBlock_left, ScreenImageBlock_left,
-                             ScreenPopupBlock_left, ScreenButton_left,
-                             ScreenTextBlock_right, ScreenPopupBlock_right,
-                             ScreenButton_right, ScreenImageBlock_right)
-from nested_admin import (NestedModelAdmin,
-                          NestedStackedInline,
-                          NestedTabularInline)
+class PopUpPointLeftInline(admin.StackedInline):
+    model = PopUpPoint_left
 
-# лево
-class ScreenButtonInline_left(NestedStackedInline):
-    model = ScreenButton_left
-    extra = 0
-    exclude = ['screen_redirect',]
-    fk_name = 'screen'
+class PopUpPointRightInline(admin.StackedInline):
+    model = PopUpPoint_right
 
-class ScreenTextBlockInline_left(NestedStackedInline):
-    model = ScreenTextBlock_left
-    extra = 0
+class BlockInline(StackedPolymorphicInline):
 
+    class ScreenTextBlockLeftInline(StackedPolymorphicInline.Child):
+        model = ScreenTextBlock_left
 
-class ScreenImageBlockInline_left(NestedStackedInline):
-    model = ScreenImageBlock_left
-    fields = ['image', 'order']
-    extra = 0
+    class ScreenImageBlockLeftInline(StackedPolymorphicInline.Child):
+        model = ScreenImageBlock_left
 
+    class ScreenPopupBlockLeftInline(StackedPolymorphicInline.Child):
+        model = ScreenPopupBlock_left
+        inlines = [PopUpPointLeftInline]
 
-class ScreenPopupBlockInline_left(NestedStackedInline):
-    model = ScreenPopupBlock_left
-    extra = 0
+    class ScreenButtonLeftInline(StackedPolymorphicInline.Child):
+        model = ScreenButton_left
 
-# право
+    class ScreenTextBlockRightInline(StackedPolymorphicInline.Child):
+        model = ScreenTextBlock_right
 
-class ScreenButtonInline_right(NestedStackedInline):
-    model = ScreenButton_right
-    extra = 0
-    exclude = ['screen_redirect',]
-    fk_name = 'screen'
+    class ScreenImageBlockRightInline(StackedPolymorphicInline.Child):
+        model = ScreenImageBlock_right
 
-class ScreenTextBlockInline_right(NestedStackedInline):
-    model = ScreenTextBlock_right
-    extra = 0
+    class ScreenPopupBlockRightInline(StackedPolymorphicInline.Child):
+        model = ScreenPopupBlock_right
+        inlines = [PopUpPointRightInline]
 
+    class ScreenButtonRightInline(StackedPolymorphicInline.Child):
+        model = ScreenButton_right
 
-class ScreenImageBlockInline_right(NestedStackedInline):
-    model = ScreenImageBlock_right
-    fields = ['image', 'order']
-    extra = 0
+    model = Blocks
+    child_inlines = (
+        ScreenTextBlockLeftInline,
+        ScreenImageBlockLeftInline,
+        ScreenPopupBlockLeftInline,
+        ScreenButtonLeftInline,
+        ScreenTextBlockRightInline,
+        ScreenImageBlockRightInline,
+        ScreenPopupBlockRightInline,
+        ScreenButtonRightInline,
+    )
+    polymorphic_on = 'block_type'
 
+    def get_extra(self, request, obj=None, **kwargs):
+        # Дополнительные формы не нужны, так как они не используются в рамках Polymorphic
+        return 0
 
-class ScreenPopupBlockInline_right(NestedStackedInline):
-    model = ScreenPopupBlock_right
-    extra = 0
-
-class ScreensInline(NestedStackedInline):
+class ScreenInline(PolymorphicInlineSupportMixin, admin.StackedInline):
     model = Screens
-    inlines = [ScreenTextBlockInline_left,
-               ScreenImageBlockInline_left,
-               ScreenPopupBlockInline_left,
-               ScreenButtonInline_left,
-               ScreenTextBlockInline_right,
-               ScreenImageBlockInline_right,
-               ScreenPopupBlockInline_right,
-               ScreenButtonInline_right,]
+    inlines = [BlockInline]
+    fields = ['literature', 'leterature_approvals_and_decodings']
     extra = 0
 
+    def get_extra(self, request, obj=None, **kwargs):
+        # Дополнительные формы не нужны, так как они не используются в рамках Polymorphic
+        return 0
 
-class PracticumAdmin(NestedModelAdmin):
-    inlines = [ScreensInline]
+class PracticumAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
+    inlines = [ScreenInline]
     exclude = [
         'image_desktop_810px',
         'image_desktop_1620px',
         'image_mobile_400px',
-        'image_mobile_800px']
-
-    search_fields = ['title', 'desription', 'pacient_description']
-
+        'image_mobile_800px'
+    ]
+    search_fields = ['title', 'description', 'pacient_description']
 
 admin.site.register(Practicum, PracticumAdmin)
