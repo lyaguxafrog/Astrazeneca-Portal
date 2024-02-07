@@ -174,7 +174,7 @@ const { getDrug } = useDrugsStore();
 
 const content = await getDrug(drugId.value);
 
-const activeItem = toRef(() => getModalPayload(ModalsName.DrugProps));
+const activeItem = toRef(() => getModalPayload(ModalsName.DrugProps).item);
 
 const nextItem = toRef(() => {
   if (!content) {
@@ -195,7 +195,7 @@ useHead({
 });
 
 const openProps = (item: DrugFaq) => {
-  setModalPayload(ModalsName.DrugProps, item);
+  setModalPayload(ModalsName.DrugProps, { item: item, items: content.faq });
 };
 </script>
 

@@ -1,9 +1,9 @@
 <template>
   <AppModal :name="ModalsName.PracticumDiscoverModal">
     <div class="discover">
-      <div class="discover__title">{{ data.title }}</div>
-      <div class="discover__text" v-html="data.text" />
-      <AppButton v-if="items.length > 1" class="discover__btn" primary mini @click="openNext">
+      <div class="discover__title">{{ data.item.title }}</div>
+      <div class="discover__text" v-html="data.item.text" />
+      <AppButton v-if="data.items.length > 1" class="discover__btn" primary mini @click="openNext">
         {{ nextItem.title }}
       </AppButton>
     </div>
@@ -11,17 +11,19 @@
 </template>
 
 <script lang="ts" setup>
+import { toRef } from 'vue';
 import { ModalsName, useModal } from '~/utils/composables/useModal';
 
-type DiscoverItem = {
+type Item = {
   title: string;
   text: string;
   id: number;
 };
 
-const props = defineProps<{
-  items: DiscoverItem[];
-}>();
+type DiscoverItem = {
+  item: Item,
+  items: Item[];
+};
 
 const { getModalPayload, setModalPayload } = useModal();
 
@@ -30,12 +32,12 @@ const data = toRef(() => getModalPayload(ModalsName.PracticumDiscoverModal) as D
 const activeItem = toRef(() => getModalPayload(ModalsName.PracticumDiscoverModal));
 
 const nextItem = toRef(() => {
-  const index = props.items.findIndex((i) => i.id === activeItem.value?.id);
+  const index = data.items.findIndex((i) => i.id === activeItem.value?.id);
 
-  if (index !== props.items.length - 1) {
-    return props.items[index + 1];
+  if (index !== data.items.length - 1) {
+    return data.items[index + 1];
   } else {
-    return props.items[0];
+    return data.items[0];
   }
 });
 
