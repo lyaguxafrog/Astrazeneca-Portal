@@ -63,7 +63,6 @@
             :items="item.items"
             :modal-name="ModalsName.PracticumDiscoverModal"
           />
-          <DiscoverModal v-if="item.type === 'drop'" :items="item.items" />
 
           <ConfirmButton
             v-if="item.type === 'button'"
@@ -97,6 +96,7 @@
       </template>
     </div>
   </div>
+  <DiscoverModal />
   <InfoModal :literature="activeScreen.literature" :description="activeScreen.leterature_approvals_and_decodings" />
 </template>
 
