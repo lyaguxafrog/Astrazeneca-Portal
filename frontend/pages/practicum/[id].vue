@@ -47,6 +47,16 @@
               :items="item.items"
               :modal-name="ModalsName.PracticumDiscoverModal"
             />
+
+            <AppImage
+              v-if="item.type === 'img'"
+              class="practicum__img"
+              :url="item.image"
+              :url-full-x2="item.image_desktop_1620px"
+              :url-full="item.image_desktop_810px"
+              :url-thin-x2="item.image_mobile_800px"
+              :url-thin="item.image_mobile_400px"
+            />
           </template>
           <div class="practicum__description" v-html="activeScreen.approvals_and_decodings"></div>
         </template>
@@ -63,11 +73,11 @@
             :items="item.items"
             :modal-name="ModalsName.PracticumDiscoverModal"
           />
-          <DiscoverModal v-if="item.type === 'drop'" :items="item.items" />
 
           <ConfirmButton
             v-if="item.type === 'button'"
             class="practicum__btn"
+            right
             :active="item.confirmation"
             :primary="item.fill_flag"
             :action="() => onBtnClick(item)"
@@ -76,6 +86,16 @@
           >
             {{ item.button_title }}
           </ConfirmButton>
+
+          <AppImage
+            v-if="item.type === 'img'"
+            class="practicum__img"
+            :url="item.image"
+            :url-full-x2="item.image_desktop_1620px"
+            :url-full="item.image_desktop_810px"
+            :url-thin-x2="item.image_mobile_800px"
+            :url-thin="item.image_mobile_400px"
+          />
         </template>
       </div>
 
@@ -97,6 +117,7 @@
       </template>
     </div>
   </div>
+  <DiscoverModal />
   <InfoModal :literature="activeScreen.literature" :description="activeScreen.leterature_approvals_and_decodings" />
 </template>
 
@@ -137,6 +158,7 @@ const activeScreen = toRef(() => {
 
   s.screen_button_block_left = s.screen_button_block_left.map((i) => ({...i, type: 'button'}));
   s.screen_text_block_left = s.screen_text_block_left.map((i) => ({...i, type: 'text'}));
+  s.screen_image_block_left = s.screen_image_block_left.map((i) => ({...i, type: 'img'}));
   s.screen_popup_block_left = s.screen_popup_block_left.map((i) => ({...i, type: 'drop', items: [{
       title: i.menu_title,
       text: i.text,
@@ -144,6 +166,7 @@ const activeScreen = toRef(() => {
 
   s.screen_button_block_right = s.screen_button_block_right.map((i) => ({...i, type: 'button'}));
   s.screen_text_block_right = s.screen_text_block_right.map((i) => ({...i, type: 'text'}));
+  s.screen_image_block_right = s.screen_image_block_right.map((i) => ({...i, type: 'img'}));
   s.screen_popup_block_right = s.screen_popup_block_right.map((i) => ({...i, type: 'drop', items: [{
     title: i.menu_title,
       text: i.text,
@@ -159,7 +182,7 @@ const leftContent = computed(() => {
 
   const screen = activeScreen.value;
 
-  const content = [...screen.screen_button_block_left, ...screen.screen_text_block_left, ...screen.screen_popup_block_left];
+  const content = [...screen.screen_button_block_left, ...screen.screen_text_block_left, ...screen.screen_popup_block_left, ...screen.screen_image_block_left];
 
   return content.sort((c1, c2) => c1.order - c2.order);
 });
@@ -171,7 +194,7 @@ const rightContent = computed(() => {
 
   const screen = activeScreen.value;
 
-  const content = [...screen.screen_text_block_right, ...screen.screen_popup_block_right, ...screen.screen_button_block_right];
+  const content = [...screen.screen_text_block_right, ...screen.screen_popup_block_right, ...screen.screen_button_block_right, ...screen.screen_image_block_right];
 
   return content.sort((c1, c2) => c1.order - c2.order);
 });
@@ -233,6 +256,16 @@ type TextBlock = {
   text: string;
 };
 
+type ImgBlock = {
+  id: number;
+  image: string;
+  image_desktop_1620px: string;
+  image_desktop_810px: string;
+  image_mobile_800px: string;
+  image_mobile_400px: string;
+  order: number;
+};
+
 type DropBlock = {
   id: number;
   menu_title: string;
@@ -250,10 +283,12 @@ type Screen = {
   screen_button_block_left: Btn[];
   screen_text_block_left: TextBlock[];
   screen_popup_block_left: DropBlock[];
+  screen_image_block_left: ImgBlock[];
 
   screen_text_block_right: TextBlock[];
   screen_popup_block_right: DropBlock[];
   screen_button_block_right: Btn[];
+  screen_image_block_right: ImgBlock[];
 };
 
 type Practicum = {
@@ -361,6 +396,12 @@ type Practicum = {
     width: fit-content;
     margin-top: 43px;
     margin-bottom: 43px;
+  }
+
+  &__img {
+    display: block;
+
+    margin: 34px 0;
   }
 
   &__description {
