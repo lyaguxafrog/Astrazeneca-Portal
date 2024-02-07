@@ -5,7 +5,7 @@ from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class PrTest(models.Model):
-    title = models.CharField(verbose_name="Название теста *",
+    title = models.CharField(verbose_name="Название практикума *",
                              max_length=90)
 
     question = RichTextField(verbose_name='Описание задания *')
