@@ -109,9 +109,11 @@ const onSwiper = (s: SwiperType) => {
 };
 
 const onSlideChange = () => {
-  if (swiper.value) {
-    activeSlideIndex.value = swiper.value.realIndex;
-  }
+  setTimeout(() => {
+    if (swiper.value) {
+      activeSlideIndex.value = swiper.value.realIndex;
+    }
+  }, 200);
 };
 </script>
 
