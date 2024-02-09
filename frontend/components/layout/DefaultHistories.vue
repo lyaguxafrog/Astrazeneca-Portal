@@ -42,6 +42,7 @@
             playsinline
             :muted="muted"
             :src="activeHistoryIndex === index || activeHistoryIndex-1 === index || activeHistoryIndex+1 === index ? `${baseUrl}${history.video}` : ''"
+            :class="{active: activeHistoryIndex === index}"
             @touchend="onVideoTouchEnd"
             @ended="onVideoStop"
           />
@@ -326,6 +327,12 @@ onMounted(() => {
     background-position: center;
     background-size: cover;
 
+    opacity: 0;
+
+    &.active {
+      opacity: 1;
+    }
+
     @include lg-and-down {
       @media (orientation: portrait) {
         height: 70vh;
@@ -395,6 +402,8 @@ onMounted(() => {
     bottom: 0;
     left: 0;
     @include z-index(4);
+
+    background: $main-bg-color;
 
     &__swiper {
       width: auto;
