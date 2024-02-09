@@ -13,10 +13,10 @@
           :url="content.video_cover_desktop_1400px"
           :url-full-x2="content.video_cover_desktop_2800px"
           :url-full="content.video_cover_desktop_1400px"
-          :url-thin-x2="content.video_cover_mobile_840px"
-          :url-thin="content.video_cover_mobile_420px"
+          :url-thin-x2="content.video_cover_desktop_1400px"
+          :url-thin="content.video_cover_desktop_1400px"
         />
-        <PlayVideoButton class="video-page__video-play" />
+<!--        <PlayVideoButton class="video-page__video-play" />-->
       </div>
     </div>
 
@@ -37,16 +37,16 @@
         #default="{ item }"
       >
         <nuxt-link class="video-page__recommended-slide" :to="`/video/${item.id}`">
-          <p v-html="item.title" />
+<!--          <p v-html="item.title" />-->
           <div class="video-page__recommended-slide-img">
             <AppImage
-              :url="item.recomendation_cover_desktop_500px"
-              :url-full-x2="item.recomendation_cover_desktop_1000px"
-              :url-full="item.recomendation_cover_desktop_500px"
+              :url="item.recomendation_cover_mobile_560px"
+              :url-full-x2="item.recomendation_cover_mobile_560px"
+              :url-full="item.recomendation_cover_mobile_560px"
               :url-thin-x2="item.recomendation_cover_mobile_560px"
               :url-thin="item.recomendation_cover_mobile_280px"
             />
-            <PlayVideoButton class="video-page__recommended-slide-play" />
+<!--            <PlayVideoButton class="video-page__recommended-slide-play" />-->
           </div>
         </nuxt-link>
       </ItemsSlider>
@@ -130,6 +130,7 @@ const startVideo = () => {
     position: relative;
 
     margin-top: 45px;
+    overflow: hidden;
 
     video {
       display: block;
@@ -149,6 +150,13 @@ const startVideo = () => {
       width: 100%;
       height: 100%;
       object-fit: cover;
+
+      cursor: pointer;
+      transition: transform $tr-dur;
+
+      &:hover {
+        transform: scale(1.03);
+      }
     }
   }
 

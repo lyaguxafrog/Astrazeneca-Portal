@@ -30,9 +30,9 @@
         >
           <AppImage
             class="favourites__item-bg"
-            :url="fav.favorite_desktop_300px"
-            :url-full-x2="fav.favorite_desktop_600px"
-            :url-full="fav.favorite_desktop_300px"
+            :url="fav.favorite_mobile_500px"
+            :url-full-x2="fav.favorite_mobile_500px"
+            :url-full="fav.favorite_mobile_500px"
             :url-thin-x2="fav.favorite_mobile_500px"
             :url-thin="fav.favorite_mobile_250px"
           />

@@ -52,10 +52,10 @@
       >
         <template #default="{ item }">
           <nuxt-link class="items-slider__content" :to="`video/${item.id}`">
-            <div
+<!--            <div
               class="videos-slider__title items-slier__visible-on-active"
               v-html="item.video_article_url"
-            />
+            />-->
             <div class="videos-slider__img">
               <AppImage
                 class="videos-slider__image"
@@ -65,7 +65,7 @@
                 :url-thin-x2="item.video_cover_mobile_840px"
                 :url-thin="item.video_cover_mobile_420px"
               />
-              <PlayVideoButton />
+<!--              <PlayVideoButton />-->
             </div>
           </nuxt-link>
         </template>

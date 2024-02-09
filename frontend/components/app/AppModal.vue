@@ -206,7 +206,13 @@ $root: modal;
         min-height: 100%;
       }
     }
-
+    &.fullPage {
+      .#{$root} {
+        &__content {
+          max-width: 100%;
+        }
+      }
+    }
     &__content {
       width: 100%;
       max-width: 86%;
