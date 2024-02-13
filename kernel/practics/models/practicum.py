@@ -72,9 +72,11 @@ class Screens(models.Model):
     approvals_and_decodings = RichTextField(null=True, blank=True,
                             verbose_name='Номер одобрения и расшифровка')
 
-
-
-
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
+
+    def __str__(self):
+
+        screens_list = list(self.practicum.screens.all())
+        return str(screens_list.index(self) + 1)
