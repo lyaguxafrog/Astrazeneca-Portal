@@ -14,51 +14,51 @@ from practics.models import (Practicum, Screens,
                              ScreenButton_right, ScreenImageBlock_right)
 
 # лево
-class ScreenButtonInline_left(SortableAdminMixin, SortableStackedInline):
+class ScreenButtonInline_left(admin.StackedInline):
     model = ScreenButton_left
     extra = 0
     exclude = ['screen_redirect',]
     fk_name = 'screen'
 
-class ScreenTextBlockInline_left(SortableAdminMixin, SortableStackedInline):
+class ScreenTextBlockInline_left(admin.StackedInline):
     model = ScreenTextBlock_left
     extra = 0
 
 
-class ScreenImageBlockInline_left(SortableAdminMixin, SortableStackedInline):
+class ScreenImageBlockInline_left(admin.StackedInline):
     model = ScreenImageBlock_left
     fields = ['image', 'order']
     extra = 0
 
 
-class ScreenPopupBlockInline_left(SortableAdminMixin, SortableStackedInline):
+class ScreenPopupBlockInline_left(admin.StackedInline):
     model = ScreenPopupBlock_left
     extra = 0
 
 # право
 
-class ScreenButtonInline_right(SortableAdminMixin, SortableStackedInline):
+class ScreenButtonInline_right(admin.StackedInline):
     model = ScreenButton_right
     extra = 0
     exclude = ['screen_redirect',]
     fk_name = 'screen'
 
-class ScreenTextBlockInline_right(SortableAdminMixin, SortableStackedInline):
+class ScreenTextBlockInline_right(admin.StackedInline):
     model = ScreenTextBlock_right
     extra = 0
 
 
-class ScreenImageBlockInline_right(SortableAdminMixin, SortableStackedInline):
+class ScreenImageBlockInline_right(admin.StackedInline):
     model = ScreenImageBlock_right
     fields = ['image', 'order']
     extra = 0
 
 
-class ScreenPopupBlockInline_right(SortableAdminMixin, SortableStackedInline):
+class ScreenPopupBlockInline_right(admin.StackedInline):
     model = ScreenPopupBlock_right
     extra = 0
 
-class ScreensInline(SortableStackedInline, admin.StackedInline):
+class ScreensInline(admin.StackedInline):
     model = Screens
     inlines = [ScreenTextBlockInline_left,
                ScreenImageBlockInline_left,
@@ -71,7 +71,7 @@ class ScreensInline(SortableStackedInline, admin.StackedInline):
     extra = 0
 
 
-class PracticumAdmin(SortableAdminBase, admin.ModelAdmin):
+class PracticumAdmin(admin.ModelAdmin):
     inlines = [ScreensInline]
     exclude = [
         'image_desktop_810px',
