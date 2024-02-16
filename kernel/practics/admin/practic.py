@@ -58,7 +58,7 @@ class ScreenPopupBlockInline_right(SortableAdminMixin, SortableStackedInline):
     model = ScreenPopupBlock_right
     extra = 0
 
-class ScreensInline(SortableInlineAdminMixin, admin.StackedInline):
+class ScreensInline(SortableStackedInline, admin.StackedInline):
     model = Screens
     inlines = [ScreenTextBlockInline_left,
                ScreenImageBlockInline_left,
