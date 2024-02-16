@@ -73,7 +73,7 @@ class Screens(models.Model):
     approvals_and_decodings = RichTextField(null=True, blank=True,
                             verbose_name='Номер одобрения и расшифровка')
 
-    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+    order = models.PositiveIntegerField(default=0, db_index=True)
 
 
     class Meta:
