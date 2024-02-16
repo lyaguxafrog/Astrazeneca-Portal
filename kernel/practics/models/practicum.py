@@ -53,6 +53,7 @@ class Practicum(models.Model):
     class Meta:
         verbose_name='практикум'
         verbose_name_plural = 'практикумы'
+        ordering = ['id']
 
     def __str__(self):
         return self.title
@@ -72,9 +73,13 @@ class Screens(models.Model):
     approvals_and_decodings = RichTextField(null=True, blank=True,
                             verbose_name='Номер одобрения и расшифровка')
 
+    order = models.PositiveIntegerField(default=0)
+
+
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
+        ordering = ['order']
 
     def __str__(self):
 

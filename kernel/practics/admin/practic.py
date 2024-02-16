@@ -2,6 +2,8 @@
 
 from django.contrib import admin
 from config.admin import custom_admin_site
+from adminsortable2.admin import SortableAdminMixin, SortableStackedInline, SortableInlineAdminMixin, SortableAdminBase
+
 
 admin.site = custom_admin_site
 
@@ -10,56 +12,53 @@ from practics.models import (Practicum, Screens,
                              ScreenPopupBlock_left, ScreenButton_left,
                              ScreenTextBlock_right, ScreenPopupBlock_right,
                              ScreenButton_right, ScreenImageBlock_right)
-from nested_admin import (NestedModelAdmin,
-                          NestedStackedInline,
-                          NestedTabularInline)
 
 # лево
-class ScreenButtonInline_left(NestedStackedInline):
+class ScreenButtonInline_left(SortableAdminMixin, SortableStackedInline):
     model = ScreenButton_left
     extra = 0
     exclude = ['screen_redirect',]
     fk_name = 'screen'
 
-class ScreenTextBlockInline_left(NestedStackedInline):
+class ScreenTextBlockInline_left(SortableAdminMixin, SortableStackedInline):
     model = ScreenTextBlock_left
     extra = 0
 
 
-class ScreenImageBlockInline_left(NestedStackedInline):
+class ScreenImageBlockInline_left(SortableAdminMixin, SortableStackedInline):
     model = ScreenImageBlock_left
     fields = ['image', 'order']
     extra = 0
 
 
-class ScreenPopupBlockInline_left(NestedStackedInline):
+class ScreenPopupBlockInline_left(SortableAdminMixin, SortableStackedInline):
     model = ScreenPopupBlock_left
     extra = 0
 
 # право
 
-class ScreenButtonInline_right(NestedStackedInline):
+class ScreenButtonInline_right(SortableAdminMixin, SortableStackedInline):
     model = ScreenButton_right
     extra = 0
     exclude = ['screen_redirect',]
     fk_name = 'screen'
 
-class ScreenTextBlockInline_right(NestedStackedInline):
+class ScreenTextBlockInline_right(SortableAdminMixin, SortableStackedInline):
     model = ScreenTextBlock_right
     extra = 0
 
 
-class ScreenImageBlockInline_right(NestedStackedInline):
+class ScreenImageBlockInline_right(SortableAdminMixin, SortableStackedInline):
     model = ScreenImageBlock_right
     fields = ['image', 'order']
     extra = 0
 
 
-class ScreenPopupBlockInline_right(NestedStackedInline):
+class ScreenPopupBlockInline_right(SortableAdminMixin, SortableStackedInline):
     model = ScreenPopupBlock_right
     extra = 0
 
-class ScreensInline(NestedStackedInline):
+class ScreensInline(SortableInlineAdminMixin, admin.StackedInline):
     model = Screens
     inlines = [ScreenTextBlockInline_left,
                ScreenImageBlockInline_left,
@@ -72,7 +71,7 @@ class ScreensInline(NestedStackedInline):
     extra = 0
 
 
-class PracticumAdmin(NestedModelAdmin):
+class PracticumAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [ScreensInline]
     exclude = [
         'image_desktop_810px',
