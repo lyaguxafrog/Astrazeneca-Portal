@@ -197,6 +197,8 @@ const showAnswer = (index: number) => {
       width: 47.3%;
       margin-bottom: 40px;
 
+      word-break: break-word;
+
       &-text {
         display: none;
       }
