@@ -370,7 +370,7 @@ type Practicum = {
     margin-bottom: 43px;
 
     font-size: 26px;
-    line-height: 32px;
+    @include line-height(26, 32);
     font-weight: 300;
     letter-spacing: -0.26px;
 
@@ -416,7 +416,7 @@ type Practicum = {
     margin-top: 65px;
 
     font-size: 26px;
-    line-height: 34px;
+    @include line-height(26, 34);
     font-weight: 300;
 
     :deep(b), :deep(strong){
@@ -487,14 +487,14 @@ type Practicum = {
       &::v-deep {
         h3 {
           font-size: 15px;
-          line-height: 20px;
+          @include line-height(15,20);
         }
 
         h4 {
           margin-bottom: 19px;
 
           font-size: 19px;
-          line-height: 17px;
+          @include line-height(19,17);
         }
       }
     }
@@ -530,7 +530,7 @@ type Practicum = {
       margin: 0;
 
       font-size: 14px;
-      line-height: 18px;
+      @include line-height(14,18);
     }
 
     &__subtitle {
@@ -539,7 +539,7 @@ type Practicum = {
 
       font-family: $secondary-font-family;
       font-size: 15px;
-      line-height: 20px;
+      @include line-height(15,20);
       font-weight: 300;
     }
 
@@ -548,7 +548,7 @@ type Practicum = {
       margin-bottom: 10px;
 
       font-size: 9px;
-      line-height: 10px;
+      @include line-height(9,10);
     }
   }
 }
