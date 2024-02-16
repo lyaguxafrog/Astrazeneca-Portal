@@ -26,7 +26,7 @@
         <div
           v-if="!$screen.mdAndDown"
           class="home-test__item-text caption-m"
-          v-html="item.question"
+          v-html="item.title"
         />
         <AppImage
           class="home-test__item-img"
@@ -39,7 +39,7 @@
         <div
           v-if="$screen.mdAndDown"
           class="home-test__item-text caption-m"
-          v-html="item.question"
+          v-html="item.title"
         />
         <AppButton primary class="home-test__item-btn"> Начать </AppButton>
       </nuxt-link>
@@ -106,6 +106,7 @@ const content = computed(() => {
 
     &-text {
       margin-bottom: 40px;
+      @include ellipsis(3);
     }
 
     &-btn {
