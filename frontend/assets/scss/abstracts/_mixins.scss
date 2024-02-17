@@ -209,3 +209,7 @@ $screen-xxl-min: 1440px;
     display: -webkit-box;
   }
 }
+
+@mixin line-height($fz, $lh) {
+  line-height: $lh/$fz;
+}
