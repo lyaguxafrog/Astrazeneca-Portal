@@ -70,7 +70,7 @@ class ScreensInline(NestedStackedInline):
                ScreenPopupBlockInline_right,
                ScreenButtonInline_right,]
     extra = 0
-
+    fk_name = 'practicum'
 
 class PracticumAdmin(NestedModelAdmin):
     inlines = [ScreensInline]

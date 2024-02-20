@@ -27,7 +27,10 @@ else:
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
+SITE_ID = 1
+
 INSTALLED_APPS = [
+    'djangocms_admin_style',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,6 +48,10 @@ INSTALLED_APPS = [
     'django_unused_media',
     'adminsortable2',
     'nested_admin',
+    'django.contrib.sites',
+    'cms',
+    'menus',
+    'treebeard',
 
     'pages',
     'users',
@@ -169,7 +176,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "ru-ru"
+LANGUAGES = [
+    ('ru', 'Russian'),
+]
+
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "Europe/Moscow"
 
@@ -196,3 +207,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_URLS_REGEX = r'^/swagger(?P<url>.*)$'
+
+CMS_CONFIRM_VERSION4 = True

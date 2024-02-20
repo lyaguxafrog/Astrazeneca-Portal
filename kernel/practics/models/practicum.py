@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from tabnanny import verbose
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from ckeditor.fields import RichTextField
 
+from ckeditor.fields import RichTextField
+from cms.models import Page
 
 class Practicum(models.Model):
     title = models.CharField(verbose_name="Название практикума *",
@@ -60,7 +60,7 @@ class Practicum(models.Model):
 
 
 
-class Screens(models.Model):
+class Screens(Page):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
 
