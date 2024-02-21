@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'cms',
     'menus',
     'treebeard',
+    'sekizai',
+    "polymorphic",
 
     'pages',
     'users',
@@ -102,11 +104,18 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "pages.services.range_response.RangeHeaderMiddleware"
-]
+    "pages.services.range_response.RangeHeaderMiddleware",
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
+    'cms.middleware.user.CurrentUserMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    ]
 
 ROOT_URLCONF = "config.urls"
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -132,6 +141,9 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'django.template.context_processors.media',
+                'cms.context_processors.cms_settings',
+                'django.template.context_processors.i18n',
+                'sekizai.context_processors.sekizai',
             ],
         },
     },

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from ckeditor.fields import RichTextField
-from cms.models import Page
+from polymorphic.models import PolymorphicModel
 
-class Practicum(models.Model):
+
+class Practicum(PolymorphicModel):
     title = models.CharField(verbose_name="Название практикума *",
                              max_length=90)
     image = models.ImageField(upload_to='practicum/',
@@ -53,35 +55,6 @@ class Practicum(models.Model):
     class Meta:
         verbose_name='практикум'
         verbose_name_plural = 'практикумы'
-        ordering = ['id']
 
     def __str__(self):
         return self.title
-
-
-
-class Screens(Page):
-    practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
-                                  related_name='screens')
-
-    literature = RichTextField(null=True, blank=True,
-                               verbose_name='список литературы')
-
-    leterature_approvals_and_decodings = RichTextField(null=True, blank=True,
-            verbose_name='Номер одобрения и расшифровка для списка литературы')
-
-    approvals_and_decodings = RichTextField(null=True, blank=True,
-                            verbose_name='Номер одобрения и расшифровка')
-
-    order = models.PositiveIntegerField(default=0, db_index=True)
-
-
-    class Meta:
-        verbose_name = 'экран'
-        verbose_name_plural = 'экраны'
-        ordering = ['order']
-
-    def __str__(self):
-
-        screens_list = list(self.practicum.screens.all())
-        return str(screens_list.index(self) + 1)
