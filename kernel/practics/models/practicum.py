@@ -58,3 +58,22 @@ class Practicum(PolymorphicModel):
 
     def __str__(self):
         return self.title
+
+
+class Screens(Practicum):
+    # practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
+    #                               related_name='screens')
+
+    literature = RichTextField(null=True, blank=True,
+                               verbose_name='список литературы')
+
+    leterature_approvals_and_decodings = RichTextField(null=True, blank=True,
+            verbose_name='Номер одобрения и расшифровка для списка литературы')
+
+    approvals_and_decodings = RichTextField(null=True, blank=True,
+                            verbose_name='Номер одобрения и расшифровка')
+
+
+    class Meta:
+        verbose_name = 'экран'
+        verbose_name_plural = 'экраны'

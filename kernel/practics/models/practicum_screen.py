@@ -6,10 +6,12 @@ from django.core.validators import FileExtensionValidator, URLValidator
 from django.core.exceptions import ValidationError
 from practics.services.url_valid import validate_relative_or_absolute_url
 
+from practics.models import Screens
+
 # Блоки контента слева
-class ScreenTextBlock_left(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_text_block_left')
+class ScreenTextBlock_left(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_text_block_left')
 
     text = RichTextField(verbose_name='текст *')
     order = models.IntegerField(default=0, verbose_name='порядковый номер *')
@@ -18,9 +20,9 @@ class ScreenTextBlock_left(models.Model):
         verbose_name='блок текста слева'
         verbose_name_plural = 'блоки текста слева'
 
-class ScreenImageBlock_left(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_image_block_left')
+class ScreenImageBlock_left(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_image_block_left')
 
     image = models.ImageField(upload_to='practicums/blocks/',
                               verbose_name='изображение *')
@@ -36,9 +38,9 @@ class ScreenImageBlock_left(models.Model):
         verbose_name_plural = 'блоки изображения слева'
 
 
-class ScreenPopupBlock_left(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_popup_block_left')
+class ScreenPopupBlock_left(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_popup_block_left')
 
     menu_title = models.CharField(verbose_name='Заголовок пункта *')
     text = RichTextField(verbose_name='Текст *')
@@ -48,9 +50,9 @@ class ScreenPopupBlock_left(models.Model):
         verbose_name='блок выпадающий список слева'
         verbose_name_plural = 'блоки выпадающий список слева'
 
-class ScreenButton_left(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_button_block_left')
+class ScreenButton_left(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_button_block_left')
 
     button_title = models.CharField(verbose_name='Заголовк кнопки *')
 
@@ -110,9 +112,9 @@ class ScreenButton_left(models.Model):
 
 
 
-class ScreenTextBlock_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_text_block_right')
+class ScreenTextBlock_right(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_text_block_right')
 
     text = RichTextField(verbose_name='текст *')
     order = models.IntegerField(default=0, verbose_name='порядковый номер *')
@@ -121,9 +123,9 @@ class ScreenTextBlock_right(models.Model):
         verbose_name='блок текста справа'
         verbose_name_plural = 'блоки текста справа'
 
-class ScreenImageBlock_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_image_block_right')
+class ScreenImageBlock_right(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_image_block_right')
 
     image = models.ImageField(upload_to='practicums/blocks/',
                               verbose_name='изображение *')
@@ -139,9 +141,9 @@ class ScreenImageBlock_right(models.Model):
         verbose_name_plural = 'блоки изображения справа'
 
 
-class ScreenPopupBlock_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_popup_block_right')
+class ScreenPopupBlock_right(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_popup_block_right')
 
     menu_title = models.CharField(verbose_name='Заголовок пункта *', blank=True, null=True)
     text = RichTextField(verbose_name='Текст *')
@@ -151,9 +153,9 @@ class ScreenPopupBlock_right(models.Model):
         verbose_name='блок выпадающий список справа'
         verbose_name_plural = 'блоки выпадающий список справа'
 
-class ScreenButton_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_button_block_right')
+class ScreenButton_right(Screens):
+    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    #                            related_name='screen_button_block_right')
 
     button_title = models.CharField(verbose_name='Заголовк кнопки *')
 
