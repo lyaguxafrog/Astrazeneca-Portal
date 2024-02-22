@@ -47,7 +47,13 @@
             </div>
           </div>
         </div>
-        <AppButton v-if="content.data?.next_test" primary class="test__container-next" :petite="$screen.mdAndDown" :to="`/test/${content.data.next_test}`">
+        <AppButton
+          v-if="content.data?.next_test"
+          primary
+          class="test__container-next"
+          :petite="$screen.mdAndDown"
+          :to="`/test/${content.data.next_test}`"
+        >
           Следующий тест
         </AppButton>
       </div>
@@ -281,9 +287,10 @@ const showAnswer = (index: number) => {
       }
 
       &-answer {
-        width: 66%;
+        width: fit-content;
+        min-width: 66%;
         margin-bottom: 0;
-        padding: 0;
+        padding: 10px;
 
         &-text {
           display: block;
