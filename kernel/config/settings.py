@@ -30,7 +30,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 SITE_ID = 1
 
 INSTALLED_APPS = [
-    'djangocms_admin_style',
+    # 'djangocms_admin_style',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,10 +49,10 @@ INSTALLED_APPS = [
     'adminsortable2',
     'nested_admin',
     'django.contrib.sites',
-    'cms',
-    'menus',
-    'treebeard',
-    'sekizai',
+    # 'cms',
+    # 'menus',
+    # 'treebeard',
+    # 'sekizai',
     "polymorphic",
 
     'pages',
@@ -105,11 +105,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "pages.services.range_response.RangeHeaderMiddleware",
-    'cms.middleware.user.CurrentUserMiddleware',
-    'cms.middleware.page.CurrentPageMiddleware',
-    'cms.middleware.toolbar.ToolbarMiddleware',
-    'cms.middleware.language.LanguageCookieMiddleware',
-    'cms.middleware.user.CurrentUserMiddleware',
+    # 'cms.middleware.user.CurrentUserMiddleware',
+    # 'cms.middleware.page.CurrentPageMiddleware',
+    # 'cms.middleware.toolbar.ToolbarMiddleware',
+    # 'cms.middleware.language.LanguageCookieMiddleware',
+    # 'cms.middleware.user.CurrentUserMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     ]
 
@@ -141,9 +141,9 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'django.template.context_processors.media',
-                'cms.context_processors.cms_settings',
-                'django.template.context_processors.i18n',
-                'sekizai.context_processors.sekizai',
+                # 'cms.context_processors.cms_settings',
+                # 'django.template.context_processors.i18n',
+                # 'sekizai.context_processors.sekizai',
             ],
         },
     },

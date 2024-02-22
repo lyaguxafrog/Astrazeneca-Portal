@@ -24,14 +24,14 @@ class ScreenImageBlock_left(Screens):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_image_block_left')
 
-    image = models.ImageField(upload_to='practicums/blocks/',
+    image_block = models.ImageField(upload_to='practicums/blocks/',
                               verbose_name='изображение *')
     order = models.IntegerField(default=0, verbose_name='Порядковый номер *')
 
-    image_desktop_810px = models.ImageField(null=True, blank=True)
-    image_desktop_1620px = models.ImageField(null=True, blank=True)
-    image_mobile_400px = models.ImageField(null=True, blank=True)
-    image_mobile_800px = models.ImageField(null=True, blank=True)
+    image_desktop_810px_block = models.ImageField(null=True, blank=True)
+    image_desktop_1620px_block = models.ImageField(null=True, blank=True)
+    image_mobile_400px_block = models.ImageField(null=True, blank=True)
+    image_mobile_800px_block = models.ImageField(null=True, blank=True)
 
     class Meta:
         verbose_name='блок изображения слева'
@@ -127,14 +127,14 @@ class ScreenImageBlock_right(Screens):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_image_block_right')
 
-    image = models.ImageField(upload_to='practicums/blocks/',
+    image_block = models.ImageField(upload_to='practicums/blocks/',
                               verbose_name='изображение *')
     order = models.IntegerField(default=0, verbose_name='Порядковый номер *')
 
-    image_desktop_810px = models.ImageField(null=True, blank=True)
-    image_desktop_1620px = models.ImageField(null=True, blank=True)
-    image_mobile_400px = models.ImageField(null=True, blank=True)
-    image_mobile_800px = models.ImageField(null=True, blank=True)
+    image_desktop_810px_block = models.ImageField(null=True, blank=True)
+    image_desktop_1620px_block = models.ImageField(null=True, blank=True)
+    image_mobile_400px_block = models.ImageField(null=True, blank=True)
+    image_mobile_800px_block = models.ImageField(null=True, blank=True)
 
     class Meta:
         verbose_name='блок изображения справа'

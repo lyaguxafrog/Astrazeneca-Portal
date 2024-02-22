@@ -60,9 +60,9 @@ class Practicum(PolymorphicModel):
         return self.title
 
 
-class Screens(Practicum):
-    # practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
-    #                               related_name='screens')
+class Screens(PolymorphicModel):
+    practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
+                                  related_name='screens')
 
     literature = RichTextField(null=True, blank=True,
                                verbose_name='список литературы')
