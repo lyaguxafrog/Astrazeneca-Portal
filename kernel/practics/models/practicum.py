@@ -8,7 +8,7 @@ from ckeditor.fields import RichTextField
 from polymorphic.models import PolymorphicModel
 
 
-class Practicum(PolymorphicModel):
+class Practicum(models.Model):
     title = models.CharField(verbose_name="Название практикума *",
                              max_length=90)
     image = models.ImageField(upload_to='practicum/',

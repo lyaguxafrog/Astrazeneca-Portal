@@ -11,7 +11,7 @@ from practics.models import (Practicum, Screens, ScreenTextBlock_left,
 from polymorphic.admin import (PolymorphicInlineSupportMixin,
                                PolymorphicParentModelAdmin,
                                PolymorphicInlineModelAdmin,
-                               StackedPolymorphicInline)
+                               StackedPolymorphicInline, GenericPolymorphicInlineModelAdmin)
 
 # настройки админки в config/admin.py
 admin.site = custom_admin_site
@@ -38,7 +38,7 @@ class ScreenInline(PolymorphicInlineSupportMixin, admin.StackedInline):
     inlines = (ContentBlockAdmin, )
 
 
-class PracticumAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
+class PracticumAdmin(admin.ModelAdmin):
     inlines = (ScreenInline, )
 
 
