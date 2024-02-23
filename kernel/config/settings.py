@@ -30,7 +30,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 SITE_ID = 1
 
 INSTALLED_APPS = [
-    # 'djangocms_admin_style',
+    'djangocms_admin_style',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,12 +48,13 @@ INSTALLED_APPS = [
     'django_unused_media',
     'adminsortable2',
     'nested_admin',
-    'django.contrib.sites',
+    "polymorphic",
+    # 'django.contrib.sites',
     # 'cms',
     # 'menus',
     # 'treebeard',
     # 'sekizai',
-    "polymorphic",
+
 
     'pages',
     'users',
@@ -132,6 +133,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         'DIRS': [
             os.path.join(BASE_DIR, "frontend/dist"),
+            os.path.join(BASE_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -141,9 +143,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'django.template.context_processors.media',
-                # 'cms.context_processors.cms_settings',
-                # 'django.template.context_processors.i18n',
-                # 'sekizai.context_processors.sekizai',
             ],
         },
     },

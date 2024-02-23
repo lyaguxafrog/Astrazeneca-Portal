@@ -5,11 +5,15 @@ from ckeditor.fields import RichTextField
 from django.core.validators import FileExtensionValidator, URLValidator
 from django.core.exceptions import ValidationError
 from practics.services.url_valid import validate_relative_or_absolute_url
+from polymorphic.models import PolymorphicModel
 
-from practics.models import Screens
+class ContentBlock(PolymorphicModel):
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+                               related_name='contentblock')
+
 
 # Блоки контента слева
-class ScreenTextBlock_left(Screens):
+class ScreenTextBlock_left(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_text_block_left')
 
@@ -20,7 +24,7 @@ class ScreenTextBlock_left(Screens):
         verbose_name='блок текста слева'
         verbose_name_plural = 'блоки текста слева'
 
-class ScreenImageBlock_left(Screens):
+class ScreenImageBlock_left(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_image_block_left')
 
@@ -38,7 +42,7 @@ class ScreenImageBlock_left(Screens):
         verbose_name_plural = 'блоки изображения слева'
 
 
-class ScreenPopupBlock_left(Screens):
+class ScreenPopupBlock_left(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_popup_block_left')
 
@@ -50,7 +54,7 @@ class ScreenPopupBlock_left(Screens):
         verbose_name='блок выпадающий список слева'
         verbose_name_plural = 'блоки выпадающий список слева'
 
-class ScreenButton_left(Screens):
+class ScreenButton_left(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_button_block_left')
 
@@ -112,7 +116,7 @@ class ScreenButton_left(Screens):
 
 
 
-class ScreenTextBlock_right(Screens):
+class ScreenTextBlock_right(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_text_block_right')
 
@@ -123,7 +127,7 @@ class ScreenTextBlock_right(Screens):
         verbose_name='блок текста справа'
         verbose_name_plural = 'блоки текста справа'
 
-class ScreenImageBlock_right(Screens):
+class ScreenImageBlock_right(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_image_block_right')
 
@@ -141,7 +145,7 @@ class ScreenImageBlock_right(Screens):
         verbose_name_plural = 'блоки изображения справа'
 
 
-class ScreenPopupBlock_right(Screens):
+class ScreenPopupBlock_right(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_popup_block_right')
 
@@ -153,7 +157,7 @@ class ScreenPopupBlock_right(Screens):
         verbose_name='блок выпадающий список справа'
         verbose_name_plural = 'блоки выпадающий список справа'
 
-class ScreenButton_right(Screens):
+class ScreenButton_right(ContentBlock):
     # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
     #                            related_name='screen_button_block_right')
 

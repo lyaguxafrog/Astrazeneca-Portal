@@ -6,26 +6,40 @@ from practics.models import (Practicum, Screens, ScreenTextBlock_left,
                              ScreenTextBlock_right, ScreenImageBlock_left,
                              ScreenImageBlock_right, ScreenPopupBlock_left,
                              ScreenPopupBlock_right, ScreenButton_left,
-                             ScreenButton_right)
+                             ScreenButton_right, ContentBlock)
 
-from polymorphic.admin import PolymorphicInlineSupportMixin, PolymorphicParentModelAdmin, PolymorphicInlineModelAdmin, StackedPolymorphicInline
+from polymorphic.admin import (PolymorphicInlineSupportMixin,
+                               PolymorphicParentModelAdmin,
+                               PolymorphicInlineModelAdmin,
+                               StackedPolymorphicInline)
 
+# настройки админки в config/admin.py
 admin.site = custom_admin_site
 
 
+class ContentBlockAdmin(StackedPolymorphicInline):
 
-class ScreenAdmin(StackedPolymorphicInline):
-
-    class TextBlock_left(StackedPolymorphicInline.Child):
+    class Left_text(StackedPolymorphicInline.Child):
         model = ScreenTextBlock_left
 
+
+    class Left_image(StackedPolymorphicInline.Child):
+        model = ScreenImageBlock_left
+
+    model = ContentBlock
+    child_inlines = (
+        Left_text,
+        Left_image
+    )
+
+class ScreenInline(PolymorphicInlineSupportMixin, admin.StackedInline):
     model = Screens
-    child_inlines = {
-        TextBlock_left
-    }
+    extra = 0
+    inlines = (ContentBlockAdmin, )
+
 
 class PracticumAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
-    inlines = (ScreenAdmin,)
+    inlines = (ScreenInline, )
 
 
 admin.site.register(Practicum, PracticumAdmin)
