@@ -6,7 +6,7 @@ from practics.models import (Practicum, Screens, ScreenTextBlock_left,
                              ScreenTextBlock_right, ScreenImageBlock_left,
                              ScreenImageBlock_right, ScreenPopupBlock_left,
                              ScreenPopupBlock_right, ScreenButton_left,
-                             ScreenButton_right, ContentBlock)
+                             ScreenButton_right, ContentBlock, ScreenOption)
 
 from polymorphic.admin import (PolymorphicInlineSupportMixin,
                                PolymorphicParentModelAdmin,
@@ -17,29 +17,40 @@ from polymorphic.admin import (PolymorphicInlineSupportMixin,
 admin.site = custom_admin_site
 
 
-class ContentBlockAdmin(StackedPolymorphicInline):
+class ScreenOptionAdmin(StackedPolymorphicInline):
+    model = ScreenOption
 
-    class Left_text(StackedPolymorphicInline.Child):
-        model = ScreenTextBlock_left
+    class ScreensInline(StackedPolymorphicInline.Child):
+        model = Screens
 
 
-    class Left_image(StackedPolymorphicInline.Child):
-        model = ScreenImageBlock_left
+        class ContentBlockAdmin(StackedPolymorphicInline.Child):
 
-    model = ContentBlock
+            class Left_text(StackedPolymorphicInline.Child):
+                model = ScreenTextBlock_left
+
+
+            class Left_image(StackedPolymorphicInline.Child):
+                model = ScreenImageBlock_left
+
+            model = ContentBlock
+            child_inlines = (
+                Left_text,
+                Left_image
+            )
+
+            child_inlines = (
+                Left_text,
+            )
+
+
     child_inlines = (
-        Left_text,
-        Left_image
+        ScreensInline,
     )
-
-class ScreenInline(PolymorphicInlineSupportMixin, admin.StackedInline):
-    model = Screens
-    extra = 0
-    inlines = (ContentBlockAdmin, )
 
 
 class PracticumAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
-    inlines = (ContentBlockAdmin, )
+    inlines = (ScreenOptionAdmin, )
 
 
 admin.site.register(Practicum, PracticumAdmin)
