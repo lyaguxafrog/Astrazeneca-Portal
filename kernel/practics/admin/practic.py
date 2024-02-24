@@ -38,8 +38,8 @@ class ScreenInline(PolymorphicInlineSupportMixin, admin.StackedInline):
     inlines = (ContentBlockAdmin, )
 
 
-class PracticumAdmin(admin.ModelAdmin):
-    inlines = (ScreenInline, )
+class PracticumAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
+    inlines = (ContentBlockAdmin, )
 
 
 admin.site.register(Practicum, PracticumAdmin)

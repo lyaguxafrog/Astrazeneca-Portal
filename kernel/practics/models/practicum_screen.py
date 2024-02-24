@@ -8,7 +8,7 @@ from practics.services.url_valid import validate_relative_or_absolute_url
 from polymorphic.models import PolymorphicModel
 
 class ContentBlock(PolymorphicModel):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+    screen = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                related_name='contentblock')
 
 
