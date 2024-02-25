@@ -3,7 +3,6 @@
 from django.contrib import admin
 
 from practics.models import PrTest, AnswerButtons
-from nested_admin import (NestedModelAdmin, NestedStackedInline)
 from config.admin import custom_admin_site
 
 admin.site = custom_admin_site
