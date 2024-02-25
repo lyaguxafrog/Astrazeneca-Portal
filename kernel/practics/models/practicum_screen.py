@@ -13,9 +13,9 @@ class ContentBlock(PolymorphicModel):
 
 
 # Блоки контента слева
-class ScreenTextBlock_left(ContentBlock):
-    # screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-    #                            related_name='screen_text_block_left')
+class ScreenTextBlock_left(models.Model):
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+                               related_name='screen_text_block_left')
 
     text = RichTextField(verbose_name='текст *')
     order = models.IntegerField(default=0, verbose_name='порядковый номер *')

@@ -18,4 +18,15 @@ from polymorphic.admin import (PolymorphicInlineSupportMixin,
 admin.site = custom_admin_site
 
 
+class inline1(admin.StackedInline):
+    model = ScreenTextBlock_left
 
+class inline2(admin.StackedInline):
+    model = ScreenButton_right
+
+class ScreenAdmin(admin.ModelAdmin):
+    inlines = [inline1, inline2]
+    raw_id_fields = ('related_model',)
+
+
+admin.site.register(Screens, ScreenAdmin)

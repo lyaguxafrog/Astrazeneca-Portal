@@ -1,0 +1,20 @@
+{% load static %}
+<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/actions.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ inline_admin_formset.formset.management_form }}
+<table>
+{{ inline_admin_formset.formset.empty_form.as_table }}
+</table>
+
+<script type="text/javascript">
+    $('#id_form-0-choose_model').change(function () {
+        var chosenModel = $(this).val();
+        var addUrl = $(this).data('add-url');
+        if (chosenModel) {
+            window.location.href = addUrl.replace('_add_', chosenModel);
+        }
+    });
+</script>
