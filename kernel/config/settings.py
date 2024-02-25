@@ -46,15 +46,7 @@ INSTALLED_APPS = [
     'drf_haystack',
     'django_cleanup.apps.CleanupConfig',
     'django_unused_media',
-    'adminsortable2',
-    'nested_admin',
     "polymorphic",
-    # 'django.contrib.sites',
-    # 'cms',
-    # 'menus',
-    # 'treebeard',
-    # 'sekizai',
-
 
     'pages',
     'users',

@@ -8,12 +8,12 @@ from config.admin import custom_admin_site
 
 admin.site = custom_admin_site
 
-class ButtonsInline(NestedStackedInline):
+class ButtonsInline(admin.StackedInline):
     model = AnswerButtons
-    extra = 1
+    extra = 0
 
 
-class PrTestAdmin(NestedModelAdmin):
+class PrTestAdmin(admin.ModelAdmin):
     model = PrTest
     list_display = [
         'title',

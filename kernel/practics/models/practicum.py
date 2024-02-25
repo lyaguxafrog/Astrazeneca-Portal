@@ -59,11 +59,11 @@ class Practicum(models.Model):
     def __str__(self):
         return self.title
 
-class ScreenOption(PolymorphicModel):
+
+
+class Screens(models.Model):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
-
-class Screens(ScreenOption):
 
 
     literature = RichTextField(null=True, blank=True,
