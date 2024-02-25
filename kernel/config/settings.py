@@ -30,7 +30,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 SITE_ID = 1
 
 INSTALLED_APPS = [
-    # 'djangocms_admin_style',
+    'djangocms_admin_style',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

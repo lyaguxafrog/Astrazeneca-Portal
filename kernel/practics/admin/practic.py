@@ -11,7 +11,8 @@ from practics.models import (Practicum, Screens, ScreenTextBlock_left,
 from polymorphic.admin import (PolymorphicInlineSupportMixin,
                                PolymorphicParentModelAdmin,
                                PolymorphicInlineModelAdmin,
-                               StackedPolymorphicInline, GenericPolymorphicInlineModelAdmin)
+                               StackedPolymorphicInline,
+                               GenericPolymorphicInlineModelAdmin)
 
 # настройки админки в config/admin.py
 admin.site = custom_admin_site
