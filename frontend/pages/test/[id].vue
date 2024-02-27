@@ -178,7 +178,7 @@ const showAnswer = (index: number) => {
 
     &-left {
       width: 31.3%;
-      min-height: 310px;
+      min-height: 260px;
       margin-right: 9.3%;
       overflow: hidden;
 
