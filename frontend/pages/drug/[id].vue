@@ -109,7 +109,7 @@
                   :url-thin-x2="item.practic_mobile_560px"
                   :url-thin="item.practic_mobile_280px"
                 />
-                <p v-html="item.name" />
+                <!--                <p v-html="item.name" />-->
               </nuxt-link>
             </ItemsSlider>
           </div>
