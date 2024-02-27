@@ -36,9 +36,9 @@
             :url-thin-x2="fav.favorite_mobile_500px"
             :url-thin="fav.favorite_mobile_250px"
           />
-          <p>
+          <!--          <p>
             {{ fav.video_article }}
-          </p>
+          </p>-->
         </nuxt-link>
         <nuxt-link
           v-else-if="fav.type === ContentType.Article"
@@ -53,9 +53,9 @@
             :url-thin-x2="fav.favorite_mobile_500px"
             :url-thin="fav.favorite_mobile_250px"
           />
-          <p>
+          <!--          <p>
             {{ fav.article_name }}
-          </p>
+          </p>-->
         </nuxt-link>
         <nuxt-link
           v-else-if="fav.type === ContentType.Stories"
@@ -188,7 +188,7 @@ const showedFavourites = computed(() => {
       }
     }
 
-    &:after {
+    /*&:after {
       content: '';
       position: absolute;
       top: 0;
@@ -200,7 +200,7 @@ const showedFavourites = computed(() => {
       background-color: rgba(#000, 0.4);
 
       pointer-events: none;
-    }
+    }*/
 
     &-bg {
       position: absolute;
@@ -239,7 +239,6 @@ const showedFavourites = computed(() => {
 
         width: 120px;
         height: 120px;
-
 
         transform: translate(-50%, -50%);
 

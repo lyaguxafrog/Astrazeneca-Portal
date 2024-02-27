@@ -23,11 +23,7 @@
       #default="{ item }"
     >
       <nuxt-link class="home-test__item link" :to="`/test/${item.id}`">
-        <div
-          v-if="!$screen.mdAndDown"
-          class="home-test__item-text caption-m"
-          v-html="item.title"
-        />
+        <div v-if="!$screen.mdAndDown" class="home-test__item-text caption-m" v-html="item.title" />
         <AppImage
           class="home-test__item-img"
           :url="item.image_desktop_810px"
@@ -36,11 +32,7 @@
           :url-thin-x2="item.image_mobile_400px"
           :url-thin="item.image_mobile_800px"
         />
-        <div
-          v-if="$screen.mdAndDown"
-          class="home-test__item-text caption-m"
-          v-html="item.title"
-        />
+        <div v-if="$screen.mdAndDown" class="home-test__item-text caption-m" v-html="item.title" />
         <AppButton primary class="home-test__item-btn"> Начать </AppButton>
       </nuxt-link>
     </ItemsSlider>
@@ -48,8 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useSpecialityStore } from "~/utils/composables/store/speciality";
+import { computed } from 'vue';
+import { useSpecialityStore } from '~/utils/composables/store/speciality';
 import { useScreen } from '~/utils/composables/useScreen';
 import { useRequest } from '~/utils/composables/useRequest';
 import { TestPracticum } from '~/pages/test/[id].vue';
@@ -66,8 +58,8 @@ const res = await useRequest<TestPracticum[]>('/practicum_tests', {
 const content = computed(() => {
   if (res.data) {
     return {
-      data: res.data.filter((p) => p.speciality.includes(specialityId.value))
-    }
+      data: res.data.filter((p) => p.speciality.includes(specialityId.value)),
+    };
   }
 
   return {
@@ -106,7 +98,7 @@ const content = computed(() => {
 
     &-text {
       margin-bottom: 40px;
-      @include ellipsis(3);
+      // @include ellipsis(3);
     }
 
     &-btn {
@@ -168,7 +160,6 @@ const content = computed(() => {
     }
 
     &__item {
-
       &-img {
         margin-top: 0;
       }

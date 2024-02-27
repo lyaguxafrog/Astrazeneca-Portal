@@ -1,7 +1,7 @@
 <template>
-  <div :class="{stop: stopSwipe}" class="histories__wrapper">
+  <div :class="{ stop: stopSwipe }" class="histories__wrapper">
     <InsidePageHead v-if="!$screen.mdAndDown" class="histories__back" />
-    <div v-if="histories.length" class="histories" >
+    <div v-if="histories.length" class="histories">
       <Swiper
         ref="historiesEl"
         class="histories__swiper"
@@ -13,22 +13,27 @@
         :modules="[Pagination, Navigation]"
         :pagination="{ clickable: true }"
         :navigation="{
-        nextEl: nextRef,
-        prevEl: prevRef,
-      }"
+          nextEl: nextRef,
+          prevEl: prevRef,
+        }"
         :initial-slide="activeHistoryIndex"
         :breakpoints="{
-        1200: {
-          slidesPerView: 3
-        },
-        992: {
-          slidesPerView: 2
-        }
-      }"
+          /*1200: {
+            slidesPerView: 3,
+          },*/
+          992: {
+            slidesPerView: 3,
+          },
+        }"
         @swiper="onSwiper"
         @slide-change="onSlideChange"
       >
-        <SwiperSlide v-for="(history, index) in histories" :key="history.id" class="history" :class="{isMounted}">
+        <SwiperSlide
+          v-for="(history, index) in histories"
+          :key="history.id"
+          class="history"
+          :class="{ isMounted }"
+        >
           <AppImage
             class="history__bg"
             :url="history.cover_image"
@@ -41,12 +46,24 @@
             ref="videosRef"
             playsinline
             :muted="muted"
-            :src="activeHistoryIndex === index || activeHistoryIndex-1 === index || activeHistoryIndex+1 === index ? `${baseUrl}${history.video}` : ''"
-            :class="{active: activeHistoryIndex === index}"
+            :src="
+              activeHistoryIndex === index ||
+              activeHistoryIndex - 1 === index ||
+              activeHistoryIndex + 1 === index
+                ? `${baseUrl}${history.video}`
+                : ''
+            "
+            :class="{ active: activeHistoryIndex === index }"
             @touchend="onVideoTouchEnd"
             @ended="onVideoStop"
           />
-          <AppButton v-if="!$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
+          <AppButton
+            v-if="!$screen.mdAndDown"
+            mode="icon"
+            class="history__volume"
+            petite
+            @click="toggleVolume"
+          >
             <AppIcon
               :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
               :size="$screen.mdAndDown ? 30 : 48"
@@ -62,7 +79,13 @@
           :content-type="ContentType.Stories"
           :content-id="activeHistory.id"
         />
-        <AppButton v-if="$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
+        <AppButton
+          v-if="$screen.mdAndDown"
+          mode="icon"
+          class="history__volume"
+          petite
+          @click="toggleVolume"
+        >
           <AppIcon
             :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
             :size="$screen.mdAndDown ? 30 : 48"
@@ -102,7 +125,7 @@ import { useBack } from '~/utils/composables/useHistory';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { ContentType } from '~/utils/types';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
-import { useAuth } from "~/utils/composables/useAuth";
+import { useAuth } from '~/utils/composables/useAuth';
 
 const { histories, getHistories, viewStory } = useHistoriesStore();
 const { baseUrl } = useRuntimeConfig().public;
@@ -232,7 +255,7 @@ onMounted(() => {
   @include z-index(2);
 
   width: 100%;
-  max-width: 1330px;
+  max-width: 144vh;
   margin: 0 auto;
 
   &__wrapper {
@@ -342,7 +365,7 @@ onMounted(() => {
 
   .swiper-button {
     position: absolute;
-    top: 354px;
+    top: 43vh;
     left: 27%;
 
     cursor: pointer;
@@ -353,18 +376,18 @@ onMounted(() => {
       left: auto;
     }
 
-    @include lg-and-down {
+    /*@include lg-and-down {
       left: 16%;
       &.next {
         right: 16%;
       }
-    }
+    }*/
   }
 
   &::v-deep {
     .swiper {
       &-pagination {
-        top: 24px;
+        top: 2.8vh;
         bottom: auto;
         left: 50%;
 
