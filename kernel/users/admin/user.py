@@ -21,4 +21,4 @@ class CustomUserAdmin(UserAdmin):
 
 # Регистрируем модели в административной панели
 # admin.site.unregister(User)
-# admin.site.register(User, CustomUserAdmin)
+admin.site.register(User, CustomUserAdmin)
