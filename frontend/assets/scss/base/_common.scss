@@ -58,6 +58,10 @@ a {
   }
 }
 
+.swiper {
+  user-select: none;
+}
+
 .swiper-button {
   color: $primary-color;
 
