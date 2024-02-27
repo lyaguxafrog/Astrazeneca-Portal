@@ -20,5 +20,5 @@ class CustomUserAdmin(UserAdmin):
     inlines = (UserProfileInline, )
 
 # Регистрируем модели в административной панели
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
+# admin.site.unregister(User)
+# admin.site.register(User, CustomUserAdmin)
