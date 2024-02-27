@@ -27,9 +27,9 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', csrf_exempt(include('pages.urls'))),
-    path('api/', csrf_exempt(include('practics.urls'))),
-    path('api/', csrf_exempt(include('users.urls'))),
+    path('api/', include('pages.urls')),
+    path('api/', include('practics.urls')),
+    path('api/', include('users.urls')),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('author', RedirectView.as_view(url='https://github.com/lyaguxafrog'), name='github-redirect'),
     path('', TemplateView.as_view(template_name='index.html'), name='frontend'),
@@ -42,6 +42,6 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 from config.settings import DOCS
 if DOCS:
     urlpatterns += [
-        path('swagger/', csrf_exempt(schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui')),
-        path('redoc/', csrf_exempt(schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')),
+        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
         ]
