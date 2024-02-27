@@ -79,7 +79,7 @@ class Screens(models.Model):
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
-        ordering = ['order']
+        ordering = ['id']
 
     def __str__(self):
 
