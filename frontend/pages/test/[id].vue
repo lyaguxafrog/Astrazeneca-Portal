@@ -176,6 +176,7 @@ const showAnswer = (index: number) => {
 
     &-left {
       width: 31.3%;
+      min-height: 310px;
       margin-right: 9.3%;
       overflow: hidden;
 
@@ -272,6 +273,7 @@ const showAnswer = (index: number) => {
 
       &-left {
         width: 100%;
+        min-height: 220px;
         margin: 0;
 
         border-radius: 20px;
