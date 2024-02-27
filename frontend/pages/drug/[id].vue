@@ -79,7 +79,7 @@
                       :url-thin-x2="item.practic_mobile_560px"
                       :url-thin="item.practic_mobile_280px"
                     />
-                    <p>{{ item.name }}</p>
+                    <!--                    <p>{{ item.name }}</p>-->
                   </nuxt-link>
                 </SwiperSlide>
               </Swiper>
@@ -309,7 +309,7 @@ const openProps = (item: DrugFaq) => {
       );
       border-radius: 40px;
 
-      &:after {
+      /*&:after {
         content: '';
         position: absolute;
         top: 0;
@@ -319,7 +319,7 @@ const openProps = (item: DrugFaq) => {
         z-index: 1;
 
         background-color: rgba(#000, 0.4);
-      }
+      }*/
 
       &-bg {
         position: absolute;

@@ -145,13 +145,6 @@ defineExpose({
     }
   }
 
-  @include only-mobile-safari {
-    :deep(.swiper-pagination-bullet) {
-      transform: translate3d(0,0,0);
-      will-change: left;
-    }
-  }
-
   &__slide {
     position: relative;
 
@@ -224,6 +217,13 @@ defineExpose({
   @include md-and-down {
     :slotted(img) {
       border-radius: 20px;
+    }
+
+    .isSafari & {
+      :deep(.swiper-pagination-bullet) {
+        transform: translate3d(0, 0, 0);
+        will-change: left;
+      }
     }
 
     &::v-deep {
