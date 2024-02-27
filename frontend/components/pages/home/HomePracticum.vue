@@ -113,7 +113,7 @@ const onSlideChange = () => {
     if (swiper.value) {
       activeSlideIndex.value = swiper.value.realIndex;
     }
-  }, 200);
+  }, 300);
 };
 </script>
 
@@ -141,6 +141,8 @@ const onSlideChange = () => {
   }
 
   &__subtitle {
+    max-width: 830px;
+    height: 70px;
     margin-top: 13px;
     padding: 0 95px;
 
@@ -225,6 +227,7 @@ const onSlideChange = () => {
     }
 
     &__subtitle {
+      height: 44px;
       margin-top: -2px;
       padding: 0 27px;
 
