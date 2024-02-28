@@ -178,7 +178,7 @@ const { direction } = useSwipe(historiesEl, {
 watch(
   () => $route.query.historyId,
   (newValue) => {
-    if (newValue) {
+    if (newValue && activeHistoryIndex.value !== undefined) {
       swiper.value?.slideTo(activeHistoryIndex.value);
     }
   }
@@ -210,7 +210,9 @@ const onVideoTouchEnd = () => {
 };
 
 const onVideoStop = () => {
-  swiper.value?.slideTo(activeHistoryIndex.value + 1);
+  if (activeHistoryIndex.value !== undefined) {
+    swiper.value?.slideTo(activeHistoryIndex.value + 1);
+  }
 };
 
 const startActiveVideo = () => {
