@@ -38,10 +38,13 @@ const handleScroll = (event: TouchEvent, targetElement: any): boolean => {
   return true;
 };
 
+let disabledCount = 0;
+
 export function disableScroll(
   targetElement: HTMLElement | undefined = undefined,
   isMobile?: boolean
 ) {
+  disabledCount++;
   document.documentElement.style.overflow = 'hidden';
 
   // TODO: обработать скролл двумя пальцами
@@ -69,6 +72,16 @@ export function enableScroll(
   targetElement: HTMLElement | undefined = undefined,
   isMobile?: boolean
 ) {
+  if (disabledCount <= 0) {
+    disabledCount = 0;
+  } else {
+    disabledCount--;
+  }
+  console.log(disabledCount);
+  if (disabledCount !== 0) {
+    return;
+  }
+
   document.documentElement.style.overflow = 'initial';
 
   if (isMobile && targetElement) {
