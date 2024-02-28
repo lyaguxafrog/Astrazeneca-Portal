@@ -19,7 +19,7 @@ from users.serializers import UserProfileSerializer
 from decouple import config
 
 SECRET_KEY = config("SECRET_KEY")  # Замените на ваш секретный ключ
-SSO_URL = config("OUR_DOMAIN")
+SSO_URL = config("SSO_URL")
 source = config("OUR_DOMAIN")
 next_url = config("OUR_DOMAIN")
 
