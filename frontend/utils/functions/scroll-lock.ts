@@ -77,7 +77,7 @@ export function enableScroll(
   } else {
     disabledCount--;
   }
-  console.log(disabledCount);
+
   if (disabledCount !== 0) {
     return;
   }
