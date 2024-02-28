@@ -95,13 +95,17 @@ watch(
 
   &.extends {
     margin-bottom: 150vh;
+
+    .default-header__content {
+      pointer-events: all;
+    }
   }
 
   &__content {
     height: 100vh;
     overflow-x: hidden !important;
 
-    // pointer-events: none;
+    pointer-events: none;
     @include scrollbar($body-scrollbar-width);
 
     & > * {
