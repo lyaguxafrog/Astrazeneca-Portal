@@ -12,7 +12,7 @@
       :size="$screen.mdAndDown ? 306 : 1000"
     />
 
-    <div class="home-practicum__title h2">практикум</div>
+    <div class="home-practicum__title h2">практикум*</div>
     <div class="home-practicum__subtitle">{{ content.data[activeSlideIndex].title }}</div>
 
     <div class="home-practicum__slider">
