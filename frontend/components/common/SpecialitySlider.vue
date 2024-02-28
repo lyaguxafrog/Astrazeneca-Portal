@@ -65,6 +65,8 @@ const prevRef = ref(null);
 
 <style lang="scss" scoped>
 .speciality-slider {
+  position: relative;
+
   padding: 36px 0 50px;
 
   &__wrapper {
