@@ -14,7 +14,7 @@
     />
     <div class="practicum__container">
       <div class="practicum__left">
-        <div class="practicum__title h2">практикум</div>
+        <div class="practicum__title h2">практикум*</div>
         <AppIcon
           class="practicum__info-ico"
           :name="IconName.Info"
@@ -63,8 +63,11 @@
       </div>
 
       <div class="practicum__right">
-        <div v-if="activeScreenIndex === 0" class="practicum__info" v-html="content.data.pacient_description">
-        </div>
+        <div
+          v-if="activeScreenIndex === 0"
+          class="practicum__info"
+          v-html="content.data.pacient_description"
+        ></div>
         <template v-for="item in rightContent">
           <div v-if="item.type === 'text'" class="practicum__text" v-html="item.text"></div>
 
@@ -118,11 +121,14 @@
     </div>
   </div>
   <DiscoverModal />
-  <InfoModal :literature="activeScreen.literature" :description="activeScreen.leterature_approvals_and_decodings" />
+  <InfoModal
+    :literature="activeScreen.literature"
+    :description="activeScreen.leterature_approvals_and_decodings"
+  />
 </template>
 
 <script lang="ts" setup>
-import {computed, toRef, ref} from 'vue';
+import { computed, toRef, ref } from 'vue';
 import { useRoute } from '#app';
 import { useScreen } from '~/utils/composables/useScreen';
 import { IconName } from '~/components/app/AppIcon.utils';
@@ -150,27 +156,39 @@ const content = await useRequest<Practicum>(`/practicum/${$route.params.id}`, {
 const prevScreenIndexes = ref<number[]>([]);
 const activeScreenIndex = ref(0);
 const activeScreen = toRef(() => {
-  const s = {...content.data?.screens[activeScreenIndex.value]} as Screen;
+  const s = { ...content.data?.screens[activeScreenIndex.value] } as Screen;
 
   if (!s) {
     return undefined;
   }
 
-  s.screen_button_block_left = s.screen_button_block_left.map((i) => ({...i, type: 'button'}));
-  s.screen_text_block_left = s.screen_text_block_left.map((i) => ({...i, type: 'text'}));
-  s.screen_image_block_left = s.screen_image_block_left.map((i) => ({...i, type: 'img'}));
-  s.screen_popup_block_left = s.screen_popup_block_left.map((i) => ({...i, type: 'drop', items: [{
-      title: i.menu_title,
-      text: i.text,
-    }]}));
+  s.screen_button_block_left = s.screen_button_block_left.map((i) => ({ ...i, type: 'button' }));
+  s.screen_text_block_left = s.screen_text_block_left.map((i) => ({ ...i, type: 'text' }));
+  s.screen_image_block_left = s.screen_image_block_left.map((i) => ({ ...i, type: 'img' }));
+  s.screen_popup_block_left = s.screen_popup_block_left.map((i) => ({
+    ...i,
+    type: 'drop',
+    items: [
+      {
+        title: i.menu_title,
+        text: i.text,
+      },
+    ],
+  }));
 
-  s.screen_button_block_right = s.screen_button_block_right.map((i) => ({...i, type: 'button'}));
-  s.screen_text_block_right = s.screen_text_block_right.map((i) => ({...i, type: 'text'}));
-  s.screen_image_block_right = s.screen_image_block_right.map((i) => ({...i, type: 'img'}));
-  s.screen_popup_block_right = s.screen_popup_block_right.map((i) => ({...i, type: 'drop', items: [{
-    title: i.menu_title,
-      text: i.text,
-    }]}));
+  s.screen_button_block_right = s.screen_button_block_right.map((i) => ({ ...i, type: 'button' }));
+  s.screen_text_block_right = s.screen_text_block_right.map((i) => ({ ...i, type: 'text' }));
+  s.screen_image_block_right = s.screen_image_block_right.map((i) => ({ ...i, type: 'img' }));
+  s.screen_popup_block_right = s.screen_popup_block_right.map((i) => ({
+    ...i,
+    type: 'drop',
+    items: [
+      {
+        title: i.menu_title,
+        text: i.text,
+      },
+    ],
+  }));
 
   return s;
 });
@@ -182,7 +200,12 @@ const leftContent = computed(() => {
 
   const screen = activeScreen.value;
 
-  const content = [...screen.screen_button_block_left, ...screen.screen_text_block_left, ...screen.screen_popup_block_left, ...screen.screen_image_block_left];
+  const content = [
+    ...screen.screen_button_block_left,
+    ...screen.screen_text_block_left,
+    ...screen.screen_popup_block_left,
+    ...screen.screen_image_block_left,
+  ];
 
   return content.sort((c1, c2) => c1.order - c2.order);
 });
@@ -194,7 +217,12 @@ const rightContent = computed(() => {
 
   const screen = activeScreen.value;
 
-  const content = [...screen.screen_text_block_right, ...screen.screen_popup_block_right, ...screen.screen_button_block_right, ...screen.screen_image_block_right];
+  const content = [
+    ...screen.screen_text_block_right,
+    ...screen.screen_popup_block_right,
+    ...screen.screen_button_block_right,
+    ...screen.screen_image_block_right,
+  ];
 
   return content.sort((c1, c2) => c1.order - c2.order);
 });
@@ -219,7 +247,7 @@ const onBtnClick = (btn: Btn) => {
     window.scrollTo({
       top: top,
       behavior: 'smooth',
-    })
+    });
     return;
   }
 
@@ -275,10 +303,10 @@ type DropBlock = {
 };
 
 type Screen = {
-  id: number,
-  approvals_and_decodings: string,
-  leterature_approvals_and_decodings: string,
-  literature: string,
+  id: number;
+  approvals_and_decodings: string;
+  leterature_approvals_and_decodings: string;
+  literature: string;
 
   screen_button_block_left: Btn[];
   screen_text_block_left: TextBlock[];
@@ -352,7 +380,7 @@ type Practicum = {
     :deep(img) {
       width: 100%;
       margin: 33px auto 9px;
-      @include aspect(643, 690)
+      @include aspect(643, 690);
     }
   }
 
@@ -419,7 +447,8 @@ type Practicum = {
     @include line-height(26, 34);
     font-weight: 300;
 
-    :deep(b), :deep(strong){
+    :deep(b),
+    :deep(strong) {
       font-weight: 700;
     }
   }
@@ -487,14 +516,14 @@ type Practicum = {
       &::v-deep {
         h3 {
           font-size: 15px;
-          @include line-height(15,20);
+          @include line-height(15, 20);
         }
 
         h4 {
           margin-bottom: 19px;
 
           font-size: 19px;
-          @include line-height(19,17);
+          @include line-height(19, 17);
         }
       }
     }
@@ -530,7 +559,7 @@ type Practicum = {
       margin: 0;
 
       font-size: 14px;
-      @include line-height(14,18);
+      @include line-height(14, 18);
     }
 
     &__subtitle {
@@ -539,7 +568,7 @@ type Practicum = {
 
       font-family: $secondary-font-family;
       font-size: 15px;
-      @include line-height(15,20);
+      @include line-height(15, 20);
       font-weight: 300;
     }
 
@@ -548,7 +577,7 @@ type Practicum = {
       margin-bottom: 10px;
 
       font-size: 9px;
-      @include line-height(9,10);
+      @include line-height(9, 10);
     }
   }
 }
