@@ -265,6 +265,9 @@ onMounted(() => {
   }
 
   &__back {
+    position: relative;
+    @include z-index(4);
+
     height: 0;
     min-height: 0;
     margin-bottom: -19px;

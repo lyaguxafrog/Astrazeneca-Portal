@@ -1,5 +1,5 @@
 <template>
-  <div class="default-header" :class="{ extends: isExtendsHeader || activeSlideId }">
+  <div class="default-header" :class="{ extends: isExtendsHeader || hasActiveSlideId }">
     <div ref="scrollHeaderEl" class="default-header__content">
       <div class="default-header__main" :class="{ min: !isExtendsHeader }">
         <div class="default-header__first-row">
@@ -30,7 +30,7 @@
       </div>
 
       <transition mode="out-in">
-        <DefaultHistories v-if="activeSlideId" key="2" />
+        <DefaultHistories v-if="hasActiveSlideId" key="2" />
 
         <div v-else-if="isExtendsHeader" key="1" class="default-header__modal">
           <div class="default-header__specialities">
@@ -62,7 +62,7 @@ const { specialityId } = useSpecialityStore();
 
 const isExtendsHeader = toRef(() => !specialityId.value && !$route.query.historyId);
 
-const activeSlideId = toRef(() => +($route.query.historyId || 0));
+const hasActiveSlideId = toRef(() => !!$route.query.historyId);
 
 const searchEl = ref();
 const scrollHeaderEl = ref();
@@ -72,10 +72,11 @@ const openSearch = () => {
 };
 
 watch(
-  [isExtendsHeader, activeSlideId],
+  [isExtendsHeader, hasActiveSlideId],
   (newValue) => {
     if (newValue.find((v) => !!v)) {
       disableScroll(scrollHeaderEl.value, $screen.value.mdAndDown);
+      window.scrollTo({ top: 0 });
     } else {
       enableScroll(scrollHeaderEl.value, $screen.value.mdAndDown);
     }
@@ -95,13 +96,17 @@ watch(
 
   &.extends {
     margin-bottom: 150vh;
+
+    .default-header__content {
+      pointer-events: all;
+    }
   }
 
   &__content {
     height: 100vh;
     overflow-x: hidden !important;
 
-    // pointer-events: none;
+    pointer-events: none;
     @include scrollbar($body-scrollbar-width);
 
     & > * {
