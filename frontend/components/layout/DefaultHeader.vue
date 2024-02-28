@@ -101,7 +101,7 @@ watch(
     height: 100vh;
     overflow-x: hidden !important;
 
-    pointer-events: none;
+    // pointer-events: none;
     @include scrollbar($body-scrollbar-width);
 
     & > * {
@@ -118,7 +118,7 @@ watch(
     padding-left: 70px;
 
     background-color: $main-bg-color;
-    box-shadow: 0 4px 94px 0 rgba(0,0,0, 0.45);
+    box-shadow: 0 4px 94px 0 rgba(0, 0, 0, 0.45);
 
     &.min {
       padding-bottom: 20px;
