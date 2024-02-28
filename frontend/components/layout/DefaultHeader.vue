@@ -76,6 +76,7 @@ watch(
   (newValue) => {
     if (newValue.find((v) => !!v)) {
       disableScroll(scrollHeaderEl.value, $screen.value.mdAndDown);
+      window.scrollTo({ top: 0 });
     } else {
       enableScroll(scrollHeaderEl.value, $screen.value.mdAndDown);
     }
