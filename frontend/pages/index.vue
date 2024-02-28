@@ -89,10 +89,12 @@ watch(
       return;
     }
 
+    const scrollEl = document.querySelector('.default-header__content') as HTMLElement;
+
     if (newValue) {
-      enableScroll();
+      enableScroll(scrollEl, $screen.value.mdAndDown);
     } else {
-      disableScroll();
+      disableScroll(scrollEl, $screen.value.mdAndDown);
     }
   },
   {
