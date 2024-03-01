@@ -10,12 +10,14 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "@taoqf/quill-image-resize-module": "^3.0.1",
+    "@vueuse/core": "^10.9.0",
     "core-js": "^3.8.3",
     "quill": "2.0.0-rc.2",
     "quill-better-table": "^1.2.10",
     "sass": "^1.71.1",
     "vue": "^3.2.13",
     "vue-router": "4",
+    "vue-use": "^0.2.0",
     "vuetify": "^3.5.6"
   },
   "devDependencies": {
@@ -55,7 +57,8 @@
       "vue/multi-word-component-names": "off",
       "import/prefer-default-export": "off",
       "@typescript-eslint/ban-ts-comment": "off",
-      "comma-dangle": "off"
+      "comma-dangle": "off",
+      "object-curly-newline": "off"
     }
   },
   "browserslist": [

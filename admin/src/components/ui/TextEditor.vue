@@ -1,15 +1,40 @@
 <template>
-  <div id="editor"></div>
+  <div class="mb-1">
+    <div class="mb-1" :class="{ 'text-red-darken-4': hasError, 'text-medium-emphasis': !hasError }">
+      {{ title }}
+    </div>
+    <div ref="editorRef"></div>
+    <div class="error">
+      <transition name="fade-up">
+        <div v-if="hasError" class="text-caption text-red-darken-4 pl-3">
+          {{ rules[0] }}
+        </div>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, defineProps, ref, toRef } from 'vue';
+import { useVModel } from '@vueuse/core';
 import Quill from 'quill';
 import QuillResize from '@taoqf/quill-image-resize-module';
 import QuillBetterTable from 'quill-better-table';
 import 'quill-better-table/dist/quill-better-table.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.core.css';
+
+const props = defineProps<{
+  modelValue: string;
+  title: string;
+  rules?: [string | true];
+}>();
+
+const editorValue = useVModel(props, 'modelValue');
+
+const editorRef = ref();
+
+const hasError = toRef(() => props.rules && typeof props.rules[0] === 'string');
 
 // @ts-ignore
 Quill.register('modules/resize', QuillResize);
@@ -73,7 +98,7 @@ const insertTableHandler = () => {
 };
 
 const initQuill = () => {
-  quill = new Quill('#editor', {
+  quill = new Quill(editorRef.value, {
     placeholder: '',
     theme: 'snow',
     modules: {
@@ -105,6 +130,21 @@ const initQuill = () => {
       }
     }
   });
+
+  if (quill) {
+    quill.clipboard.dangerouslyPasteHTML(props.modelValue);
+  }
+
+  quill.on(Quill.events.TEXT_CHANGE, () => {
+    if (quill) {
+      editorValue.value = quill.root.innerHTML;
+      setTimeout(() => {
+        if (editorValue.value === '<p><br></p>') {
+          editorValue.value = '';
+        }
+      });
+    }
+  });
 };
 
 onMounted(() => {
@@ -112,4 +152,9 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.error {
+  min-height: 20px;
+  overflow: hidden;
+}
+</style>

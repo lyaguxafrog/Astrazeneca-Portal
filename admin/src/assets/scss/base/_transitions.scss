@@ -1,0 +1,37 @@
+/*    page animation    */
+.v {
+    &-enter-active,
+    &-leave-active {
+        transition: opacity $tr-dur;
+    }
+
+    &-enter-from,
+    &-leave-to {
+        opacity: 0;
+    }
+}
+
+.fade-up {
+    &-enter-active,
+    &-leave-active {
+        transition: $tr-dur !important;
+    }
+
+    &-enter-from,
+    &-leave-to {
+        transform: translate3d(0, -150%, 0);
+        opacity: 0;
+    }
+}
+.fade-down {
+    &-enter-active,
+    &-leave-active {
+        transition: $tr-dur;
+    }
+
+    &-enter-from,
+    &-leave-to {
+        transform: translate3d(0, 100%, 0);
+        opacity: 0;
+    }
+}
