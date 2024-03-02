@@ -75,6 +75,9 @@ class DrugFAQ(models.Model):
     approvals_and_decodings = RichTextField(verbose_name="Расшифровки и номера одобрения", null=True, blank=True)
     order = models.PositiveBigIntegerField(verbose_name='Порядковый номер *')
 
+    class Meta:
+        ordering = ['order']
+
 class Icon(models.Model):
     IMAGE_TYPES = (
         ('image', 'Image'),

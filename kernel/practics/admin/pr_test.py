@@ -3,16 +3,17 @@
 from django.contrib import admin
 
 from practics.models import PrTest, AnswerButtons
+from nested_admin import (NestedModelAdmin, NestedStackedInline)
 from config.admin import custom_admin_site
 
 admin.site = custom_admin_site
 
-class ButtonsInline(admin.StackedInline):
+class ButtonsInline(NestedStackedInline):
     model = AnswerButtons
-    extra = 0
+    extra = 1
 
 
-class PrTestAdmin(admin.ModelAdmin):
+class PrTestAdmin(NestedModelAdmin):
     model = PrTest
     list_display = [
         'title',

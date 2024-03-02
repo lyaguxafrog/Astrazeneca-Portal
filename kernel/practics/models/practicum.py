@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from tabnanny import verbose
 from django.db import models
-
 from django.core.validators import MinValueValidator, MaxValueValidator
-
 from ckeditor.fields import RichTextField
-from polymorphic.models import PolymorphicModel
 
 
 class Practicum(models.Model):
@@ -55,6 +53,7 @@ class Practicum(models.Model):
     class Meta:
         verbose_name='практикум'
         verbose_name_plural = 'практикумы'
+        ordering = ['id']
 
     def __str__(self):
         return self.title
@@ -65,7 +64,6 @@ class Screens(models.Model):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
 
-
     literature = RichTextField(null=True, blank=True,
                                verbose_name='список литературы')
 
@@ -75,7 +73,14 @@ class Screens(models.Model):
     approvals_and_decodings = RichTextField(null=True, blank=True,
                             verbose_name='Номер одобрения и расшифровка')
 
-
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
+        ordering = ['id']
+
+    def __str__(self):
+        screens_list = list(self.practicum.screens.all())
+        if self in screens_list:
+            return str(screens_list.index(self) +  1)
+        else:
+            return "Объект не найден в списке"

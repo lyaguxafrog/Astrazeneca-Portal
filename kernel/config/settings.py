@@ -14,8 +14,6 @@ DOCS = (os.getenv('DOCS_FLAG') == 'True')
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
-    CSRF_COOKIE_SECURE = False
-    CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
 else:
     ALLOWED_HOSTS = [os.getenv("OUR_DOMAIN"),
                      f'{os.getenv("OUR_DOMAIN")}:8000',
@@ -24,14 +22,12 @@ else:
 
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
+    # CSRF_COOKIE_DOMAIN = f'https://{os.getenv("OUR_DOMAIN")}'
     CSRF_TRUSTED_ORIGINS = [f'https://{os.getenv("OUR_DOMAIN")}']
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
-SITE_ID = 1
-
 INSTALLED_APPS = [
-    'djangocms_admin_style',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -47,7 +43,8 @@ INSTALLED_APPS = [
     'drf_haystack',
     'django_cleanup.apps.CleanupConfig',
     'django_unused_media',
-    "polymorphic",
+    'adminsortable2',
+    'nested_admin',
 
     'pages',
     'users',
@@ -98,18 +95,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "pages.services.range_response.RangeHeaderMiddleware",
-    # 'cms.middleware.user.CurrentUserMiddleware',
-    # 'cms.middleware.page.CurrentPageMiddleware',
-    # 'cms.middleware.toolbar.ToolbarMiddleware',
-    # 'cms.middleware.language.LanguageCookieMiddleware',
-    # 'cms.middleware.user.CurrentUserMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    ]
+    "pages.services.range_response.RangeHeaderMiddleware"
+]
 
 ROOT_URLCONF = "config.urls"
 
-X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -126,7 +116,6 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         'DIRS': [
             os.path.join(BASE_DIR, "frontend/dist"),
-            os.path.join(BASE_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -180,11 +169,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGES = [
-    ('ru', 'Russian'),
-]
-
-LANGUAGE_CODE = "ru"
+LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "Europe/Moscow"
 
@@ -211,5 +196,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_URLS_REGEX = r'^/swagger(?P<url>.*)$'
-
-CMS_CONFIRM_VERSION4 = True
