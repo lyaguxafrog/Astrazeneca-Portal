@@ -10,11 +10,17 @@
           class="mb-2"
           :rules="[required(practicum.title)]"
         />
-        <v-file-input label="Изображение*" class="mb-2" variant="solo-filled" />
+        <v-file-input
+          v-model="practicum.image"
+          label="Изображение*"
+          class="mb-2"
+          variant="solo-filled"
+        />
 
         <TextEditor
           v-model="practicum.description"
-          :rules="isDirty ? [required(practicum.description)] : []"
+          :validated="isDirty"
+          :rules="[required(practicum.description)]"
           title="Описание*"
         />
         <TextEditor v-model="practicum.patientInfo" title="Краткая информация о пациенте*" />
@@ -34,22 +40,34 @@
 
       <v-btn type="submit" class="bg-blue"> Добавить экран </v-btn>
     </div>
+
+    <v-card class="mb-3 pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
+      <template v-slot:title> Экран №1 </template>
+      <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
+        <div class="mr-4 text-body-2 text-grey-darken-1">
+          <b>23.06.2020</b>
+          <p>Дата редактирования</p>
+        </div>
+        <div class="d-flex">
+          <v-btn icon="mdi-invoice-edit-outline" class="mr-2" :to="`/practicum/0/screen/0`" />
+          <v-btn icon="mdi-delete-empty" class="bg-red" />
+        </div>
+      </div>
+    </v-card>
+    <v-card class="mb-3" prepend-icon="mdi-invoice-list-outline" elevation="6">
+      <template v-slot:title> Экран №1 </template>
+    </v-card>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { required } from '@/utils/validation';
-import TextEditor from '@/components/ui/TextEditor.vue';
+import { usePracticumStore } from '@/store/practicum';
+import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
 
-const practicum = ref({
-  title: '',
-  description: '',
-  patientInfo:
-    '<p><strong style="color: rgb(0, 209, 255);">Имя:</strong></p><p><strong style="color: rgb(0, 209, 255);">Возраст:</strong></p><p><strong style="color: rgb(0, 209, 255);">Образ жизни:</strong></p><p><strong style="color: rgb(0, 209, 255);">Семейный анамнез:</strong></p><p><strong style="color: rgb(0, 209, 255);">Перенесенные заболевания:</strong></p><p><strong style="color: rgb(0, 209, 255);">Оценка состояния:</strong></p><p><strong style="color: rgb(0, 209, 255);">Диагноз:</strong></p>',
-  speciality: []
-});
+const { editablePracticum: practicum } = usePracticumStore();
 
 const isDirty = ref(false);
 const onValidate = () => {

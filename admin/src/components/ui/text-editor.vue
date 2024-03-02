@@ -28,13 +28,14 @@ const props = defineProps<{
   modelValue: string;
   title: string;
   rules?: [string | true];
+  validated?: boolean;
 }>();
 
 const editorValue = useVModel(props, 'modelValue');
 
 const editorRef = ref();
 
-const hasError = toRef(() => props.rules && typeof props.rules[0] === 'string');
+const hasError = toRef(() => props.validated && props.rules && typeof props.rules[0] === 'string');
 
 // @ts-ignore
 Quill.register('modules/resize', QuillResize);
