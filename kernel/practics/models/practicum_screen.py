@@ -94,7 +94,6 @@ class ScreenButton(models.Model):
         verbose_name='блок кнопки слева'
         verbose_name_plural = 'блоки кнопок слева'
 
-
     # def clean(self):
     #     if not (self.url or self.pdf_file or self.screen_number):
     #         raise ValidationError('Необходимо заполнить хотя бы одно из полей: "Номер экрана", "Ссылка" или "PDF-файл"')
