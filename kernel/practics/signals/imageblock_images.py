@@ -29,7 +29,7 @@ target_width_400 = 400
 target_width_800 = 800
 
 @receiver(post_save, sender=ScreenImageBlock)
-def process_imageeblock_left(sender, instance, **kwargs):
+def process_imageeblock(sender, instance, **kwargs):
     if instance.image:
         file_path = instance.image.path
 

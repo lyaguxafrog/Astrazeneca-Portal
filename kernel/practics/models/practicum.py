@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from tabnanny import verbose
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from ckeditor.fields import RichTextField
