@@ -2,11 +2,10 @@
   <v-container class="ma-0 pt-3 pb-3">
     <div class="v-col-5">
       <Title>Создание практикума</Title>
-      <v-form validate-on="input" @submit.prevent="onValidate">
+      <v-form v-model="isValid" validate-on="input" @submit.prevent="onValidate">
         <v-text-field
           v-model="practicum.title"
           label="Название практикума*"
-          variant="solo-filled"
           class="mb-2"
           :rules="[required(practicum.title)]"
         />
@@ -14,7 +13,7 @@
           v-model="practicum.image"
           label="Изображение*"
           class="mb-2"
-          variant="solo-filled"
+          :rules="[required(practicum.image)]"
         />
 
         <TextEditor
@@ -30,19 +29,33 @@
           chips
           label="Специальность*"
           :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+          :rules="[required(practicum.speciality)]"
           multiple
         />
 
-        <v-btn type="submit"> Сохранить </v-btn>
+        <v-btn type="submit" class="mt-2"> Сохранить </v-btn>
       </v-form>
 
       <Title class="mt-5">Экраны</Title>
 
-      <v-btn type="submit" class="bg-blue"> Добавить экран </v-btn>
+      <v-btn
+        type="submit"
+        class="bg-blue"
+        :disabled="practicum.id === 0"
+        :to="`/practicum/${practicum.id}/screen/0`"
+      >
+        Добавить экран
+      </v-btn>
     </div>
 
-    <v-card class="mb-3 pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
-      <template v-slot:title> Экран №1 </template>
+    <v-card
+      v-for="(screen, index) in practicum.screens"
+      :key="screen.id"
+      class="mb-3 pb-2"
+      prepend-icon="mdi-invoice-list-outline"
+      elevation="6"
+    >
+      <template v-slot:title> Экран №{{ index + 1 }} </template>
       <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
         <div class="mr-4 text-body-2 text-grey-darken-1">
           <b>23.06.2020</b>
@@ -54,24 +67,33 @@
         </div>
       </div>
     </v-card>
-    <v-card class="mb-3" prepend-icon="mdi-invoice-list-outline" elevation="6">
-      <template v-slot:title> Экран №1 </template>
-    </v-card>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
 
-const { editablePracticum: practicum } = usePracticumStore();
+const $router = useRouter();
+
+const { editablePracticum: practicum, savePracticum } = usePracticumStore();
 
 const isDirty = ref(false);
+const isValid = ref(false);
 const onValidate = () => {
   isDirty.value = true;
+
+  if (!isValid.value) {
+    return;
+  }
+
+  savePracticum();
+
+  $router.replace({ params: { id: practicum.value.id } });
 };
 </script>
 

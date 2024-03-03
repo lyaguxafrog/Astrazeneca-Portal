@@ -59,7 +59,9 @@
       "@typescript-eslint/ban-ts-comment": "off",
       "comma-dangle": "off",
       "object-curly-newline": "off",
-      "operator-linebreak": "off"
+      "operator-linebreak": "off",
+      "no-shadow": "off",
+      "implicit-arrow-linebreak": "off"
     }
   },
   "browserslist": [

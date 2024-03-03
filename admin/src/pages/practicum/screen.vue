@@ -4,22 +4,22 @@
       <Title> Создание экрана №1 </Title>
       <v-form validate-on="input" @submit.prevent="onValidate">
         <TextEditor
-          v-model="practicum.screens[0].literature"
+          v-model="screen.literature"
           title="Список литературы*"
           :validated="isDirty"
-          :rules="[required(practicum.screens[0].literature)]"
+          :rules="[required(screen.literature)]"
         />
         <TextEditor
-          v-model="practicum.screens[0].literatureDescription"
+          v-model="screen.literatureDescription"
           title="Расшифровка для списка литературы"
           :validated="isDirty"
-          :rules="[required(practicum.screens[0].literatureDescription)]"
+          :rules="[required(screen.literatureDescription)]"
         />
         <TextEditor
-          v-model="practicum.screens[0].description"
+          v-model="screen.description"
           title="Расшифровка для страницы"
           :validated="isDirty"
-          :rules="[required(practicum.screens[0].description)]"
+          :rules="[required(screen.description)]"
         />
         <v-btn type="submit"> Сохранить </v-btn>
       </v-form>
@@ -36,11 +36,11 @@
             </template>
 
             <v-card title="Добавить блок слева">
-              <div class="d-flex ga-2 pa-3">
+              <div class="d-flex ga-2 pa-3 pb-4">
                 <ButtonBlock />
-                <v-btn> Текст </v-btn>
-                <v-btn> Изображение </v-btn>
-                <v-btn> Выпадающий список </v-btn>
+                <TextBlock />
+                <ImageBlock />
+                <DropdownBlock />
               </div>
             </v-card>
           </v-bottom-sheet>
@@ -69,7 +69,7 @@
             </template>
 
             <v-card title="Добавить блок справа">
-              <div class="d-flex ga-2 pa-3">
+              <div class="d-flex ga-2 pa-3 pb-4">
                 <v-btn> Кнопка </v-btn>
                 <v-btn> Текст </v-btn>
                 <v-btn> Изображение </v-btn>
@@ -104,6 +104,15 @@ import { usePracticumStore } from '@/store/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
 import ButtonBlock from '@/components/practicum/button-block.vue';
+import TextBlock from '@/components/practicum/text-block.vue';
+import ImageBlock from '@/components/practicum/image-block.vue';
+import DropdownBlock from '@/components/practicum/dropdown-block.vue';
+
+const screen = ref({
+  literature: '',
+  literatureDescription: '',
+  description: ''
+});
 
 const { editablePracticum: practicum } = usePracticumStore();
 
