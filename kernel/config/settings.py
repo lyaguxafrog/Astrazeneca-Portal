@@ -109,7 +109,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://astraportal.dev-demo.online",
     "https://astraportal.dev-demo.online",
-    "https://localhost",
 ]
 
 TEMPLATES = [
