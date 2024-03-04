@@ -23,6 +23,6 @@ urlpatterns = [
     path('practicum/create/', PracticumCreateView.as_view(),
          name='practicum_create'),
 
-    path('practicums/speciality/<int:speciality_id>/', get_practicums_by_speciality, name='get_practicums_by_speciality'),
-    path('practicums/<int:practicum_id>/', get_practicum_by_id, name='get_practicum_by_id'),
+    path('practicum/speciality/<int:speciality_id>/', get_practicums_by_speciality, name='get_practicums_by_speciality'),
+    path('practicum/<int:practicum_id>/', get_practicum_by_id, name='get_practicum_by_id'),
 ]
