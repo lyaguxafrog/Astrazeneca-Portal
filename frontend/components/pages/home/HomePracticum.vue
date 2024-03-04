@@ -205,8 +205,8 @@ const onSlideChange = () => {
       }
     }
   }
-
   @include md-and-down {
+
     .swiper-lazy-preloader {
       top: 30%;
     }

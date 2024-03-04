@@ -158,8 +158,8 @@ const content = computed(() => {
       margin-bottom: 50px;
       padding: 0 27px;
     }
-
     &__item {
+
       &-img {
         margin-top: 0;
       }
