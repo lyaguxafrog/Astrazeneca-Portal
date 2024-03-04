@@ -1,96 +1,107 @@
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-# from rest_framework import serializers
+from rest_framework import serializers
 
-# from practics.models import (Practicum, Screens)
-# from .screen_blocks import (LeftButtonSerializer, LeftImagesSerializer,
-#                                   LeftPopUpSerializer, LeftTextSerializer,
-#                                   RightTextSerializer, RightButtonSerializer,
-#                                   RightImagesSerializer, RightPopUpSerializer)
+from practics.models import (Practicum, Screens, ScreenButton, ScreenImageBlock,
+                             ScreenPopupBlock, ScreenTextBlock)
 
 
-# # Экраны
-# class ScreenSerializer(serializers.ModelSerializer):
-#     # лево
-#     screen_text_block_left = LeftTextSerializer(many=True, read_only=True)
-#     screen_image_block_left = LeftImagesSerializer(many=True, read_only=True)
-#     screen_popup_block_left = LeftPopUpSerializer(many=True, read_only=True)
-#     screen_button_block_left = LeftButtonSerializer(many=True, read_only=True)
 
-#     screen_text_block_right = RightTextSerializer(many=True, read_only=True)
-#     screen_image_block_right = RightImagesSerializer(many=True, read_only=True)
-#     screen_popup_block_right = RightPopUpSerializer(many=True, read_only=True)
-#     screen_button_block_right = RightButtonSerializer(many=True, read_only=True)
+class ScreenTextBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenTextBlock
+        fields = '__all__'
+        extra_kwargs = {
+            'screen': {'required': False},
+        }
 
-#     class Meta:
-#         model = Screens
-#         fields = '__all__'
+class ScreenImageBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenImageBlock
+        fields = '__all__'
+        extra_kwargs = {
+            'screen': {'required': False},
+        }
+
+class ScreenPopupBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenPopupBlock
+        fields = '__all__'
+        extra_kwargs = {
+            'screen': {'required': False},
+        }
+
+class ScreenButtonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScreenButton
+        fields = '__all__'
+        extra_kwargs = {
+            'screen': {'required': False},
+        }
+
+class ScreensSerializer(serializers.ModelSerializer):
+    screen_text_block = ScreenTextBlockSerializer(many=True, required=False)
+    screen_image_block = ScreenImageBlockSerializer(many=True, required=False)
+    screen_popup_block = ScreenPopupBlockSerializer(many=True, required=False)
+    screen_button_block = ScreenButtonSerializer(many=True, required=False)
+
+    class Meta:
+        model = Screens
+        fields = '__all__'
+        extra_kwargs = {
+            'practicum': {'required': False},
+        }
+
+    def create(self, validated_data):
+        screen_text_block_data = validated_data.pop('screen_text_block')
+        screen_image_block_data = validated_data.pop('screen_image_block')
+        screen_popup_block_data = validated_data.pop('screen_popup_block')
+        screen_button_block_data = validated_data.pop('screen_button_block')
+        screens = Screens.objects.create(**validated_data)
+
+        for text_block_data in screen_text_block_data:
+            ScreenTextBlock.objects.create(screen=screens, **text_block_data)
+
+        for image_block_data in screen_image_block_data:
+            ScreenImageBlock.objects.create(screen=screens, **image_block_data)
+
+        for popup_block_data in screen_popup_block_data:
+            ScreenPopupBlock.objects.create(screen=screens, **popup_block_data)
+
+        for button_block_data in screen_button_block_data:
+            ScreenButton.objects.create(screen=screens, **button_block_data)
+
+        return screens
 
 
-# # Практикум
+class PracticumSerializer(serializers.ModelSerializer):
+    screens = ScreensSerializer(many=True)
 
+    class Meta:
+        model = Practicum
+        fields = '__all__'
 
-# class PracticumSerializer(serializers.ModelSerializer):
-#     screens = ScreenSerializer(many=True, read_only=True)
+    def create(self, validated_data):
+        screens_data = validated_data.pop('screens')
+        practicum = Practicum.objects.create(**validated_data)
 
-#     image_desktop_810px = serializers.SerializerMethodField()
-#     image_desktop_1620px = serializers.SerializerMethodField()
-#     image_mobile_400px = serializers.SerializerMethodField()
-#     image_mobile_800px = serializers.SerializerMethodField()
+        for screen_data in screens_data:
+            # Создаем экран, связанный с только что созданным практикумом
+            screen = Screens.objects.create(practicum=practicum, **screen_data)
 
-#     class Meta:
-#         model = Practicum
-#         fields = '__all__'
+            # Создаем блоки, связанные с только что созданным экраном
+            if 'screen_text_block' in screen_data:
+                for text_block_data in screen_data['screen_text_block']:
+                    ScreenTextBlock.objects.create(screen=screen, **text_block_data)
 
-#     def get_image_desktop_810px(self, obj):
-#         return self.get_relative_url(obj.image_desktop_810px)
+            if 'screen_image_block' in screen_data:
+                for image_block_data in screen_data['screen_image_block']:
+                    ScreenImageBlock.objects.create(screen=screen, **image_block_data)
+            if 'screen_popup_block' in screen_data:
+                for popup_block_data in screen_data['screen_popup_block']:
+                    ScreenPopupBlock.objects.create(screen=screen, **popup_block_data)
+            if 'screen_button_block' in screen_data:
+                for button_block_data in screen_data['screen_button_block']:
+                    ScreenButton.objects.create(screen=screen, **button_block_data)
 
-#     def get_image_desktop_1620px(self, obj):
-#         return self.get_relative_url(obj.image_desktop_1620px)
-
-#     def get_image_mobile_400px(self, obj):
-#         return self.get_relative_url(obj.image_mobile_400px)
-
-#     def get_image_mobile_800px(self, obj):
-#         return self.get_relative_url(obj.image_mobile_800px)
-
-#     def get_relative_url(self, file_field_or_url):
-#         if file_field_or_url and hasattr(file_field_or_url, 'url'):
-#             return file_field_or_url.url
-#         elif isinstance(file_field_or_url,
-#         str) and file_field_or_url.startswith('http'):
-#             return file_field_or_url
-#         return None
-
-
-# class PracticumListSerializer(serializers.ModelSerializer):
-#     screens = ScreenSerializer(many=True, read_only=True)
-
-#     class Meta:
-#         model = Practicum
-#         fields = '__all__'
-
-#     image_desktop_810px = serializers.SerializerMethodField()
-#     image_desktop_1620px = serializers.SerializerMethodField()
-#     image_mobile_400px = serializers.SerializerMethodField()
-#     image_mobile_800px = serializers.SerializerMethodField()
-
-#     def get_image_desktop_810px(self, obj):
-#         return self.get_relative_url(obj.image_desktop_810px)
-
-#     def get_image_desktop_1620px(self, obj):
-#         return self.get_relative_url(obj.image_desktop_1620px)
-
-#     def get_image_mobile_400px(self, obj):
-#         return self.get_relative_url(obj.image_mobile_400px)
-
-#     def get_image_mobile_800px(self, obj):
-#         return self.get_relative_url(obj.image_mobile_800px)
-
-#     def get_relative_url(self, file_field_or_url):
-#         if file_field_or_url and hasattr(file_field_or_url, 'url'):
-#             return file_field_or_url.url
-#         elif isinstance(file_field_or_url,
-#         str) and file_field_or_url.startswith('http'):
-#             return file_field_or_url
-#         return None
+        return practicum

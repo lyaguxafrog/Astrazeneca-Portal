@@ -133,6 +133,53 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'your_project.urls.swagger_info',
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'api_version': '0.1', # Specify your API's version
+    'enabled_methods': [ # Specify which methods to enable in Swagger UI
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'is_authenticated': False,
+    'is_superuser': False,
+    'permission_denied_handler': None,
+    'unauthorized_handler': None,
+    'api_key': '',
+    'api_key_name': '',
+    'api_key_in': '',
+    'api_key_scheme': '',
+    'operation_id_generator': 'your_project.utils.custom_operation_id_generator',
+    'security': [
+        {
+            'basic': []
+        }
+    ],
+    'doc_expansion': 'none',
+    'validator_url': None,
+    'oauth2_redirect_url': '/api/swagger/oauth2-redirect',
+    'oauth2_config': {
+        'clientId': 'your_client_id',
+        'clientSecret': 'your_client_secret',
+        'realm': 'your_realm',
+        'appName': 'your_app_name',
+        'scopeSeparator': ' ',
+        'additionalQueryStringParams': {}
+    },
+    'headers': {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    }
+}
 
 DATABASES = {
     'default': {

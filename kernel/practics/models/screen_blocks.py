@@ -2,19 +2,16 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
-from django.core.validators import FileExtensionValidator, URLValidator
-from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from practics.services.url_valid import validate_relative_or_absolute_url
-from polymorphic.models import PolymorphicModel
 
 
-class Blocks(PolymorphicModel):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='block')
 # Блоки контента слева
-class ScreenTextBlock_left(PolymorphicModel):
-    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
+class ScreenTextBlock(models.Model):
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_text_block_left')
+
+    side = models.CharField()
 
     text = RichTextField(verbose_name='текст *')
     order = models.IntegerField(default=0, verbose_name='порядковый номер *')
@@ -23,13 +20,15 @@ class ScreenTextBlock_left(PolymorphicModel):
         verbose_name='блок текста слева'
         verbose_name_plural = 'блоки текста слева'
 
-class ScreenImageBlock_left(PolymorphicModel):
-    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
+class ScreenImageBlock(models.Model):
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_image_block_left')
 
     image = models.ImageField(upload_to='practicums/blocks/',
                               verbose_name='изображение *')
     order = models.IntegerField(default=0, verbose_name='Порядковый номер *')
+
+    side = models.CharField()
 
     image_desktop_810px = models.ImageField(null=True, blank=True)
     image_desktop_1620px = models.ImageField(null=True, blank=True)
@@ -41,23 +40,28 @@ class ScreenImageBlock_left(PolymorphicModel):
         verbose_name_plural = 'блоки изображения слева'
 
 
-class ScreenPopupBlock_left(PolymorphicModel):
-    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
+class ScreenPopupBlock(models.Model):
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_popup_block_left')
 
-    menu_title = models.CharField(verbose_name='Заголовок пункта *')
-    text = RichTextField(verbose_name='Текст *')
+    side = models.CharField()
+
     order = models.IntegerField(default=0, verbose_name='Порядковый номер *')
 
     class Meta:
         verbose_name='блок выпадающий список слева'
         verbose_name_plural = 'блоки выпадающий список слева'
 
-class ScreenButton_left(PolymorphicModel):
-    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
+# TODO: тут класс для варианта ответа
+
+
+class ScreenButton(models.Model):
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_button_block_left')
 
     button_title = models.CharField(verbose_name='Заголовк кнопки *')
+
+    side = models.CharField()
 
     screen_number = models.IntegerField(default=None,
                                         verbose_name='Номер экрана',
@@ -75,8 +79,8 @@ class ScreenButton_left(PolymorphicModel):
         ],  null=True, blank=True
     )
 
-    screen_redirect = models.ForeignKey('Screens', on_delete=models.SET_NULL,
-                null=True, blank=True, related_name='redirected_by_button_left')
+    #screen_redirect = models.ForeignKey('Screens', on_delete=models.SET_NULL,
+    #           null=True, blank=True, related_name='redirected_by_button_left')
 
     fill_flag = models.BooleanField(default=False,
                                     verbose_name='Заливка кнопки.')
@@ -90,25 +94,27 @@ class ScreenButton_left(PolymorphicModel):
         verbose_name='блок кнопки слева'
         verbose_name_plural = 'блоки кнопок слева'
 
+    # def clean(self):
+    #     if not (self.url or self.pdf_file or self.screen_number):
+    #         raise ValidationError('Необходимо заполнить хотя бы одно из полей: "Номер экрана", "Ссылка" или "PDF-файл"')
 
-    def clean(self):
-        if not (self.url or self.pdf_file or self.screen_number):
-            raise ValidationError('Необходимо заполнить хотя бы одно из полей: "Номер экрана", "Ссылка" или "PDF-файл"')
+    #     if sum(bool(field) for field in [self.url, self.pdf_file, self.screen_number]) > 1:
+    #         raise ValidationError('Можно заполнить только одно из полей: "Номер экрана", "Ссылка" или "PDF-файл"')
 
-        if sum(bool(field) for field in [self.url, self.pdf_file, self.screen_number]) > 1:
-            raise ValidationError('Можно заполнить только одно из полей: "Номер экрана", "Ссылка" или "PDF-файл"')
+    # def save(self, *args, **kwargs):
+    #     practicum = self.screen.practicum
 
-    def save(self, *args, **kwargs):
-        practicum = self.screen.practicum
+    #     if self.screen_number is not None:
+    #         try:
+    #             screen_redirect = practicum.screens.all()[self.screen_number - 1]
+    #         except IndexError:
+    #             screen_redirect = None
+    #     else:
+    #         screen_redirect = None
 
-        if self.screen_number is not None:
-            try:
-                screen_redirect = practicum.screens.all()[self.screen_number - 1]
-            except IndexError:
-                screen_redirect = None
-        else:
-            screen_redirect = None
+    #     self.screen_redirect = screen_redirect
 
+<<<<<<< HEAD
         self.screen_redirect = screen_redirect
 
         super(ScreenButton_left, self).save(*args, **kwargs)
@@ -233,3 +239,6 @@ class PopUpPoint_right(PolymorphicModel):
 
     menu_title = models.CharField(verbose_name='Заголовок пункта *')
     text = RichTextField(verbose_name='Текст *')
+=======
+    #     super(ScreenButton, self).save(*args, **kwargs)
+>>>>>>> backend

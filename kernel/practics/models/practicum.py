@@ -14,22 +14,23 @@ class Practicum(PolymorphicModel):
     image = models.ImageField(upload_to='practicum/',
                               verbose_name='Изображение *')
 
-    desription = RichTextField(verbose_name='Описание *',
+    description = RichTextField(verbose_name='Описание *',
                                   max_length=200,
                                   help_text='Ограничение в 200 символов.')
 
     pacient_description = RichTextField(
                         verbose_name='Краткая информация о пациенте *',
                         help_text='Внутри практикума.',
-                        default='''
-                <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
-                            ''')
+                #         default='''
+                # <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
+                #             '''
+                            )
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],
