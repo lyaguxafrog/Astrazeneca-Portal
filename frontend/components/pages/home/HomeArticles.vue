@@ -81,7 +81,7 @@ const onSlideChange = (index: number | undefined) => {
   if (index !== undefined) {
     setTimeout(() => {
       activeSlide.value = index;
-    }, 100);
+    }, 200);
   }
 
   if (index === articles.value.data?.length - 1) {
@@ -165,9 +165,9 @@ const onSlideChange = (index: number | undefined) => {
         position: relative;
 
         width: 100%;
-        height: 530px;
         // margin-top: auto;
         overflow: hidden;
+        @include aspect(1088, 530);
 
         border-radius: 40px;
 

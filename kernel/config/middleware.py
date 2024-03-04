@@ -8,7 +8,6 @@ class CustomHeadersMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        # Добавьте нужные вам заголовки
         response["X-Custom-Header"] = "Custom Value"
         response["Another-Header"] = "Another Value"
 

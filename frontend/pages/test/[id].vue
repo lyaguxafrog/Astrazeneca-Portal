@@ -28,7 +28,7 @@
         />
       </div>
       <div class="test__container-right">
-        <div class="test__container-answers">
+        <div class="test__container-answers" :class="{ full_width: hasLongAnswer }">
           <div
             v-for="(answer, index) in content.data?.buttons"
             ref="itemsEls"
@@ -47,7 +47,13 @@
             </div>
           </div>
         </div>
-        <AppButton v-if="content.data?.next_test" primary class="test__container-next" :petite="$screen.mdAndDown" :to="`/test/${content.data.next_test}`">
+        <AppButton
+          v-if="content.data?.next_test"
+          primary
+          class="test__container-next"
+          :petite="$screen.mdAndDown"
+          :to="`/test/${content.data.next_test}`"
+        >
           Следующий тест
         </AppButton>
       </div>
@@ -91,6 +97,8 @@ const { openModal } = useModal();
 const content = await useRequest<TestPracticum>(`/practicum_tests/${$route.params.id}`, {
   method: 'GET',
 });
+
+const hasLongAnswer = computed(() => content.data?.buttons.find((b) => b.title.length > 30));
 
 const shownAnswerIndex = ref(-1);
 
@@ -170,6 +178,7 @@ const showAnswer = (index: number) => {
 
     &-left {
       width: 31.3%;
+      min-height: 260px;
       margin-right: 9.3%;
       overflow: hidden;
 
@@ -191,11 +200,19 @@ const showAnswer = (index: number) => {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+
+      &.full_width {
+        .test__container-answer {
+          width: 100%;
+        }
+      }
     }
 
     &-answer {
       width: 47.3%;
       margin-bottom: 40px;
+
+      word-break: break-word;
 
       &-text {
         display: none;
@@ -264,6 +281,7 @@ const showAnswer = (index: number) => {
 
       &-left {
         width: 100%;
+        min-height: 220px;
         margin: 0;
 
         border-radius: 20px;
@@ -279,9 +297,9 @@ const showAnswer = (index: number) => {
       }
 
       &-answer {
-        width: 66%;
+        width: 100%;
         margin-bottom: 0;
-        padding: 0;
+        padding: 10px;
 
         &-text {
           display: block;

@@ -69,7 +69,7 @@ const $router = useRouter();
 
 const replaceMode = toRef(() => !!$route.query.historyId);
 
-const link = (id) => {
+const link = (id: number) => {
   const query = {
     ...$route.query,
     historyId: id,
@@ -120,7 +120,8 @@ $root: histories-slider;
         }
 
         &:deep(img) {
-          height: 88px;
+          height: 78px;
+          @include aspect(120, 120);
         }
 
         p {
@@ -166,7 +167,6 @@ $root: histories-slider;
         display: grid;
 
         width: 100%;
-        @include aspect(120, 120);
         overflow: hidden;
 
         border: 5px solid transparent;
@@ -185,7 +185,7 @@ $root: histories-slider;
         display: block;
 
         width: 100%;
-        height: 120px;
+        height: 110px;
         object-fit: cover;
       }
     }
@@ -225,7 +225,11 @@ $root: histories-slider;
         width: 100px;
 
         :deep(img) {
-          height: 100px;
+          height: 90px;
+        }
+
+        p {
+          margin-top: 10px;
         }
       }
     }
@@ -257,6 +261,7 @@ $root: histories-slider;
 
       :deep(img) {
         height: 100%;
+        @include aspect(1, 1);
       }
     }
 

@@ -5,6 +5,10 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from users.models import UserProfile
 
+from config.admin import custom_admin_site
+
+admin.site = custom_admin_site
+
 # Создаем Inline-класс для редактирования UserProfile вместе с моделью User
 class UserProfileInline(admin.StackedInline):
     model = UserProfile

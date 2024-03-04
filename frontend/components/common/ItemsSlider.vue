@@ -219,6 +219,13 @@ defineExpose({
       border-radius: 20px;
     }
 
+    .isSafari & {
+      :deep(.swiper-pagination-bullet) {
+        transform: translate3d(0, 0, 0);
+        will-change: left;
+      }
+    }
+
     &::v-deep {
       .swiper {
         display: flex;

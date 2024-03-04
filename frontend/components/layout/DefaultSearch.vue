@@ -27,7 +27,7 @@
                 {{ item.name }}
               </p>
               <span v-if="!$screen.mdAndDown" :style="{ color: block.color }"
-              >| {{ block.postfix }}</span
+                >|&nbsp;{{ block.postfix }}</span
               >
               <AppIcon
                 v-if="$screen.mdAndDown"
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onMounted, ref} from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import { useRouter, useRoute } from '#app';
 import { watchDebounced } from '@vueuse/core';
 import { IconName } from '~/components/app/AppIcon.utils';
@@ -88,7 +88,7 @@ const result = ref<
     }[];
     icon: IconName;
   }[]
-  >([
+>([
   {
     id: '1',
     name: 'Статьи',
@@ -160,7 +160,12 @@ const processResults = (results?: SearchResult[]) => {
   }
 
   results.forEach((r, index) => {
-    if (r.speciality && r.speciality.length && !r.speciality.includes(specialityId.value) && !sessionStorage.getItem('showAllContent')) {
+    if (
+      r.speciality &&
+      r.speciality.length &&
+      !r.speciality.includes(specialityId.value) &&
+      !sessionStorage.getItem('showAllContent')
+    ) {
       return;
     }
 
@@ -174,8 +179,10 @@ const processResults = (results?: SearchResult[]) => {
         r.model === 'event'
           ? r.url
           : model === 'video_lecture'
-            ? `/video/${r.id}`
-            : model === 'article' ? `/article/${r.id}` : `/drug/${r.id}`,
+          ? `/video/${r.id}`
+          : model === 'article'
+          ? `/article/${r.id}`
+          : `/drug/${r.id}`,
     };
 
     if (model === 'article') {
@@ -346,13 +353,17 @@ watchDebounced(
       }
 
       &-item {
-        display: flex;
+        display: block;
 
         width: fit-content;
 
         font-size: 18px;
         line-height: 42px;
         letter-spacing: -0.18px;
+
+        p {
+          display: inline;
+        }
 
         span {
           margin-left: 8px;

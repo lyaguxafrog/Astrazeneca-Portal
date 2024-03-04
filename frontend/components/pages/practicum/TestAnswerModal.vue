@@ -25,7 +25,7 @@ defineProps<{
   &__title {
     font-family: $secondary-font-family;
     font-size: 32px;
-    line-height: 21px;
+    line-height: 1;
     font-weight: 900;
   }
 

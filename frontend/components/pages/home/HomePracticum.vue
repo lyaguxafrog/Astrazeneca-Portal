@@ -12,7 +12,7 @@
       :size="$screen.mdAndDown ? 306 : 1000"
     />
 
-    <div class="home-practicum__title h2">практикум</div>
+    <div class="home-practicum__title h2">практикум*</div>
     <div class="home-practicum__subtitle">{{ content.data[activeSlideIndex].title }}</div>
 
     <div class="home-practicum__slider">
@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import { computed, ref } from 'vue';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useScreen } from '~/utils/composables/useScreen';
@@ -92,8 +92,8 @@ const res = await useRequest<Practicum[]>('/practicum', {
 const content = computed(() => {
   if (res.data) {
     return {
-      data: res.data.filter((p) => p.speciality.includes(specialityId.value))
-    }
+      data: res.data.filter((p) => p.speciality.includes(specialityId.value)),
+    };
   }
 
   return {
@@ -109,9 +109,11 @@ const onSwiper = (s: SwiperType) => {
 };
 
 const onSlideChange = () => {
-  if (swiper.value) {
-    activeSlideIndex.value = swiper.value.realIndex;
-  }
+  setTimeout(() => {
+    if (swiper.value) {
+      activeSlideIndex.value = swiper.value.realIndex;
+    }
+  }, 300);
 };
 </script>
 
@@ -139,6 +141,8 @@ const onSlideChange = () => {
   }
 
   &__subtitle {
+    max-width: 830px;
+    height: 70px;
     margin-top: 13px;
     padding: 0 95px;
 
@@ -157,6 +161,7 @@ const onSlideChange = () => {
 
       width: 818px;
       max-width: 60%;
+      min-height: 700px;
       margin: 0 auto;
       object-fit: contain;
       @include aspect(818, 754);
@@ -202,7 +207,6 @@ const onSlideChange = () => {
   }
 
   @include md-and-down {
-
     .swiper-lazy-preloader {
       top: 30%;
     }
@@ -223,6 +227,7 @@ const onSlideChange = () => {
     }
 
     &__subtitle {
+      height: 44px;
       margin-top: -2px;
       padding: 0 27px;
 
@@ -231,8 +236,9 @@ const onSlideChange = () => {
     }
 
     &__item {
-      img {
+      :deep(img) {
         width: 86%;
+        min-height: 236px;
         margin: 0 auto;
       }
 

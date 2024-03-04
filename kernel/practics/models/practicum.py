@@ -55,6 +55,7 @@ class Practicum(PolymorphicModel):
     class Meta:
         verbose_name='практикум'
         verbose_name_plural = 'практикумы'
+        ordering = ['id']
 
     def __str__(self):
         return self.title
@@ -73,7 +74,14 @@ class Screens(PolymorphicModel):
     approvals_and_decodings = RichTextField(null=True, blank=True,
                             verbose_name='Номер одобрения и расшифровка')
 
-
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
+        ordering = ['id']
+
+    def __str__(self):
+        screens_list = list(self.practicum.screens.all())
+        if self in screens_list:
+            return str(screens_list.index(self) +  1)
+        else:
+            return "Объект не найден в списке"
