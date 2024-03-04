@@ -19,7 +19,7 @@ class PracticumCreateView(APIView):
         },
         operation_description="Create a new practicum",
         operation_id="create_practicum",
-        tags=["Practicum"]
+        tags=["practicum"]
     )
     def post(self, request, *args, **kwargs):
         serializer = PracticumSerializer(data=request.data)
@@ -43,3 +43,37 @@ def get_practicum_by_id(request, practicum_id):
 
     serializer = PracticumSerializer(practicum)
     return Response(serializer.data)
+
+@api_view(['PUT'])
+@swagger_auto_schema(
+    request_body=PracticumSerializer,
+    responses={
+        200: PracticumSerializer,
+        400: 'Bad Request',
+        404: 'Not Found'
+    },
+    operation_description="Update a practicum",
+    operation_id="update_practicum",
+    tags=["Practicum"]
+)
+def update_practicum(request, practicum_id):
+    try:
+        practicum = Practicum.objects.get(id=practicum_id)
+    except Practicum.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PracticumSerializer(practicum, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_practicum(request, practicum_id):
+    try:
+        practicum = Practicum.objects.get(id=practicum_id)
+        practicum.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except Practicum.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
