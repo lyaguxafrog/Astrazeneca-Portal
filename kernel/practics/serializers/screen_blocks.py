@@ -8,12 +8,12 @@ from practics.models import (ScreenPopupBlock,
 
 
 
-class LeftTextSerializer(serializers.ModelSerializer):
+class TextSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenTextBlock
         fields = '__all__'
 
-class LeftImagesSerializer(serializers.ModelSerializer):
+class ImagesSerializer(serializers.ModelSerializer):
     image_desktop_810px = serializers.SerializerMethodField()
     image_desktop_1620px = serializers.SerializerMethodField()
     image_mobile_400px = serializers.SerializerMethodField()
@@ -45,11 +45,11 @@ class LeftImagesSerializer(serializers.ModelSerializer):
         return None
 
 
-class LeftPopUpSerializer(serializers.ModelSerializer):
+class PopUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenPopupBlock
         fields = '__all__'
 
-class LeftButtonSerializer(serializers.ModelSerializer):
+class ButtonSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenButton
