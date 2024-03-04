@@ -2,14 +2,6 @@
 
 
 if [[ $1 = 'config' ]]; then
-
-    rm -rf .idea/
-    rm -rf .vscode/
-    rm -rf README.md
-    rm -rf kernel/.devcontainer/
-    rm -rf kernel/.vscode/
-    rm -rf kernel/README.md
-
     mkdir kernel/logs
     mkdir frontend/dist
     
@@ -20,6 +12,13 @@ if [[ $1 = 'config' ]]; then
 fi
 
 if [[ $1 = 'deploy' ]]; then
+
+    rm -rf .idea/
+    rm -rf .vscode/
+    rm -rf README.md
+    rm -rf kernel/.devcontainer/
+    rm -rf kernel/.vscode/
+    rm -rf kernel/README.md
 
 
     echo "Frontend: Timofey Moshkara @TimofeyMoshkara | Backend: Adrian Makridenko @lyaguxafrog" > .author
