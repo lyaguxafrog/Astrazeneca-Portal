@@ -26,7 +26,7 @@ else:
     # CSRF_COOKIE_DOMAIN = f'https://{os.getenv("OUR_DOMAIN")}'
     CSRF_TRUSTED_ORIGINS = [f'https://{os.getenv("OUR_DOMAIN")}']
 
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
 INSTALLED_APPS = [
     "django.contrib.admin",

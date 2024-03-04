@@ -119,6 +119,16 @@ $screen-xxl-min: 1440px;
     }
 }
 
+@mixin only-mobile-safari {
+  @media screen and (max-width: 1279px) {
+    @media not all and (min-resolution:.001dpcm) {
+      @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+        @content;
+      }
+    }
+  }
+}
+
 @mixin only-desktop-safari {
     @media screen and (min-width: 1280px) {
         @media not all and (min-resolution:.001dpcm) {
@@ -198,4 +208,8 @@ $screen-xxl-min: 1440px;
   @else {
     display: -webkit-box;
   }
+}
+
+@mixin line-height($fz, $lh) {
+  line-height: $lh/$fz;
 }

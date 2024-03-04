@@ -49,7 +49,7 @@ const openProps = (item: AccordionItem, index: number) => {
   }
 
   if (!$screen.value.mdAndDown) {
-    openModal(props.modalName, item);
+    openModal(props.modalName, { item, items: props.items });
   } else {
     itemsEls.value.forEach((el: HTMLElement) => {
       const content = el.querySelector('.accordion__item-content') as HTMLElement;

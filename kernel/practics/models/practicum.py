@@ -21,15 +21,16 @@ class Practicum(PolymorphicModel):
     pacient_description = RichTextField(
                         verbose_name='Краткая информация о пациенте *',
                         help_text='Внутри практикума.',
-                        default='''
-                <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
-                            ''')
+                #         default='''
+                # <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
+                #             '''
+                            )
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],
@@ -55,6 +56,7 @@ class Practicum(PolymorphicModel):
     class Meta:
         verbose_name='практикум'
         verbose_name_plural = 'практикумы'
+        ordering = ['id']
 
     def __str__(self):
         return self.title
@@ -73,7 +75,14 @@ class Screens(PolymorphicModel):
     approvals_and_decodings = RichTextField(null=True, blank=True,
                             verbose_name='Номер одобрения и расшифровка')
 
-
     class Meta:
         verbose_name = 'экран'
         verbose_name_plural = 'экраны'
+        ordering = ['id']
+
+    def __str__(self):
+        screens_list = list(self.practicum.screens.all())
+        if self in screens_list:
+            return str(screens_list.index(self) +  1)
+        else:
+            return "Объект не найден в списке"

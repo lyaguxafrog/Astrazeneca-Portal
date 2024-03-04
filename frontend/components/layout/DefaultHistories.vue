@@ -28,7 +28,7 @@
         @swiper="onSwiper"
         @slide-change="onSlideChange"
       >
-        <SwiperSlide v-for="history in histories" :key="history.id" class="history" :class="{isMounted}">
+        <SwiperSlide v-for="(history, index) in histories" :key="history.id" class="history" :class="{isMounted}">
           <AppImage
             class="history__bg"
             :url="history.cover_image"
@@ -41,8 +41,10 @@
             ref="videosRef"
             playsinline
             :muted="muted"
-            :src="`${baseUrl}${history.video}`"
+            :src="activeHistoryIndex === index || activeHistoryIndex-1 === index || activeHistoryIndex+1 === index ? `${baseUrl}${history.video}` : ''"
+            :class="{active: activeHistoryIndex === index}"
             @touchend="onVideoTouchEnd"
+            @ended="onVideoStop"
           />
           <AppButton v-if="!$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
             <AppIcon
@@ -116,9 +118,9 @@ await getHistories();
 const activeSlideId = toRef(() => +($route.query.historyId || 0));
 
 const activeHistoryIndex = toRef(() =>
-  histories.value.findIndex((h) => h.id === activeSlideId.value)
+  histories.value?.findIndex((h) => h.id === activeSlideId.value)
 );
-const activeHistory = toRef(() => histories.value[activeHistoryIndex.value]);
+const activeHistory = toRef(() => histories.value?.[activeHistoryIndex.value]);
 const activeVideo = toRef(() => videosRef.value[activeHistoryIndex.value]);
 const muted = ref(true);
 
@@ -184,6 +186,10 @@ const onVideoTouchEnd = () => {
   setTimeout(start, 500);
 };
 
+const onVideoStop = () => {
+  swiper.value?.slideTo(activeHistoryIndex.value + 1);
+};
+
 const startActiveVideo = () => {
   stopAll();
   start();
@@ -191,7 +197,7 @@ const startActiveVideo = () => {
 
 const onSlideChange = async () => {
   if (swiper.value) {
-    const id = histories.value[swiper.value?.realIndex].id;
+    const id = histories.value?.[swiper.value?.realIndex].id;
     await $router.replace({ query: { historyId: id, access_token: $route.query.access_token } });
 
     startActiveVideo();
@@ -269,6 +275,12 @@ onMounted(() => {
       right: 0;
       bottom: 0;
       left: 0;
+
+      background-color: $main-bg-color;
+
+      :deep(img) {
+        object-fit: contain;
+      }
     }
 
     &__controls {
@@ -310,10 +322,16 @@ onMounted(() => {
 
     width: 100%;
     height: 85vh;
-    object-fit: cover;
+    object-fit: contain;
 
     background-position: center;
     background-size: cover;
+
+    opacity: 0;
+
+    &.active {
+      opacity: 1;
+    }
 
     @include lg-and-down {
       @media (orientation: portrait) {
@@ -384,6 +402,8 @@ onMounted(() => {
     bottom: 0;
     left: 0;
     @include z-index(4);
+
+    background: $main-bg-color;
 
     &__swiper {
       width: auto;

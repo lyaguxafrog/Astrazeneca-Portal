@@ -1,8 +1,8 @@
 <template>
   <transition name="modal">
     <div v-if="isModalOpen" :key="name" class="modal modal__overlay" :class="{ fullPage }">
-      <div ref="scrollEl" class="modal__scroll-content">
-        <div class="modal__close-overlay" @mousedown.self="closeModal(name)" />
+      <div ref="scrollEl" class="modal__scroll-content" @mousedown.self="closeModal(name)">
+<!--        <div class="modal__close-overlay" @mousedown.self="closeModal(name)" />-->
         <div class="modal__content">
           <BackBtn v-if="fullPage" class="modal__back" @click="closeModal(name)" />
           <AppIcon
@@ -146,7 +146,7 @@ $root: modal;
 
     width: 875px;
     max-width: 100%;
-    margin: auto;
+    margin: auto 0;
     padding: 47px 53px;
 
     background: $main-bg-color;
@@ -206,7 +206,13 @@ $root: modal;
         min-height: 100%;
       }
     }
-
+    &.fullPage {
+      .#{$root} {
+        &__content {
+          max-width: 100%;
+        }
+      }
+    }
     &__content {
       width: 100%;
       max-width: 86%;
