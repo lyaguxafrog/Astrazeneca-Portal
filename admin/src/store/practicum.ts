@@ -13,7 +13,24 @@ export const usePracticumStore = () => {
     description: '',
     patientInfo: defaultPatientInfo,
     speciality: [],
-    screens: []
+    screens: [
+      {
+        id: 1,
+        literature: '',
+        literatureDescription: '',
+        description: '',
+        leftElements: [],
+        rightElements: []
+      },
+      {
+        id: 2,
+        literature: '',
+        literatureDescription: '',
+        description: '',
+        leftElements: [],
+        rightElements: []
+      }
+    ]
   });
 
   const savePracticum = () => {
@@ -21,7 +38,10 @@ export const usePracticumStore = () => {
   };
 
   const saveScreen = (screen: ScreenInfo) => {
-    editablePracticum.value.screens.push(screen);
+    const newScreen = { ...screen };
+    newScreen.id = getUiId();
+
+    editablePracticum.value.screens.push(newScreen);
   };
 
   watch(

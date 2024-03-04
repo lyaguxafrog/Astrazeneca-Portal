@@ -22,7 +22,9 @@
           :rules="[required(practicum.description)]"
           title="Описание*"
         />
+
         <TextEditor v-model="practicum.patientInfo" title="Краткая информация о пациенте*" />
+
         <v-select
           v-model="practicum.speciality"
           clearable
@@ -48,31 +50,36 @@
       </v-btn>
     </div>
 
-    <v-card
-      v-for="(screen, index) in practicum.screens"
-      :key="screen.id"
-      class="mb-3 pb-2"
-      prepend-icon="mdi-invoice-list-outline"
-      elevation="6"
-    >
-      <template v-slot:title> Экран №{{ index + 1 }} </template>
-      <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
-        <div class="mr-4 text-body-2 text-grey-darken-1">
-          <b>23.06.2020</b>
-          <p>Дата редактирования</p>
+    <SlickList axis="y" v-model:list="practicum.screens">
+      <SlickItem v-for="(screen, index) in practicum.screens" :key="screen.id" :index="index">
+        <div class="pt-2 pb-2">
+          <v-card class="pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
+            <template v-slot:title> Экран №{{ screen.id }} </template>
+            <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
+              <div class="mr-4 text-body-2 text-grey-darken-1">
+                <b>23.06.2020</b>
+                <p>Дата редактирования</p>
+              </div>
+              <div class="d-flex">
+                <v-btn
+                  icon="mdi-invoice-edit-outline"
+                  class="mr-2"
+                  :to="`/practicum/${practicum.id}/screen/${screen.id}`"
+                />
+                <v-btn icon="mdi-delete-empty" class="bg-red" />
+              </div>
+            </div>
+          </v-card>
         </div>
-        <div class="d-flex">
-          <v-btn icon="mdi-invoice-edit-outline" class="mr-2" :to="`/practicum/0/screen/0`" />
-          <v-btn icon="mdi-delete-empty" class="bg-red" />
-        </div>
-      </div>
-    </v-card>
+      </SlickItem>
+    </SlickList>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { SlickList, SlickItem } from 'vue-slicksort';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
@@ -87,13 +94,15 @@ const isValid = ref(false);
 const onValidate = () => {
   isDirty.value = true;
 
-  if (!isValid.value) {
-    return;
-  }
+  setTimeout(() => {
+    if (!isValid.value) {
+      return;
+    }
 
-  savePracticum();
+    savePracticum();
 
-  $router.replace({ params: { id: practicum.value.id } });
+    $router.replace({ params: { id: practicum.value.id } });
+  });
 };
 </script>
 

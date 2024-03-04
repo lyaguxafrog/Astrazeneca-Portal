@@ -6,11 +6,13 @@ export enum PracticumScreenElement {
 }
 
 export type ImageBlock = {
+  id: number;
   type: PracticumScreenElement.Image;
   image: '';
 };
 
 export type DropdownBlock = {
+  id: number;
   type: PracticumScreenElement.Dropdown;
   title: string;
   text: string;
@@ -29,7 +31,8 @@ export type ScreenInfo = {
   literature: string;
   literatureDescription: string;
   description: string;
-  elements: ScreenBlock;
+  leftElements: ScreenBlock[];
+  rightElements: ScreenBlock[];
 };
 
 export type Practicum = {

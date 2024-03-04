@@ -1,5 +1,6 @@
 <template>
   <div class="mb-1">
+    <v-text-field v-if="rules" :rules="rules" class="d-none" />
     <div class="mb-1" :class="{ 'text-red-darken-4': hasError, 'text-medium-emphasis': !hasError }">
       {{ title }}
     </div>

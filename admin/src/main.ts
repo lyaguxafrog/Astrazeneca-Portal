@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { createVuetify } from 'vuetify';
 import { createRouter, createWebHistory } from 'vue-router';
 import { routes } from '@/routes';
+import { plugin as Slicksort } from 'vue-slicksort';
 // Vuetify
 // eslint-disable-next-line import/extensions
 import 'vuetify/styles';
@@ -38,5 +39,6 @@ const vuetify = createVuetify({
   }
 });
 app.use(vuetify);
+app.use(Slicksort);
 
 app.mount('#app');

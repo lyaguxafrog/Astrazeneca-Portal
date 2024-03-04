@@ -2,7 +2,7 @@
   <v-container class="ma-0 pt-3 pb-3">
     <div class="v-col-5">
       <Title> Создание экрана №1 </Title>
-      <v-form validate-on="input" @submit.prevent="onValidate">
+      <v-form v-model="isValid" validate-on="input" @submit.prevent="onValidate">
         <TextEditor
           v-model="screen.literature"
           title="Список литературы*"
@@ -32,7 +32,7 @@
           <h4 class="mr-3">Слева</h4>
           <v-bottom-sheet>
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-plus" density="comfortable"></v-btn>
+              <v-btn v-bind="props" icon="mdi-plus" density="comfortable" :disabled="!screen.id" />
             </template>
 
             <v-card title="Добавить блок слева">
@@ -45,8 +45,15 @@
             </v-card>
           </v-bottom-sheet>
         </div>
-        <v-card class="mb-3 pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
-          <template v-slot:title> Экран №1 </template>
+
+        <v-card
+          v-for="element in screen.leftElements"
+          :key="element.id"
+          class="mb-3 pb-2"
+          prepend-icon="mdi-invoice-list-outline"
+          elevation="6"
+        >
+          <template v-slot:title> {{ element.type }} </template>
 
           <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
             <div class="mr-4 text-body-2 text-grey-darken-1">
@@ -65,21 +72,28 @@
           <h4 class="mr-3">Справа</h4>
           <v-bottom-sheet>
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-plus" density="comfortable"></v-btn>
+              <v-btn v-bind="props" icon="mdi-plus" density="comfortable" :disabled="!screen.id" />
             </template>
 
             <v-card title="Добавить блок справа">
               <div class="d-flex ga-2 pa-3 pb-4">
-                <v-btn> Кнопка </v-btn>
-                <v-btn> Текст </v-btn>
-                <v-btn> Изображение </v-btn>
-                <v-btn> Выпадающий список </v-btn>
+                <ButtonBlock />
+                <TextBlock />
+                <ImageBlock />
+                <DropdownBlock />
               </div>
             </v-card>
           </v-bottom-sheet>
         </div>
-        <v-card class="mb-3 pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
-          <template v-slot:title> Экран №1 </template>
+
+        <v-card
+          v-for="element in screen.rightElements"
+          :key="element.id"
+          class="mb-3 pb-2"
+          prepend-icon="mdi-invoice-list-outline"
+          elevation="6"
+        >
+          <template v-slot:title> {{ element.type }} </template>
 
           <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
             <div class="mr-4 text-body-2 text-grey-darken-1">
@@ -101,6 +115,7 @@
 import { ref } from 'vue';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
+import { ScreenInfo } from '@/types/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
 import ButtonBlock from '@/components/practicum/button-block.vue';
@@ -108,17 +123,29 @@ import TextBlock from '@/components/practicum/text-block.vue';
 import ImageBlock from '@/components/practicum/image-block.vue';
 import DropdownBlock from '@/components/practicum/dropdown-block.vue';
 
-const screen = ref({
+const screen = ref<ScreenInfo>({
+  id: 0,
   literature: '',
   literatureDescription: '',
-  description: ''
+  description: '',
+  leftElements: [],
+  rightElements: []
 });
 
-const { editablePracticum: practicum } = usePracticumStore();
+const { editablePracticum: practicum, saveScreen } = usePracticumStore();
 
 const isDirty = ref(false);
+const isValid = ref(false);
 const onValidate = () => {
   isDirty.value = true;
+
+  setTimeout(() => {
+    if (!isValid.value) {
+      return;
+    }
+
+    saveScreen(screen.value);
+  });
 };
 </script>
 

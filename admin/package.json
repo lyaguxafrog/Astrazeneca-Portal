@@ -17,6 +17,7 @@
     "sass": "^1.71.1",
     "vue": "^3.2.13",
     "vue-router": "4",
+    "vue-slicksort": "^2.0.5",
     "vue-use": "^0.2.0",
     "vuetify": "^3.5.6"
   },
