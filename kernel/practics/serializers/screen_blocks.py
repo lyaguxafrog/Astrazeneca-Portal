@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
+# # -*- coding: utf-8 -*-
 
-from rest_framework import serializers
+# from rest_framework import serializers
 
 from practics.models import (ScreenPopupBlock,
                              ScreenButton, ScreenImageBlock,
@@ -24,25 +24,25 @@ class ImagesSerializer(serializers.ModelSerializer):
         model = ScreenImageBlock
         fields = '__all__'
 
-    def get_image_desktop_810px(self, obj):
-        return self.get_relative_url(obj.image_desktop_810px)
+#     def get_image_desktop_810px(self, obj):
+#         return self.get_relative_url(obj.image_desktop_810px)
 
-    def get_image_desktop_1620px(self, obj):
-        return self.get_relative_url(obj.image_desktop_1620px)
+#     def get_image_desktop_1620px(self, obj):
+#         return self.get_relative_url(obj.image_desktop_1620px)
 
-    def get_image_mobile_400px(self, obj):
-        return self.get_relative_url(obj.image_mobile_400px)
+#     def get_image_mobile_400px(self, obj):
+#         return self.get_relative_url(obj.image_mobile_400px)
 
-    def get_image_mobile_800px(self, obj):
-        return self.get_relative_url(obj.image_mobile_800px)
+#     def get_image_mobile_800px(self, obj):
+#         return self.get_relative_url(obj.image_mobile_800px)
 
-    def get_relative_url(self, file_field_or_url):
-        if file_field_or_url and hasattr(file_field_or_url, 'url'):
-            return file_field_or_url.url
-        elif isinstance(file_field_or_url,
-        str) and file_field_or_url.startswith('http'):
-            return file_field_or_url
-        return None
+#     def get_relative_url(self, file_field_or_url):
+#         if file_field_or_url and hasattr(file_field_or_url, 'url'):
+#             return file_field_or_url.url
+#         elif isinstance(file_field_or_url,
+#         str) and file_field_or_url.startswith('http'):
+#             return file_field_or_url
+#         return None
 
 
 class PopUpSerializer(serializers.ModelSerializer):
