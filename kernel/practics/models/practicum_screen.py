@@ -2,11 +2,10 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
-from django.core.validators import FileExtensionValidator, URLValidator
-from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from practics.services.url_valid import validate_relative_or_absolute_url
 
-# Блоки контента слева
+
 class ScreenTextBlock(models.Model):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_text_block_left')

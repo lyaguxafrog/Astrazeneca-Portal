@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from tabnanny import verbose
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from ckeditor.fields import RichTextField
@@ -19,15 +18,16 @@ class Practicum(models.Model):
     pacient_description = RichTextField(
                         verbose_name='Краткая информация о пациенте *',
                         help_text='Внутри практикума.',
-                        default='''
-                <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
-                <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
-                            ''')
+                #         default='''
+                # <p><span style="color:#00d1ff"><strong>Имя:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Возраст:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Образ жизни:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Семейный анамнез:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Перенесенные заболевания:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Оценка состояния:</strong></span></p>
+                # <p><span style="color:#00d1ff"><strong>Диагноз:</strong></span></p>
+                #             '''
+                            )
 
     priority = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)],

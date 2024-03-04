@@ -3,24 +3,18 @@
 from rest_framework import serializers
 
 from practics.models import (Practicum, Screens)
-from .screen_blocks import (LeftButtonSerializer, LeftImagesSerializer,
-                                  LeftPopUpSerializer, LeftTextSerializer,
-                                  RightTextSerializer, RightButtonSerializer,
-                                  RightImagesSerializer, RightPopUpSerializer)
+from .screen_blocks import (ButtonSerializer, ImagesSerializer,
+                                  PopUpSerializer, TextSerializer)
 
 
 # Экраны
 class ScreenSerializer(serializers.ModelSerializer):
     # лево
-    screen_text_block_left = LeftTextSerializer(many=True, read_only=True)
-    screen_image_block_left = LeftImagesSerializer(many=True, read_only=True)
-    screen_popup_block_left = LeftPopUpSerializer(many=True, read_only=True)
-    screen_button_block_left = LeftButtonSerializer(many=True, read_only=True)
+    screen_text_block = TextSerializer(many=True, read_only=True)
+    screen_image_block = ImagesSerializer(many=True, read_only=True)
+    screen_popup_block = PopUpSerializer(many=True, read_only=True)
+    screen_button_block = ButtonSerializer(many=True, read_only=True)
 
-    screen_text_block_right = RightTextSerializer(many=True, read_only=True)
-    screen_image_block_right = RightImagesSerializer(many=True, read_only=True)
-    screen_popup_block_right = RightPopUpSerializer(many=True, read_only=True)
-    screen_button_block_right = RightButtonSerializer(many=True, read_only=True)
 
     class Meta:
         model = Screens
