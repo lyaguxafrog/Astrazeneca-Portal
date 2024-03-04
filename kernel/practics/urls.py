@@ -18,13 +18,5 @@ urlpatterns = [
           PrTestListBySpecialty.as_view(),
           name='practicum-tests-list-by-speciality-id'),
 
-#      path('practicum/<int:pk>/', PracticumDetailView.as_view(),
-#           name='practicum-detail'),
 
-#      path('practicum/speciality/<int:speciality>/',
-#           PracticumListBySpecialty.as_view(),
-#           name='practicum-list-by-speciality-id' ),
-
-#      path('practicum/', PracticumListView.as_view(),
-#           name='practicum-list')
  ]
