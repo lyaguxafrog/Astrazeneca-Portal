@@ -6,10 +6,9 @@ from django.core.validators import FileExtensionValidator
 from practics.services.url_valid import validate_relative_or_absolute_url
 
 
-
 # Блоки контента слева
 class ScreenTextBlock(models.Model):
-    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
+    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
                                related_name='screen_text_block_left')
 
     side = models.CharField()
