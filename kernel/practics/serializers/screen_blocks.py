@@ -53,3 +53,4 @@ class PopUpSerializer(serializers.ModelSerializer):
 class ButtonSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenButton
+        fields = '__all__'
