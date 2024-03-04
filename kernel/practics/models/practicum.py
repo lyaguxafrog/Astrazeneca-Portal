@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from tabnanny import verbose
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+
 from ckeditor.fields import RichTextField
+from polymorphic.models import PolymorphicModel
 
 
-class Practicum(models.Model):
+
+class Practicum(PolymorphicModel):
     title = models.CharField(verbose_name="Название практикума *",
                              max_length=90)
     image = models.ImageField(upload_to='practicum/',
@@ -59,8 +61,7 @@ class Practicum(models.Model):
         return self.title
 
 
-
-class Screens(models.Model):
+class Screens(PolymorphicModel):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
 

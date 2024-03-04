@@ -1,5 +1,5 @@
 <template>
-  <div class="confirm-button" :class="{right}">
+  <div class="confirm-button">
     <template v-if="!props.active">
       <AppButton v-if="props.to" :primary="primary" class="confirm-button__btn" :to="props.to" :target="isAbsoluteUrl(props.to) ? '_blank' : undefined">
         <slot />
@@ -41,7 +41,6 @@ const props = defineProps<{
   primary?: boolean;
   to?: string;
   file?: string;
-  right?: boolean;
 }>();
 
 const isConfirmShown = ref(false);
@@ -63,35 +62,6 @@ const apply = () => {
 <style scoped lang="scss">
 .confirm-button {
   position: relative;
-
-  @include md-and-up {
-    &.right {
-      .confirm-button__message {
-        flex-direction: row-reverse;
-
-        p {
-          margin-right: 0;
-          margin-left: 40px;
-        }
-
-        &-wrapper {
-          right: auto;
-          left: 0;
-
-          justify-content: flex-start;
-          &.shown {
-            width: 60vw;
-          }
-        }
-
-        &-btn-container {
-          &:before {
-            display: none;
-          }
-        }
-      }
-    }
-  }
 
   &__btn {
     width: 100%;
@@ -214,22 +184,6 @@ const apply = () => {
       font-size: 18px;
       line-height: 1;
     }
-
-
-    &__message {
-      font-size: 20px;
-
-      &-btn {
-        width: 96px;
-
-        font-size: 20px;
-      }
-    }
-
-    p {
-      width: 218px;
-      margin-right: 10px;
-    }
   }
 
   @include md-and-down {
@@ -258,7 +212,6 @@ const apply = () => {
       letter-spacing: -0.15px;
 
       border-radius: 20px 20px 0 0;
-      box-shadow: 0 0 16px 5px rgba($main-bg-color, 0.3);
 
       p {
         width: 100%;
@@ -273,7 +226,6 @@ const apply = () => {
 
         width: 100%;
         height: auto;
-        overflow: initial;
 
         transform: translateY(110%);
         transition: transform $tr-dur;

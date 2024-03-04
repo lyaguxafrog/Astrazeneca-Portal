@@ -5,10 +5,15 @@ from ckeditor.fields import RichTextField
 from django.core.validators import FileExtensionValidator, URLValidator
 from django.core.exceptions import ValidationError
 from practics.services.url_valid import validate_relative_or_absolute_url
+from polymorphic.models import PolymorphicModel
 
-# Блоки контента слева
-class ScreenTextBlock_left(models.Model):
+
+class Blocks(PolymorphicModel):
     screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+                               related_name='block')
+# Блоки контента слева
+class ScreenTextBlock_left(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_text_block_left')
 
     text = RichTextField(verbose_name='текст *')
@@ -18,8 +23,8 @@ class ScreenTextBlock_left(models.Model):
         verbose_name='блок текста слева'
         verbose_name_plural = 'блоки текста слева'
 
-class ScreenImageBlock_left(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+class ScreenImageBlock_left(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_image_block_left')
 
     image = models.ImageField(upload_to='practicums/blocks/',
@@ -36,8 +41,8 @@ class ScreenImageBlock_left(models.Model):
         verbose_name_plural = 'блоки изображения слева'
 
 
-class ScreenPopupBlock_left(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+class ScreenPopupBlock_left(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_popup_block_left')
 
     menu_title = models.CharField(verbose_name='Заголовок пункта *')
@@ -48,8 +53,8 @@ class ScreenPopupBlock_left(models.Model):
         verbose_name='блок выпадающий список слева'
         verbose_name_plural = 'блоки выпадающий список слева'
 
-class ScreenButton_left(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+class ScreenButton_left(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_button_block_left')
 
     button_title = models.CharField(verbose_name='Заголовк кнопки *')
@@ -110,8 +115,8 @@ class ScreenButton_left(models.Model):
 
 
 
-class ScreenTextBlock_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+class ScreenTextBlock_right(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_text_block_right')
 
     text = RichTextField(verbose_name='текст *')
@@ -121,8 +126,8 @@ class ScreenTextBlock_right(models.Model):
         verbose_name='блок текста справа'
         verbose_name_plural = 'блоки текста справа'
 
-class ScreenImageBlock_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+class ScreenImageBlock_right(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_image_block_right')
 
     image = models.ImageField(upload_to='practicums/blocks/',
@@ -139,8 +144,8 @@ class ScreenImageBlock_right(models.Model):
         verbose_name_plural = 'блоки изображения справа'
 
 
-class ScreenPopupBlock_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+class ScreenPopupBlock_right(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_popup_block_right')
 
     menu_title = models.CharField(verbose_name='Заголовок пункта *', blank=True, null=True)
@@ -151,8 +156,9 @@ class ScreenPopupBlock_right(models.Model):
         verbose_name='блок выпадающий список справа'
         verbose_name_plural = 'блоки выпадающий список справа'
 
-class ScreenButton_right(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
+
+class ScreenButton_right(PolymorphicModel):
+    screen = models.ForeignKey('Blocks', on_delete=models.CASCADE,
                                related_name='screen_button_block_right')
 
     button_title = models.CharField(verbose_name='Заголовк кнопки *')
@@ -211,3 +217,19 @@ class ScreenButton_right(models.Model):
         self.screen_redirect = screen_redirect
 
         super(ScreenButton_right, self).save(*args, **kwargs)
+
+
+class PopUpPoint_left(PolymorphicModel):
+    popup = models.ForeignKey('practics.ScreenPopupBlock_left', on_delete=models.CASCADE,
+                              related_name='point_left')
+
+    menu_title = models.CharField(verbose_name='Заголовок пункта *')
+    text = RichTextField(verbose_name='Текст *')
+
+
+class PopUpPoint_right(PolymorphicModel):
+    popup = models.ForeignKey('practics.ScreenPopupBlock_right', on_delete=models.CASCADE,
+                              related_name='point_right')
+
+    menu_title = models.CharField(verbose_name='Заголовок пункта *')
+    text = RichTextField(verbose_name='Текст *')
