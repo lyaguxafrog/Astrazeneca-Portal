@@ -50,11 +50,19 @@
       </v-btn>
     </div>
 
-    <SlickList axis="y" v-model:list="practicum.screens">
+    <SlickList axis="y" v-model:list="practicum.screens" useDragHandle>
       <SlickItem v-for="(screen, index) in practicum.screens" :key="screen.id" :index="index">
         <div class="pt-2 pb-2">
           <v-card class="pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
-            <template v-slot:title> Экран №{{ screen.id }} </template>
+            <template v-slot:title>
+              <div class="d-flex">
+                Экран №{{ screen.id }}
+                <v-spacer />
+                <DragHandle class="cursor-grab">
+                  <v-icon icon="mdi-menu" />
+                </DragHandle>
+              </div>
+            </template>
             <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
               <div class="mr-4 text-body-2 text-grey-darken-1">
                 <b>23.06.2020</b>
@@ -79,7 +87,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { SlickList, SlickItem } from 'vue-slicksort';
+import { SlickList, SlickItem, DragHandle } from 'vue-slicksort';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
