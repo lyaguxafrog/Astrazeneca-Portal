@@ -14,6 +14,8 @@ DOCS = (os.getenv('DOCS_FLAG') == 'True')
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
+    CSRF_COOKIE_SECURE = False
+    CSRF_TRUSTED_ORIGINS = ['http://*']
 else:
     ALLOWED_HOSTS = [os.getenv("OUR_DOMAIN"),
                      f'{os.getenv("OUR_DOMAIN")}:8000',
