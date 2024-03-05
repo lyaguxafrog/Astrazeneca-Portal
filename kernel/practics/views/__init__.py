@@ -2,4 +2,6 @@
 
 from .prtest import (PrTestListAPIView, PrTestDetailAPIView,
                      PrTestListBySpecialty)
-from .practicum import PracticumCreateView, GetPracticumByIdView, GetPracticumsBySpecialityView ,delete_practicum, update_practicum
+from .practicum import (PracticumCreateView, GetPracticumByIdView,
+                        GetPracticumsBySpecialityView, UpdatePracticumView,
+                        DeletePracticumView)

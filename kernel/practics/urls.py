@@ -6,7 +6,8 @@ from rest_framework import views
 
 from practics.views import (PrTestListAPIView, PrTestDetailAPIView,
                             PracticumCreateView, GetPracticumsBySpecialityView,
-                            GetPracticumByIdView, update_practicum, delete_practicum)
+                            GetPracticumByIdView, DeletePracticumView,
+                            UpdatePracticumView)
 from practics.views.prtest import PrTestListBySpecialty
 
 urlpatterns = [
@@ -25,7 +26,7 @@ urlpatterns = [
 
     path('practicum/speciality/<int:speciality_id>/', GetPracticumsBySpecialityView.as_view(), name='get_practicums_by_speciality'),
     path('practicum/<int:practicum_id>/', GetPracticumByIdView.as_view(), name='get_practicum_by_id'),
-    path('practicum/delete/<int:practicum_id>/', delete_practicum, name='delete_practicum'),
-    path('practicum/update/<int:practicum_id>/', update_practicum, name='update_practicum'),
+    path('practicum/delete/<int:practicum_id>/', DeletePracticumView.as_view(), name='delete_practicum'),
+    path('practicum/update/<int:practicum_id>/', UpdatePracticumView.as_view(), name='update_practicum'),
 
 ]
