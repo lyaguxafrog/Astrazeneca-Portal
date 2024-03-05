@@ -5,8 +5,9 @@ from django.urls import path
 from rest_framework import views
 
 from practics.views import (PrTestListAPIView, PrTestDetailAPIView,
-                            PracticumCreateView, get_practicums_by_speciality,
-                            get_practicum_by_id, update_practicum, delete_practicum)
+                            PracticumCreateView, GetPracticumsBySpecialityView,
+                            GetPracticumByIdView, DeletePracticumView,
+                            UpdatePracticumView)
 from practics.views.prtest import PrTestListBySpecialty
 
 urlpatterns = [
@@ -23,9 +24,9 @@ urlpatterns = [
     path('practicum/create/', PracticumCreateView.as_view(),
          name='practicum_create'),
 
-    path('practicum/speciality/<int:speciality_id>/', get_practicums_by_speciality, name='get_practicums_by_speciality'),
-    path('practicum/<int:practicum_id>/', get_practicum_by_id, name='get_practicum_by_id'),
-    path('practicum/delete/<int:practicum_id>/', delete_practicum, name='delete_practicum'),
-    path('practicum/update/<int:practicum_id>/', update_practicum, name='update_practicum'),
+    path('practicum/speciality/<int:speciality_id>/', GetPracticumsBySpecialityView.as_view(), name='get_practicums_by_speciality'),
+    path('practicum/<int:practicum_id>/', GetPracticumByIdView.as_view(), name='get_practicum_by_id'),
+    path('practicum/delete/<int:practicum_id>/', DeletePracticumView.as_view(), name='delete_practicum'),
+    path('practicum/update/<int:practicum_id>/', UpdatePracticumView.as_view(), name='update_practicum'),
 
 ]
