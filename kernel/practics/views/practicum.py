@@ -92,3 +92,16 @@ class DeletePracticumView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Practicum.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class GetAllPracticumsView(APIView):
+    @swagger_auto_schema(
+        responses={
+            200: PracticumSerializer(many=True),
+            404: 'Not Found'
+        }
+    )
+    def get(self, request, *args, **kwargs):
+        practicums = Practicum.objects.all()
+        serializer = PracticumSerializer(practicums, many=True)
+        return Response(serializer.data)
