@@ -1,13 +1,19 @@
-import { ref, watch } from 'vue';
-import { Practicum, PracticumScreenElement, ScreenInfo } from '@/types/practicum';
+import { ref } from 'vue';
+import { Practicum, ScreenInfo } from '@/types/practicum';
 import { getUiId } from '@/utils/functions';
+import { useRequest } from '@/utils/composables/request';
 
 const defaultPatientInfo =
   '<p><strong style="color: rgb(0, 209, 255);">Имя:</strong></p><p><strong style="color: rgb(0, 209, 255);">Возраст:</strong></p><p><strong style="color: rgb(0, 209, 255);">Образ жизни:</strong></p><p><strong style="color: rgb(0, 209, 255);">Семейный анамнез:</strong></p><p><strong style="color: rgb(0, 209, 255);">Перенесенные заболевания:</strong></p><p><strong style="color: rgb(0, 209, 255);">Оценка состояния:</strong></p><p><strong style="color: rgb(0, 209, 255);">Диагноз:</strong></p>';
 
 export const usePracticumStore = () => {
+  const { get, post } = useRequest();
+
+  const practicums = ref<Practicum[]>([]);
+
   const editablePracticum = ref<Practicum>({
     id: 0,
+    priority: 50,
     title: '',
     image: null,
     description: '',
@@ -33,8 +39,19 @@ export const usePracticumStore = () => {
     ]
   });
 
-  const savePracticum = () => {
-    editablePracticum.value.id = getUiId();
+  const savePracticum = async () => {
+    const mappedPracticum = {
+      title: editablePracticum.value.title,
+      description: editablePracticum.value.description,
+      pacient_description: editablePracticum.value.patientInfo,
+      speciality: editablePracticum.value.speciality,
+      priority: editablePracticum.value.priority,
+      screens: []
+    };
+
+    const res = await post('/practicum/create', mappedPracticum);
+
+    console.log(res);
   };
 
   const saveScreen = (screen: ScreenInfo) => {
@@ -44,19 +61,15 @@ export const usePracticumStore = () => {
     editablePracticum.value.screens.push(newScreen);
   };
 
-  watch(
-    editablePracticum,
-    () => {
-      console.log(editablePracticum.value);
-    },
-    {
-      deep: true
-    }
-  );
+  const getPracticums = async () => {
+    await get('/practicum/speciality');
+  };
 
   return {
     editablePracticum,
     saveScreen,
-    savePracticum
+    savePracticum,
+    practicums,
+    getPracticums
   };
 };

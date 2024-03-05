@@ -1,3 +1,5 @@
+import { Speciality } from '@/types/specisalities';
+
 export enum PracticumScreenElement {
   Button = 'button',
   Text = 'text',
@@ -37,10 +39,11 @@ export type ScreenInfo = {
 
 export type Practicum = {
   id: number;
+  priority: number;
   title: string;
   image: [File] | null;
   description: string;
   patientInfo: string;
-  speciality: string[];
+  speciality: Speciality[];
   screens: ScreenInfo[];
 };

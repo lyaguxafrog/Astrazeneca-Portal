@@ -30,7 +30,9 @@
           clearable
           chips
           label="Специальность*"
-          :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+          item-title="name"
+          item-value="id"
+          :items="specialities"
           :rules="[required(practicum.speciality)]"
           multiple
         />
@@ -90,12 +92,14 @@ import { useRouter } from 'vue-router';
 import { SlickList, SlickItem, DragHandle } from 'vue-slicksort';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
+import { useSpecialitiesStore } from '@/store/specialities';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
 
 const $router = useRouter();
 
 const { editablePracticum: practicum, savePracticum } = usePracticumStore();
+const { specialities } = useSpecialitiesStore();
 
 const isDirty = ref(false);
 const isValid = ref(false);
