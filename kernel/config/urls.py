@@ -10,7 +10,7 @@ from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-
+import os
 
 
 schema_view = get_schema_view(
@@ -45,3 +45,8 @@ if DOCS:
         path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
         path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
         ]
+else:
+    urlpatterns += [
+        path('swagger/', RedirectView.as_view(url=f"https://{os.getenv('OUR_DOMAIN')}"), name='schema-swagger-ui'),
+        path('redoc/', RedirectView.as_view(url=f'https://{os.getenv("OUR_DOMAIN")}'), name='schema-redoc')
+    ]
