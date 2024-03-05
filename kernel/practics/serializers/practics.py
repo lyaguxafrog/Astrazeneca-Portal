@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from practics.models import (Practicum, Screens, ScreenButton, ScreenImageBlock,
                              ScreenPopupBlock, ScreenTextBlock)
-
+from pages.models import Specialty
 
 
 class ScreenTextBlockSerializer(serializers.ModelSerializer):
@@ -83,7 +83,17 @@ class PracticumSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         screens_data = validated_data.pop('screens', [])
+        speciality_data = validated_data.pop('speciality', [])
         practicum = Practicum.objects.create(**validated_data)
+
+        for speciality_item in speciality_data:
+            if isinstance(speciality_item, Specialty):
+                # Если item уже является объектом Specialty, просто добавляем его
+                practicum.speciality.add(speciality_item)
+            else:
+                # Если item является идентификатором, получаем объект Specialty и добавляем его
+                speciality = Specialty.objects.get(id=speciality_item)
+                practicum.speciality.add(speciality)
 
         for screen_data in screens_data:
             # Создаем экран, связанный с только что созданным практикумом
