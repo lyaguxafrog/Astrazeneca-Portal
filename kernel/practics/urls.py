@@ -2,7 +2,6 @@
 
 
 from django.urls import path
-from rest_framework import views
 
 from practics.views import (PrTestListAPIView, PrTestDetailAPIView,
                             PracticumCreateView, GetPracticumsBySpecialityView,

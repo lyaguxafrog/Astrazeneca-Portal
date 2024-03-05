@@ -89,6 +89,14 @@ class PracticumSerializer(serializers.ModelSerializer):
             # Создаем экран, связанный с только что созданным практикумом
             screen = Screens.objects.create(practicum=practicum, **screen_data)
 
+            image = validated_data.pop('image', None)
+
+            if image:
+                # Создание экземпляра модели с изображением
+                practicum = Practicum.objects.create(image=image, **validated_data)
+            else:
+                practicum = Practicum.objects.create(**validated_data)
+
             # Создаем блоки, связанные с только что созданным экраном
             if 'screen_text_block' in screen_data:
                 for text_block_data in screen_data['screen_text_block']:
