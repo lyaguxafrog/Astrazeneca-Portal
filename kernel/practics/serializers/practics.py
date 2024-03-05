@@ -75,7 +75,7 @@ class ScreensSerializer(serializers.ModelSerializer):
 
 
 class PracticumSerializer(serializers.ModelSerializer):
-    screens = ScreensSerializer(many=True)
+    screens = ScreensSerializer(many=True, required=False)
 
     class Meta:
         model = Practicum
