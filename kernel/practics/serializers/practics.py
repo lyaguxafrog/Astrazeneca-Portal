@@ -82,7 +82,7 @@ class PracticumSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        screens_data = validated_data.pop('screens')
+        screens_data = validated_data.pop('screens', [])
         practicum = Practicum.objects.create(**validated_data)
 
         for screen_data in screens_data:
