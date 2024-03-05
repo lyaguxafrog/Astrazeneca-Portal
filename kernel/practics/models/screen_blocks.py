@@ -8,8 +8,7 @@ from practics.services.url_valid import validate_relative_or_absolute_url
 
 # Блоки контента слева
 class ScreenTextBlock(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_text_block_left')
+    screen_id = models.IntegerField()
 
     side = models.CharField()
 
@@ -21,8 +20,7 @@ class ScreenTextBlock(models.Model):
         verbose_name_plural = 'блоки текста слева'
 
 class ScreenImageBlock(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_image_block_left')
+    screen_id = models.IntegerField()
 
     image = models.ImageField(upload_to='practicums/blocks/',
                               verbose_name='изображение *')
@@ -41,8 +39,7 @@ class ScreenImageBlock(models.Model):
 
 
 class ScreenPopupBlock(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_popup_block_left')
+    screen_id = models.IntegerField()
 
     side = models.CharField()
 
@@ -56,8 +53,7 @@ class ScreenPopupBlock(models.Model):
 
 
 class ScreenButton(models.Model):
-    screen = models.ForeignKey('Screens', on_delete=models.CASCADE,
-                               related_name='screen_button_block_left')
+    screen_id = models.IntegerField()
 
     button_title = models.CharField(verbose_name='Заголовк кнопки *')
 
