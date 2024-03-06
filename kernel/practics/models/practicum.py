@@ -4,11 +4,10 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from ckeditor.fields import RichTextField
-from polymorphic.models import PolymorphicModel
 
 
 
-class Practicum(PolymorphicModel):
+class Practicum(models.Model):
     title = models.CharField(verbose_name="Название практикума *",
                              max_length=90)
     image = models.ImageField(upload_to='practicum/',
@@ -62,7 +61,7 @@ class Practicum(PolymorphicModel):
         return self.title
 
 
-class Screens(PolymorphicModel):
+class Screens(models.Model):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
 
