@@ -131,4 +131,20 @@ class PracticumSerializer(serializers.ModelSerializer):
                 for button_block_data in screen_data['screen_button_block']:
                     ScreenButton.objects.create(screen=screen, **button_block_data)
 
+
         return practicum
+
+    def update(self, instance, validated_data):
+        # Проверяем, была ли предоставлена новая картинка
+        image = validated_data.get('image', None)
+        if image is not None:
+            # Если картинка была предоставлена, обновляем её
+            instance.image = image
+        # Обновляем остальные поля
+
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.speciality = validated_data.get('speciality', instance.speciality)
+        instance.save()
+
+        return instance
