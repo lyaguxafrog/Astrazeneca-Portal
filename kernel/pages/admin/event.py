@@ -12,7 +12,7 @@ class EventsAdmin(admin.ModelAdmin):
         'date'
     )
     fields = (
-        'name',
+        'namee',
         'date',
         'cover',
         'text',
