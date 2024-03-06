@@ -9,5 +9,5 @@ class PracticsConfig(AppConfig):
 
     default_auto_field = 'django.db.models.BigAutoField'
 
-    # def ready(self):
-    #     import practics.signals
+    def ready(self):
+        import practics.signals

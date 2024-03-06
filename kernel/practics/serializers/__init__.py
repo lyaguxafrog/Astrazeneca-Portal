@@ -3,4 +3,4 @@
 from .prtest import (PrTestListSerializer,
                      PrTestDetailSerializer, AnswerButtonsSerializer
 )
-# from .practics import PracticumSerializer
+from .practics import PracticumSerializer
