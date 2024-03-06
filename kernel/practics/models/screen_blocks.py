@@ -49,7 +49,11 @@ class ScreenPopupBlock(models.Model):
         verbose_name='блок выпадающий список слева'
         verbose_name_plural = 'блоки выпадающий список слева'
 
-# TODO: тут класс для варианта ответа
+class PopUpPoint(models.Model):
+    PopUpBlockId = models.IntegerField()
+
+    title = models.CharField()
+    text = RichTextField()
 
 
 class ScreenButton(models.Model):
