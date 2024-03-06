@@ -13,7 +13,7 @@ class Practicum(models.Model):
     image = models.ImageField(upload_to='practicum/',
                               verbose_name='Изображение *')
 
-    description = RichTextField(verbose_name='Описание *',
+    desription = RichTextField(verbose_name='Описание *',
                                   max_length=200,
                                   help_text='Ограничение в 200 символов.')
 

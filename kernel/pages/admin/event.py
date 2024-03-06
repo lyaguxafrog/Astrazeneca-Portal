@@ -8,11 +8,11 @@ admin.site = custom_admin_site
 
 class EventsAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
+        'namee',
         'date'
     )
     fields = (
-        'name',
+        'namee',
         'date',
         'cover',
         'text',
