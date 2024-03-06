@@ -8,7 +8,7 @@ class PrTest(models.Model):
     title = models.CharField(verbose_name="Название теста *",
                              max_length=60, help_text='Ограничение в 60 символов.')
 
-    questions = RichTextField(verbose_name='Описание задания *')
+    question = RichTextField(verbose_name='Описание задания *')
     image = models.ImageField(upload_to='practics/test/',
                               verbose_name='Изображение *')
 
