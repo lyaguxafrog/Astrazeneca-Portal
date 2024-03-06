@@ -1,6 +1,27 @@
 <template>
-  <v-container class="ma-0 pt-3 pb-3">
-    <div class="v-col-5">
+  <v-container class="ma-0 pt-3 pb-3 pa-0 pa-xl-3">
+    <v-breadcrumbs
+      class="pa-0 pl-2 text-caption"
+      :items="[
+        {
+          title: 'Список практикумов',
+          disabled: false,
+          to: '/practicum'
+        },
+        {
+          title: 'Редактирование практикума',
+          disabled: false,
+          to: `/practicum/${practicum.id}`
+        },
+        {
+          title: 'Редактирование экрана',
+          disabled: true
+        }
+      ]"
+    >
+    </v-breadcrumbs>
+
+    <div class="v-col-12 v-col-xl-5">
       <Title> Создание экрана №1 </Title>
       <v-form v-model="isValid" validate-on="input" @submit.prevent="onValidate">
         <TextEditor
@@ -21,7 +42,7 @@
           :validated="isDirty"
           :rules="[required(screen.description)]"
         />
-        <v-btn type="submit"> Сохранить </v-btn>
+        <v-btn type="submit" :loading="isLoading"> Сохранить </v-btn>
       </v-form>
 
       <Title class="mt-6"> Компоненты </Title>
@@ -37,10 +58,10 @@
 
             <v-card title="Добавить блок слева">
               <div class="d-flex ga-2 pa-3 pb-4">
-                <ButtonBlock />
-                <TextBlock />
-                <ImageBlock />
-                <DropdownBlock />
+                <ButtonBlock side="left" :screenId="screen.id" />
+                <TextBlock side="left" :screenId="screen.id" />
+                <ImageBlock side="left" :screenId="screen.id" />
+                <DropdownBlock side="left" :screenId="screen.id" />
               </div>
             </v-card>
           </v-bottom-sheet>
@@ -53,13 +74,22 @@
           prepend-icon="mdi-invoice-list-outline"
           elevation="6"
         >
-          <template v-slot:title> {{ element.type }} </template>
+          <template v-slot:title>
+            {{
+              element.type === PracticumScreenElement.Button
+                ? 'Кнопка'
+                : element.type === PracticumScreenElement.Image
+                ? 'Изображение'
+                : 'Выпадающий список'
+            }}
+          </template>
 
           <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
-            <div class="mr-4 text-body-2 text-grey-darken-1">
-              <b>23.06.2020</b>
+            <div></div>
+            <!--            <div class="mr-4 text-body-2 text-grey-darken-1">
+              <b>DD.MM.YYYY</b>
               <p>Дата редактирования</p>
-            </div>
+            </div>-->
             <div class="d-flex">
               <v-btn icon="mdi-invoice-edit-outline" class="mr-2" :to="`/practicum/0/screen/0`" />
               <v-btn icon="mdi-delete-empty" class="bg-red" />
@@ -77,10 +107,10 @@
 
             <v-card title="Добавить блок справа">
               <div class="d-flex ga-2 pa-3 pb-4">
-                <ButtonBlock />
-                <TextBlock />
-                <ImageBlock />
-                <DropdownBlock />
+                <ButtonBlock side="right" :screenId="screen.id" />
+                <TextBlock side="right" :screenId="screen.id" />
+                <ImageBlock side="right" :screenId="screen.id" />
+                <DropdownBlock side="right" :screenId="screen.id" />
               </div>
             </v-card>
           </v-bottom-sheet>
@@ -96,10 +126,11 @@
           <template v-slot:title> {{ element.type }} </template>
 
           <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
-            <div class="mr-4 text-body-2 text-grey-darken-1">
-              <b>23.06.2020</b>
+            <div></div>
+            <!--            <div class="mr-4 text-body-2 text-grey-darken-1">
+              <b>DD.MM.YYYY</b>
               <p>Дата редактирования</p>
-            </div>
+            </div>-->
             <div class="d-flex">
               <v-btn icon="mdi-invoice-edit-outline" class="mr-2" :to="`/practicum/0/screen/0`" />
               <v-btn icon="mdi-delete-empty" class="bg-red" />
@@ -112,16 +143,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
-import { ScreenInfo } from '@/types/practicum';
+import { PracticumScreenElement, ScreenInfo } from '@/types/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
 import ButtonBlock from '@/components/practicum/button-block.vue';
 import TextBlock from '@/components/practicum/text-block.vue';
 import ImageBlock from '@/components/practicum/image-block.vue';
 import DropdownBlock from '@/components/practicum/dropdown-block.vue';
+
+const $router = useRouter();
+const $route = useRoute();
 
 const screen = ref<ScreenInfo>({
   id: 0,
@@ -132,21 +167,57 @@ const screen = ref<ScreenInfo>({
   rightElements: []
 });
 
-const { editablePracticum: practicum, saveScreen } = usePracticumStore();
+const { editablePracticum: practicum, saveScreen, init, isLoaded } = usePracticumStore();
 
-const isDirty = ref(false);
-const isValid = ref(false);
-const onValidate = () => {
-  isDirty.value = true;
+watch(
+  isLoaded,
+  () => {
+    const id = +$route.params.screenId;
 
-  setTimeout(() => {
-    if (!isValid.value) {
+    if (!id) {
       return;
     }
 
-    saveScreen(screen.value);
+    const existScreen = practicum.value.screens.find((s) => s.id === id);
+    if (existScreen) {
+      screen.value = existScreen;
+    }
+  },
+  {
+    immediate: true
+  }
+);
+
+const isDirty = ref(false);
+const isValid = ref(false);
+const isLoading = ref(false);
+const onValidate = () => {
+  isDirty.value = true;
+
+  setTimeout(async () => {
+    if (!isValid.value) {
+      return;
+    }
+    isLoading.value = true;
+
+    const res = await saveScreen(screen.value);
+
+    if (res) {
+      const lastScreen = res.screens.at(-1);
+
+      if (lastScreen) {
+        screen.value.id = lastScreen.id;
+        $router.replace({ params: { screenId: screen.value.id } });
+      }
+    }
+
+    isLoading.value = false;
   });
 };
+
+onMounted(() => {
+  init();
+});
 </script>
 
 <style scoped lang="scss"></style>

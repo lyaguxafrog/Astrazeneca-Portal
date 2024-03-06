@@ -7,7 +7,7 @@
     <v-card title="Блок с выпадающим списком">
       <v-card-text>
         <v-form validate-on="input" @submit.prevent="save">
-          <v-card v-for="(item, index) in dropdown" :key="index" class="mb-2">
+          <v-card v-for="item in dropdown" :key="item.id" class="mb-2">
             <v-card-text>
               <v-text-field
                 v-model="item.title"
@@ -38,17 +38,20 @@ import { ref } from 'vue';
 import { required } from '@/utils/validation';
 import { DropdownBlock, PracticumScreenElement } from '@/types/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
+import { getUiId } from '@/utils/functions';
 
-const defaultItem = {
-  type: PracticumScreenElement.Dropdown,
-  title: '',
-  text: ''
-} as DropdownBlock;
+const defaultItem = () =>
+  ({
+    id: getUiId(),
+    type: PracticumScreenElement.Dropdown,
+    title: '',
+    text: ''
+  } as DropdownBlock);
 
-const dropdown = ref<DropdownBlock[]>([defaultItem]);
+const dropdown = ref<DropdownBlock[]>([defaultItem()]);
 
 const addItem = () => {
-  dropdown.value.push(defaultItem);
+  dropdown.value.push(defaultItem());
 };
 
 const isOpened = ref(false);

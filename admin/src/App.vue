@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <RouterView></RouterView>
+    <RouterView />
+
     <v-snackbar
       v-model="shoveNote"
       multi-line
@@ -27,7 +28,7 @@ import { useSpecialitiesStore } from '@/store/specialities';
 import { useNotificationStore, Notification } from '@/store/notification';
 
 const { getSpecialities } = useSpecialitiesStore();
-const { getPracticums } = usePracticumStore();
+const { getPracticums, init } = usePracticumStore();
 const { notifications } = useNotificationStore();
 
 const shoveNote = ref(false);
@@ -47,7 +48,6 @@ watch(
 );
 
 getSpecialities();
-getPracticums();
 </script>
 
 <style scoped lang="scss"></style>

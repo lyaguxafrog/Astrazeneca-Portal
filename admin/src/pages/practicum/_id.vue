@@ -1,6 +1,21 @@
 <template>
-  <v-container class="ma-0 pt-3 pb-3">
-    <div class="v-col-5">
+  <v-container v-if="isLoaded" class="ma-0 pt-3 pb-3 pa-0 pa-xl-3">
+    <v-breadcrumbs
+      class="pa-0 pl-2 text-caption"
+      :items="[
+        {
+          title: 'Список практикумов',
+          disabled: false,
+          to: '/practicum'
+        },
+        {
+          title: 'Редактирование практикума',
+          disabled: true
+        }
+      ]"
+    />
+
+    <div class="v-col-12 v-col-xl-5">
       <Title>Создание практикума</Title>
       <v-form v-model="isValid" validate-on="input" @submit.prevent="onValidate">
         <v-text-field
@@ -12,9 +27,13 @@
         <v-file-input
           v-model="practicum.image"
           label="Изображение*"
-          class="mb-2"
-          :rules="[required(practicum.image)]"
+          :class="{ 'mb-2': !practicum.loadedImage }"
+          :rules="[required(practicum.image || practicum.loadedImage)]"
         />
+        <div v-if="practicum.loadedImage" class="text-medium-emphasis mb-2 text-body-2">
+          Загруженное
+          <a target="_blank" :href="`${baseUrl}${practicum.loadedImage}`">изображение</a>
+        </div>
 
         <TextEditor
           v-model="practicum.description"
@@ -58,7 +77,7 @@
           <v-card class="pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
             <template v-slot:title>
               <div class="d-flex">
-                Экран №{{ screen.id }}
+                Экран №{{ index + 1 }}
                 <v-spacer />
                 <DragHandle class="cursor-grab">
                   <v-icon icon="mdi-menu" />
@@ -66,10 +85,11 @@
               </div>
             </template>
             <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
-              <div class="mr-4 text-body-2 text-grey-darken-1">
-                <b>23.06.2020</b>
+              <div></div>
+              <!--              <div class="mr-4 text-body-2 text-grey-darken-1">
+                <b>DD.MM.YYYY</b>
                 <p>Дата редактирования</p>
-              </div>
+              </div>-->
               <div class="d-flex">
                 <v-btn
                   icon="mdi-invoice-edit-outline"
@@ -87,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { SlickList, SlickItem, DragHandle } from 'vue-slicksort';
 import { required } from '@/utils/validation';
@@ -95,10 +115,11 @@ import { usePracticumStore } from '@/store/practicum';
 import { useSpecialitiesStore } from '@/store/specialities';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
+import { baseUrl } from '@/utils/consts';
 
 const $router = useRouter();
 
-const { editablePracticum: practicum, savePracticum } = usePracticumStore();
+const { editablePracticum: practicum, savePracticum, init, isLoaded } = usePracticumStore();
 const { specialities } = useSpecialitiesStore();
 
 const isDirty = ref(false);
@@ -117,7 +138,7 @@ const onValidate = () => {
     try {
       const res = await savePracticum();
 
-      if (res?.id) {
+      if (res && res.id) {
         await $router.replace({ params: { id: res.id } });
       }
     } finally {
@@ -125,6 +146,10 @@ const onValidate = () => {
     }
   });
 };
+
+onMounted(() => {
+  init();
+});
 </script>
 
 <style scoped lang="scss"></style>

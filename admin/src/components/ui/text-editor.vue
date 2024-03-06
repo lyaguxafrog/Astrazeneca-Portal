@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, defineProps, ref, toRef } from 'vue';
+import { onMounted, defineProps, ref, toRef, watch } from 'vue';
 import { useVModel } from '@vueuse/core';
 import Quill from 'quill';
 import QuillResize from '@taoqf/quill-image-resize-module';
@@ -48,6 +48,17 @@ Quill.register(
 );
 
 let quill: Quill | null = null;
+
+const onInput = () => {
+  if (quill) {
+    editorValue.value = quill.root.innerHTML;
+    setTimeout(() => {
+      if (editorValue.value === '<p><br></p>') {
+        editorValue.value = '';
+      }
+    });
+  }
+};
 
 const toolbar = [
   ['bold', 'italic', 'underline', 'strike'],
@@ -137,16 +148,7 @@ const initQuill = () => {
     quill.clipboard.dangerouslyPasteHTML(props.modelValue);
   }
 
-  quill.on(Quill.events.TEXT_CHANGE, () => {
-    if (quill) {
-      editorValue.value = quill.root.innerHTML;
-      setTimeout(() => {
-        if (editorValue.value === '<p><br></p>') {
-          editorValue.value = '';
-        }
-      });
-    }
-  });
+  quill.on(Quill.events.TEXT_CHANGE, onInput);
 };
 
 onMounted(() => {

@@ -6,7 +6,7 @@
 
     <v-card title="Кнопка">
       <v-card-text>
-        <v-form validate-on="input" @submit.prevent>
+        <v-form v-model="isValid" validate-on="input" @submit.prevent>
           <v-text-field
             v-model="buttonInfo.title"
             label="Текст кнопки*"
@@ -18,6 +18,7 @@
             v-model="buttonInfo.btnType"
             label="Тип кнопки"
             :items="['Переход на экран', 'Ссылка на страницу', 'PDF-файл']"
+            :rules="[required(buttonInfo.btnType)]"
             @update="onBtnTypeUpdate"
           />
 
@@ -43,6 +44,7 @@
             v-model="buttonInfo.file"
             label="pdf-файл*"
             class="mb-2"
+            :rules="[required(buttonInfo.file)]"
           />
 
           <v-checkbox
@@ -61,7 +63,14 @@
             color="primary"
           />
 
-          <v-btn text="Сохранить" class="mt-4" type="submit" @click="save" color="blue"></v-btn>
+          <v-btn
+            text="Сохранить"
+            class="mt-4"
+            type="submit"
+            :loading="isLoading"
+            @click="save"
+            color="blue"
+          ></v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -69,29 +78,56 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import { required } from '@/utils/validation';
+import { ButtonBlock, PracticumScreenElement } from '@/types/practicum';
+import { usePracticumStore } from '@/store/practicum';
 
-const buttonInfo = ref({
+const props = defineProps<{
+  side: 'right' | 'left';
+  screenId?: number;
+}>();
+
+const { saveScreenBlock } = usePracticumStore();
+
+const buttonInfo = ref<ButtonBlock>({
+  id: 0,
+  type: PracticumScreenElement.Button,
   title: '',
   btnType: null,
-  screenNumber: '',
+  screenId: props.screenId,
+  screenNumber: undefined,
   link: '',
-  file: null,
+  file: undefined,
   withBg: true,
   confirmation: false
 });
 
 const onBtnTypeUpdate = () => {
-  buttonInfo.value.screenNumber = '';
+  buttonInfo.value.screenId = undefined;
   buttonInfo.value.link = '';
-  buttonInfo.value.file = null;
+  buttonInfo.value.file = undefined;
 };
+
+onMounted(() => {});
 
 const isOpened = ref(false);
 
-const save = () => {
+const isValid = ref(false);
+const isLoading = ref(false);
+
+const save = async () => {
+  if (!isValid.value) {
+    return;
+  }
+
+  isLoading.value = true;
+
   isOpened.value = false;
+
+  await saveScreenBlock(buttonInfo.value, props.side);
+
+  isLoading.value = false;
 };
 </script>
 

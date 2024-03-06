@@ -64,7 +64,12 @@
       "no-shadow": "off",
       "implicit-arrow-linebreak": "off",
       "no-restricted-syntax": "off",
-      "no-continue": "off"
+      "no-continue": "off",
+      "camelcase": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "prefer-destructuring": "off",
+      "no-spaced-func": "off",
+      "func-call-spacing": "off"
     }
   },
   "browserslist": [
