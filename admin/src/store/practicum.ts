@@ -2,12 +2,14 @@ import { ref } from 'vue';
 import { Practicum, ScreenInfo } from '@/types/practicum';
 import { getUiId } from '@/utils/functions';
 import { useRequest } from '@/utils/composables/request';
+import { useNotificationStore } from '@/store/notification';
 
 const defaultPatientInfo =
   '<p><strong style="color: rgb(0, 209, 255);">Имя:</strong></p><p><strong style="color: rgb(0, 209, 255);">Возраст:</strong></p><p><strong style="color: rgb(0, 209, 255);">Образ жизни:</strong></p><p><strong style="color: rgb(0, 209, 255);">Семейный анамнез:</strong></p><p><strong style="color: rgb(0, 209, 255);">Перенесенные заболевания:</strong></p><p><strong style="color: rgb(0, 209, 255);">Оценка состояния:</strong></p><p><strong style="color: rgb(0, 209, 255);">Диагноз:</strong></p>';
 
 export const usePracticumStore = () => {
   const { get, post } = useRequest();
+  const { showNotification } = useNotificationStore();
 
   const practicums = ref<Practicum[]>([]);
 
@@ -46,12 +48,26 @@ export const usePracticumStore = () => {
       pacient_description: editablePracticum.value.patientInfo,
       speciality: editablePracticum.value.speciality,
       priority: editablePracticum.value.priority,
-      screens: []
-    };
+      image: editablePracticum.value.image?.[0]
+      // screens: []
+      /* screens: [
+        { title: 'Экран 1', description: 'Описание экрана 1' },
+        { title: 'Экран 2', description: 'Описание экрана 2' }
+      ] */
+    } as any;
 
-    const res = await post('/practicum/create', mappedPracticum);
+    try {
+      const res = await post<{
+        id: number;
+      }>('/practicum/create/', mappedPracticum, true);
 
-    console.log(res);
+      return res;
+    } catch (e) {
+      showNotification({
+        text: 'Не удалось сохранить практикум',
+        type: 'error'
+      });
+    }
   };
 
   const saveScreen = (screen: ScreenInfo) => {
@@ -62,7 +78,9 @@ export const usePracticumStore = () => {
   };
 
   const getPracticums = async () => {
-    await get('/practicum/speciality');
+    const res = await get('/practicum/all');
+
+    console.log(res);
   };
 
   return {

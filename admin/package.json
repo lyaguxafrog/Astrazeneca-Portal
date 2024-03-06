@@ -62,7 +62,9 @@
       "object-curly-newline": "off",
       "operator-linebreak": "off",
       "no-shadow": "off",
-      "implicit-arrow-linebreak": "off"
+      "implicit-arrow-linebreak": "off",
+      "no-restricted-syntax": "off",
+      "no-continue": "off"
     }
   },
   "browserslist": [

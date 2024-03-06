@@ -37,7 +37,7 @@
           multiple
         />
 
-        <v-btn type="submit" class="mt-2"> Сохранить </v-btn>
+        <v-btn type="submit" class="mt-2" :loading="isLoading"> Сохранить </v-btn>
       </v-form>
 
       <Title class="mt-5">Экраны</Title>
@@ -103,17 +103,26 @@ const { specialities } = useSpecialitiesStore();
 
 const isDirty = ref(false);
 const isValid = ref(false);
+const isLoading = ref(false);
 const onValidate = () => {
   isDirty.value = true;
 
-  setTimeout(() => {
+  setTimeout(async () => {
     if (!isValid.value) {
       return;
     }
 
-    savePracticum();
+    isLoading.value = true;
 
-    $router.replace({ params: { id: practicum.value.id } });
+    try {
+      const res = await savePracticum();
+
+      if (res?.id) {
+        await $router.replace({ params: { id: res.id } });
+      }
+    } finally {
+      isLoading.value = false;
+    }
   });
 };
 </script>
