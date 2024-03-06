@@ -88,7 +88,18 @@ class PracticumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Practicum
-        fields = '__all__'
+        fields = [
+            'title',
+            'description',
+            'pacient_description',
+            'speciality',
+            'image',
+            'priority',
+            'screens',
+            ]
+        extra_kwargs = {
+            'image': {'required': False},
+        }
 
     def create(self, validated_data):
         screens_data = validated_data.pop('screens', [])
@@ -137,14 +148,35 @@ class PracticumSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # Проверяем, была ли предоставлена новая картинка
         image = validated_data.get('image', None)
+        screens_data = validated_data.pop('screens', [])
+        speciality_data = validated_data.pop('speciality', [])
+        instance.speciality.set(speciality_data)
+
+
+
+        for screen_data in screens_data:
+            screen_id = screen_data.get('id')
+            if screen_id:
+                # Если экран существует, обновляем его
+                screen = instance.screens.filter(id=screen_id).first()
+                if screen:
+                    for attr, value in screen_data.items():
+                        setattr(screen, attr, value)
+                    screen.save()
+            else:
+                # Если экран не существует, создаем новый
+                Screens.objects.create(practicum=instance, **screen_data)
+
+
         if image is not None:
             # Если картинка была предоставлена, обновляем её
             instance.image = image
-        # Обновляем остальные поля
 
+        # Обновляем остальные поля
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get('description', instance.description)
-        instance.speciality = validated_data.get('speciality', instance.speciality)
-        instance.save()
+        instance.pacient_description = validated_data.get('pacient_description', instance.pacient_description)
+        instance.priority = validated_data.get('priority', instance.priority) # Добавлено обновление поля priority
 
+        instance.save()
         return instance
