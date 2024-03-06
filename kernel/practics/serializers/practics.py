@@ -154,7 +154,6 @@ class PracticumSerializer(serializers.ModelSerializer):
         instance.speciality.set(speciality_data)
 
 
-
         for screen_data in screens_data:
             screen_id = screen_data.get('id')
             if screen_id:
