@@ -89,6 +89,7 @@ class PracticumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Practicum
         fields = [
+            'id',
             'title',
             'description',
             'pacient_description',
