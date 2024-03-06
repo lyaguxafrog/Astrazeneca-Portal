@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django_unused_media',
     'adminsortable2',
     'nested_admin',
-    'polymorphic',
+
 
     'pages',
     'users',
