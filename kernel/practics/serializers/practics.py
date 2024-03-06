@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 from practics.models import (Practicum, Screens, ScreenButton, ScreenImageBlock,
-                             ScreenPopupBlock, ScreenTextBlock)
+                             ScreenPopupBlock, ScreenTextBlock, PopUpPoint)
 from pages.models import Specialty
 
 
@@ -23,13 +23,22 @@ class ScreenImageBlockSerializer(serializers.ModelSerializer):
             'screen': {'required': False},
         }
 
+class PopUpPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PopUpPoint
+        fields = '__all__'
+
+
 class ScreenPopupBlockSerializer(serializers.ModelSerializer):
+    popup_points = PopUpPointSerializer(many=True)
+
     class Meta:
         model = ScreenPopupBlock
         fields = '__all__'
         extra_kwargs = {
             'screen': {'required': False},
         }
+
 
 class ScreenButtonSerializer(serializers.ModelSerializer):
     class Meta:
