@@ -10,7 +10,13 @@ from pages.models import Specialty
 class ScreenTextBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenTextBlock
-        fields = '__all__'
+        fields = [
+            'id',
+            'screen_id',
+            'side',
+            'text',
+            'order'
+        ]
         extra_kwargs = {
             'screen': {'required': False},
         }
@@ -18,7 +24,17 @@ class ScreenTextBlockSerializer(serializers.ModelSerializer):
 class ScreenImageBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenImageBlock
-        fields = '__all__'
+        fields = [
+            'id',
+            'screen_id',
+            'order',
+            'side',
+            'image',
+            'image_desktop_810px',
+            'image_desktop_1620px',
+            'image_mobile_400px',
+            'image_mobile_800px'
+        ]
         extra_kwargs = {
             'screen': {'required': False},
         }
@@ -53,10 +69,23 @@ class ScreensSerializer(serializers.ModelSerializer):
     screen_image_block = ScreenImageBlockSerializer(many=True, required=False)
     screen_popup_block = ScreenPopupBlockSerializer(many=True, required=False)
     screen_button_block = ScreenButtonSerializer(many=True, required=False)
+    literature = serializers.CharField()
+    leterature_approvals_and_decodings = serializers.CharField()
+    approvals_and_decodings = serializers.CharField()
 
     class Meta:
         model = Screens
-        fields = '__all__'
+        fields = [
+            'id',
+            'screen_text_block',
+            'screen_image_block',
+            'screen_popup_block',
+            'screen_button_block',
+            'literature',
+            'leterature_approvals_and_decodings',
+            'approvals_and_decodings',
+            'practicum',
+        ]
         extra_kwargs = {
             'practicum': {'required': False},
         }
