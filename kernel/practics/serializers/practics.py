@@ -114,7 +114,13 @@ class ScreensSerializer(serializers.ModelSerializer):
 
 
 class PracticumSerializer(serializers.ModelSerializer):
-    screens = ScreensSerializer(many=True, required=False)
+    title = serializers.CharField()
+    description = serializers.CharField()
+    pacient_description = serializers.CharField()
+    priority = serializers.IntegerField()
+    speciality = serializers.ListField(child=serializers.IntegerField())
+    image = serializers.ImageField()
+    screens = ScreensSerializer(many=True)
 
     class Meta:
         model = Practicum
