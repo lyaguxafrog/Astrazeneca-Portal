@@ -69,9 +69,9 @@ class ScreensSerializer(serializers.ModelSerializer):
     screen_image_block = ScreenImageBlockSerializer(many=True, required=False)
     screen_popup_block = ScreenPopupBlockSerializer(many=True, required=False)
     screen_button_block = ScreenButtonSerializer(many=True, required=False)
-    literature = serializers.CharField()
-    leterature_approvals_and_decodings = serializers.CharField()
-    approvals_and_decodings = serializers.CharField()
+    literature = serializers.CharField(required=False)
+    leterature_approvals_and_decodings = serializers.CharField(required=False)
+    approvals_and_decodings = serializers.CharField(required=False)
 
     class Meta:
         model = Screens
@@ -95,9 +95,6 @@ class ScreensSerializer(serializers.ModelSerializer):
         screen_image_block_data = validated_data.pop('screen_image_block')
         screen_popup_block_data = validated_data.pop('screen_popup_block')
         screen_button_block_data = validated_data.pop('screen_button_block')
-        screen_literature = validated_data.pop('literature')
-        screen_leterature_approvals_and_decodings = validated_data.pop('leterature_approvals_and_decodings'),
-        screen_approvals_and_decodings = validated_data.pop('approvals_and_decodings')
 
         screens = Screens.objects.create(**validated_data)
 
