@@ -21,6 +21,9 @@ class ScreenTextBlockSerializer(serializers.ModelSerializer):
             'screen': {'required': False},
         }
 
+    def create(self, validated_data):
+        return ScreenTextBlock.objects.create(**validated_data)
+
 class ScreenImageBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenImageBlock
@@ -118,8 +121,8 @@ class PracticumSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     pacient_description = serializers.CharField()
     priority = serializers.IntegerField()
-    speciality = serializers.ListField(child=serializers.IntegerField())
-    image = serializers.ImageField()
+    speciality = serializers.PrimaryKeyRelatedField(many=True, queryset=Specialty.objects.all())
+    image = serializers.ImageField(required=False)
     screens = ScreensSerializer(many=True)
 
     class Meta:

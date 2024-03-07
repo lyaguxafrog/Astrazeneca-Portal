@@ -66,13 +66,13 @@ class Screens(models.Model):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
 
-    literature = models.CharField(null=True, blank=True,
+    literature = models.CharField(
                                verbose_name='список литературы')
 
-    leterature_approvals_and_decodings = RichTextField(null=True, blank=True,
+    leterature_approvals_and_decodings = RichTextField(
             verbose_name='Номер одобрения и расшифровка для списка литературы')
 
-    approvals_and_decodings = RichTextField(null=True, blank=True,
+    approvals_and_decodings = RichTextField(
                             verbose_name='Номер одобрения и расшифровка')
 
     class Meta:
