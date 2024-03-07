@@ -109,26 +109,14 @@ class PracticumSerializer(serializers.ModelSerializer):
 
         for speciality_item in speciality_data:
             if isinstance(speciality_item, Specialty):
-                # Если item уже является объектом Specialty, просто добавляем его
                 practicum.speciality.add(speciality_item)
             else:
-                # Если item является идентификатором, получаем объект Specialty и добавляем его
                 speciality = Specialty.objects.get(id=speciality_item)
                 practicum.speciality.add(speciality)
 
         for screen_data in screens_data:
-            # Создаем экран, связанный с только что созданным практикумом
             screen = Screens.objects.create(practicum=practicum, **screen_data)
 
-            image = validated_data.pop('image', None)
-
-            if image:
-                # Создание экземпляра модели с изображением
-                practicum = Practicum.objects.create(image=image, **validated_data)
-            else:
-                practicum = Practicum.objects.create(**validated_data)
-
-            # Создаем блоки, связанные с только что созданным экраном
             if 'screen_text_block' in screen_data:
                 for text_block_data in screen_data['screen_text_block']:
                     ScreenTextBlock.objects.create(screen=screen, **text_block_data)
@@ -136,12 +124,15 @@ class PracticumSerializer(serializers.ModelSerializer):
             if 'screen_image_block' in screen_data:
                 for image_block_data in screen_data['screen_image_block']:
                     ScreenImageBlock.objects.create(screen=screen, **image_block_data)
+
             if 'screen_popup_block' in screen_data:
                 for popup_block_data in screen_data['screen_popup_block']:
                     ScreenPopupBlock.objects.create(screen=screen, **popup_block_data)
+
             if 'screen_button_block' in screen_data:
                 for button_block_data in screen_data['screen_button_block']:
                     ScreenButton.objects.create(screen=screen, **button_block_data)
+
 
 
         return practicum
