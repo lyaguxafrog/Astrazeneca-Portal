@@ -10,15 +10,34 @@ from pages.models import Specialty
 class ScreenTextBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenTextBlock
-        fields = '__all__'
+        fields = [
+            'id',
+            'screen_id',
+            'side',
+            'text',
+            'order'
+        ]
         extra_kwargs = {
             'screen': {'required': False},
         }
 
+    def create(self, validated_data):
+        return ScreenTextBlock.objects.create(**validated_data)
+
 class ScreenImageBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenImageBlock
-        fields = '__all__'
+        fields = [
+            'id',
+            'screen_id',
+            'order',
+            'side',
+            'image',
+            'image_desktop_810px',
+            'image_desktop_1620px',
+            'image_mobile_400px',
+            'image_mobile_800px'
+        ]
         extra_kwargs = {
             'screen': {'required': False},
         }
@@ -53,10 +72,23 @@ class ScreensSerializer(serializers.ModelSerializer):
     screen_image_block = ScreenImageBlockSerializer(many=True, required=False)
     screen_popup_block = ScreenPopupBlockSerializer(many=True, required=False)
     screen_button_block = ScreenButtonSerializer(many=True, required=False)
+    literature = serializers.CharField(required=False)
+    leterature_approvals_and_decodings = serializers.CharField(required=False)
+    approvals_and_decodings = serializers.CharField(required=False)
 
     class Meta:
         model = Screens
-        fields = '__all__'
+        fields = [
+            'id',
+            'screen_text_block',
+            'screen_image_block',
+            'screen_popup_block',
+            'screen_button_block',
+            'literature',
+            'leterature_approvals_and_decodings',
+            'approvals_and_decodings',
+            'practicum',
+        ]
         extra_kwargs = {
             'practicum': {'required': False},
         }
@@ -66,6 +98,7 @@ class ScreensSerializer(serializers.ModelSerializer):
         screen_image_block_data = validated_data.pop('screen_image_block')
         screen_popup_block_data = validated_data.pop('screen_popup_block')
         screen_button_block_data = validated_data.pop('screen_button_block')
+
         screens = Screens.objects.create(**validated_data)
 
         for text_block_data in screen_text_block_data:
@@ -84,7 +117,13 @@ class ScreensSerializer(serializers.ModelSerializer):
 
 
 class PracticumSerializer(serializers.ModelSerializer):
-    screens = ScreensSerializer(many=True, required=False)
+    title = serializers.CharField()
+    description = serializers.CharField()
+    pacient_description = serializers.CharField()
+    priority = serializers.IntegerField()
+    speciality = serializers.PrimaryKeyRelatedField(many=True, queryset=Specialty.objects.all())
+    image = serializers.ImageField(required=False)
+    screens = ScreensSerializer(many=True)
 
     class Meta:
         model = Practicum
@@ -109,26 +148,14 @@ class PracticumSerializer(serializers.ModelSerializer):
 
         for speciality_item in speciality_data:
             if isinstance(speciality_item, Specialty):
-                # Если item уже является объектом Specialty, просто добавляем его
                 practicum.speciality.add(speciality_item)
             else:
-                # Если item является идентификатором, получаем объект Specialty и добавляем его
                 speciality = Specialty.objects.get(id=speciality_item)
                 practicum.speciality.add(speciality)
 
         for screen_data in screens_data:
-            # Создаем экран, связанный с только что созданным практикумом
             screen = Screens.objects.create(practicum=practicum, **screen_data)
 
-            image = validated_data.pop('image', None)
-
-            if image:
-                # Создание экземпляра модели с изображением
-                practicum = Practicum.objects.create(image=image, **validated_data)
-            else:
-                practicum = Practicum.objects.create(**validated_data)
-
-            # Создаем блоки, связанные с только что созданным экраном
             if 'screen_text_block' in screen_data:
                 for text_block_data in screen_data['screen_text_block']:
                     ScreenTextBlock.objects.create(screen=screen, **text_block_data)
@@ -136,12 +163,15 @@ class PracticumSerializer(serializers.ModelSerializer):
             if 'screen_image_block' in screen_data:
                 for image_block_data in screen_data['screen_image_block']:
                     ScreenImageBlock.objects.create(screen=screen, **image_block_data)
+
             if 'screen_popup_block' in screen_data:
                 for popup_block_data in screen_data['screen_popup_block']:
                     ScreenPopupBlock.objects.create(screen=screen, **popup_block_data)
+
             if 'screen_button_block' in screen_data:
                 for button_block_data in screen_data['screen_button_block']:
                     ScreenButton.objects.create(screen=screen, **button_block_data)
+
 
 
         return practicum
