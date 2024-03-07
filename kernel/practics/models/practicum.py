@@ -32,7 +32,7 @@ class Practicum(models.Model):
                             )
 
     priority = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(50)],
+        #validators=[MinValueValidator(1), MaxValueValidator(50)],
         verbose_name="Приоритет",
         default=50,
         help_text='Целое число от 1 до 50 включительно.'
