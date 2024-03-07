@@ -4,6 +4,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from ckeditor.fields import RichTextField
+from django.forms import CharField
 
 
 
@@ -65,7 +66,7 @@ class Screens(models.Model):
     practicum = models.ForeignKey('Practicum', on_delete=models.CASCADE,
                                   related_name='screens')
 
-    literature = RichTextField(null=True, blank=True,
+    literature = models.CharField(null=True, blank=True,
                                verbose_name='список литературы')
 
     leterature_approvals_and_decodings = RichTextField(null=True, blank=True,
