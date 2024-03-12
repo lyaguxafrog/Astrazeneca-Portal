@@ -17,9 +17,11 @@ export type ImageBlock = {
 export type DropdownBlock = {
   id: number;
   type: PracticumScreenElement.Dropdown;
-  title: string;
-  text: string;
   screenId?: number;
+  items: {
+    title: string;
+    text: string;
+  }[];
 };
 
 export type TextBlock = {

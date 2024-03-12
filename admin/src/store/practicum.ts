@@ -10,6 +10,7 @@ import {
 import { useRequest } from '@/utils/composables/request';
 import { useNotificationStore } from '@/store/notification';
 import { useRoute } from 'vue-router';
+import { useFileService } from '@/utils/composables/file-service';
 import { cloneFnJSON } from '@vueuse/core';
 
 const defaultPatientInfo =
@@ -33,6 +34,7 @@ const editablePracticum = ref<Practicum>(cloneFnJSON(defaultPracticum));
 
 export const usePracticumStore = () => {
   const { get, post, put, del } = useRequest();
+  const { loadFile } = useFileService();
   const { showNotification } = useNotificationStore();
 
   const getPracticum = async (id: number) => {
@@ -65,7 +67,7 @@ export const usePracticumStore = () => {
       if (!id) {
         res = await post<{
           id: number;
-        }>('/practicum/create/', practicumData, true);
+        }>('/practicum/create/', practicumData);
 
         if (res && res.id) {
           editablePracticum.value.id = res.id;
@@ -73,7 +75,7 @@ export const usePracticumStore = () => {
       } else {
         res = await put<{
           id: number;
-        }>(`/practicum/update/${id}/`, practicumData, true);
+        }>(`/practicum/update/${id}/`, practicumData);
       }
 
       showNotification({
@@ -82,12 +84,11 @@ export const usePracticumStore = () => {
 
       return res as BDPracticum;
     } catch (e) {
-      console.error(e);
-      showNotification({
+      /*showNotification({
         text: 'Не удалось сохранить практикум',
         type: 'error'
       });
-
+*/
       return false;
     }
   };
@@ -138,6 +139,7 @@ export const usePracticumStore = () => {
       pacient_description: editablePracticum.value.patientInfo,
       speciality: editablePracticum.value.speciality,
       priority: editablePracticum.value.priority,
+      image: editablePracticum.value.image?.[0],
       screens: editablePracticum.value.screens.map((s) => {
         const blocks = mapScreenBlocks(s);
 
@@ -145,11 +147,15 @@ export const usePracticumStore = () => {
           literature: s.literature,
           leterature_approvals_and_decodings: s.literatureDescription,
           approvals_and_decodings: s.description,
-          practicum: editablePracticum.value.id
-          // screen_button_block: blocks.screen_button_block
+          practicum: editablePracticum.value.id,
+          screen_button_block: blocks.screen_button_block
         };
       })
     } as any;
+
+    if (typeof mappedPracticumData.image !== 'string') {
+      mappedPracticumData.image = await loadFile(mappedPracticumData.image);
+    }
 
     return savePracticumRequest(mappedPracticumData);
   };

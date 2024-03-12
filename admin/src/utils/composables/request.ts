@@ -19,7 +19,6 @@ const buildFormData = (formData: any, obj: any, parentKey = '', parentIndex = 0)
 
 export const objectToFormData = (obj: any) => {
   const formData = new FormData();
-
   buildFormData(formData, obj);
 
   return formData;
@@ -79,7 +78,12 @@ export const useRequest = () => {
     try {
       const req = await fetch(`https://astraportal.dev-demo.online/api${url}`, {
         method: options.method,
-        body: body as BodyInit | null | undefined
+        body: body as BodyInit | null | undefined,
+        headers: !options.formData
+          ? {
+              'Content-type': 'application/json'
+            }
+          : undefined
       }).then((res) => {
         if (res.status !== 204) {
           return res.json();
@@ -90,7 +94,7 @@ export const useRequest = () => {
 
       return req;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       throw e;
     }
   };
