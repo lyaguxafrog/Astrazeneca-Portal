@@ -31,15 +31,22 @@ export type TextBlock = {
   screenId?: number;
 };
 
+export enum BtnType {
+  Screen = 'Переход на экран',
+  Link = 'Ссылка на страницу',
+  File = 'PDF-файл'
+}
+
 export type ButtonBlock = {
   id: number;
+  screenId: number;
   type: PracticumScreenElement.Button;
   title: string;
-  btnType: null | 'Переход на экран' | 'Ссылка на страницу' | 'PDF-файл';
-  screenId?: number;
+  btnType: null | BtnType;
   screenNumber?: number;
   link?: string;
   file?: [File];
+  loadedFile?: string;
   withBg: boolean;
   confirmation: boolean;
 };
@@ -62,6 +69,7 @@ export type ScreenInfo = {
   description: string;
   leftElements: ScreenBlock[];
   rightElements: ScreenBlock[];
+  removing?: boolean;
 };
 
 export type Practicum = {
@@ -81,6 +89,17 @@ export type BDScreen = {
   literature: string;
   leterature_approvals_and_decodings: string;
   approvals_and_decodings: string;
+  screen_button_block: {
+    id: number;
+    order: number;
+    screen_number: number;
+    side: string;
+    url: string;
+    pdf_file: string;
+    button_title: string;
+    confirmation: boolean;
+    fill_flag: boolean;
+  }[];
 };
 
 export type BDPracticum = {

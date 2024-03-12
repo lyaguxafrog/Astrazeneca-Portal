@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ma-0 pt-3 pb-3 pa-0 pa-xl-3">
+  <v-container v-if="isLoaded" class="ma-0 pt-3 pb-3 pa-0 pa-xl-3">
     <v-breadcrumbs
       class="pa-0 pl-2 text-caption"
       :items="[
@@ -80,6 +80,8 @@
                 ? 'Кнопка'
                 : element.type === PracticumScreenElement.Image
                 ? 'Изображение'
+                : element.type === PracticumScreenElement.Text
+                ? 'Текстовый блок'
                 : 'Выпадающий список'
             }}
           </template>

@@ -3,8 +3,9 @@
     <RouterView />
 
     <v-snackbar
-      v-model="shoveNote"
+      v-model="showNote"
       multi-line
+      :close-on-back="false"
       :color="activeNote?.type === 'error' ? 'error' : undefined"
     >
       <template v-if="activeNote">
@@ -12,7 +13,7 @@
       </template>
 
       <template v-slot:actions>
-        <v-btn color="white" variant="text" @click="shoveNote = false">
+        <v-btn color="white" variant="text" @click="showNote = false">
           <v-icon icon="mdi-close" />
         </v-btn>
       </template>
@@ -31,7 +32,7 @@ const { getSpecialities } = useSpecialitiesStore();
 const { getPracticums, init } = usePracticumStore();
 const { notifications } = useNotificationStore();
 
-const shoveNote = ref(false);
+const showNote = ref(false);
 const activeNote = ref<Notification>();
 
 watch(
@@ -39,7 +40,7 @@ watch(
   () => {
     if (notifications.value.length) {
       activeNote.value = notifications.value.at(-1);
-      shoveNote.value = true;
+      showNote.value = true;
     }
   },
   {

@@ -23,6 +23,8 @@ export const useFileService = () => {
         text: 'Не удалось загрузить картинку',
         type: 'error'
       });
+
+      return '';
     }
   };
 

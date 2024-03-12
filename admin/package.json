@@ -69,7 +69,11 @@
       "@typescript-eslint/no-empty-function": "off",
       "prefer-destructuring": "off",
       "no-spaced-func": "off",
-      "func-call-spacing": "off"
+      "func-call-spacing": "off",
+      "indent": "off",
+      "no-nested-ternary": "off",
+      "no-await-in-loop": "off",
+      "consistent-return": "off"
     }
   },
   "browserslist": [

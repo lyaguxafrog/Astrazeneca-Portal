@@ -96,7 +96,12 @@
                   class="mr-2"
                   :to="`/practicum/${practicum.id}/screen/${screen.id}`"
                 />
-                <v-btn icon="mdi-delete-empty" class="bg-red" />
+                <v-btn
+                  icon="mdi-delete-empty"
+                  class="bg-red"
+                  :loading="!!screen.removing"
+                  @click="removeScreen(screen.id)"
+                />
               </div>
             </div>
           </v-card>
@@ -119,7 +124,13 @@ import { baseUrl } from '@/utils/consts';
 
 const $router = useRouter();
 
-const { editablePracticum: practicum, savePracticum, init, isLoaded } = usePracticumStore();
+const {
+  editablePracticum: practicum,
+  savePracticum,
+  removeScreen: remove,
+  init,
+  isLoaded
+} = usePracticumStore();
 const { specialities } = useSpecialitiesStore();
 
 const isDirty = ref(false);
@@ -145,6 +156,10 @@ const onValidate = () => {
       isLoading.value = false;
     }
   });
+};
+
+const removeScreen = async (id: number) => {
+  await remove(id);
 };
 
 onMounted(() => {

@@ -17,7 +17,7 @@
           <v-select
             v-model="buttonInfo.btnType"
             label="Тип кнопки"
-            :items="['Переход на экран', 'Ссылка на страницу', 'PDF-файл']"
+            :items="btnTypes"
             :rules="[required(buttonInfo.btnType)]"
             @update="onBtnTypeUpdate"
           />
@@ -70,7 +70,7 @@
             :loading="isLoading"
             @click="save"
             color="blue"
-          ></v-btn>
+          />
         </v-form>
       </v-card-text>
     </v-card>
@@ -78,15 +78,17 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from 'vue';
+import { defineProps, ref } from 'vue';
 import { required } from '@/utils/validation';
-import { ButtonBlock, PracticumScreenElement } from '@/types/practicum';
+import { BtnType, ButtonBlock, PracticumScreenElement } from '@/types/practicum';
 import { usePracticumStore } from '@/store/practicum';
 
 const props = defineProps<{
   side: 'right' | 'left';
   screenId?: number;
 }>();
+
+const btnTypes = [BtnType.Screen, BtnType.Link, BtnType.File];
 
 const { saveScreenBlock } = usePracticumStore();
 
@@ -109,8 +111,6 @@ const onBtnTypeUpdate = () => {
   buttonInfo.value.file = undefined;
 };
 
-onMounted(() => {});
-
 const isOpened = ref(false);
 
 const isValid = ref(false);
@@ -123,11 +123,10 @@ const save = async () => {
 
   isLoading.value = true;
 
-  isOpened.value = false;
-
   await saveScreenBlock(buttonInfo.value, props.side);
 
   isLoading.value = false;
+  isOpened.value = false;
 };
 </script>
 
