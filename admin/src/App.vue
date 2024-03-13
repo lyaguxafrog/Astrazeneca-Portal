@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="{ loading: isSaving }">
     <RouterView />
 
     <v-snackbar
@@ -29,7 +29,7 @@ import { useSpecialitiesStore } from '@/store/specialities';
 import { useNotificationStore, Notification } from '@/store/notification';
 
 const { getSpecialities } = useSpecialitiesStore();
-const { getPracticums, init } = usePracticumStore();
+const { getPracticums, init, isSaving } = usePracticumStore();
 const { notifications } = useNotificationStore();
 
 const showNote = ref(false);
@@ -51,4 +51,14 @@ watch(
 getSpecialities();
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.app {
+  transition: opacity 0.2s;
+
+  &.loading {
+    opacity: 0.5;
+
+    pointer-events: none;
+  }
+}
+</style>

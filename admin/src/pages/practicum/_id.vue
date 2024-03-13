@@ -71,55 +71,51 @@
       </v-btn>
     </div>
 
-    <SlickList axis="y" v-model:list="practicum.screens" useDragHandle>
-      <SlickItem v-for="(screen, index) in practicum.screens" :key="screen.id" :index="index">
-        <div class="pt-2 pb-2">
-          <v-card class="pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
-            <template v-slot:title>
-              <div class="d-flex">
-                Экран №{{ index + 1 }}
-                <v-spacer />
-                <DragHandle class="cursor-grab">
-                  <v-icon icon="mdi-menu" />
-                </DragHandle>
-              </div>
-            </template>
-            <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
-              <div></div>
-              <!--              <div class="mr-4 text-body-2 text-grey-darken-1">
-                <b>DD.MM.YYYY</b>
-                <p>Дата редактирования</p>
-              </div>-->
-              <div class="d-flex">
-                <v-btn
-                  icon="mdi-invoice-edit-outline"
-                  class="mr-2"
-                  :to="`/practicum/${practicum.id}/screen/${screen.id}`"
-                />
-                <v-btn
-                  icon="mdi-delete-empty"
-                  class="bg-red"
-                  :loading="!!screen.removing"
-                  @click="removeScreen(screen.id)"
-                />
-              </div>
+    <div v-for="(screen, index) in practicum.screens" :key="screen.id">
+      <div class="pt-2 pb-2">
+        <v-card class="pb-2" prepend-icon="mdi-invoice-list-outline" elevation="6">
+          <template v-slot:title>
+            <div class="d-flex">Экран №{{ index + 1 }}</div>
+          </template>
+          <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
+            <div></div>
+            <!--              <div class="mr-4 text-body-2 text-grey-darken-1">
+              <b>DD.MM.YYYY</b>
+              <p>Дата редактирования</p>
+            </div>-->
+            <div class="d-flex">
+              <OrderPicker
+                :value="screen.order"
+                @update="(order) => updateOrder(screen.id, order)"
+              />
+              <v-btn
+                icon="mdi-invoice-edit-outline"
+                class="mr-2"
+                :to="`/practicum/${practicum.id}/screen/${screen.id}`"
+              />
+              <v-btn
+                icon="mdi-delete-empty"
+                class="bg-red"
+                :loading="removingId === screen.id"
+                @click="removeScreen(screen.id)"
+              />
             </div>
-          </v-card>
-        </div>
-      </SlickItem>
-    </SlickList>
+          </div>
+        </v-card>
+      </div>
+    </div>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { SlickList, SlickItem, DragHandle } from 'vue-slicksort';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
 import { useSpecialitiesStore } from '@/store/specialities';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
+import OrderPicker from '@/components/ui/order-picker.vue';
 import { baseUrl } from '@/utils/consts';
 
 const $router = useRouter();
@@ -127,6 +123,7 @@ const $router = useRouter();
 const {
   editablePracticum: practicum,
   savePracticum,
+  getPracticum,
   removeScreen: remove,
   init,
   isLoaded
@@ -136,6 +133,7 @@ const { specialities } = useSpecialitiesStore();
 const isDirty = ref(false);
 const isValid = ref(false);
 const isLoading = ref(false);
+const removingId = ref();
 const onValidate = () => {
   isDirty.value = true;
 
@@ -150,6 +148,8 @@ const onValidate = () => {
       const res = await savePracticum();
 
       if (res && res.id) {
+        practicum.value.image = undefined;
+        practicum.value.loadedImage = res.image;
         await $router.replace({ params: { id: res.id } });
       }
     } finally {
@@ -159,7 +159,22 @@ const onValidate = () => {
 };
 
 const removeScreen = async (id: number) => {
+  removingId.value = id;
+
   await remove(id);
+
+  removingId.value = undefined;
+};
+
+const updateOrder = async (id: number, order: number) => {
+  const screen = practicum.value.screens.find((s) => s.id === id);
+
+  if (screen) {
+    screen.order = order;
+  }
+
+  await savePracticum();
+  await getPracticum(practicum.value.id);
 };
 
 onMounted(() => {

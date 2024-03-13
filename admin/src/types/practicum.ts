@@ -7,28 +7,38 @@ export enum PracticumScreenElement {
   Image = 'image'
 }
 
+export type Side = 'left' | 'right';
+
 export type ImageBlock = {
   id: number;
   type: PracticumScreenElement.Image;
-  image: '';
+  image: [File] | undefined;
+  savedImage?: string;
   screenId?: number;
+  order: number;
+  side: Side;
 };
 
 export type DropdownBlock = {
   id: number;
   type: PracticumScreenElement.Dropdown;
   screenId?: number;
+  order: number;
   items: {
+    id: number;
     title: string;
     text: string;
   }[];
+  side: Side;
 };
 
 export type TextBlock = {
   id: number;
   type: PracticumScreenElement.Text;
   text: string;
+  order: number;
   screenId?: number;
+  side: Side;
 };
 
 export enum BtnType {
@@ -49,6 +59,8 @@ export type ButtonBlock = {
   loadedFile?: string;
   withBg: boolean;
   confirmation: boolean;
+  side: Side;
+  order: number;
 };
 
 export type ScreenBlock = ImageBlock | DropdownBlock | ButtonBlock | TextBlock;
@@ -62,14 +74,17 @@ export const isImageBlock = (block: ScreenBlock): block is ImageBlock =>
 export const isDropdownBlock = (block: ScreenBlock): block is DropdownBlock =>
   block.type === PracticumScreenElement.Dropdown;
 
+export const isTextBlock = (block: ScreenBlock): block is TextBlock =>
+  block.type === PracticumScreenElement.Text;
+
 export type ScreenInfo = {
   id: number;
   literature: string;
   literatureDescription: string;
   description: string;
+  order: number;
   leftElements: ScreenBlock[];
   rightElements: ScreenBlock[];
-  removing?: boolean;
 };
 
 export type Practicum = {
@@ -89,16 +104,39 @@ export type BDScreen = {
   literature: string;
   leterature_approvals_and_decodings: string;
   approvals_and_decodings: string;
+  order: number;
   screen_button_block: {
     id: number;
     order: number;
     screen_number: number;
-    side: string;
+    side: Side;
     url: string;
     pdf_file: string;
     button_title: string;
     confirmation: boolean;
     fill_flag: boolean;
+  }[];
+  screen_text_block: {
+    id: number;
+    order: number;
+    side: Side;
+    text: string;
+  }[];
+  screen_image_block: {
+    id: number;
+    order: number;
+    side: Side;
+    image: string;
+  }[];
+  screen_popup_block: {
+    id: number;
+    order: number;
+    side: Side;
+    popup_points: {
+      id: number;
+      title: string;
+      text: string;
+    }[];
   }[];
 };
 
@@ -107,10 +145,10 @@ export type BDPracticum = {
   description: string;
   title: string;
   image: string;
-  image_desktop_810px: string;
-  image_desktop_1620px: string;
-  image_mobile_400px: string;
-  image_mobile_800px: string;
+  image_desktop_810px?: string;
+  image_desktop_1620px?: string;
+  image_mobile_400px?: string;
+  image_mobile_800px?: string;
   pacient_description: string;
   priority: number;
   screens: BDScreen[];

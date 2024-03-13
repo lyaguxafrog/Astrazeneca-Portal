@@ -8,6 +8,7 @@
       hide-details="auto"
       variant="outlined"
       type="number"
+      disabled
       @blur="update"
     />
     <v-btn icon="mdi-menu-down" density="compact" @click="increase" />

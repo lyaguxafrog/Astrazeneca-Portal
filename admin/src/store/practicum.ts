@@ -3,11 +3,17 @@ import {
   BDPracticum,
   BtnType,
   ButtonBlock,
+  DropdownBlock,
+  ImageBlock,
   isButtonBlock,
+  isDropdownBlock,
+  isImageBlock,
+  isTextBlock,
   Practicum,
   PracticumScreenElement,
   ScreenBlock,
-  ScreenInfo
+  ScreenInfo,
+  TextBlock
 } from '@/types/practicum';
 import { useRequest } from '@/utils/composables/request';
 import { useNotificationStore } from '@/store/notification';
@@ -31,6 +37,8 @@ const defaultPracticum = {
   speciality: [],
   screens: []
 };
+
+const isSaving = ref(false);
 
 const editablePracticum = ref<Practicum>(cloneFnJSON(defaultPracticum));
 
@@ -66,7 +74,9 @@ export const usePracticumStore = () => {
             file: undefined,
             loadedFile: b.pdf_file,
             withBg: b.fill_flag,
-            confirmation: b.confirmation
+            confirmation: b.confirmation,
+            side: b.side,
+            order: b.order
           };
 
           if (b.side === 'left') {
@@ -76,11 +86,67 @@ export const usePracticumStore = () => {
           }
         });
 
+        s.screen_text_block.forEach((b) => {
+          const block: TextBlock = {
+            id: b.id,
+            type: PracticumScreenElement.Text,
+            screenId: s.id,
+            order: b.order,
+            text: b.text,
+            side: b.side
+          };
+
+          if (b.side === 'left') {
+            leftElements.push(block);
+          } else {
+            rightElements.push(block);
+          }
+        });
+
+        s.screen_image_block.forEach((b) => {
+          const block: ImageBlock = {
+            id: b.id,
+            type: PracticumScreenElement.Image,
+            screenId: s.id,
+            order: b.order,
+            image: undefined,
+            savedImage: b.image,
+            side: b.side
+          };
+
+          if (b.side === 'left') {
+            leftElements.push(block);
+          } else {
+            rightElements.push(block);
+          }
+        });
+
+        s.screen_popup_block.forEach((b) => {
+          const block: DropdownBlock = {
+            id: b.id,
+            type: PracticumScreenElement.Dropdown,
+            screenId: s.id,
+            side: b.side,
+            items: b.popup_points,
+            order: b.order
+          };
+
+          if (b.side === 'left') {
+            leftElements.push(block);
+          } else {
+            rightElements.push(block);
+          }
+        });
+
+        leftElements.sort((e1, e2) => e1.order - e2.order);
+        rightElements.sort((e1, e2) => e1.order - e2.order);
+
         return {
           id: s.id,
           literature: s.literature,
           description: s.approvals_and_decodings,
           literatureDescription: s.leterature_approvals_and_decodings,
+          order: s.order,
           leftElements,
           rightElements
         };
@@ -89,6 +155,7 @@ export const usePracticumStore = () => {
   };
 
   const savePracticumRequest = async (practicumData: any) => {
+    isSaving.value = true;
     try {
       let res;
 
@@ -118,17 +185,22 @@ export const usePracticumStore = () => {
         type: 'error'
       });
       return false;
+    } finally {
+      isSaving.value = false;
     }
   };
 
   const savePracticum = async () => {
+    isSaving.value = true;
     const mapScreenBlocks = async (screen: ScreenInfo) => {
       const screen_button_block: any[] = [];
       const screen_popup_block: any[] = [];
       const screen_image_block: any[] = [];
       const screen_text_block: any[] = [];
 
-      for (const e of screen.leftElements) {
+      const blocks = [...screen.leftElements, ...screen.rightElements];
+
+      for (const e of blocks) {
         if (isButtonBlock(e)) {
           let file: File | string | undefined = e.file?.[0];
 
@@ -145,30 +217,62 @@ export const usePracticumStore = () => {
             id: e.id || undefined,
             screen_id: e.screenId,
             button_title: e.title,
-            side: 'left',
+            side: e.side,
             screen_number: e.screenNumber ? +e.screenNumber : undefined,
             url: e.link,
             pdf_file: file,
             fill_flag: e.withBg,
-            confirmation: e.confirmation
+            confirmation: e.confirmation,
+            order: e.order
           });
         }
 
-        if (e.type === PracticumScreenElement.Text) {
+        if (isImageBlock(e)) {
+          let file: File | string | undefined = e.image?.[0];
+
+          if (file && file instanceof File) {
+            file = await loadFile(file);
+
+            if (!file) {
+              throw new Error();
+              return;
+            }
+          }
+
+          screen_image_block.push({
+            id: e.id || undefined,
+            image: file,
+            side: e.side,
+            order: e.order
+          });
+        }
+
+        if (isTextBlock(e)) {
           screen_text_block.push({
             id: e.id || undefined,
             screen_id: e.screenId,
-            side: 'left',
-            text: e.text
+            side: e.side,
+            text: e.text,
+            order: e.order
+          });
+        }
+
+        if (isDropdownBlock(e)) {
+          screen_popup_block.push({
+            id: e.id || undefined,
+            screen_id: e.screenId,
+            side: e.side,
+            popup_points: e.items,
+            order: e.order
           });
         }
       }
 
       return {
-        screen_button_block,
-        screen_popup_block,
-        screen_image_block,
-        screen_text_block
+        screen_button_block: screen_button_block.length ? screen_button_block : undefined,
+        screen_popup_block: screen_popup_block.length ? screen_popup_block : undefined,
+        screen_image_block: screen_image_block.length ? screen_image_block : undefined,
+        screen_text_block: screen_text_block.length ? screen_text_block : undefined
       };
     };
 
@@ -182,7 +286,11 @@ export const usePracticumStore = () => {
         literature: s.literature,
         leterature_approvals_and_decodings: s.literatureDescription,
         approvals_and_decodings: s.description,
-        screen_button_block: blocks!.screen_button_block
+        order: s.order,
+        screen_button_block: blocks!.screen_button_block,
+        screen_text_block: blocks!.screen_text_block,
+        screen_image_block: blocks!.screen_image_block,
+        screen_popup_block: blocks!.screen_popup_block
       });
     }
 
@@ -220,13 +328,7 @@ export const usePracticumStore = () => {
   };
 
   const removeScreen = async (id: number) => {
-    const removingScreen = editablePracticum.value.screens.find((s) => s.id === id);
-
-    if (removingScreen) {
-      removingScreen.removing = true;
-    }
-
-    await savePracticum();
+    await del(`/practicum/${editablePracticum.value.id}/screen/${id}`);
 
     editablePracticum.value.screens = editablePracticum.value.screens.filter((s) => s.id !== id);
   };
@@ -237,6 +339,12 @@ export const usePracticumStore = () => {
     if (!screen) {
       return;
     }
+
+    block.side = side;
+    block.order =
+      block.order || side === 'left'
+        ? screen.leftElements.length + 1
+        : screen.rightElements.length + 1;
 
     try {
       if (side === 'right') {
@@ -300,6 +408,7 @@ export const usePracticumStore = () => {
     init,
     isLoaded,
     saveScreenBlock,
-    savePracticumRequest
+    savePracticumRequest,
+    isSaving
   };
 };

@@ -6,8 +6,8 @@
 
     <v-card title="Блок с выпадающим списком">
       <v-card-text>
-        <v-form v-model="isValid" validate-on="input" @submit.prevent="save">
-          <v-card v-for="item in dropdown" :key="item.id" class="mb-2">
+        <v-form v-model="isValid" validate-on="input" @submit.prevent>
+          <v-card v-for="item in dropdown.items" :key="item.id" class="mb-2">
             <v-card-text>
               <v-text-field
                 v-model="item.title"
@@ -26,7 +26,14 @@
 
           <v-btn icon="mdi-plus" density="comfortable" class="d-block mt-2" @click="addItem" />
 
-          <v-btn text="Сохранить" class="mt-4" type="submit" @click="save" color="blue"></v-btn>
+          <v-btn
+            text="Сохранить"
+            class="mt-4"
+            type="submit"
+            :loading="isLoading"
+            @click="save"
+            color="blue"
+          ></v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -38,7 +45,6 @@ import { defineProps, ref } from 'vue';
 import { required } from '@/utils/validation';
 import { DropdownBlock, PracticumScreenElement } from '@/types/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
-import { getUiId } from '@/utils/functions';
 import { usePracticumStore } from '@/store/practicum';
 
 const { saveScreenBlock } = usePracticumStore();
@@ -49,15 +55,17 @@ const props = defineProps<{
 }>();
 
 const defaultItem = () => ({
-  id: getUiId(),
+  id: 0,
   title: '',
   text: ''
 });
 
 const dropdown = ref<DropdownBlock>({
   id: 0,
+  order: 50,
   type: PracticumScreenElement.Dropdown,
   screenId: props.screenId,
+  side: props.side,
   items: [defaultItem()]
 });
 
@@ -68,15 +76,22 @@ const addItem = () => {
 const isOpened = ref(false);
 const isDirty = ref(false);
 const isValid = ref(false);
-const save = () => {
+const isLoading = ref(false);
+const save = async () => {
   isDirty.value = true;
-  isOpened.value = true;
 
-  if (!isValid.value) {
-    return;
-  }
+  setTimeout(async () => {
+    if (!isValid.value) {
+      return;
+    }
 
-  saveScreenBlock(dropdown.value, props.side);
+    isLoading.value = true;
+
+    await saveScreenBlock(dropdown.value, props.side);
+
+    isLoading.value = false;
+    isOpened.value = false;
+  });
 };
 </script>
 

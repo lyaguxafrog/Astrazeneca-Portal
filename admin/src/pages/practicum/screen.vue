@@ -48,98 +48,19 @@
       <Title class="mt-6"> Компоненты </Title>
     </div>
     <div class="d-flex">
-      <div class="v-col-6 pt-0">
-        <div class="d-flex align-center mb-3">
-          <h4 class="mr-3">Слева</h4>
-          <v-bottom-sheet>
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-plus" density="comfortable" :disabled="!screen.id" />
-            </template>
+      <ScreenBlocks
+        :elements="screen.leftElements"
+        :side="'left'"
+        :screenId="screen.id"
+        @updateOrder="updateOrder"
+      />
 
-            <v-card title="Добавить блок слева">
-              <div class="d-flex ga-2 pa-3 pb-4">
-                <ButtonBlock side="left" :screenId="screen.id" />
-                <TextBlock side="left" :screenId="screen.id" />
-                <ImageBlock side="left" :screenId="screen.id" />
-                <DropdownBlock side="left" :screenId="screen.id" />
-              </div>
-            </v-card>
-          </v-bottom-sheet>
-        </div>
-
-        <v-card
-          v-for="element in screen.leftElements"
-          :key="element.id"
-          class="mb-3 pb-2"
-          prepend-icon="mdi-invoice-list-outline"
-          elevation="6"
-        >
-          <template v-slot:title>
-            {{
-              element.type === PracticumScreenElement.Button
-                ? 'Кнопка'
-                : element.type === PracticumScreenElement.Image
-                ? 'Изображение'
-                : element.type === PracticumScreenElement.Text
-                ? 'Текстовый блок'
-                : 'Выпадающий список'
-            }}
-          </template>
-
-          <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
-            <div></div>
-            <!--            <div class="mr-4 text-body-2 text-grey-darken-1">
-              <b>DD.MM.YYYY</b>
-              <p>Дата редактирования</p>
-            </div>-->
-            <div class="d-flex">
-              <v-btn icon="mdi-invoice-edit-outline" class="mr-2" :to="`/practicum/0/screen/0`" />
-              <v-btn icon="mdi-delete-empty" class="bg-red" />
-            </div>
-          </div>
-        </v-card>
-      </div>
-      <div class="v-col-6 pt-0">
-        <div class="d-flex align-center mb-3">
-          <h4 class="mr-3">Справа</h4>
-          <v-bottom-sheet>
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-plus" density="comfortable" :disabled="!screen.id" />
-            </template>
-
-            <v-card title="Добавить блок справа">
-              <div class="d-flex ga-2 pa-3 pb-4">
-                <ButtonBlock side="right" :screenId="screen.id" />
-                <TextBlock side="right" :screenId="screen.id" />
-                <ImageBlock side="right" :screenId="screen.id" />
-                <DropdownBlock side="right" :screenId="screen.id" />
-              </div>
-            </v-card>
-          </v-bottom-sheet>
-        </div>
-
-        <v-card
-          v-for="element in screen.rightElements"
-          :key="element.id"
-          class="mb-3 pb-2"
-          prepend-icon="mdi-invoice-list-outline"
-          elevation="6"
-        >
-          <template v-slot:title> {{ element.type }} </template>
-
-          <div class="d-flex justify-lg-space-between pa-4 pt-0 pb-2">
-            <div></div>
-            <!--            <div class="mr-4 text-body-2 text-grey-darken-1">
-              <b>DD.MM.YYYY</b>
-              <p>Дата редактирования</p>
-            </div>-->
-            <div class="d-flex">
-              <v-btn icon="mdi-invoice-edit-outline" class="mr-2" :to="`/practicum/0/screen/0`" />
-              <v-btn icon="mdi-delete-empty" class="bg-red" />
-            </div>
-          </div>
-        </v-card>
-      </div>
+      <ScreenBlocks
+        :elements="screen.rightElements"
+        :side="'right'"
+        :screenId="screen.id"
+        @updateOrder="updateOrder"
+      />
     </div>
   </v-container>
 </template>
@@ -149,30 +70,34 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { required } from '@/utils/validation';
 import { usePracticumStore } from '@/store/practicum';
-import { PracticumScreenElement, ScreenInfo } from '@/types/practicum';
+import { ScreenInfo, Side } from '@/types/practicum';
 import TextEditor from '@/components/ui/text-editor.vue';
 import Title from '@/components/helpers/title.vue';
-import ButtonBlock from '@/components/practicum/button-block.vue';
-import TextBlock from '@/components/practicum/text-block.vue';
-import ImageBlock from '@/components/practicum/image-block.vue';
-import DropdownBlock from '@/components/practicum/dropdown-block.vue';
+import ScreenBlocks from '@/components/practicum/screen-blocks.vue';
 
 const $router = useRouter();
 const $route = useRoute();
+
+const {
+  editablePracticum: practicum,
+  saveScreen,
+  init,
+  isLoaded,
+  getPracticum
+} = usePracticumStore();
 
 const screen = ref<ScreenInfo>({
   id: 0,
   literature: '',
   literatureDescription: '',
   description: '',
+  order: practicum.value.screens.length + 1,
   leftElements: [],
   rightElements: []
 });
 
-const { editablePracticum: practicum, saveScreen, init, isLoaded } = usePracticumStore();
-
 watch(
-  isLoaded,
+  [isLoaded, practicum],
   () => {
     const id = +$route.params.screenId;
 
@@ -186,7 +111,8 @@ watch(
     }
   },
   {
-    immediate: true
+    immediate: true,
+    deep: true
   }
 );
 
@@ -209,12 +135,25 @@ const onValidate = () => {
 
       if (lastScreen) {
         screen.value.id = lastScreen.id;
-        $router.replace({ params: { screenId: screen.value.id } });
+        await $router.replace({ params: { screenId: screen.value.id } });
       }
     }
 
     isLoading.value = false;
   });
+};
+
+const updateOrder = async (id: number, order: number, side: Side) => {
+  const collection = side === 'left' ? screen.value.leftElements : screen.value.rightElements;
+
+  const el = collection.find((e) => e.id === id);
+
+  if (el) {
+    el.order = order;
+  }
+
+  await saveScreen(screen.value);
+  await getPracticum(practicum.value.id);
 };
 
 onMounted(() => {

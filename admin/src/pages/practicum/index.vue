@@ -2,12 +2,7 @@
   <v-container class="ma-0 pt-3 pb-3">
     <v-btn class="bg-blue mb-5" to="/practicum/0"> Создать практикум </v-btn>
 
-    <div
-      v-for="practicum in practicums"
-      :key="practicum.id"
-      class="pt-2 pb-2 wrapper"
-      :class="{ loading: isLoading }"
-    >
+    <div v-for="practicum in practicums" :key="practicum.id" class="pt-2 pb-2">
       <v-card>
         <template v-slot:title>
           <div class="d-flex">
@@ -61,29 +56,21 @@ onMounted(() => {
   getPracticums();
 });
 
-const isLoading = ref(false);
-
 const updateOrder = async (id: number, order: number) => {
   const practicum = practicums.value.find((p) => p.id === id);
 
   if (practicum) {
-    isLoading.value = true;
     practicum.priority = order;
+
+    practicum.image_desktop_810px = undefined;
+    practicum.image_desktop_1620px = undefined;
+    practicum.image_mobile_400px = undefined;
+    practicum.image_mobile_800px = undefined;
 
     await savePracticumRequest(practicum);
     await getPracticums();
-    isLoading.value = false;
   }
 };
 </script>
 
-<style scoped lang="scss">
-.wrapper {
-  transition: opacity 0.2s;
-
-  &.loading {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-}
-</style>
+<style scoped lang="scss"></style>

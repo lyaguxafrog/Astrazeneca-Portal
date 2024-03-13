@@ -85,7 +85,7 @@ import { usePracticumStore } from '@/store/practicum';
 
 const props = defineProps<{
   side: 'right' | 'left';
-  screenId?: number;
+  screenId: number;
 }>();
 
 const btnTypes = [BtnType.Screen, BtnType.Link, BtnType.File];
@@ -94,6 +94,7 @@ const { saveScreenBlock } = usePracticumStore();
 
 const buttonInfo = ref<ButtonBlock>({
   id: 0,
+  order: 50,
   type: PracticumScreenElement.Button,
   title: '',
   btnType: null,
@@ -102,11 +103,12 @@ const buttonInfo = ref<ButtonBlock>({
   link: '',
   file: undefined,
   withBg: true,
-  confirmation: false
+  confirmation: false,
+  side: props.side
 });
 
 const onBtnTypeUpdate = () => {
-  buttonInfo.value.screenId = undefined;
+  buttonInfo.value.screenId = 0;
   buttonInfo.value.link = '';
   buttonInfo.value.file = undefined;
 };
