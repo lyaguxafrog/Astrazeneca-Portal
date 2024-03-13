@@ -51,6 +51,7 @@
       <ScreenBlocks
         :elements="screen.leftElements"
         :side="'left'"
+        :practicumId="practicum.id"
         :screenId="screen.id"
         @updateOrder="updateOrder"
       />
@@ -58,6 +59,7 @@
       <ScreenBlocks
         :elements="screen.rightElements"
         :side="'right'"
+        :practicumId="practicum.id"
         :screenId="screen.id"
         @updateOrder="updateOrder"
       />

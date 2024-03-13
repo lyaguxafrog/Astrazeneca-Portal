@@ -1,7 +1,8 @@
 <template>
-  <v-dialog v-model="isOpened" max-width="800">
+  <v-dialog v-model="isOpened" max-width="800" @update:modelValue="onOpenDialog">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps"> Кнопка </v-btn>
+      <v-btn v-if="!block" v-bind="activatorProps"> Кнопка </v-btn>
+      <v-btn v-else icon="mdi-invoice-edit-outline" v-bind="activatorProps" />
     </template>
 
     <v-card title="Кнопка">
@@ -19,7 +20,7 @@
             label="Тип кнопки"
             :items="btnTypes"
             :rules="[required(buttonInfo.btnType)]"
-            @update="onBtnTypeUpdate"
+            @update:modelValue="onBtnTypeUpdate"
           />
 
           <v-text-field
@@ -36,16 +37,19 @@
             v-model="buttonInfo.link"
             label="Ссылка*"
             class="mb-2"
-            :rules="[required(buttonInfo.link)]"
+            :rules="[required(buttonInfo.link), isUrl(buttonInfo.link)]"
           />
 
           <v-file-input
             v-if="buttonInfo.btnType === 'PDF-файл'"
             v-model="buttonInfo.file"
             label="pdf-файл*"
-            class="mb-2"
-            :rules="[required(buttonInfo.file)]"
+            :rules="[required(buttonInfo.file || buttonInfo.loadedFile)]"
           />
+          <div v-if="buttonInfo.loadedFile" class="text-medium-emphasis mb-2 text-body-2">
+            Загруженный
+            <a target="_blank" :href="`${baseUrl}${buttonInfo.loadedFile}`">файл</a>
+          </div>
 
           <v-checkbox
             v-model="buttonInfo.withBg"
@@ -79,22 +83,25 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
-import { required } from '@/utils/validation';
+import { required, isUrl } from '@/utils/validation';
 import { BtnType, ButtonBlock, PracticumScreenElement } from '@/types/practicum';
 import { usePracticumStore } from '@/store/practicum';
+import { cloneFnJSON } from '@vueuse/core';
+import { baseUrl } from '@/utils/consts';
 
 const props = defineProps<{
   side: 'right' | 'left';
   screenId: number;
+  block?: ButtonBlock;
 }>();
 
 const btnTypes = [BtnType.Screen, BtnType.Link, BtnType.File];
 
 const { saveScreenBlock } = usePracticumStore();
 
-const buttonInfo = ref<ButtonBlock>({
+const defaultValue: ButtonBlock = {
   id: 0,
-  order: 50,
+  order: 0,
   type: PracticumScreenElement.Button,
   title: '',
   btnType: null,
@@ -105,10 +112,24 @@ const buttonInfo = ref<ButtonBlock>({
   withBg: true,
   confirmation: false,
   side: props.side
-});
+};
+
+const buttonInfo = ref<ButtonBlock>(cloneFnJSON(defaultValue));
+
+const onOpenDialog = (value: boolean) => {
+  if (!value) {
+    return;
+  }
+
+  if (!props.block) {
+    buttonInfo.value = cloneFnJSON(defaultValue);
+  } else {
+    buttonInfo.value = props.block;
+  }
+};
 
 const onBtnTypeUpdate = () => {
-  buttonInfo.value.screenId = 0;
+  buttonInfo.value.screenNumber = undefined;
   buttonInfo.value.link = '';
   buttonInfo.value.file = undefined;
 };
@@ -123,12 +144,18 @@ const save = async () => {
     return;
   }
 
-  isLoading.value = true;
+  try {
+    isLoading.value = true;
 
-  await saveScreenBlock(buttonInfo.value, props.side);
+    const res = await saveScreenBlock(buttonInfo.value, props.side);
 
-  isLoading.value = false;
-  isOpened.value = false;
+    isLoading.value = false;
+    if (res) {
+      isOpened.value = false;
+    }
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 

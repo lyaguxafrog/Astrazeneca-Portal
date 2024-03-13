@@ -184,6 +184,8 @@ export const usePracticumStore = () => {
         text: 'Не удалось сохранить практикум',
         type: 'error'
       });
+
+      throw new Error();
       return false;
     } finally {
       isSaving.value = false;
@@ -341,27 +343,40 @@ export const usePracticumStore = () => {
     }
 
     block.side = side;
-    block.order =
-      block.order || side === 'left'
-        ? screen.leftElements.length + 1
-        : screen.rightElements.length + 1;
+
+    if (!block.order) {
+      if (side === 'left') {
+        block.order = screen.leftElements.length + 1;
+      } else {
+        block.order = screen.rightElements.length + 1;
+      }
+    }
 
     try {
-      if (side === 'right') {
-        screen.rightElements.push(block);
-      } else {
-        screen.leftElements.push(block);
+      if (!block.id) {
+        if (side === 'right') {
+          screen.rightElements.push(block);
+        } else {
+          screen.leftElements.push(block);
+        }
       }
 
-      await savePracticum();
+      const res = await savePracticum();
+      await getPracticum(editablePracticum.value.id);
+
+      return res;
     } catch (e) {
-      if (side === 'right') {
-        screen.rightElements.pop();
-      } else {
-        screen.leftElements.pop();
+      if (!block.id) {
+        if (side === 'right') {
+          screen.rightElements.pop();
+        } else {
+          screen.leftElements.pop();
+        }
       }
 
       console.error(e);
+
+      return false;
     }
   };
 

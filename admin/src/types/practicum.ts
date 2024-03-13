@@ -19,16 +19,19 @@ export type ImageBlock = {
   side: Side;
 };
 
+export type DropdownItem = {
+  id: number;
+  title: string;
+  text: string;
+  order: number;
+};
+
 export type DropdownBlock = {
   id: number;
   type: PracticumScreenElement.Dropdown;
   screenId?: number;
   order: number;
-  items: {
-    id: number;
-    title: string;
-    text: string;
-  }[];
+  items: DropdownItem[];
   side: Side;
 };
 
@@ -136,6 +139,7 @@ export type BDScreen = {
       id: number;
       title: string;
       text: string;
+      order: number;
     }[];
   }[];
 };

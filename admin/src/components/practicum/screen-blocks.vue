@@ -48,8 +48,38 @@
             :value="element.order"
             @update="(order) => updateOrder(element.id, order, side)"
           />
-          <v-btn icon="mdi-invoice-edit-outline" class="mr-2" :to="`/practicum/0/screen/0`" />
-          <v-btn icon="mdi-delete-empty" class="bg-red" />
+          <v-btn icon="mdi-invoice-edit-outline" class="mr-2">
+            <ButtonBlock
+              v-if="element.type === PracticumScreenElement.Button"
+              :side="side"
+              :screenId="screenId"
+              :block="element"
+            />
+            <TextBlock
+              v-if="element.type === PracticumScreenElement.Text"
+              :side="side"
+              :screenId="screenId"
+              :block="element"
+            />
+            <ImageBlock
+              v-if="element.type === PracticumScreenElement.Image"
+              :side="side"
+              :screenId="screenId"
+              :block="element"
+            />
+            <DropdownBlock
+              v-if="element.type === PracticumScreenElement.Dropdown"
+              :side="side"
+              :screenId="screenId"
+              :block="element"
+            />
+          </v-btn>
+          <v-btn
+            icon="mdi-delete-empty"
+            class="bg-red"
+            :loading="isLoading"
+            @click="deleteBlock(element)"
+          />
         </div>
       </div>
     </v-card>
@@ -57,7 +87,10 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps, ref, defineEmits } from 'vue';
 import { PracticumScreenElement, ScreenBlock, Side } from '@/types/practicum';
+import { useRequest } from '@/utils/composables/request';
+import { usePracticumStore } from '@/store/practicum';
 import OrderPicker from '@/components/ui/order-picker.vue';
 import TextBlock from '@/components/practicum/text-block.vue';
 import ButtonBlock from '@/components/practicum/button-block.vue';
@@ -68,14 +101,38 @@ const props = defineProps<{
   elements: ScreenBlock[];
   side: Side;
   screenId: number;
+  practicumId: number;
 }>();
 
 const emit = defineEmits<{
   (event: 'updateOrder', id: number, order: number, side: Side): void;
 }>();
 
+const { del } = useRequest();
+const { getPracticum } = usePracticumStore();
+
 const updateOrder = (id: number, order: number, side: Side) => {
   emit('updateOrder', id, order, side);
+};
+
+const isLoading = ref(false);
+
+const deleteBlock = async (element: ScreenBlock) => {
+  isLoading.value = true;
+
+  const entity =
+    element.type === PracticumScreenElement.Button
+      ? 'button'
+      : element.type === PracticumScreenElement.Text
+      ? 'textbox'
+      : element.type === PracticumScreenElement.Image
+      ? 'imageblock'
+      : 'popupblock';
+
+  await del(`/practicum/${props.practicumId}/screen/${props.screenId}/${entity}/${element.id}/`);
+  await getPracticum(props.practicumId);
+
+  isLoading.value = false;
 };
 </script>
 

@@ -73,7 +73,8 @@
       "indent": "off",
       "no-nested-ternary": "off",
       "no-await-in-loop": "off",
-      "consistent-return": "off"
+      "consistent-return": "off",
+      "no-param-reassign": "off"
     }
   },
   "browserslist": [
