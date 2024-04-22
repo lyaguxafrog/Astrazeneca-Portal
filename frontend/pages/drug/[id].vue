@@ -33,23 +33,7 @@
       </div>
 
       <div class="drug-page__right">
-        <div
-          v-for="(item, index) in content.faq"
-          :key="item.order"
-          ref="itemsEls"
-          class="drug-page__right-item"
-          :class="{ expanded: activeItem?.order === item.order }"
-          @click="openProps(item, index)"
-        >
-          <div class="drug-page__right-item-title">
-            {{ item.title }}
-
-            <AppIcon size="15" class="for-mobile-or-tablet" :name="IconName.DropIcon" />
-          </div>
-          <div class="drug-page__right-item-content for-mobile-or-tablet">
-            <p v-html="item.text" />
-          </div>
-        </div>
+        <Accordion :items="content.faq" :modalName="ModalsName.DrugProps" />
         <AppButton
           v-if="content.file_field"
           class="drug-page__right-btn"
@@ -95,7 +79,7 @@
                       :url-thin-x2="item.practic_mobile_560px"
                       :url-thin="item.practic_mobile_280px"
                     />
-                    <p>{{ item.name }}</p>
+                    <!--                    <p>{{ item.name }}</p>-->
                   </nuxt-link>
                 </SwiperSlide>
               </Swiper>
@@ -125,7 +109,7 @@
                   :url-thin-x2="item.practic_mobile_560px"
                   :url-thin="item.practic_mobile_280px"
                 />
-                <p v-html="item.name" />
+                <!--                <p v-html="item.name" />-->
               </nuxt-link>
             </ItemsSlider>
           </div>
@@ -133,15 +117,26 @@
       </div>
     </div>
 
-    <AppModal :name="ModalsName.DrugProps" :on-close="onModalClose">
+    <AppModal :name="ModalsName.DrugProps">
       <div v-if="activeItem" class="drug-page__modal">
         <div class="drug-page__modal-title">
           {{ activeItem.title }}
         </div>
         <div class="drug-page__modal-text" v-html="activeItem.text" />
         <div class="drug-page__modal-description">
-          <p v-if="activeItem.approvals_and_decodings" v-html="activeItem.approvals_and_decodings" />
-          <AppButton v-if="nextItem && content.faq.length > 1" class="drug-page__modal-description-btn" primary mini @click="openProps(nextItem)"> {{nextItem.title}} </AppButton>
+          <p
+            v-if="activeItem.approvals_and_decodings"
+            v-html="activeItem.approvals_and_decodings"
+          />
+          <AppButton
+            v-if="nextItem && content.faq.length > 1"
+            class="drug-page__modal-description-btn"
+            primary
+            mini
+            @click="openProps(nextItem)"
+          >
+            {{ nextItem.title }}
+          </AppButton>
         </div>
       </div>
     </AppModal>
@@ -162,6 +157,7 @@ import { ModalsName, useModal } from '~/utils/composables/useModal';
 import { useScreen } from '~/utils/composables/useScreen';
 import BgEllipse from '~/components/common/BgEllipse.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
+import Accordion from '~/components/common/Accordion.vue';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
 
 const nextRef = ref(null);
@@ -171,63 +167,35 @@ const $route = useRoute();
 const { baseUrl } = useRuntimeConfig().public;
 const drugId = toRef(() => +$route.params.id);
 
-const { openModal } = useModal();
+const { getModalPayload, setModalPayload } = useModal();
 const { $screen } = useScreen();
 
 const { getDrug } = useDrugsStore();
 
 const content = await getDrug(drugId.value);
 
-const activeItem = ref<DrugFaq>();
-const nextItem = ref<DrugFaq>();
-const itemsEls = ref();
+const activeItem = toRef(() => getModalPayload(ModalsName.DrugProps).item);
 
-const onModalClose = () => {
-  activeItem.value = undefined;
-};
+const nextItem = toRef(() => {
+  if (!content) {
+    return 0;
+  }
+
+  const index = content?.faq.findIndex((f) => f.order === activeItem.value?.order);
+
+  if (index !== content?.faq.length - 1) {
+    return content?.faq[index + 1];
+  } else {
+    return content?.faq[0];
+  }
+});
 
 useHead({
   title: content?.name ? content?.name : 'Препараты',
 });
 
-const selectNextItem = () => {
-  const index = content?.faq.findIndex((f) => f.order === activeItem.value?.order);
-
-  if (index !== content?.faq.length - 1) {
-    nextItem.value = content?.faq[index + 1];
-  } else {
-    nextItem.value = content?.faq[0];
-  }
-};
-
 const openProps = (item: DrugFaq) => {
-  if (activeItem.value?.order === item.order) {
-    activeItem.value = undefined;
-  } else {
-    activeItem.value = item;
-    selectNextItem();
-  }
-
-  if (!$screen.value.mdAndDown) {
-    openModal(ModalsName.DrugProps);
-  } else {
-    itemsEls.value.forEach((el: HTMLElement) => {
-      const content = el.querySelector('.drug-page__right-item-content') as HTMLElement;
-      if (content) {
-        content.style.height = `0`;
-      }
-    });
-
-    const activeIndex = content?.faq.findIndex((el) => el.order === activeItem.value?.order);
-
-    if ((activeIndex || activeIndex === 0) && activeIndex >= 0 && itemsEls.value[activeIndex]) {
-      const content = itemsEls.value[activeIndex].querySelector('.drug-page__right-item-content');
-
-      const height = content.scrollHeight;
-
-      content.style.height = `${height}px`;
-    }
-  }
+  setModalPayload(ModalsName.DrugProps, { item: item, items: content.faq });
 };
 </script>
 
@@ -275,10 +243,11 @@ const openProps = (item: DrugFaq) => {
     width: 38.7%;
     margin-top: 79px;
 
-    img {
+    :deep(img) {
       width: 100%;
       max-height: 500px;
       object-fit: contain;
+      @include aspect(673, 628);
     }
 
     &-icons {
@@ -297,29 +266,6 @@ const openProps = (item: DrugFaq) => {
     width: 46.2%;
     margin-top: 20px;
     margin-left: 4.9%;
-
-    &-item {
-      padding: 25px 0;
-
-      font-size: 24px;
-      line-height: 24px;
-      font-weight: 300;
-      color: $primary-color;
-
-      border-bottom: 1px solid $primary-color;
-
-      cursor: pointer;
-      transition: color $tr-dur;
-
-      p {
-        position: relative;
-        z-index: 2;
-      }
-
-      @include hover {
-        color: $white-color;
-      }
-    }
 
     &-btn {
       width: 315px;
@@ -363,7 +309,7 @@ const openProps = (item: DrugFaq) => {
       );
       border-radius: 40px;
 
-      &:after {
+      /*&:after {
         content: '';
         position: absolute;
         top: 0;
@@ -373,7 +319,7 @@ const openProps = (item: DrugFaq) => {
         z-index: 1;
 
         background-color: rgba(#000, 0.4);
-      }
+      }*/
 
       &-bg {
         position: absolute;
@@ -528,53 +474,6 @@ const openProps = (item: DrugFaq) => {
     &__right {
       width: 100%;
       margin-top: 16px;
-
-      &-item {
-        padding: 12px 0;
-
-        &:first-of-type {
-          border-top: 1px solid $primary-color;
-        }
-
-        &-title {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-
-          font-size: 16px;
-        }
-
-        .app-icon {
-          transition: transform $tr-dur;
-        }
-
-        &.expanded {
-          font-weight: 700;
-          letter-spacing: -0.32px;
-
-          .app-icon {
-            transform: rotate(180deg);
-          }
-        }
-
-        &-content {
-          height: 0;
-          overflow: hidden;
-
-          font-size: 14px;
-          line-height: 18px;
-          font-weight: 300;
-          color: $white-color;
-          letter-spacing: -0.28px;
-
-          transition: height $tr-dur;
-
-          p {
-            padding-top: 14px;
-            padding-right: 15px;
-          }
-        }
-      }
 
       &-btn {
         width: 164px;

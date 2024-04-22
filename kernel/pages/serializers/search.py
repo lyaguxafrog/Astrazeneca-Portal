@@ -14,7 +14,8 @@ class SearchSerializer(serializers.Serializer):
     model = serializers.CharField()
     id = serializers.IntegerField()
     url = serializers.URLField(required=False)  # Make the URL field optional
-    speciality = serializers.ListField(child=serializers.IntegerField(), required=False)
+    speciality = serializers.ListField(child=serializers.IntegerField(),
+                                       required=False)
 
     def get_title(self, instance):
         model_name = instance['model']

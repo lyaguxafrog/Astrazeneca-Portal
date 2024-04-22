@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="{ isSafari: $device.isSafari }">
     <IEZaglushka />
     <NuxtLayout>
       <NuxtPage />
@@ -30,6 +30,8 @@ await checkAccessToken();
 await getFavourites();
 
 const nuxtApp = useNuxtApp();
+
+const $device = useDevice();
 
 onMounted(async () => {
   await getSpecialities();

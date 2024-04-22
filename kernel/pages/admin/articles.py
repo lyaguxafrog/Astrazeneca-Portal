@@ -5,7 +5,9 @@ from django.contrib import admin
 from pages.models import ContentBlock, Articles
 from ckeditor.widgets import CKEditorWidget
 from django import forms
+from config.admin import custom_admin_site
 
+admin.site = custom_admin_site
 
 class ContentBlockInlineForm(forms.ModelForm):
     class Meta:
@@ -15,11 +17,10 @@ class ContentBlockInlineForm(forms.ModelForm):
             'text': CKEditorWidget(),
         }
 
-class ContentBlockInline(admin.StackedInline):
+class ContentBlockInline(admin.TabularInline):
     model = ContentBlock
     extra = 0
     form = ContentBlockInlineForm
-    verbose_name = "Блок контента"
 
 
 class ArticlesAdminForm(forms.ModelForm):

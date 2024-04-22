@@ -8,6 +8,10 @@ from django.forms import Textarea
 from django import forms
 from pages.models import Drug, Icon, DrugFAQ
 from django.db import models
+from config.admin import custom_admin_site
+
+admin.site = custom_admin_site
+
 
 class IconInline(admin.TabularInline):
     model = Icon

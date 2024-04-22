@@ -5,20 +5,28 @@ import os
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = (os.getenv('DEBUG_FLAG') == 'True')
-
+DOCS = (os.getenv('DOCS_FLAG') == 'True')
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = ['astraportal.dev-demo.online',
-                     'astraportal.dev-demo.online:8000']
+    ALLOWED_HOSTS = [os.getenv("OUR_DOMAIN"),
+                     f'{os.getenv("OUR_DOMAIN")}:8000',
+                     f'https://{os.getenv("OUR_DOMAIN")}']
 
+
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    #FIXME: исправить что тут происходит
+    # CSRF_COOKIE_DOMAIN = f'https://{os.getenv("OUR_DOMAIN")}'
+    CSRF_TRUSTED_ORIGINS = [f'https://{os.getenv("OUR_DOMAIN")}']
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -36,24 +44,28 @@ INSTALLED_APPS = [
     'drf_haystack',
     'django_cleanup.apps.CleanupConfig',
     'django_unused_media',
+    'adminsortable2',
+    'nested_admin',
+
 
     'pages',
     'users',
+    'practics',
 ]
 
 CKEDITOR_CONFIGS = {
     'default': {
         'height': 300,
         'width': 650,
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike'],
+        'toolbar': [
+            ['Format', 'Heading', 'FontSize', 'Font', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
             ['NumberedList', 'BulletedList'],
             ['TextColor', 'Table'],
             ['Link', 'Unlink'],
             ['Image', 'Source'],
         ],
+        'language': 'ru',
         'extraPlugins': ','.join(['font', 'colorbutton']),
         'font_names': 'Arial;Comic Sans MS;Courier New;Georgia;Times New Roman;Verdana',
         'fontSize_sizes': '8/8px;10/10px;12/12px;14/14px;16/16px;18/18px;24/24px;36/36px',
@@ -62,7 +74,6 @@ CKEDITOR_CONFIGS = {
         'ImageAltRequired': False,
     },
 }
-
 
 
 
@@ -80,7 +91,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -97,12 +108,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8000",
     "http://astraportal.dev-demo.online",
+    "https://astraportal.dev-demo.online",
 ]
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [
+            os.path.join(BASE_DIR, "frontend/dist"),
+            os.path.join(BASE_DIR, "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -118,9 +133,53 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'your_project.urls.swagger_info',
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'api_version': '0.1', # Specify your API's version
+    'enabled_methods': [ # Specify which methods to enable in Swagger UI
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'is_authenticated': False,
+    'is_superuser': False,
+    'permission_denied_handler': None,
+    'unauthorized_handler': None,
+    'api_key': '',
+    'api_key_name': '',
+    'api_key_in': '',
+    'api_key_scheme': '',
+    'operation_id_generator': 'your_project.utils.custom_operation_id_generator',
+    'security': [
+        {
+            'basic': []
+        }
+    ],
+    'doc_expansion': 'none',
+    'validator_url': None,
+    'oauth2_redirect_url': '/api/swagger/oauth2-redirect',
+    'oauth2_config': {
+        'clientId': 'your_client_id',
+        'clientSecret': 'your_client_secret',
+        'realm': 'your_realm',
+        'appName': 'your_app_name',
+        'scopeSeparator': ' ',
+        'additionalQueryStringParams': {}
+    },
+    'headers': {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    }
+}
 
 DATABASES = {
     'default': {
@@ -133,8 +192,6 @@ DATABASES = {
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

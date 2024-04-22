@@ -1,7 +1,7 @@
 <template>
-  <div :class="{stop: stopSwipe}" class="histories__wrapper">
+  <div :class="{ stop: stopSwipe }" class="histories__wrapper">
     <InsidePageHead v-if="!$screen.mdAndDown" class="histories__back" />
-    <div v-if="histories.length" class="histories" >
+    <div v-if="histories.length" class="histories">
       <Swiper
         ref="historiesEl"
         class="histories__swiper"
@@ -13,22 +13,27 @@
         :modules="[Pagination, Navigation]"
         :pagination="{ clickable: true }"
         :navigation="{
-        nextEl: nextRef,
-        prevEl: prevRef,
-      }"
+          nextEl: nextRef,
+          prevEl: prevRef,
+        }"
         :initial-slide="activeHistoryIndex"
         :breakpoints="{
-        1200: {
-          slidesPerView: 3
-        },
-        992: {
-          slidesPerView: 2
-        }
-      }"
+          /*1200: {
+            slidesPerView: 3,
+          },*/
+          992: {
+            slidesPerView: 3,
+          },
+        }"
         @swiper="onSwiper"
         @slide-change="onSlideChange"
       >
-        <SwiperSlide v-for="history in histories" :key="history.id" class="history" :class="{isMounted}">
+        <SwiperSlide
+          v-for="(history, index) in histories"
+          :key="history.id"
+          class="history"
+          :class="{ isMounted }"
+        >
           <AppImage
             class="history__bg"
             :url="history.cover_image"
@@ -41,15 +46,30 @@
             ref="videosRef"
             playsinline
             :muted="muted"
-            :src="`${baseUrl}${history.video}`"
+            :src="
+              activeHistoryIndex === index ||
+              activeHistoryIndex - 1 === index ||
+              activeHistoryIndex + 1 === index
+                ? `${baseUrl}${history.video}`
+                : ''
+            "
+            :class="{ active: activeHistoryIndex === index }"
             @touchend="onVideoTouchEnd"
+            @ended="onVideoStop"
           />
-          <AppButton v-if="!$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
+          <AppButton
+            v-if="!$screen.mdAndDown"
+            mode="icon"
+            class="history__volume"
+            petite
+            @click="toggleVolume"
+          >
             <AppIcon
               :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
               :size="$screen.mdAndDown ? 30 : 48"
             />
           </AppButton>
+          <div class="swiper-lazy-preloader" />
         </SwiperSlide>
       </Swiper>
       <div v-if="activeHistory" class="history__controls">
@@ -59,7 +79,13 @@
           :content-type="ContentType.Stories"
           :content-id="activeHistory.id"
         />
-        <AppButton v-if="$screen.mdAndDown" mode="icon" class="history__volume" petite @click="toggleVolume">
+        <AppButton
+          v-if="$screen.mdAndDown"
+          mode="icon"
+          class="history__volume"
+          petite
+          @click="toggleVolume"
+        >
           <AppIcon
             :name="muted ? IconName.VolumeOff : IconName.VolumeOn"
             :size="$screen.mdAndDown ? 30 : 48"
@@ -99,7 +125,7 @@ import { useBack } from '~/utils/composables/useHistory';
 import { IconName } from '~/components/app/AppIcon.utils';
 import { ContentType } from '~/utils/types';
 import InsidePageHead from '~/components/common/InsidePageHead.vue';
-import { useAuth } from "~/utils/composables/useAuth";
+import { useAuth } from '~/utils/composables/useAuth';
 
 const { histories, getHistories, viewStory } = useHistoriesStore();
 const { baseUrl } = useRuntimeConfig().public;
@@ -115,9 +141,9 @@ await getHistories();
 const activeSlideId = toRef(() => +($route.query.historyId || 0));
 
 const activeHistoryIndex = toRef(() =>
-  histories.value.findIndex((h) => h.id === activeSlideId.value)
+  histories.value?.findIndex((h) => h.id === activeSlideId.value)
 );
-const activeHistory = toRef(() => histories.value[activeHistoryIndex.value]);
+const activeHistory = toRef(() => histories.value?.[activeHistoryIndex.value]);
 const activeVideo = toRef(() => videosRef.value[activeHistoryIndex.value]);
 const muted = ref(true);
 
@@ -152,7 +178,7 @@ const { direction } = useSwipe(historiesEl, {
 watch(
   () => $route.query.historyId,
   (newValue) => {
-    if (newValue) {
+    if (newValue && activeHistoryIndex.value !== undefined) {
       swiper.value?.slideTo(activeHistoryIndex.value);
     }
   }
@@ -183,6 +209,12 @@ const onVideoTouchEnd = () => {
   setTimeout(start, 500);
 };
 
+const onVideoStop = () => {
+  if (activeHistoryIndex.value !== undefined) {
+    swiper.value?.slideTo(activeHistoryIndex.value + 1);
+  }
+};
+
 const startActiveVideo = () => {
   stopAll();
   start();
@@ -190,7 +222,7 @@ const startActiveVideo = () => {
 
 const onSlideChange = async () => {
   if (swiper.value) {
-    const id = histories.value[swiper.value?.realIndex].id;
+    const id = histories.value?.[swiper.value?.realIndex].id;
     await $router.replace({ query: { historyId: id, access_token: $route.query.access_token } });
 
     startActiveVideo();
@@ -225,7 +257,7 @@ onMounted(() => {
   @include z-index(2);
 
   width: 100%;
-  max-width: 1330px;
+  max-width: 144vh;
   margin: 0 auto;
 
   &__wrapper {
@@ -233,6 +265,9 @@ onMounted(() => {
   }
 
   &__back {
+    position: relative;
+    @include z-index(4);
+
     height: 0;
     min-height: 0;
     margin-bottom: -19px;
@@ -268,6 +303,12 @@ onMounted(() => {
       right: 0;
       bottom: 0;
       left: 0;
+
+      background-color: $main-bg-color;
+
+      :deep(img) {
+        object-fit: contain;
+      }
     }
 
     &__controls {
@@ -309,10 +350,16 @@ onMounted(() => {
 
     width: 100%;
     height: 85vh;
-    object-fit: cover;
+    object-fit: contain;
 
     background-position: center;
     background-size: cover;
+
+    opacity: 0;
+
+    &.active {
+      opacity: 1;
+    }
 
     @include lg-and-down {
       @media (orientation: portrait) {
@@ -323,7 +370,7 @@ onMounted(() => {
 
   .swiper-button {
     position: absolute;
-    top: 354px;
+    top: 43vh;
     left: 27%;
 
     cursor: pointer;
@@ -334,18 +381,18 @@ onMounted(() => {
       left: auto;
     }
 
-    @include lg-and-down {
+    /*@include lg-and-down {
       left: 16%;
       &.next {
         right: 16%;
       }
-    }
+    }*/
   }
 
   &::v-deep {
     .swiper {
       &-pagination {
-        top: 24px;
+        top: 2.8vh;
         bottom: auto;
         left: 50%;
 
@@ -383,6 +430,8 @@ onMounted(() => {
     bottom: 0;
     left: 0;
     @include z-index(4);
+
+    background: $main-bg-color;
 
     &__swiper {
       width: auto;

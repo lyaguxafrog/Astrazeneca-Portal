@@ -12,7 +12,6 @@
 
 <script lang="ts" setup>
 import { defineNuxtLink } from '#app';
-
 defineProps<{
   mode?: 'icon';
   to?: string;
@@ -31,11 +30,11 @@ defineProps<{
   justify-content: center;
   align-items: center;
 
-  height: 82px;
-  padding: 0 35px;
+  min-height: 82px;
+  padding: 6px 35px;
 
   font-size: 30px;
-  line-height: 0.9;
+  line-height: 1;
   color: $primary-color;
 
   border: 1px solid $primary-color;
@@ -46,11 +45,15 @@ defineProps<{
 
   &.icon {
     width: 72px;
+    min-width: 72px;
     height: 72px;
+    min-height: 72px;
     padding: 0;
     &.petite {
       width: 62px;
+      min-width: 62px;
       height: 62px;
+      min-height: 62px;
     }
   }
 
@@ -65,7 +68,7 @@ defineProps<{
   }
 
   &.petite {
-    height: 62px;
+    min-height: 62px;
 
     font-size: 30px;
   }
@@ -75,7 +78,7 @@ defineProps<{
   }
 
   &.mini {
-    height: 41px;
+    min-height: 41px;
     padding: 0 20px;
 
     font-size: 18px;
@@ -98,13 +101,12 @@ defineProps<{
   }
 
   @include md-and-down {
-    height: 50px;
+    min-height: 50px;
     padding: 0 50px;
 
     font-size: 19px;
 
     &.petite {
-      height: 42px;
       min-height: 42px;
 
       font-size: 17px;
@@ -112,9 +114,12 @@ defineProps<{
 
     &.icon {
       width: 42px;
+      min-width: 42px;
       &.petite {
         width: 42px;
+        min-width: 42px;
         height: 42px;
+        min-height: 42px;
       }
     }
   }

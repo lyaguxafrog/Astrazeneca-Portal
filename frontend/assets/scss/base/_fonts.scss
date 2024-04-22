@@ -1,6 +1,14 @@
 // CA Slalom Extended
 @font-face {
   font-family: 'CA Slalom Extended';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+
+  src: url('~/assets/fonts/caslalomextended/ca-slalom-extended-w05-light.woff') format('woff');
+}
+@font-face {
+  font-family: 'CA Slalom Extended';
   font-weight: 400;
   font-style: normal;
   font-display: swap;

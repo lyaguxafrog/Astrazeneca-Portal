@@ -30,15 +30,15 @@
         >
           <AppImage
             class="favourites__item-bg"
-            :url="fav.favorite_desktop_300px"
-            :url-full-x2="fav.favorite_desktop_600px"
-            :url-full="fav.favorite_desktop_300px"
+            :url="fav.favorite_mobile_500px"
+            :url-full-x2="fav.favorite_mobile_500px"
+            :url-full="fav.favorite_mobile_500px"
             :url-thin-x2="fav.favorite_mobile_500px"
             :url-thin="fav.favorite_mobile_250px"
           />
-          <p>
+          <!--          <p>
             {{ fav.video_article }}
-          </p>
+          </p>-->
         </nuxt-link>
         <nuxt-link
           v-else-if="fav.type === ContentType.Article"
@@ -53,9 +53,9 @@
             :url-thin-x2="fav.favorite_mobile_500px"
             :url-thin="fav.favorite_mobile_250px"
           />
-          <p>
+          <!--          <p>
             {{ fav.article_name }}
-          </p>
+          </p>-->
         </nuxt-link>
         <nuxt-link
           v-else-if="fav.type === ContentType.Stories"
@@ -182,8 +182,13 @@ const showedFavourites = computed(() => {
 
     transition: background $tr-dur;
 
+    @include hover {
+      .favourites__item-bg {
+        transform: scale(1.1);
+      }
+    }
 
-    &:after {
+    /*&:after {
       content: '';
       position: absolute;
       top: 0;
@@ -193,7 +198,9 @@ const showedFavourites = computed(() => {
       z-index: 1;
 
       background-color: rgba(#000, 0.4);
-    }
+
+      pointer-events: none;
+    }*/
 
     &-bg {
       position: absolute;
@@ -232,7 +239,6 @@ const showedFavourites = computed(() => {
 
         width: 120px;
         height: 120px;
-
 
         transform: translate(-50%, -50%);
 

@@ -13,10 +13,10 @@
           :url="content.video_cover_desktop_1400px"
           :url-full-x2="content.video_cover_desktop_2800px"
           :url-full="content.video_cover_desktop_1400px"
-          :url-thin-x2="content.video_cover_mobile_840px"
-          :url-thin="content.video_cover_mobile_420px"
+          :url-thin-x2="content.video_cover_desktop_1400px"
+          :url-thin="content.video_cover_desktop_1400px"
         />
-        <PlayVideoButton class="video-page__video-play" />
+        <!--        <PlayVideoButton class="video-page__video-play" />-->
       </div>
     </div>
 
@@ -37,16 +37,16 @@
         #default="{ item }"
       >
         <nuxt-link class="video-page__recommended-slide" :to="`/video/${item.id}`">
-          <p v-html="item.title" />
+          <!--          <p v-html="item.title" />-->
           <div class="video-page__recommended-slide-img">
             <AppImage
-              :url="item.recomendation_cover_desktop_500px"
-              :url-full-x2="item.recomendation_cover_desktop_1000px"
-              :url-full="item.recomendation_cover_desktop_500px"
+              :url="item.recomendation_cover_mobile_560px"
+              :url-full-x2="item.recomendation_cover_mobile_560px"
+              :url-full="item.recomendation_cover_mobile_560px"
               :url-thin-x2="item.recomendation_cover_mobile_560px"
               :url-thin="item.recomendation_cover_mobile_280px"
             />
-            <PlayVideoButton class="video-page__recommended-slide-play" />
+            <!--            <PlayVideoButton class="video-page__recommended-slide-play" />-->
           </div>
         </nuxt-link>
       </ItemsSlider>
@@ -66,8 +66,7 @@ import InsidePageHead from '~/components/common/InsidePageHead.vue';
 import PlayVideoButton from '~/components/common/PlayVideoButton.vue';
 import ItemsSlider from '~/components/common/ItemsSlider.vue';
 import BgEllipse from '~/components/common/BgEllipse.vue';
-import {toRef} from "vue";
-
+import { toRef } from 'vue';
 
 const $route = useRoute();
 const { getVideo } = useVideosStore();
@@ -78,7 +77,11 @@ const videoId = toRef(() => $route.params.id);
 const content = await getVideo(+videoId.value);
 
 useHead({
-  title: content?.video_article ? content?.video_article : content?.content_type === ContentType.Video ? 'Видеолекции' : 'Клинические случаи',
+  title: content?.video_article
+    ? content?.video_article
+    : content?.content_type === ContentType.Video
+    ? 'Видеолекции'
+    : 'Клинические случаи',
 });
 
 const isStarted = ref(false);
@@ -94,6 +97,13 @@ const startVideo = () => {
   position: relative;
 
   padding: 0 92px;
+
+  :deep {
+    .swiper-lazy-preloader {
+      top: auto;
+      bottom: 35%;
+    }
+  }
 
   @include lg-and-down {
     padding: 0 40px;
@@ -123,6 +133,9 @@ const startVideo = () => {
     position: relative;
 
     margin-top: 45px;
+    overflow: hidden;
+
+    border-radius: 40px;
 
     video {
       display: block;
@@ -142,6 +155,13 @@ const startVideo = () => {
       width: 100%;
       height: 100%;
       object-fit: cover;
+
+      cursor: pointer;
+      transition: transform $tr-dur;
+
+      &:hover {
+        transform: scale(1.03);
+      }
     }
   }
 
@@ -230,6 +250,13 @@ const startVideo = () => {
 
     padding: 0;
 
+    :deep {
+      .swiper-lazy-preloader {
+        top: auto;
+        bottom: 30%;
+      }
+    }
+
     &__title {
       width: 80%;
       padding: 0 $mobile-page-pudding;
@@ -240,6 +267,16 @@ const startVideo = () => {
 
     &__fav {
       margin: 7px 12px;
+    }
+
+    &__video {
+      border-radius: 0;
+
+      &-cover {
+        left: -20px;
+
+        width: calc(100% + 40px);
+      }
     }
 
     &__subtitle {

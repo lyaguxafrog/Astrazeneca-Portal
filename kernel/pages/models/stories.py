@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.core.validators import FileExtensionValidator
 
 class Story(models.Model):
     COLOR_CHOISE = [
@@ -14,7 +14,10 @@ class Story(models.Model):
     avatar = models.ImageField(upload_to='story_avatars/', verbose_name='Аватар *')
     title = models.CharField(max_length=255, verbose_name='Имя *')
     content = models.TextField(verbose_name='Контент *')
-    video = models.FileField(upload_to='story_videos/', verbose_name='Видео *')
+    video = models.FileField(upload_to='story_videos/', verbose_name='Видео *',
+                            validators= [
+                            FileExtensionValidator(allowed_extensions=['mp4'])
+                            ],)
     cover_image = models.ImageField(upload_to='story_covers/', verbose_name='Обложка *')
     link_to_page = models.URLField(null=True, blank=True, verbose_name='URL на страницу')
     specialties = models.ManyToManyField('pages.Specialty',

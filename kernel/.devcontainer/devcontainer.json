@@ -21,7 +21,7 @@
 		"cweijan.vscode-mysql-client2",
 		"Postman.postman-for-vscode",
 		"SphericalKat.vsc-telegram",
-		"theHocineSaad.takeabreak-protect-your-eyes"
+		"phind.phind",
 	],
 
 	"forwardPorts": [5000],

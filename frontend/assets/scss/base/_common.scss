@@ -34,6 +34,34 @@ a {
   width: fit-content !important;
 }
 
+.swiper-lazy-preloader {
+  @include z-index(4);
+
+  width: 60px !important;
+  height: 60px !important;
+  margin-top: -40px !important;
+  margin-left: -30px !important;
+
+  border-width: 6px !important;
+  border-color: $white-color !important;
+  border-top-color: transparent !important;
+
+  filter: drop-shadow(0 0 5px rgba($black-color, 0.5));
+
+  @include md-and-down {
+    width: 40px !important;
+    height: 40px !important;
+    margin-top: -20px !important;
+    margin-left: -20px !important;
+
+    border-width: 4px !important;
+  }
+}
+
+.swiper {
+  user-select: none;
+}
+
 .swiper-button {
   color: $primary-color;
 
@@ -60,5 +88,33 @@ a {
 .for-mobile-or-tablet {
   @include md-and-up {
     display: none !important;
+  }
+}
+
+b, strong {
+  font-weight: 700;
+}
+
+.h2 {
+  font-family: $secondary-font-family;
+  font-size: 50px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+  @include md-and-down {
+    font-size: 27px;
+    line-height: 28px;
+  }
+}
+
+.caption-m {
+  font-family: $secondary-font-family;
+  font-size: 40px;
+  line-height: 42px;
+  color: $white-color;
+
+  @include md-and-down {
+    font-size: 20px;
+    line-height: 21px;
   }
 }

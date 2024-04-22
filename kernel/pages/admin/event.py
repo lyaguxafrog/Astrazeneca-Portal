@@ -2,18 +2,22 @@
 
 from django.contrib import admin
 from pages.models import Events
+from config.admin import custom_admin_site
 
+admin.site = custom_admin_site
 
-@admin.register(Events)
 class EventsAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
+        'namee',
         'date'
     )
     fields = (
-        'name',
+        'namee',
         'date',
         'cover',
         'text',
         'url'
     )
+
+
+admin.site.register(Events, EventsAdmin)

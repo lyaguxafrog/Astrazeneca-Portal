@@ -12,13 +12,22 @@
         <SwiperSlide v-for="history in histories" :key="history.id" class="histories-slider__item">
           <div @click="link(history.id)">
             <div class="histories-slider__item-content">
-              <div class="histories-slider__item-content-img" :style="{ borderColor: !viewedStories.includes(history.id) ? '#00D1FF': activeSlideId === history.id ? '#E130FF' : '' }">
+              <div
+                class="histories-slider__item-content-img"
+                :style="{
+                  borderColor: !viewedStories.includes(history.id)
+                    ? '#00D1FF'
+                    : activeSlideId === history.id
+                    ? '#E130FF'
+                    : '',
+                }"
+              >
                 <AppImage
                   :url="history.avatar"
                   :url-full="history.avatar_desktop_120px"
                   :url-full-x2="history.avatar_desktop_280px"
-                  :url-thin="history.avatar_desktop_70px"
-                  :url-thin-x2="history.avatar_desktop_140px"
+                  :url-thin="history.avatar_mobile_70px"
+                  :url-thin-x2="history.avatar_mobile_140px"
                 />
               </div>
               <p>
@@ -40,7 +49,7 @@
 
 <script lang="ts" setup>
 import { ref, toRef, onMounted } from 'vue';
-import { useRoute, useRouter } from "#app";
+import { useRoute, useRouter } from '#app';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useHistoriesStore } from '~/utils/composables/store/histories';
@@ -60,7 +69,7 @@ const $router = useRouter();
 
 const replaceMode = toRef(() => !!$route.query.historyId);
 
-const link = (id) => {
+const link = (id: number) => {
   const query = {
     ...$route.query,
     historyId: id,
@@ -97,7 +106,7 @@ $root: histories-slider;
 
   &.min {
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
     margin-left: 0;
 
     transition: max-width $tr-dur;
@@ -111,7 +120,8 @@ $root: histories-slider;
         }
 
         &:deep(img) {
-          height: 88px;
+          height: 78px;
+          @include aspect(120, 120);
         }
 
         p {
@@ -120,7 +130,7 @@ $root: histories-slider;
           margin-left: -20px;
           padding-bottom: 1px;
 
-          font-size: 17px;
+          font-size: 15px;
           line-height: 1.1;
           word-break: break-word;
 
@@ -157,7 +167,6 @@ $root: histories-slider;
         display: grid;
 
         width: 100%;
-        @include aspect(120, 120);
         overflow: hidden;
 
         border: 5px solid transparent;
@@ -176,7 +185,7 @@ $root: histories-slider;
         display: block;
 
         width: 100%;
-        height: 120px;
+        height: 110px;
         object-fit: cover;
       }
     }
@@ -216,7 +225,11 @@ $root: histories-slider;
         width: 100px;
 
         :deep(img) {
-          height: 100px;
+          height: 90px;
+        }
+
+        p {
+          margin-top: 10px;
         }
       }
     }
@@ -248,6 +261,7 @@ $root: histories-slider;
 
       :deep(img) {
         height: 100%;
+        @include aspect(1, 1);
       }
     }
 

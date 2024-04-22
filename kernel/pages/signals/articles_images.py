@@ -7,7 +7,6 @@ from pathlib import Path
 from io import BytesIO
 from django.core.files import File
 from PIL import Image
-from inflection import ordinal
 
 from pages.models import Articles
 

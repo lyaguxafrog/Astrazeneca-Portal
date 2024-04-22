@@ -52,10 +52,10 @@
       >
         <template #default="{ item }">
           <nuxt-link class="items-slider__content" :to="`video/${item.id}`">
-            <div
+<!--            <div
               class="videos-slider__title items-slier__visible-on-active"
               v-html="item.video_article_url"
-            />
+            />-->
             <div class="videos-slider__img">
               <AppImage
                 class="videos-slider__image"
@@ -65,7 +65,7 @@
                 :url-thin-x2="item.video_cover_mobile_840px"
                 :url-thin="item.video_cover_mobile_420px"
               />
-              <PlayVideoButton />
+<!--              <PlayVideoButton />-->
             </div>
           </nuxt-link>
         </template>
@@ -230,8 +230,8 @@ const onSlideChange = (index: number) => {
     display: block;
 
     width: 100%;
-    height: 530px;
     object-fit: cover;
+    @include aspect(1088, 530);
   }
 
   @include xl-and-down {
@@ -265,12 +265,8 @@ const onSlideChange = (index: number) => {
       font-size: 16px;
     }
 
-    &__img {
-      @include aspect(1, 1);
-    }
-
     &__image {
-      height: 100%;
+      @include aspect(1, 1);
     }
 
     .videos-slider__img {

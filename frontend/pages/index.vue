@@ -19,6 +19,10 @@
 
       <HomeArticles @showAll="showAllModal" />
 
+      <HomePracticum />
+
+      <HomeTest />
+
       <HomeEvents />
 
       <HomeDrugs />
@@ -46,10 +50,12 @@ import HomeEvents from '~/components/pages/home/HomeEvents.vue';
 import SpecialitySlider from '~/components/common/SpecialitySlider.vue';
 import HomeArticles from '~/components/pages/home/HomeArticles.vue';
 import HomeAddContentModal from '~/components/pages/home/HomeAddContentModal.vue';
+import HomePracticum from '~/components/pages/home/HomePracticum.vue';
+import HomeTest from '~/components/pages/home/HomeTest.vue';
 import { useRequest } from '~/utils/composables/useRequest';
 import { useVideosStore } from '~/utils/composables/store/videos';
 import { useArticlesStore } from '~/utils/composables/store/articles';
-import {ModalsName, useModal} from "~/utils/composables/useModal";
+import { ModalsName, useModal } from '~/utils/composables/useModal';
 
 const { openModal, closeModal } = useModal();
 
@@ -83,10 +89,12 @@ watch(
       return;
     }
 
+    const scrollEl = document.querySelector('.default-header__content') as HTMLElement;
+
     if (newValue) {
-      enableScroll();
+      enableScroll(scrollEl, $screen.value.mdAndDown);
     } else {
-      disableScroll();
+      disableScroll(scrollEl, $screen.value.mdAndDown);
     }
   },
   {
@@ -100,7 +108,7 @@ const showAllModal = () => {
   }
 
   openModal(ModalsName.VideosAddContent);
-}
+};
 
 const loadAllContent = () => {
   if (sessionStorage.getItem('showAllContent')) {

@@ -23,6 +23,7 @@ export { default as Note } from '~/assets/img/icons/note.svg?component';
 export { default as Video } from '~/assets/img/icons/VideoCamera.svg?component';
 export { default as Megaphone } from 'assets/img/icons/megaphone.svg?component';
 export { default as Star } from 'assets/img/icons/star.svg?component';
+export { default as Info } from 'assets/img/icons/info.svg?component';
 
 export enum IconName {
   HeartIcon = 'HeartIcon',
@@ -49,4 +50,5 @@ export enum IconName {
   Video = 'Video',
   Megaphone = 'Megaphone',
   Star = 'Star',
+  Info = 'Info',
 }
